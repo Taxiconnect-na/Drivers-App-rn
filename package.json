@@ -13,14 +13,16 @@
     "@react-native-async-storage/async-storage": "^1.13.2",
     "@react-native-community/netinfo": "^5.9.9",
     "@react-native-mapbox-gl/maps": "^8.1.0-rc10",
+    "libphonenumber-js": "^1.9.6",
     "react": "16.13.1",
     "react-native": "0.63.4",
     "react-native-gesture-handler": "^1.9.0",
+    "react-native-modal": "^11.6.1",
     "react-native-typography": "^1.4.1",
     "react-native-vector-icons": "^7.1.0",
     "react-redux": "^7.2.2",
     "redux": "^4.0.5",
-    "socket.io": "^3.0.4",
+    "socket.io-client": "^3.0.4",
     "sync-storage": "^0.4.2"
   },
   "devDependencies": {

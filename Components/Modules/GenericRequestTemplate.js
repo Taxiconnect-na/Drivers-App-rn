@@ -62,7 +62,7 @@ class GenericRequestTemplate extends React.PureComponent {
           }}>
           <View style={{flex: 1, alignItems: 'center'}}>
             <Text style={{fontFamily: 'Allrounder-Grotesk-Book', fontSize: 16}}>
-              Economy
+              ConnectUS
             </Text>
           </View>
           <View style={{padding: 5}}>
