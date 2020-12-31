@@ -8,6 +8,7 @@ const windowHeight = Dimensions.get('window').height;
 const arrowTurnLeft = require('../../../Media_assets/Images/turn-left.png');
 const arrowTurnRight = require('../../../Media_assets/Images/turn-right.png');
 const arrowStraight = require('../../../Media_assets/Images/right-arrow.png');
+const arrowNavigationTracking = require('../../../Media_assets/Images/compass.png');
 
 const STATE = {
   //PERSISTANT INTERVAL VARIABLES
@@ -22,6 +23,7 @@ const STATE = {
   arrowTurnLeft: arrowTurnLeft,
   arrowTurnRight: arrowTurnRight,
   arrowStraight: arrowStraight,
+  arrowNavigationTracking: arrowNavigationTracking,
 
   socket: SOCKET_CORE, //MAIN SOCKET CONNECTOR
   user_fingerprint:
@@ -58,10 +60,11 @@ const STATE = {
   shownRides_types: 'Rides', //To govern which ride to show :Rides, Delivery or Scheduled - default: false
   //Responsible for defining the state of the interface at any time
   main_interfaceState_vars: {
-    isApp_inNavigation_mode: true, //To know if the app is in navigation mode or not. - default: false
-    isRideInProgress: true, //TO know whether a ride is in progress or not - default: false
+    isApp_inNavigation_mode: false, //To know if the app is in navigation mode or not. - default: false
+    isRideInProgress: false, //TO know whether a ride is in progress or not - default: false
     isDriver_online: true, //To know whether the driver is online or offline - default: false - SERVER DEPENDENT
     isComputing_route: false, //To know whether the app is computing the optimal route to destination - default: false
+    isApp_inTrackingMode: false, //To know whether the driver pressed the closest tracking mode feature or not - default: false
   },
 };
 

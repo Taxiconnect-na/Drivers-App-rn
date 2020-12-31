@@ -26,6 +26,7 @@ import GeolocationP from 'react-native-geolocation-service';
 import {
   UpdateErrorModalLog,
   UpdateGrantedGRPS,
+  UpdateTrackingModeState,
 } from '../Redux/HomeActionsCreators';
 import {systemWeights} from 'react-native-typography';
 import IconAnt from 'react-native-vector-icons/AntDesign';
@@ -303,8 +304,8 @@ class Home extends React.PureComponent {
                 }}>
                 <View
                   style={{
-                    padding: 7,
-                    width: 90,
+                    padding: 10,
+                    width: 100,
                     alignItems: 'center',
                     justifyContent: 'center',
                     borderRadius: 50,
@@ -322,7 +323,7 @@ class Home extends React.PureComponent {
                   <Text
                     style={[
                       {
-                        fontSize: 16,
+                        fontSize: 16.5,
                         fontFamily: 'Allrounder-Grotesk-Medium',
                         color: '#fff',
                       },
@@ -553,7 +554,7 @@ class Home extends React.PureComponent {
           }}>
           <View style={{flexDirection: 'row', alignItems: 'center'}}>
             <View style={{top: 1.5}}>
-              <IconMaterialIcons name="menu" size={29} />
+              <IconMaterialIcons name="menu" size={30} />
             </View>
             <View
               style={{
@@ -563,8 +564,8 @@ class Home extends React.PureComponent {
               }}>
               <View
                 style={{
-                  padding: 6,
-                  width: 90,
+                  padding: 8,
+                  width: 100,
                   alignItems: 'center',
                   justifyContent: 'center',
                   borderRadius: 50,
@@ -636,7 +637,18 @@ class Home extends React.PureComponent {
           styleURL={'mapbox://styles/dominiquektt/ckax4kse10a791iofjbx59jzm'}>
           <Camera
             ref={(c) => (this.camera = c)}
-            zoomLevel={14}
+            zoomLevel={
+              this.props.App.main_interfaceState_vars.isApp_inTrackingMode
+                ? 15
+                : 14
+            }
+            pitch={
+              this.props.App.main_interfaceState_vars.isApp_inTrackingMode
+                ? 100
+                : 0
+            }
+            paddingTop={800}
+            followUserMode="compass"
             centerCoordinate={[
               this.props.App.longitude,
               this.props.App.latitude,
@@ -645,8 +657,18 @@ class Home extends React.PureComponent {
           <UserLocation
             animated={true}
             showsUserHeadingIndicator
-            androidRenderMode="gps"
-          />
+            androidRenderMode="gps">
+            <SymbolLayer
+              id={`ownPosition-symbol`}
+              style={{
+                iconImage: this.props.App.arrowNavigationTracking,
+                iconSize: 0.18,
+                //iconRotate: this.state.phoneOrientation,
+                iconRotationAlignment: 'map',
+                iconAllowOverlap: true,
+              }}
+            />
+          </UserLocation>
         </MapView>
       );
     } //Navigation off - show requests list
@@ -659,11 +681,29 @@ class Home extends React.PureComponent {
             padding: 10,
             paddingBottom: 50,
           }}>
+          <GenericLoader
+            active={this.state.loaderState}
+            backgroundColor={'#f0f0f0'}
+          />
           {/*Request template*/}
           <GenericRequestTemplate />
         </ScrollView>
       );
     }
+  }
+
+  /**
+   * @func updateMapTrackingState
+   * Responsible for udpdating the tracking state of the mapview, and also perform small operations before
+   * that.
+   */
+  updateMapTrackingState() {
+    //1. Recenter the map
+
+    //2. Update the tracking state
+    this.props.UpdateTrackingModeState(
+      !this.props.App.main_interfaceState_vars.isApp_inTrackingMode,
+    );
   }
 
   /**
@@ -686,7 +726,14 @@ class Home extends React.PureComponent {
                 zIndex: 9000000,
                 alignItems: 'center',
               }}>
-              <View
+              <TouchableOpacity
+                onPress={() =>
+                  this.props.UpdateErrorModalLog(
+                    true,
+                    'show_guardian_toolkit',
+                    'any',
+                  )
+                }
                 style={{
                   width: 57,
                   height: 57,
@@ -699,15 +746,16 @@ class Home extends React.PureComponent {
                   },
                   shadowOpacity: 0.36,
                   shadowRadius: 6.68,
-
                   elevation: 11,
                   alignItems: 'center',
                   justifyContent: 'center',
                   marginBottom: 20,
+                  zIndex: 900000000,
                 }}>
                 <IconMaterialIcons name="shield" color={'#000'} size={32} />
-              </View>
-              <View
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => this.updateMapTrackingState()}
                 style={{
                   width: 57,
                   height: 57,
@@ -730,7 +778,7 @@ class Home extends React.PureComponent {
                   color={'#096ED4'}
                   size={32}
                 />
-              </View>
+              </TouchableOpacity>
             </View>
             <View
               style={{
@@ -956,13 +1004,7 @@ class Home extends React.PureComponent {
           }
           parentNode={this}
         />
-        {this.props.App.main_interfaceState_vars.isApp_inNavigation_mode ===
-        false ? (
-          <GenericLoader
-            active={this.state.loaderState}
-            backgroundColor={'#f0f0f0'}
-          />
-        ) : null}
+
         {this.renderHeaderMainHome()}
 
         {/**Show the request list ONLY in NORMAL MODDE */}
@@ -1006,6 +1048,7 @@ const mapDispatchToProps = (dispatch) =>
     {
       UpdateErrorModalLog,
       UpdateGrantedGRPS,
+      UpdateTrackingModeState,
     },
     dispatch,
   );

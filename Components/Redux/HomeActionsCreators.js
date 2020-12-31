@@ -50,3 +50,13 @@ export const UpdateGrantedGRPS = (gprsVars) => ({
   type: 'UPDATE_GRANTED_GPRS_VARS',
   payload: gprsVars,
 });
+
+/**
+ * 5. Update navigation to tracking more or back
+ * Responsible for changing the mapview to tracking more or back.
+ * @param state: true (tracking mode enabled) or false (tracking mode disabled).
+ */
+export const UpdateTrackingModeState = (state) => ({
+  type: 'UPDATE_TRACKING_MODE_STATE',
+  payload: state,
+});

@@ -49,6 +49,13 @@ const HomeReducer = (state = INIT_STATE, action) => {
       //...
       return {...state, ...newState};
 
+    case 'UPDATE_TRACKING_MODE_STATE':
+      console.log(action.payload);
+      newState.main_interfaceState_vars.isApp_inTrackingMode = action.payload;
+
+      //...
+      return {...state, ...newState};
+
     default:
       return state;
   }

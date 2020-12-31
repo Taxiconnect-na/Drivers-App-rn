@@ -977,6 +977,102 @@ class ErrorModal extends React.PureComponent {
           </View>
         </SafeAreaView>
       );
+    } else if (/show_guardian_toolkit/i.test(error_status)) {
+      return (
+        <View
+          style={{
+            backgroundColor: '#fff',
+            //padding: 20,
+            height: 300,
+          }}>
+          <View
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              justifyContent: 'center',
+              padding: 20,
+              paddingBottom: 5,
+            }}>
+            <Text
+              style={{fontFamily: 'Allrounder-Grotesk-Regular', fontSize: 20}}>
+              Safety
+            </Text>
+          </View>
+          <View style={{flex: 1, justifyContent: 'center'}}>
+            <TouchableOpacity
+              onPress={() => {}}
+              style={[
+                styles.bttnGenericTc,
+                {
+                  borderRadius: 2,
+                  marginBottom: 10,
+                  justifyContent: 'flex-start',
+                  borderBottomColor: '#d0d0d0',
+                  borderBottomWidth: 1,
+                  paddingLeft: 20,
+                  paddingRight: 20,
+                  backgroundColor: '#fff',
+                  shadowColor: '#fff',
+                  shadowOffset: {
+                    width: 0,
+                    height: 0,
+                  },
+                  shadowOpacity: 0,
+                  shadowRadius: 0,
+
+                  elevation: 0,
+                  flexDirection: 'row',
+                },
+              ]}>
+              <IconMaterialIcons name="shield" color="#b22222" size={28} />
+              <Text
+                style={{
+                  fontFamily: 'Allrounder-Grotesk-Book',
+                  fontSize: 19,
+                  marginLeft: 5,
+                  flex: 1,
+                  color: '#b22222',
+                }}>
+                Emergency call
+              </Text>
+            </TouchableOpacity>
+            <View
+              style={[
+                styles.bttnGenericTc,
+                {
+                  borderRadius: 2,
+                  marginBottom: 10,
+                  justifyContent: 'flex-start',
+                  paddingLeft: 20,
+                  paddingRight: 20,
+                  backgroundColor: '#fff',
+                  shadowColor: '#fff',
+                  shadowOffset: {
+                    width: 0,
+                    height: 0,
+                  },
+                  shadowOpacity: 0,
+                  shadowRadius: 0,
+
+                  elevation: 0,
+                },
+              ]}>
+              <Text
+                style={{
+                  fontFamily: 'Allrounder-Grotesk-Book',
+                  fontSize: 14,
+                  color: '#a5a5a5',
+                  marginLeft: 5,
+                  flex: 1,
+                  lineHeight: 17,
+                }}>
+                Use the Emergency call button only in the case of an extreme
+                emergency. Otherwise some additional charges may apply.
+              </Text>
+            </View>
+          </View>
+        </View>
+      );
     } else {
       return <></>;
     }
