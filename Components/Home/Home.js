@@ -259,8 +259,8 @@ class Home extends React.PureComponent {
   renderHeaderMainHome() {
     if (this.props.App.main_interfaceState_vars.isApp_inNavigation_mode) {
       //Navigation mode on
-      if (this.props.App.main_interfaceState_vars.isRideInProgress) {
-        //A ride is in progress actively in navigation mode
+      if (this.props.App.main_interfaceState_vars.isRideInProgress === false) {
+        //No ride in progress actively in navigation mode
         return (
           <View
             style={{
@@ -303,7 +303,7 @@ class Home extends React.PureComponent {
                 }}>
                 <View
                   style={{
-                    padding: 6,
+                    padding: 7,
                     width: 90,
                     alignItems: 'center',
                     justifyContent: 'center',
@@ -360,7 +360,7 @@ class Home extends React.PureComponent {
             </View>
           </View>
         );
-      } //No ride in progress actively in navigation mode
+      } //A ride is in progress actively in navigation mode
       else {
         return (
           <View
@@ -676,7 +676,133 @@ class Home extends React.PureComponent {
       //Navigation on - hide footer
       if (this.props.App.main_interfaceState_vars.isRideInProgress) {
         //A ride is in progress actively in navigation mode
-        return null;
+        return (
+          <View>
+            <View
+              style={{
+                position: 'absolute',
+                top: -160,
+                right: 15,
+                zIndex: 9000000,
+                alignItems: 'center',
+              }}>
+              <View
+                style={{
+                  width: 57,
+                  height: 57,
+                  borderRadius: 160,
+                  backgroundColor: '#fff',
+                  shadowColor: '#000',
+                  shadowOffset: {
+                    width: 0,
+                    height: 5,
+                  },
+                  shadowOpacity: 0.36,
+                  shadowRadius: 6.68,
+
+                  elevation: 11,
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  marginBottom: 20,
+                }}>
+                <IconMaterialIcons name="shield" color={'#000'} size={32} />
+              </View>
+              <View
+                style={{
+                  width: 57,
+                  height: 57,
+                  borderRadius: 160,
+                  backgroundColor: '#fff',
+                  shadowColor: '#000',
+                  shadowOffset: {
+                    width: 0,
+                    height: 5,
+                  },
+                  shadowOpacity: 0.36,
+                  shadowRadius: 6.68,
+
+                  elevation: 11,
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}>
+                <IconMaterialIcons
+                  name="navigation"
+                  color={'#096ED4'}
+                  size={32}
+                />
+              </View>
+            </View>
+            <View
+              style={{
+                height: 90,
+                justifyContent: 'center',
+                backgroundColor: '#fff',
+                shadowColor: '#000',
+                shadowOffset: {
+                  width: 0,
+                  height: 12,
+                },
+                shadowOpacity: 0.58,
+                shadowRadius: 16.0,
+
+                elevation: 24,
+              }}>
+              <View
+                style={{
+                  padding: 20,
+                  flexDirection: 'row',
+                  flex: 1,
+                  alignItems: 'center',
+                }}>
+                <TouchableOpacity
+                  style={{
+                    flex: 1,
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    borderRightWidth: 0.7,
+                    borderRightColor: '#d0d0d0',
+                  }}>
+                  <View style={{padding: 10, marginRight: 10}}>
+                    <IconMaterialIcons
+                      name="keyboard-arrow-down"
+                      color={'#000'}
+                      size={22}
+                    />
+                  </View>
+                  <View
+                    style={{
+                      flex: 1,
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                    }}>
+                    <Text
+                      style={{
+                        fontFamily: 'Allrounder-Grotesk-Medium',
+                        fontSize: 17.5,
+                      }}>
+                      Dominique
+                    </Text>
+                    <Text
+                      style={{
+                        fontFamily: 'Allrounder-Grotesk-Book',
+                        fontSize: 15,
+                        color: '#096ED4',
+                      }}>
+                      ConnectUS
+                    </Text>
+                  </View>
+                </TouchableOpacity>
+                <TouchableOpacity style={{padding: 10, marginLeft: 10}}>
+                  <IconCommunity
+                    name="format-list-bulleted-square"
+                    color="#000"
+                    size={28}
+                  />
+                </TouchableOpacity>
+              </View>
+            </View>
+          </View>
+        );
       } //No active ride in navigation mode
       else {
         return (
