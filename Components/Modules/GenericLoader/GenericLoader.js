@@ -135,7 +135,9 @@ class GenericLoader extends React.PureComponent {
             {
               borderTopColor:
                 this.props.active !== undefined && this.props.active
-                  ? '#000'
+                  ? this.props.color !== undefined && this.props.color !== null
+                    ? this.props.color
+                    : '#000'
                   : this.props.backgroundColor !== undefined &&
                     this.props.backgroundColor
                   ? this.props.backgroundColor

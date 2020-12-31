@@ -15,6 +15,13 @@ const HomeReducer = (state = INIT_STATE, action) => {
   //Predefined variables
   let newState = state;
   switch (action.type) {
+    case 'UPDATE_GRANTED_GPRS_VARS':
+      //Update the previous state
+      newState.gprsGlobals.hasGPRSPermissions =
+        action.payload.hasGPRSPermissions;
+      newState.gprsGlobals.didAskForGprs = action.payload.didAskForGprs;
+
+      return {...state, ...newState};
     case 'RESET_GENERIC_PHONE_NUMBER_INPUT':
       //Generic phone number input variable
       newState.isPhoneNumberValid = false; //TO know if the phone number is valid or not.

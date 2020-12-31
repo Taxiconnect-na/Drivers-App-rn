@@ -41,3 +41,12 @@ export const UpdateType_rideShown_YourRides_screen = (type) => ({
   type: 'UPDATE_TYPE_RIDESHOWN_YOURRIDES_SCREEN',
   payload: type,
 });
+
+/**
+ * 4. Update GPRS GLOBALS for granted permissions
+ * @params gprsVars a litteral object have the permission state or not and if did ask for gprs once
+ */
+export const UpdateGrantedGRPS = (gprsVars) => ({
+  type: 'UPDATE_GRANTED_GPRS_VARS',
+  payload: gprsVars,
+});
