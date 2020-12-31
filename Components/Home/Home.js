@@ -27,6 +27,7 @@ import {
   UpdateErrorModalLog,
   UpdateGrantedGRPS,
   UpdateTrackingModeState,
+  UpdateCurrentLocationMetadat,
 } from '../Redux/HomeActionsCreators';
 import {systemWeights} from 'react-native-typography';
 import IconAnt from 'react-native-vector-icons/AntDesign';
@@ -86,12 +87,6 @@ class Home extends React.PureComponent {
     });
     this.props.App.socket.on('connect_error', () => {
       console.log('connect_error');
-      //Ask for the OTP again
-      globalObject.props.UpdateErrorModalLog(
-        true,
-        'connection_no_network',
-        'any',
-      );
       globalObject.props.App.socket.connect();
     });
     this.props.App.socket.on('connect_timeout', () => {
@@ -110,13 +105,53 @@ class Home extends React.PureComponent {
       globalObject.props.App.socket.connect();
     });
 
+    //Create interval updater persister
+    this.props.App._TMP_TRIP_INTERVAL_PERSISTER = setInterval(function () {
+      globalObject.getCurrentPositionCusto();
+    }, this.props.App._TMP_TRIP_INTERVAL_PERSISTER_TIME);
+
     /**
      * SOCKET.IO RESPONSES
      */
+    /**
+     * GET GEOCODED USER LOCATION
+     * event: geocode-this-point
+     * Get the location of the user, parameter of interest: street name
+     */
+    this.props.App.socket.on(
+      'geocode-this-point-response',
+      function (response) {
+        if (response !== undefined && response !== false) {
+          let localData = globalObject.props.App.userCurrentLocationMetaData;
+          //Only update if new metadata
+          if (localData.city !== undefined) {
+            let checkDataSim =
+              response.city === localData.city &&
+              response.street === localData.street &&
+              response.state === localData.state;
+
+            if (checkDataSim === false) {
+              globalObject.props.UpdateCurrentLocationMetadat(response);
+            }
+          } //Empty local data
+          else {
+            globalObject.props.UpdateCurrentLocationMetadat(response);
+          }
+        }
+      },
+    );
+  }
+
+  componentWillUnmount() {
+    //Clear the main interval updater
+    if (this.props.App._TMP_TRIP_INTERVAL_PERSISTER !== null) {
+      clearInterval(this.props.App._TMP_TRIP_INTERVAL_PERSISTER);
+      this.props.App._TMP_TRIP_INTERVAL_PERSISTER = null;
+    }
   }
 
   componentDidUpdate() {
-    this.getCurrentPositionCusto;
+    //this.getCurrentPositionCusto();
   }
 
   /**
@@ -134,11 +169,11 @@ class Home extends React.PureComponent {
         globalObject.props.App.longitude = position.coords.longitude;
         //---
         //Get user location
-        /*globalObject.props.App.socket.emit('geocode-this-point', {
+        globalObject.props.App.socket.emit('geocode-this-point', {
           latitude: globalObject.props.App.latitude,
           longitude: globalObject.props.App.longitude,
           user_fingerprint: globalObject.props.App.user_fingerprint,
-        });*/
+        });
       },
       (error) => {
         //...
@@ -583,7 +618,7 @@ class Home extends React.PureComponent {
                 <Text
                   style={[
                     {
-                      fontSize: 16,
+                      fontSize: 16.5,
                       fontFamily: 'Allrounder-Grotesk-Medium',
                       color: '#fff',
                     },
@@ -596,8 +631,8 @@ class Home extends React.PureComponent {
               style={{
                 borderWidth: 1,
                 borderColor: '#096ED4',
-                width: 35,
-                height: 35,
+                width: 40,
+                height: 40,
                 alignItems: 'center',
                 justifyContent: 'center',
                 borderRadius: 150,
@@ -659,7 +694,7 @@ class Home extends React.PureComponent {
             showsUserHeadingIndicator
             androidRenderMode="gps">
             <SymbolLayer
-              id={`ownPosition-symbol`}
+              id={'driver-location'}
               style={{
                 iconImage: this.props.App.arrowNavigationTracking,
                 iconSize: 0.18,
@@ -997,14 +1032,6 @@ class Home extends React.PureComponent {
               : '#f0f0f0',
           },
         ]}>
-        <ErrorModal
-          active={this.props.App.generalErrorModal_vars.showErrorGeneralModal}
-          error_status={
-            this.props.App.generalErrorModal_vars.generalErrorModalType
-          }
-          parentNode={this}
-        />
-
         {this.renderHeaderMainHome()}
 
         {/**Show the request list ONLY in NORMAL MODDE */}
@@ -1019,6 +1046,13 @@ class Home extends React.PureComponent {
   render() {
     return (
       <SafeAreaView style={styles.mainView}>
+        <ErrorModal
+          active={this.props.App.generalErrorModal_vars.showErrorGeneralModal}
+          error_status={
+            this.props.App.generalErrorModal_vars.generalErrorModalType
+          }
+          parentNode={this}
+        />
         {this.renderMainComponent()}
       </SafeAreaView>
     );
@@ -1049,6 +1083,7 @@ const mapDispatchToProps = (dispatch) =>
       UpdateErrorModalLog,
       UpdateGrantedGRPS,
       UpdateTrackingModeState,
+      UpdateCurrentLocationMetadat,
     },
     dispatch,
   );

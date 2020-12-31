@@ -28,6 +28,7 @@ const STATE = {
   socket: SOCKET_CORE, //MAIN SOCKET CONNECTOR
   user_fingerprint:
     '23c9d088e03653169b9c18193a0b8dd329ea1e43eb0626ef9f16b5b979694a429710561a3cb3ddae',
+  userCurrentLocationMetaData: {}, //Metadata of the user's current location - directly geocoded and shallowly processed
   latitude: 0,
   longitude: 0,
   //GPRS RESOLUTION

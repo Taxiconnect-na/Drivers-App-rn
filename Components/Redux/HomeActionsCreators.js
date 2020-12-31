@@ -60,3 +60,13 @@ export const UpdateTrackingModeState = (state) => ({
   type: 'UPDATE_TRACKING_MODE_STATE',
   payload: state,
 });
+
+/**
+ * 6. Update current location metadata
+ * Responsible for updating the current location metadata of the user
+ * @param currentLocationMtd: metadata of the current user location.
+ */
+export const UpdateCurrentLocationMetadat = (currentLocationMtd) => ({
+  type: 'UPDATE_CURRENT_LOCATION_METADATA',
+  payload: currentLocationMtd,
+});

@@ -56,6 +56,12 @@ const HomeReducer = (state = INIT_STATE, action) => {
       //...
       return {...state, ...newState};
 
+    case 'UPDATE_CURRENT_LOCATION_METADATA':
+      //Update the current location metadata
+      newState.userCurrentLocationMetaData = action.payload;
+      //...
+      return {...state, ...newState};
+
     default:
       return state;
   }
