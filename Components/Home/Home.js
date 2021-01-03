@@ -107,7 +107,11 @@ class Home extends React.PureComponent {
 
     //Create interval updater persister
     this.props.App._TMP_TRIP_INTERVAL_PERSISTER = setInterval(function () {
+      console.log('Interval persister called');
+      //Geocode the location
       globalObject.getCurrentPositionCusto();
+      //Get requests
+      globalObject.updateRemoteLocationsData();
     }, this.props.App._TMP_TRIP_INTERVAL_PERSISTER_TIME);
 
     /**
@@ -121,6 +125,7 @@ class Home extends React.PureComponent {
     this.props.App.socket.on(
       'geocode-this-point-response',
       function (response) {
+        console.log(response);
         if (response !== undefined && response !== false) {
           let localData = globalObject.props.App.userCurrentLocationMetaData;
           //Only update if new metadata
@@ -140,6 +145,27 @@ class Home extends React.PureComponent {
         }
       },
     );
+
+    /**
+     * @socket 'trackdriverroute-response
+     * Get route tracker response
+     * Responsible for redirecting updates to map graphics data based on if the status of the request is: pending, in route to pickup, in route to drop off or completed
+     */
+    this.props.App.socket.on('trackdriverroute-response', function (response) {
+      console.log(response);
+      if (
+        response !== null &&
+        response !== undefined &&
+        response.response !== undefined &&
+        response.response !== false &&
+        /no_rides/i.test(response.request_status) === false
+      ) {
+        console.log('Found something');
+      } //No rides
+      else {
+        console.log(response);
+      }
+    });
   }
 
   componentWillUnmount() {
@@ -155,6 +181,21 @@ class Home extends React.PureComponent {
   }
 
   /**
+   * @func  updateRemoteLocationsData()
+   * Sent update locations informations to the server
+   */
+  updateRemoteLocationsData(origin = 'other') {
+    let bundle = {
+      latitude: this.props.App.latitude,
+      longitude: this.props.App.longitude,
+      user_fingerprint: this.props.App.user_fingerprint,
+      user_nature: 'driver',
+      requestType: this.props.App.requestType,
+    };
+    this.props.App.socket.emit('update-passenger-location', bundle);
+  }
+
+  /**
    * @func getCurrentPositionCusto()
    * void
    * Get the current GPRS positions of the user
@@ -164,7 +205,6 @@ class Home extends React.PureComponent {
     let globalObject = this;
     GeolocationP.getCurrentPosition(
       (position) => {
-        console.log(position);
         globalObject.props.App.latitude = position.coords.latitude;
         globalObject.props.App.longitude = position.coords.longitude;
         //---
