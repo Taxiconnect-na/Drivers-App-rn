@@ -511,6 +511,17 @@ class ErrorModal extends React.PureComponent {
         </View>
       );
     } else if (/show_modalMore_tripDetails/i.test(error_status)) {
+      //Auto close when no focused data found
+      if (
+        this.props.App.requests_data_main_vars.moreDetailsFocused_request ===
+          false ||
+        this.props.App.requests_data_main_vars.fetchedRequests_data_store ===
+          false
+      ) {
+        //Invalid setup - close modal
+        //this.props.UpdateErrorModalLog(false, false, 'any'); //Close modal - enable after
+        return <></>;
+      }
       return (
         <SafeAreaView
           style={{
@@ -556,7 +567,12 @@ class ErrorModal extends React.PureComponent {
                       marginLeft: 5,
                     },
                   ]}>
-                  Trip details
+                  {/delivery/i.test(
+                    this.props.App.requests_data_main_vars
+                      .moreDetailsFocused_request.ride_basic_infos.ride_mode,
+                  )
+                    ? 'Delivery details'
+                    : 'Trip details'}
                 </Text>
               </TouchableOpacity>
             </View>
@@ -572,8 +588,13 @@ class ErrorModal extends React.PureComponent {
                   alignItems: 'center',
                   borderBottomWidth: 0.7,
                   borderBottomColor: '#d0d0d0',
+                  backgroundColor: '#f9f9f9',
                 }}>
-                <View style={{flexDirection: 'row', flex: 1}}>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    flex: 1,
+                  }}>
                   <View
                     style={{
                       alignItems: 'center',
@@ -607,7 +628,12 @@ class ErrorModal extends React.PureComponent {
                         fontFamily: 'Allrounder-Grotesk-Regular',
                         fontSize: 17,
                       }}>
-                      Dominique
+                      {this.props.App.requests_data_main_vars
+                        .moreDetailsFocused_request.passenger_infos.name !==
+                      undefined
+                        ? this.props.App.requests_data_main_vars
+                            .moreDetailsFocused_request.passenger_infos.name
+                        : 'Passenger'}
                     </Text>
                     <View
                       style={{
@@ -621,7 +647,11 @@ class ErrorModal extends React.PureComponent {
                           fontSize: 15,
                           color: '#096ED4',
                         }}>
-                        6min away
+                        {
+                          this.props.App.requests_data_main_vars
+                            .moreDetailsFocused_request.eta_to_passenger_infos
+                            .eta
+                        }
                       </Text>
                     </View>
                   </View>
@@ -676,7 +706,7 @@ class ErrorModal extends React.PureComponent {
                   <Text
                     style={{
                       fontFamily: 'Allrounder-Grotesk-Regular',
-                      fontSize: 17,
+                      fontSize: 16,
                       color: '#000',
                     }}>
                     Find client
@@ -707,10 +737,15 @@ class ErrorModal extends React.PureComponent {
                   <Text
                     style={{
                       fontFamily: 'Allrounder-Grotesk-Medium',
-                      fontSize: 17,
+                      fontSize: 15,
                       color: '#fff',
                     }}>
-                    CONFIRM PICKUP
+                    {this.props.App.requests_data_main_vars
+                      .moreDetailsFocused_request.isAccepted &&
+                    this.props.App.requests_data_main_vars
+                      .moreDetailsFocused_request.inRideToDestination
+                      ? 'CONFIRM DROPOFF'
+                      : 'CONFIRM PICKUP'}
                   </Text>
                 </TouchableOpacity>
               </View>
@@ -724,137 +759,201 @@ class ErrorModal extends React.PureComponent {
                     padding: 20,
                     paddingBottom: 0,
                   }}>
-                  Trip
+                  {/delivery/i.test(
+                    this.props.App.requests_data_main_vars
+                      .moreDetailsFocused_request.ride_basic_infos.ride_mode,
+                  )
+                    ? 'Delivery'
+                    : 'Trip'}
                 </Text>
                 <View
                   style={{
                     padding: 20,
                     borderBottomWidth: 0.7,
                     borderBottomColor: '#d0d0d0',
-                    height: 170,
                   }}>
-                  <View
-                    style={{
-                      flexDirection: 'row',
-                      marginBottom: 25,
-                      alignItems: 'center',
-                    }}>
-                    <View>
-                      <View
-                        style={{
-                          height: 11,
-                          width: 11,
-                          borderRadius: 100,
-                          backgroundColor: '#000',
-                        }}
-                      />
-                      <View
-                        style={{
-                          position: 'absolute',
-                          top: 3,
-                          left: 5,
-                          width: 1.5,
-                          height: 50,
-                          backgroundColor: '#000',
-                        }}></View>
-                    </View>
-                    <Text
+                  <View>
+                    <View
                       style={{
-                        fontFamily: 'Allrounder-Grotesk-Book',
-                        fontSize: 14,
-                        marginLeft: 5,
-                        flex: 1,
-                        bottom: 1,
+                        flexDirection: 'row',
                       }}>
-                      From
-                      <Text
-                        style={{
-                          fontFamily: 'Allrounder-Grotesk-Medium',
-                          fontSize: 15,
-                          marginLeft: 5,
-                        }}>
-                        {' '}
-                        Katutura (Hospital)
-                      </Text>
-                    </Text>
-                  </View>
-                  <View
-                    style={{
-                      flexDirection: 'row',
-                      marginBottom: 25,
-                      alignItems: 'center',
-                    }}>
-                    <View>
-                      <View
-                        style={{
-                          height: 11,
-                          width: 11,
-                          borderRadius: 100,
-                          backgroundColor: '#096ED4',
-                        }}
-                      />
-                      <View
-                        style={{
-                          position: 'absolute',
-                          top: 3,
-                          left: 5,
-                          width: 1.5,
-                          height: 50,
-                          backgroundColor: '#096ED4',
-                        }}></View>
+                      <View style={{width: 16, height: '87%', top: 6}}>
+                        <View style={{position: 'absolute', top: 0}}>
+                          <View
+                            style={{
+                              height: 11,
+                              width: 11,
+                              borderRadius: 100,
+                              backgroundColor: '#000',
+                            }}
+                          />
+                        </View>
+
+                        <View
+                          style={{
+                            flex: 1,
+                            left: 5,
+                            width: 1.5,
+                            height: 50,
+                            backgroundColor: '#000',
+                          }}></View>
+                        <View style={{position: 'absolute', bottom: 0}}>
+                          <View
+                            style={{
+                              height: 11,
+                              width: 11,
+                              borderRadius: 0,
+                              backgroundColor: '#096ED4',
+                            }}
+                          />
+                        </View>
+                      </View>
+                      <View style={{flex: 1}}>
+                        <View
+                          style={{
+                            flexDirection: 'row',
+                          }}>
+                          <View style={{width: 35}}>
+                            <Text
+                              style={{
+                                fontFamily: 'Allrounder-Grotesk-Book',
+                                fontSize: 13,
+                                top: 2,
+                              }}>
+                              From
+                            </Text>
+                          </View>
+                          <View
+                            style={{
+                              flex: 1,
+                              alignItems: 'flex-start',
+                            }}>
+                            <View
+                              style={{
+                                flex: 1,
+                                alignItems: 'flex-start',
+                              }}>
+                              <Text
+                                style={{
+                                  fontFamily: 'Allrounder-Grotesk-Medium',
+                                  fontSize: 15,
+                                  marginLeft: 5,
+                                  flex: 1,
+                                }}>
+                                {
+                                  this.props.App.requests_data_main_vars
+                                    .moreDetailsFocused_request
+                                    .origin_destination_infos.pickup_infos
+                                    .suburb
+                                }
+                              </Text>
+                              <Text
+                                style={{
+                                  fontFamily: 'Allrounder-Grotesk-Book',
+                                  fontSize: 14,
+                                  marginLeft: 5,
+                                  marginTop: 3,
+                                  flex: 1,
+                                }}>
+                                {this.props.App.requests_data_main_vars
+                                  .moreDetailsFocused_request
+                                  .origin_destination_infos.pickup_infos
+                                  .location_name +
+                                  ', ' +
+                                  this.props.App.requests_data_main_vars
+                                    .moreDetailsFocused_request
+                                    .origin_destination_infos.pickup_infos
+                                    .street_name}
+                              </Text>
+                            </View>
+                          </View>
+                        </View>
+                        {/**Destination */}
+                        <View
+                          style={{
+                            flexDirection: 'row',
+                            marginTop: 25,
+                          }}>
+                          <View style={{width: 35}}>
+                            <Text
+                              style={{
+                                fontFamily: 'Allrounder-Grotesk-Book',
+                                fontSize: 13,
+                                top: 1,
+                              }}>
+                              To
+                            </Text>
+                          </View>
+                          <View
+                            style={{
+                              flex: 1,
+                              alignItems: 'flex-start',
+                            }}>
+                            {this.props.App.requests_data_main_vars.moreDetailsFocused_request.origin_destination_infos.destination_infos.map(
+                              (destination, index) => {
+                                return (
+                                  <View
+                                    style={{
+                                      flex: 1,
+                                      alignItems: 'flex-start',
+                                      marginTop: index > 0 ? 5 : 0,
+                                    }}>
+                                    <Text
+                                      style={{
+                                        fontFamily: 'Allrounder-Grotesk-Medium',
+                                        fontSize: 15,
+                                        marginLeft: 5,
+                                        flex: 1,
+                                      }}>
+                                      {this.props.App.requests_data_main_vars
+                                        .moreDetailsFocused_request
+                                        .origin_destination_infos
+                                        .destination_infos.length > 1 ? (
+                                        <Text
+                                          style={{
+                                            fontFamily:
+                                              'Allrounder-Grotesk-Regular',
+                                            fontSize: 13,
+                                            marginLeft: 5,
+                                            flex: 1,
+                                            color: '#096ED4',
+                                          }}>
+                                          {index + 1 + '. '}
+                                        </Text>
+                                      ) : null}
+                                      {destination.suburb}
+                                    </Text>
+                                    <Text
+                                      style={{
+                                        fontFamily: 'Allrounder-Grotesk-Book',
+                                        fontSize: 14,
+                                        marginLeft: 5,
+                                        marginTop: 3,
+                                        flex: 1,
+                                      }}>
+                                      {destination.location_name}
+                                    </Text>
+                                    {destination.street_name !== 'false' &&
+                                    destination.street_name !== false ? (
+                                      <Text
+                                        style={{
+                                          fontFamily: 'Allrounder-Grotesk-Book',
+                                          fontSize: 14,
+                                          marginLeft: 5,
+                                          marginTop: 3,
+                                          flex: 1,
+                                        }}>
+                                        {', ' + destination.street_name}
+                                      </Text>
+                                    ) : null}
+                                  </View>
+                                );
+                              },
+                            )}
+                          </View>
+                        </View>
+                      </View>
                     </View>
-                    <Text
-                      style={{
-                        fontFamily: 'Allrounder-Grotesk-Book',
-                        fontSize: 14,
-                        marginLeft: 5,
-                        flex: 1,
-                        bottom: 1.5,
-                      }}>
-                      Drop off at
-                      <Text
-                        style={{
-                          fontFamily: 'Allrounder-Grotesk-Medium',
-                          fontSize: 15,
-                          marginLeft: 5,
-                        }}>
-                        {' '}
-                        Town (FNB)
-                      </Text>
-                    </Text>
-                  </View>
-                  <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                    <View>
-                      <View
-                        style={{
-                          height: 12,
-                          width: 12,
-                          borderWidth: 3,
-                          borderColor: '#096ED4',
-                          borderRadius: 100,
-                          backgroundColor: '#fff',
-                        }}
-                      />
-                    </View>
-                    <Text
-                      style={{
-                        fontFamily: 'Allrounder-Grotesk-Book',
-                        fontSize: 14,
-                        marginLeft: 5,
-                        flex: 1,
-                        bottom: 1.5,
-                      }}>
-                      Approximately{' '}
-                      <Text
-                        style={{
-                          fontFamily: 'Allrounder-Grotesk-Medium',
-                          fontSize: 15,
-                          marginLeft: 5,
-                          color: '#096ED4',
-                        }}>
-                        10min.
-                      </Text>
-                    </Text>
                   </View>
                 </View>
               </View>
@@ -875,7 +974,17 @@ class ErrorModal extends React.PureComponent {
                     alignItems: 'center',
                     flex: 1,
                   }}>
-                  <IconCommunity name="cash-usd" color={'black'} size={25} />
+                  {/cash/i.test(
+                    String(
+                      this.props.App.requests_data_main_vars
+                        .moreDetailsFocused_request.ride_basic_infos
+                        .payment_method,
+                    ),
+                  ) ? (
+                    <IconCommunity name="cash-usd" color={'#000'} size={25} />
+                  ) : (
+                    <IconMaterialIcons name="credit-card" size={25} />
+                  )}
 
                   <Text
                     style={{
@@ -883,7 +992,25 @@ class ErrorModal extends React.PureComponent {
                       fontSize: 17,
                       marginLeft: 4,
                     }}>
-                    Cash
+                    {String(
+                      this.props.App.requests_data_main_vars
+                        .moreDetailsFocused_request.ride_basic_infos
+                        .payment_method,
+                    )[0] +
+                      String(
+                        this.props.App.requests_data_main_vars
+                          .moreDetailsFocused_request.ride_basic_infos
+                          .payment_method,
+                      )
+                        .substring(
+                          1,
+                          String(
+                            this.props.App.requests_data_main_vars
+                              .moreDetailsFocused_request.ride_basic_infos
+                              .payment_method,
+                          ).length,
+                        )
+                        .toLowerCase()}
                   </Text>
                 </View>
                 <Text
@@ -894,7 +1021,9 @@ class ErrorModal extends React.PureComponent {
                     flex: 1,
                     textAlign: 'center',
                   }}>
-                  N$15
+                  {'N$' +
+                    this.props.App.requests_data_main_vars
+                      .moreDetailsFocused_request.ride_basic_infos.fare_amount}
                 </Text>
                 <View
                   style={{
@@ -910,7 +1039,11 @@ class ErrorModal extends React.PureComponent {
                       fontSize: 17.5,
                       marginLeft: 4,
                     }}>
-                    4
+                    {
+                      this.props.App.requests_data_main_vars
+                        .moreDetailsFocused_request.ride_basic_infos
+                        .passengers_number
+                    }
                   </Text>
                 </View>
               </View>
@@ -1070,6 +1203,54 @@ class ErrorModal extends React.PureComponent {
                 emergency. Otherwise some additional charges may apply.
               </Text>
             </View>
+          </View>
+        </View>
+      );
+    } else if (/error_declining/i.test(error_status)) {
+      return (
+        <View
+          style={{
+            backgroundColor: '#fff',
+            padding: 20,
+            height: 300,
+          }}>
+          <View style={{flexDirection: 'row', alignItems: 'center'}}>
+            <IconMaterialIcons
+              name="error-outline"
+              size={22}
+              style={{marginRight: 5}}
+            />
+            <Text
+              style={{fontFamily: 'Allrounder-Grotesk-Medium', fontSize: 22}}>
+              Couldn't decline the request
+            </Text>
+          </View>
+          <View>
+            <Text
+              style={{
+                fontFamily: 'Allrounder-Grotesk-Book',
+                fontSize: 17,
+                marginTop: 10,
+              }}>
+              Sorry due to an unexpected error we were unable to move forward
+              with the declining of the request. Maybe try again later.
+            </Text>
+          </View>
+          <View style={{flex: 1, justifyContent: 'center'}}>
+            <TouchableOpacity
+              onPress={() =>
+                this.props.UpdateErrorModalLog(false, false, 'any')
+              }
+              style={styles.bttnGenericTc}>
+              <Text
+                style={{
+                  fontFamily: 'Allrounder-Grotesk-Medium',
+                  fontSize: 19,
+                  color: '#fff',
+                }}>
+                Try again
+              </Text>
+            </TouchableOpacity>
           </View>
         </View>
       );

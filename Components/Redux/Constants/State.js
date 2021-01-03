@@ -68,6 +68,12 @@ const STATE = {
     isComputing_route: false, //To know whether the app is computing the optimal route to destination - default: false
     isApp_inTrackingMode: false, //To know whether the driver pressed the closest tracking mode feature or not - default: false
   },
+  //2. Requests main vars
+  //Hold all the requests related data storages
+  requests_data_main_vars: {
+    fetchedRequests_data_store: false, //To store all the fetched targeted requests list from the server - default: false
+    moreDetailsFocused_request: false, //To hold the details about the interested request clicked by the driver for more details. - default: false
+  },
 };
 
 export default STATE;

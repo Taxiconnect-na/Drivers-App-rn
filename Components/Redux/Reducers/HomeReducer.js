@@ -62,6 +62,15 @@ const HomeReducer = (state = INIT_STATE, action) => {
       //...
       return {...state, ...newState};
 
+    case 'UPDATED_FETCHED_REQUESTS_DATA_SERVER':
+      //Auto reset if expected array is false
+      newState.requests_data_main_vars.fetchedRequests_data_store =
+        action.payload;
+      //DEBUG - auto fill for more details
+      newState.requests_data_main_vars.moreDetailsFocused_request =
+        action.payload[0]; //Just one request
+      //...
+      return {...state, ...newState};
     default:
       return state;
   }

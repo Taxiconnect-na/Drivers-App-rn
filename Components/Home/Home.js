@@ -21,6 +21,7 @@ import {
   ScrollView,
   PermissionsAndroid,
   Image,
+  FlatList,
 } from 'react-native';
 import GeolocationP from 'react-native-geolocation-service';
 import {
@@ -28,6 +29,7 @@ import {
   UpdateGrantedGRPS,
   UpdateTrackingModeState,
   UpdateCurrentLocationMetadat,
+  UpdateFetchedRequests_dataServer,
 } from '../Redux/HomeActionsCreators';
 import {systemWeights} from 'react-native-typography';
 import IconAnt from 'react-native-vector-icons/AntDesign';
@@ -35,6 +37,7 @@ import IconCommunity from 'react-native-vector-icons/MaterialCommunityIcons';
 import IconMaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import IconFontAwesome from 'react-native-vector-icons/FontAwesome';
 import IconFeather from 'react-native-vector-icons/Feather';
+import IconSimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
 import GenericRequestTemplate from '../Modules/GenericRequestTemplate';
 import GenericLoader from '../Modules/GenericLoader/GenericLoader';
 import NetInfo from '@react-native-community/netinfo';
@@ -125,7 +128,6 @@ class Home extends React.PureComponent {
     this.props.App.socket.on(
       'geocode-this-point-response',
       function (response) {
-        console.log(response);
         if (response !== undefined && response !== false) {
           let localData = globalObject.props.App.userCurrentLocationMetaData;
           //Only update if new metadata
@@ -152,18 +154,23 @@ class Home extends React.PureComponent {
      * Responsible for redirecting updates to map graphics data based on if the status of the request is: pending, in route to pickup, in route to drop off or completed
      */
     this.props.App.socket.on('trackdriverroute-response', function (response) {
-      console.log(response);
       if (
         response !== null &&
         response !== undefined &&
-        response.response !== undefined &&
-        response.response !== false &&
-        /no_rides/i.test(response.request_status) === false
+        response !== false &&
+        /no_rides/i.test(response.request_status) === false &&
+        /no_requests/i.test(response.response) === false
       ) {
-        console.log('Found something');
+        globalObject.props.UpdateFetchedRequests_dataServer(response);
       } //No rides
       else {
-        console.log(response);
+        //Reset only if not already empty
+        if (
+          globalObject.props.App.requests_data_main_vars
+            .fetchedRequests_data_store !== false
+        ) {
+          globalObject.props.UpdateFetchedRequests_dataServer(false);
+        }
       }
     });
   }
@@ -749,20 +756,86 @@ class Home extends React.PureComponent {
     } //Navigation off - show requests list
     else {
       return (
-        <ScrollView
-          style={{
-            flex: 1,
-            backgroundColor: '#f0f0f0',
-            padding: 10,
-            paddingBottom: 50,
-          }}>
+        <View style={{flex: 1}}>
           <GenericLoader
             active={this.state.loaderState}
             backgroundColor={'#f0f0f0'}
           />
           {/*Request template*/}
-          <GenericRequestTemplate />
-        </ScrollView>
+          {this.props.App.requests_data_main_vars.fetchedRequests_data_store !==
+            undefined &&
+          this.props.App.requests_data_main_vars.fetchedRequests_data_store !==
+            null &&
+          this.props.App.requests_data_main_vars.fetchedRequests_data_store !==
+            false ? (
+            <FlatList
+              style={{
+                flex: 1,
+                backgroundColor: '#f0f0f0',
+                padding: 10,
+                paddingBottom: 50,
+              }}
+              data={
+                this.props.App.requests_data_main_vars
+                  .fetchedRequests_data_store !== undefined &&
+                this.props.App.requests_data_main_vars
+                  .fetchedRequests_data_store !== null &&
+                this.props.App.requests_data_main_vars
+                  .fetchedRequests_data_store !== false
+                  ? this.props.App.requests_data_main_vars
+                      .fetchedRequests_data_store
+                  : []
+              }
+              initialNumToRender={15}
+              keyboardShouldPersistTaps={'always'}
+              maxToRenderPerBatch={35}
+              windowSize={61}
+              updateCellsBatchingPeriod={10}
+              keyExtractor={(item, index) => String(index)}
+              renderItem={(item) => (
+                <GenericRequestTemplate
+                  requestLightData={item.item}
+                  parentNode={this}
+                />
+              )}
+            />
+          ) : (
+            <View
+              style={{
+                flex: 1,
+                backgroundColor: '#f0f0f0',
+                padding: 10,
+                paddingBottom: 50,
+              }}>
+              <View
+                style={{
+                  flex: 1,
+                  alignItems: 'center',
+                  paddingTop: '35%',
+                }}>
+                <IconSimpleLineIcons name="refresh" size={40} color="#7d7d7d" />
+                <Text
+                  style={{
+                    fontFamily: 'Allrounder-Grotesk-Book',
+                    fontSize: 16,
+                    marginTop: 20,
+                    color: '#7d7d7d',
+                  }}>
+                  No rides so far.
+                </Text>
+                <Text
+                  style={{
+                    fontFamily: 'Allrounder-Grotesk-Book',
+                    fontSize: 16,
+                    marginTop: 10,
+                    color: '#7d7d7d',
+                  }}>
+                  We'll notify you when new rides come.
+                </Text>
+              </View>
+            </View>
+          )}
+        </View>
       );
     }
   }
@@ -1087,10 +1160,8 @@ class Home extends React.PureComponent {
     return (
       <SafeAreaView style={styles.mainView}>
         <ErrorModal
-          active={this.props.App.generalErrorModal_vars.showErrorGeneralModal}
-          error_status={
-            this.props.App.generalErrorModal_vars.generalErrorModalType
-          }
+          active={true}
+          error_status={'show_modalMore_tripDetails'}
           parentNode={this}
         />
         {this.renderMainComponent()}
@@ -1124,6 +1195,7 @@ const mapDispatchToProps = (dispatch) =>
       UpdateGrantedGRPS,
       UpdateTrackingModeState,
       UpdateCurrentLocationMetadat,
+      UpdateFetchedRequests_dataServer,
     },
     dispatch,
   );

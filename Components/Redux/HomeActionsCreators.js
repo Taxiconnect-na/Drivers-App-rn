@@ -70,3 +70,13 @@ export const UpdateCurrentLocationMetadat = (currentLocationMtd) => ({
   type: 'UPDATE_CURRENT_LOCATION_METADATA',
   payload: currentLocationMtd,
 });
+
+/**
+ * 7. Update the fetched requests data store from the server's data
+ * Responsible for updating the requests fetched from the server to the global requests data store.
+ * @param requestsArray: requests array straight from the server.
+ */
+export const UpdateFetchedRequests_dataServer = (requestsArray) => ({
+  type: 'UPDATED_FETCHED_REQUESTS_DATA_SERVER',
+  payload: requestsArray,
+});
