@@ -1161,7 +1161,7 @@ class Home extends React.PureComponent {
       <SafeAreaView style={styles.mainView}>
         <ErrorModal
           active={true}
-          error_status={'show_modalMore_tripDetails'}
+          error_status={'trip_pickupConfirmation_confirmation'}
           parentNode={this}
         />
         {this.renderMainComponent()}
