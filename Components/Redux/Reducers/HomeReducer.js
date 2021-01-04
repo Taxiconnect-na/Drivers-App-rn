@@ -47,7 +47,11 @@ const HomeReducer = (state = INIT_STATE, action) => {
         newState.requests_data_main_vars.moreDetailsFocused_request =
           action.payload.additionalData;
       }
-
+      ///Clear key variables when the modal is closed
+      if (action.payload.errorMessage === false) {
+        //a. Clear the focused trip details
+        newState.requests_data_main_vars.moreDetailsFocused_request = false;
+      }
       //...
       return {...state, ...newState};
 

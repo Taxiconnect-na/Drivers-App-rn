@@ -125,31 +125,74 @@ class GenericRequestTemplate extends React.PureComponent {
             borderBottomWidth: 0.5,
             borderBottomColor: '#d0d0d0',
           }}>
-          <Text
-            style={{
-              fontFamily: 'Allrounder-Grotesk-Medium',
-              fontSize: 16.5,
-              flex: 1,
-            }}>
-            {this.props.requestLightData.eta_to_passenger_infos.eta}
-          </Text>
-          <Text
-            style={{
-              fontFamily: 'Allrounder-Grotesk-Regular',
-              fontSize: 16.5,
-            }}>
-            {Math.round(
-              this.props.requestLightData.eta_to_passenger_infos.distance,
-            ) > 1000
-              ? Math.round(
-                  this.props.requestLightData.eta_to_passenger_infos.distance,
-                ) /
-                  1000 +
-                'km'
-              : Math.round(
-                  this.props.requestLightData.eta_to_passenger_infos.distance,
-                ) + 'm'}
-          </Text>
+          {/**ETA - show only when not in ride */}
+          {this.props.requestLightData.ride_basic_infos.inRideToDestination ? (
+            <Text
+              style={{
+                fontFamily: 'Allrounder-Grotesk-Medium',
+                fontSize: 16.5,
+                flex: 1,
+              }}>
+              Picked up
+            </Text>
+          ) : (
+            <Text
+              style={{
+                fontFamily: 'Allrounder-Grotesk-Medium',
+                fontSize: 16.5,
+                flex: 1,
+              }}>
+              {parseInt(
+                this.props.requestLightData.eta_to_passenger_infos.eta.split(
+                  ' ',
+                )[0],
+              ) <= 35 &&
+              parseInt(
+                this.props.requestLightData.eta_to_passenger_infos.eta.split(
+                  ' ',
+                )[0],
+              ) > 10 &&
+              /sec/i.test(
+                this.props.requestLightData.eta_to_passenger_infos.eta.split(
+                  ' ',
+                )[1],
+              )
+                ? 'Very close'
+                : parseInt(
+                    this.props.requestLightData.eta_to_passenger_infos.eta.split(
+                      ' ',
+                    )[0],
+                  ) <= 10 &&
+                  /sec/i.test(
+                    this.props.requestLightData.eta_to_passenger_infos.eta.split(
+                      ' ',
+                    )[1],
+                  )
+                ? 'Arrived'
+                : this.props.requestLightData.eta_to_passenger_infos.eta}
+            </Text>
+          )}
+          {/**Distance - show only when not in ride */}
+          {this.props.requestLightData.ride_basic_infos
+            .inRideToDestination ? null : (
+            <Text
+              style={{
+                fontFamily: 'Allrounder-Grotesk-Regular',
+                fontSize: 16.5,
+              }}>
+              {Math.round(
+                this.props.requestLightData.eta_to_passenger_infos.distance,
+              ) > 1000
+                ? Math.round(
+                    this.props.requestLightData.eta_to_passenger_infos.distance,
+                  ) /
+                    1000 +
+                  'km'
+                : Math.round(
+                    this.props.requestLightData.eta_to_passenger_infos.distance,
+                  ) + 'm'}
+            </Text>
+          )}
         </View>
 
         <View

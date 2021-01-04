@@ -821,11 +821,36 @@ class ErrorModal extends React.PureComponent {
                           fontSize: 15,
                           color: '#096ED4',
                         }}>
-                        {
-                          this.props.App.requests_data_main_vars
-                            .moreDetailsFocused_request.eta_to_passenger_infos
-                            .eta
-                        }
+                        {parseInt(
+                          this.props.App.requests_data_main_vars.moreDetailsFocused_request.eta_to_passenger_infos.eta.split(
+                            ' ',
+                          )[0],
+                        ) <= 35 &&
+                        parseInt(
+                          this.props.App.requests_data_main_vars.moreDetailsFocused_request.eta_to_passenger_infos.eta.split(
+                            ' ',
+                          )[0],
+                        ) > 10 &&
+                        /sec/i.test(
+                          this.props.App.requests_data_main_vars.moreDetailsFocused_request.eta_to_passenger_infos.eta.split(
+                            ' ',
+                          )[1],
+                        )
+                          ? 'Very close'
+                          : parseInt(
+                              this.props.App.requests_data_main_vars.moreDetailsFocused_request.eta_to_passenger_infos.eta.split(
+                                ' ',
+                              )[0],
+                            ) <= 10 &&
+                            /sec/i.test(
+                              this.props.App.requests_data_main_vars.moreDetailsFocused_request.eta_to_passenger_infos.eta.split(
+                                ' ',
+                              )[1],
+                            )
+                          ? 'Arrived'
+                          : this.props.App.requests_data_main_vars
+                              .moreDetailsFocused_request.eta_to_passenger_infos
+                              .eta}
                       </Text>
                     </View>
                   </View>
@@ -1722,7 +1747,7 @@ class ErrorModal extends React.PureComponent {
                 {this.state.isLoading_something === false ? (
                   'Yes, cancel'
                 ) : (
-                  <ActivityIndicator size="small" color="#000" />
+                  <ActivityIndicator size="large" color="#000" />
                 )}
               </Text>
             </TouchableOpacity>
