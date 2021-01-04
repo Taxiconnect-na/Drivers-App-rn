@@ -82,3 +82,24 @@ export const UpdateFetchedRequests_dataServer = (requestsArray) => ({
   type: 'UPDATED_FETCHED_REQUESTS_DATA_SERVER',
   payload: requestsArray,
 });
+
+/**
+ * 8. Switch from normal view to map view
+ * Responsible for switching view from normal view to navigation mode.
+ * Can also start an interval perister if in tracking mode for a trip in progress.
+ * @param bundleInfos: contains infos about the navigation window state, isRideInProgress and can take some additional data.
+ */
+export const SwitchToNavigation_modeOrBack = (bundleInfos) => ({
+  type: 'SWITCH_TO_NAVIGATION_MODEORBACK',
+  payload: bundleInfos,
+});
+
+/**
+ * 9. Update realtime navigation data
+ * Responsible for updating the realtime navigation during an active ride from the server data.
+ * @param navigationData: the route and rest of the navigation data straight from the server.
+ */
+export const UpdateRealtimeNavigationData = (navigationData) => ({
+  type: 'UPDATE_REALTIME_NAVIGATION_DATA',
+  payload: navigationData,
+});

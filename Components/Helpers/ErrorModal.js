@@ -684,8 +684,8 @@ class ErrorModal extends React.PureComponent {
           false
       ) {
         //Invalid setup - close modal
-        //this.props.UpdateErrorModalLog(false, false, 'any'); //Close modal - enable after
-        return (
+        this.props.UpdateErrorModalLog(false, false, 'any'); //Close modal - enable after
+        /*return (
           <View
             style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
             <GenericLoader
@@ -695,7 +695,7 @@ class ErrorModal extends React.PureComponent {
               thickness={4}
             />
           </View>
-        );
+        );*/
       }
       return (
         <SafeAreaView

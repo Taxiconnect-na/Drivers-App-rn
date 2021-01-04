@@ -30,6 +30,8 @@ import {
   UpdateTrackingModeState,
   UpdateCurrentLocationMetadat,
   UpdateFetchedRequests_dataServer,
+  SwitchToNavigation_modeOrBack,
+  UpdateRealtimeNavigationData,
 } from '../Redux/HomeActionsCreators';
 import {systemWeights} from 'react-native-typography';
 import IconAnt from 'react-native-vector-icons/AntDesign';
@@ -173,6 +175,23 @@ class Home extends React.PureComponent {
         }
       }
     });
+
+    //4. Handler for realtime navigation data stream.
+    this.props.App.socket.on(
+      'getRealtimeTrackingRoute_forTHIS_io-response',
+      function (response) {
+        if (
+          response !== false &&
+          response !== undefined &&
+          response !== null &&
+          response.routePoints !== undefined &&
+          response.routePoints !== null
+        ) {
+          //Received data
+          globalObject.props.UpdateRealtimeNavigationData(response);
+        }
+      },
+    );
   }
 
   componentWillUnmount() {
@@ -224,6 +243,7 @@ class Home extends React.PureComponent {
       },
       (error) => {
         //...
+        console.log(error);
       },
       {
         timeout: 10,
@@ -487,7 +507,24 @@ class Home extends React.PureComponent {
                       justifyContent: 'center',
                     }}>
                     <Image
-                      source={this.props.App.arrowTurnLeft}
+                      source={
+                        /Continue/.test(
+                          this.props.App.main_interfaceState_vars
+                            .navigationRouteData.instructions[0].text,
+                        )
+                          ? this.props.App.arrowStraight
+                          : /Turn left/i.test(
+                              this.props.App.main_interfaceState_vars
+                                .navigationRouteData.instructions[0].text,
+                            )
+                          ? this.props.App.arrowTurnLeft
+                          : /Turn right/i.test(
+                              this.props.App.main_interfaceState_vars
+                                .navigationRouteData.instructions[0].text,
+                            )
+                          ? this.props.App.arrowTurnRight
+                          : this.props.App.arrowStraight
+                      }
                       style={{
                         resizeMode: 'contain',
                         width: '100%',
@@ -509,11 +546,18 @@ class Home extends React.PureComponent {
                           systemWeights.bold,
                           {
                             fontFamily: 'Allrounder-Grotesk-Medium',
-                            fontSize: 24,
+                            fontSize: 20,
                             color: '#fff',
                           },
                         ]}>
-                        Turn left
+                        {this.props.App.main_interfaceState_vars
+                          .navigationRouteData.instructions[0].text.length > 22
+                          ? this.props.App.main_interfaceState_vars.navigationRouteData.instructions[0].text.substring(
+                              0,
+                              18,
+                            ) + '...'
+                          : this.props.App.main_interfaceState_vars
+                              .navigationRouteData.instructions[0].text}
                       </Text>
                     </View>
                     <View style={{flexDirection: 'row'}}>
@@ -524,7 +568,24 @@ class Home extends React.PureComponent {
                           flex: 1,
                           color: '#fff',
                         }}>
-                        400m
+                        {this.props.App.requests_data_main_vars
+                          .moreDetailsFocused_request.ride_basic_infos
+                          .inRideToDestination
+                          ? 'Picked up'
+                          : Math.round(
+                              this.props.App.main_interfaceState_vars
+                                .navigationRouteData.distance,
+                            ) > 1000
+                          ? Math.round(
+                              this.props.App.main_interfaceState_vars
+                                .navigationRouteData.distance,
+                            ) /
+                              1000 +
+                            'km'
+                          : Math.round(
+                              this.props.App.main_interfaceState_vars
+                                .navigationRouteData.distance,
+                            ) + 'm'}
                       </Text>
                       <Text
                         style={{
@@ -534,7 +595,35 @@ class Home extends React.PureComponent {
                           textAlign: 'right',
                           color: '#fff',
                         }}>
-                        6min away
+                        {parseInt(
+                          this.props.App.main_interfaceState_vars.navigationRouteData.eta.split(
+                            ' ',
+                          )[0],
+                        ) <= 35 &&
+                        parseInt(
+                          this.props.App.main_interfaceState_vars.navigationRouteData.eta.split(
+                            ' ',
+                          )[0],
+                        ) > 10 &&
+                        /sec/i.test(
+                          this.props.App.main_interfaceState_vars.navigationRouteData.eta.split(
+                            ' ',
+                          )[1],
+                        )
+                          ? 'Very close'
+                          : parseInt(
+                              this.props.App.main_interfaceState_vars.navigationRouteData.eta.split(
+                                ' ',
+                              )[0],
+                            ) <= 10 &&
+                            /sec/i.test(
+                              this.props.App.main_interfaceState_vars.navigationRouteData.eta.split(
+                                ' ',
+                              )[1],
+                            )
+                          ? 'Arrived'
+                          : this.props.App.main_interfaceState_vars
+                              .navigationRouteData.eta}
                       </Text>
                     </View>
                   </View>
@@ -567,16 +656,79 @@ class Home extends React.PureComponent {
                         fontSize: 16,
                         color: '#fff',
                       }}>
-                      Khomasdal
+                      {/**Check if the client was already picked up, if yes show the 1st destination location, if not show the pickup location */}
+                      {this.props.App.requests_data_main_vars
+                        .moreDetailsFocused_request.ride_basic_infos
+                        .inRideToDestination
+                        ? this.props.App.requests_data_main_vars
+                            .moreDetailsFocused_request.origin_destination_infos
+                            .destination_infos[0].suburb
+                        : this.props.App.requests_data_main_vars
+                            .moreDetailsFocused_request.origin_destination_infos
+                            .pickup_infos.suburb}
                     </Text>
                     <Text
                       style={{
                         flex: 1,
                         fontFamily: 'Allrounder-Grotesk-Book',
-                        fontSize: 16,
+                        fontSize: 15,
                         color: '#fff',
                       }}>
-                      Maerua Mall
+                      {this.props.App.requests_data_main_vars
+                        .moreDetailsFocused_request.ride_basic_infos
+                        .inRideToDestination
+                        ? this.props.App.requests_data_main_vars
+                            .moreDetailsFocused_request.origin_destination_infos
+                            .destination_infos[0].location_name
+                        : this.props.App.requests_data_main_vars
+                            .moreDetailsFocused_request.origin_destination_infos
+                            .pickup_infos.location_name}
+
+                      {this.props.App.requests_data_main_vars
+                        .moreDetailsFocused_request.ride_basic_infos
+                        .inRideToDestination ? (
+                        this.props.App.requests_data_main_vars
+                          .moreDetailsFocused_request.origin_destination_infos
+                          .destination_infos[0].street_name !== 'false' &&
+                        this.props.App.requests_data_main_vars
+                          .moreDetailsFocused_request.origin_destination_infos
+                          .destination_infos[0].street_name !== false ? (
+                          <Text
+                            style={{
+                              fontFamily: 'Allrounder-Grotesk-Book',
+                              fontSize: 14,
+                              marginLeft: 5,
+                              marginTop: 3,
+                              flex: 1,
+                            }}>
+                            {', ' +
+                              this.props.App.requests_data_main_vars
+                                .moreDetailsFocused_request
+                                .origin_destination_infos.destination_infos[0]
+                                .street_name}
+                          </Text>
+                        ) : null
+                      ) : this.props.App.requests_data_main_vars
+                          .moreDetailsFocused_request.origin_destination_infos
+                          .pickup_infos.street_name !== 'false' &&
+                        this.props.App.requests_data_main_vars
+                          .moreDetailsFocused_request.origin_destination_infos
+                          .pickup_infos.street_name !== false ? (
+                        <Text
+                          style={{
+                            fontFamily: 'Allrounder-Grotesk-Book',
+                            fontSize: 14,
+                            marginLeft: 5,
+                            marginTop: 3,
+                            flex: 1,
+                          }}>
+                          {', ' +
+                            this.props.App.requests_data_main_vars
+                              .moreDetailsFocused_request
+                              .origin_destination_infos.pickup_infos
+                              .street_name}
+                        </Text>
+                      ) : null}
                     </Text>
                   </View>
                 </View>
@@ -589,6 +741,7 @@ class Home extends React.PureComponent {
                   }
                   backgroundColor={'#01101F'}
                   color={'#fff'}
+                  thickness={4}
                 />
 
                 <View
@@ -863,6 +1016,74 @@ class Home extends React.PureComponent {
     if (this.props.App.main_interfaceState_vars.isApp_inNavigation_mode) {
       //Navigation on - hide footer
       if (this.props.App.main_interfaceState_vars.isRideInProgress) {
+        let globalObject = this;
+        //START THE INTERVAL PERSISTER FOR THE NAVIGATION DATA
+        if (this.props.App._TMP_NAVIATION_DATA_INTERVAL_PERSISTER === null) {
+          console.log('INterval navigation started');
+          //Initialize
+          this.props.App._TMP_NAVIATION_DATA_INTERVAL_PERSISTER = setInterval(
+            function () {
+              if (
+                globalObject.props.App.main_interfaceState_vars.isRideInProgress
+              ) {
+                //Get data
+                //Check the driver's latitude and longitude (!= false or null or 0)
+                if (
+                  globalObject.props.App.latitude !== false &&
+                  globalObject.props.App.latitude !== null &&
+                  globalObject.props.App.latitude !== undefined &&
+                  globalObject.props.App.latitude !== 0 &&
+                  globalObject.props.App.longitude !== false &&
+                  globalObject.props.App.longitude !== null &&
+                  globalObject.props.App.longitude !== undefined &&
+                  globalObject.props.App.longitude !== 0
+                ) {
+                  let bundleData = {
+                    user_fingerprint: globalObject.props.App.user_fingerprint,
+                    request_fp:
+                      globalObject.props.App.requests_data_main_vars
+                        .moreDetailsFocused_request.request_fp,
+                    org_latitude: globalObject.props.App.latitude,
+                    org_longitude: globalObject.props.App.longitude,
+
+                    dest_latitude: globalObject.props.App
+                      .requests_data_main_vars.moreDetailsFocused_request
+                      .ride_basic_infos.inRideToDestination
+                      ? globalObject.props.App.requests_data_main_vars
+                          .moreDetailsFocused_request.origin_destination_infos
+                          .destination_infos[0].coordinates.longitude
+                      : globalObject.props.App.requests_data_main_vars
+                          .moreDetailsFocused_request.origin_destination_infos
+                          .pickup_infos.coordinates.latitude,
+
+                    dest_longitude: globalObject.props.App
+                      .requests_data_main_vars.moreDetailsFocused_request
+                      .ride_basic_infos.inRideToDestination
+                      ? globalObject.props.App.requests_data_main_vars
+                          .moreDetailsFocused_request.origin_destination_infos
+                          .destination_infos[0].coordinates.latitude
+                      : globalObject.props.App.requests_data_main_vars
+                          .moreDetailsFocused_request.origin_destination_infos
+                          .pickup_infos.coordinates.longitude,
+                  };
+                  //...
+                  globalObject.props.App.socket.emit(
+                    'getRealtimeTrackingRoute_forTHIS_io',
+                    bundleData,
+                  );
+                }
+              } //No rides in progress - kill the interval updater
+              else {
+                clearInterval(
+                  globalObject.props.App._TMP_NAVIATION_DATA_INTERVAL_PERSISTER,
+                );
+                globalObject.props.App._TMP_NAVIATION_DATA_INTERVAL_PERSISTER = null;
+              }
+            },
+            globalObject.props.App._TMP_NAVIATION_DATA_INTERVAL_PERSISTER_TIME,
+          );
+        }
+
         //A ride is in progress actively in navigation mode
         return (
           <View>
@@ -951,6 +1172,15 @@ class Home extends React.PureComponent {
                   alignItems: 'center',
                 }}>
                 <TouchableOpacity
+                  onPress={() =>
+                    this.props.UpdateErrorModalLog(
+                      true,
+                      'show_modalMore_tripDetails',
+                      'any',
+                      this.props.App.requests_data_main_vars
+                        .moreDetailsFocused_request,
+                    )
+                  }
                   style={{
                     flex: 1,
                     flexDirection: 'row',
@@ -976,7 +1206,10 @@ class Home extends React.PureComponent {
                         fontFamily: 'Allrounder-Grotesk-Medium',
                         fontSize: 17.5,
                       }}>
-                      Dominique
+                      {
+                        this.props.App.requests_data_main_vars
+                          .moreDetailsFocused_request.passenger_infos.name
+                      }
                     </Text>
                     <Text
                       style={{
@@ -984,7 +1217,11 @@ class Home extends React.PureComponent {
                         fontSize: 15,
                         color: '#096ED4',
                       }}>
-                      ConnectUS
+                      {
+                        this.props.App.requests_data_main_vars
+                          .moreDetailsFocused_request.ride_basic_infos
+                          .connect_type
+                      }
                     </Text>
                   </View>
                 </TouchableOpacity>
@@ -1198,6 +1435,8 @@ const mapDispatchToProps = (dispatch) =>
       UpdateTrackingModeState,
       UpdateCurrentLocationMetadat,
       UpdateFetchedRequests_dataServer,
+      SwitchToNavigation_modeOrBack,
+      UpdateRealtimeNavigationData,
     },
     dispatch,
   );

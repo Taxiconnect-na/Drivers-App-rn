@@ -50,7 +50,7 @@ const HomeReducer = (state = INIT_STATE, action) => {
       ///Clear key variables when the modal is closed
       if (action.payload.errorMessage === false) {
         //a. Clear the focused trip details
-        newState.requests_data_main_vars.moreDetailsFocused_request = false;
+        //newState.requests_data_main_vars.moreDetailsFocused_request = false; --RESTORE LATER
       }
       //...
       return {...state, ...newState};
@@ -95,9 +95,46 @@ const HomeReducer = (state = INIT_STATE, action) => {
           }
         });
       }
-      //DEBUG - auto fill for more details
-      //newState.requests_data_main_vars.moreDetailsFocused_request =
-      //action.payload[0]; //Just one request
+      //...
+      return {...state, ...newState};
+
+    case 'SWITCH_TO_NAVIGATION_MODEORBACK':
+      //Check the wanted navigation state
+      if (action.payload.isApp_inNavigation_mode) {
+        //Switch to navigation mode
+        //Reset the navigation route data
+        newState.main_interfaceState_vars.navigationRouteData = false;
+        //..
+        newState.main_interfaceState_vars.isRideInProgress =
+          action.payload.isRideInProgress;
+        newState.main_interfaceState_vars.isComputing_route =
+          action.payload.isRideInProgressue; //Computing route
+        newState.main_interfaceState_vars.isApp_inNavigation_mode =
+          action.payload.isApp_inNavigation_mode;
+        //Reset the tracking mode to false
+        newState.main_interfaceState_vars.isApp_inTrackingMode = false;
+      } //Switch to normal mode
+      else {
+        //Reset all the main variables
+        //Reset the navigation route data
+        newState.main_interfaceState_vars.navigationRouteData = false;
+        //..
+        newState.main_interfaceState_vars.isRideInProgress = false;
+        newState.main_interfaceState_vars.isComputing_route = false;
+        newState.main_interfaceState_vars.isApp_inNavigation_mode = false;
+        //Reset the tracking mode to false
+        newState.main_interfaceState_vars.isApp_inTrackingMode = false;
+        //Reset focused data
+        newState.requests_data_main_vars.moreDetailsFocused_request = false;
+      }
+      //...
+      return {...state, ...newState};
+
+    case 'UPDATE_REALTIME_NAVIGATION_DATA':
+      newState.main_interfaceState_vars.navigationRouteData = action.payload;
+      //Update is computing route to falsee
+      newState.main_interfaceState_vars.isComputing_route = false; //Done computing route.
+
       //...
       return {...state, ...newState};
     default:
