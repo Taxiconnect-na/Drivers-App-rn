@@ -17,6 +17,7 @@ import IconCommunity from 'react-native-vector-icons/MaterialCommunityIcons';
 import IconMaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import IconFontisto from 'react-native-vector-icons/Fontisto';
 import IconEntypo from 'react-native-vector-icons/Entypo';
+import GenericLoader from '../Modules/GenericLoader/GenericLoader';
 import IconFeather from 'react-native-vector-icons/Feather';
 import IconAnt from 'react-native-vector-icons/AntDesign';
 import {systemWeights} from 'react-native-typography';
@@ -25,6 +26,7 @@ import {
   UpdateType_rideShown_YourRides_screen,
   UpdateErrorModalLog,
 } from '../Redux/HomeActionsCreators';
+import call from 'react-native-phone-call';
 
 class ErrorModal extends React.PureComponent {
   constructor(props) {
@@ -56,33 +58,113 @@ class ErrorModal extends React.PureComponent {
     this.props.App.socket.on(
       'cancel_request_driver_io-response',
       function (response) {
-        //Stop the loader and restore
-        globalObject.setState({isLoading_something: false});
-        if (
-          response !== false &&
-          response.response !== undefined &&
-          response.response !== null
-        ) {
-          //Received a response
-          if (/unable/i.test(response.response)) {
-            //Error
+        setTimeout(function () {
+          //Stop the loader and restore
+          globalObject.setState({isLoading_something: false});
+          if (
+            response !== false &&
+            response.response !== undefined &&
+            response.response !== null
+          ) {
+            //Received a response
+            if (/unable/i.test(response.response)) {
+              //Error
+              globalObject.props.UpdateErrorModalLog(
+                true,
+                'error_cancelling',
+                'any',
+              ); //Close modal
+            } //Success
+            else {
+              globalObject.props.UpdateErrorModalLog(false, false, 'any'); //Close modal
+            }
+          } //error - close modal
+          else {
             globalObject.props.UpdateErrorModalLog(
               true,
               'error_cancelling',
               'any',
             ); //Close modal
-          } //Success
-          else {
-            globalObject.props.UpdateErrorModalLog(false, false, 'any'); //Close modal
           }
-        } //error - close modal
-        else {
-          globalObject.props.UpdateErrorModalLog(
-            true,
-            'error_cancelling',
-            'any',
-          ); //Close modal
-        }
+        }, globalObject.props.App._TMP_TIMEOUT_AFTER_REQUEST_RESPONSE);
+      },
+    );
+
+    //2. Handle confirm pickup request response
+    this.props.App.socket.on(
+      'confirm_pickup_request_driver_io-response',
+      function (response) {
+        setTimeout(function () {
+          //Stop the loader and restore
+          globalObject.setState({isLoading_something: false});
+          if (
+            response !== false &&
+            response.response !== undefined &&
+            response.response !== null
+          ) {
+            //Received a response
+            if (/unable/i.test(response.response)) {
+              //Error
+              globalObject.props.UpdateErrorModalLog(
+                true,
+                'error_confirming_pickup',
+                'any',
+              ); //Close modal
+            } //Success
+            else {
+              globalObject.props.UpdateErrorModalLog(
+                true,
+                'show_modalMore_tripDetails',
+                'any',
+                globalObject.props.App.requests_data_main_vars
+                  .moreDetailsFocused_request,
+              ); //Close modal
+            }
+          } //error - close modal
+          else {
+            globalObject.props.UpdateErrorModalLog(
+              true,
+              'error_confirming_pickup',
+              'any',
+            ); //Close modal
+          }
+        }, globalObject.props.App._TMP_TIMEOUT_AFTER_REQUEST_RESPONSE);
+      },
+    );
+
+    //3. Handle confirm dropoff request response
+    this.props.App.socket.on(
+      'confirm_dropoff_request_driver_io-response',
+      function (response) {
+        setTimeout(function () {
+          //Stop the loader and restore
+          globalObject.setState({isLoading_something: false});
+          if (
+            response !== false &&
+            response.response !== undefined &&
+            response.response !== null
+          ) {
+            //Received a response
+            if (/unable/i.test(response.response)) {
+              //Error
+              globalObject.props.UpdateErrorModalLog(
+                true,
+                'error_confirming_dropoff',
+                'any',
+              ); //Close modal
+            } //Success
+            else {
+              globalObject.props.UpdateErrorModalLog(false, false, 'any'); //Close modal
+            }
+          } //error - close modal
+          else {
+            globalObject.props.UpdateErrorModalLog(
+              true,
+              'error_confirming_dropoff',
+              'any',
+            ); //Close modal
+          }
+        }, globalObject.props.App._TMP_TIMEOUT_AFTER_REQUEST_RESPONSE);
       },
     );
   }
@@ -99,10 +181,10 @@ class ErrorModal extends React.PureComponent {
   }
 
   /**
-   * @func cancelRequest_rider
+   * @func cancelRequest_driver
    * Responsible for cancelling any current request as selected by the user
    */
-  cancelRequest_rider() {
+  cancelRequest_driver() {
     this.setState({isLoading_something: true}); //Activate the loader
     //Bundle the cancel input
     let bundleData = {
@@ -112,6 +194,38 @@ class ErrorModal extends React.PureComponent {
     };
     //...
     this.props.App.socket.emit('cancel_request_driver_io', bundleData);
+  }
+
+  /**
+   * @func confirmPickupRequest_driver
+   * Responsible for confirming pickup for any current request as selected by the user
+   */
+  confirmPickupRequest_driver() {
+    this.setState({isLoading_something: true}); //Activate the loader
+    //Bundle the input data
+    let bundleData = {
+      request_fp: this.props.App.requests_data_main_vars
+        .moreDetailsFocused_request.request_fp,
+      driver_fingerprint: this.props.App.user_fingerprint,
+    };
+    //...
+    this.props.App.socket.emit('confirm_pickup_request_driver_io', bundleData);
+  }
+
+  /**
+   * @func confirmDropoffRequest_driver
+   * Responsible for confirming dropoff for any current request as selected by the user
+   */
+  confirmDropoffRequest_driver() {
+    this.setState({isLoading_something: true}); //Activate the loader
+    //Bundle the input data
+    let bundleData = {
+      request_fp: this.props.App.requests_data_main_vars
+        .moreDetailsFocused_request.request_fp,
+      driver_fingerprint: this.props.App.user_fingerprint,
+    };
+    //...
+    this.props.App.socket.emit('confirm_dropoff_request_driver_io', bundleData);
   }
 
   /**
@@ -571,7 +685,17 @@ class ErrorModal extends React.PureComponent {
       ) {
         //Invalid setup - close modal
         //this.props.UpdateErrorModalLog(false, false, 'any'); //Close modal - enable after
-        return <></>;
+        return (
+          <View
+            style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+            <GenericLoader
+              active={true}
+              backgroundColor={'transparent'}
+              color={'#fff'}
+              thickness={4}
+            />
+          </View>
+        );
       }
       return (
         <SafeAreaView
@@ -707,6 +831,14 @@ class ErrorModal extends React.PureComponent {
                   </View>
                 </View>
                 <TouchableOpacity
+                  onPress={() =>
+                    call({
+                      number: this.props.App.requests_data_main_vars
+                        .moreDetailsFocused_request.passenger_infos
+                        .phone_number,
+                      prompt: true,
+                    })
+                  }
                   style={{
                     alignItems: 'center',
                     justifyContent: 'center',
@@ -763,13 +895,38 @@ class ErrorModal extends React.PureComponent {
                   </Text>
                 </TouchableOpacity>
                 <TouchableOpacity
+                  onPress={() =>
+                    this.props.App.requests_data_main_vars
+                      .moreDetailsFocused_request.ride_basic_infos.isAccepted &&
+                    this.props.App.requests_data_main_vars
+                      .moreDetailsFocused_request.ride_basic_infos
+                      .inRideToDestination
+                      ? this.props.UpdateErrorModalLog(
+                          true,
+                          'trip_dropoffConfirmation_confirmation',
+                          'any',
+                        )
+                      : this.props.UpdateErrorModalLog(
+                          true,
+                          'trip_pickupConfirmation_confirmation',
+                          'any',
+                        )
+                  }
                   style={{
                     flexDirection: 'row',
                     flex: 1,
                     alignItems: 'center',
                     justifyContent: 'center',
                     padding: 15,
-                    backgroundColor: '#000',
+                    backgroundColor:
+                      this.props.App.requests_data_main_vars
+                        .moreDetailsFocused_request.ride_basic_infos
+                        .isAccepted &&
+                      this.props.App.requests_data_main_vars
+                        .moreDetailsFocused_request.ride_basic_infos
+                        .inRideToDestination
+                        ? '#096ED4'
+                        : '#000',
                     borderRadius: 7,
                     borderTopLeftRadius: 0,
                     borderBottomLeftRadius: 0,
@@ -791,9 +948,10 @@ class ErrorModal extends React.PureComponent {
                       color: '#fff',
                     }}>
                     {this.props.App.requests_data_main_vars
-                      .moreDetailsFocused_request.isAccepted &&
+                      .moreDetailsFocused_request.ride_basic_infos.isAccepted &&
                     this.props.App.requests_data_main_vars
-                      .moreDetailsFocused_request.inRideToDestination
+                      .moreDetailsFocused_request.ride_basic_infos
+                      .inRideToDestination
                       ? 'CONFIRM DROPOFF'
                       : 'CONFIRM PICKUP'}
                   </Text>
@@ -1099,38 +1257,48 @@ class ErrorModal extends React.PureComponent {
                 </View>
               </View>
               {/**CANCEL BUTTON */}
-              <TouchableOpacity
-                onPress={() =>
-                  this.state.isLoading_something === false
-                    ? this.props.UpdateErrorModalLog(
-                        true,
-                        'trip_cancellation_confirmation',
-                        'any',
-                      )
-                    : {}
-                }
-                style={{
-                  padding: 20,
-                  paddingBottom: 30,
-                  paddingTop: 30,
-                  borderBottomWidth: 0.7,
-                  borderBottomColor: '#d0d0d0',
-                }}>
-                <View>
-                  <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                    <IconMaterialIcons name="block" color="#b22222" size={25} />
-                    <Text
-                      style={{
-                        fontFamily: 'Allrounder-Grotesk-Regular',
-                        fontSize: 16,
-                        color: '#b22222',
-                        marginLeft: 5,
-                      }}>
-                      Cancel the trip
-                    </Text>
+              {this.props.App.requests_data_main_vars.moreDetailsFocused_request
+                .ride_basic_infos.isAccepted &&
+              this.props.App.requests_data_main_vars.moreDetailsFocused_request
+                .ride_basic_infos.inRideToDestination ? null : (
+                <TouchableOpacity
+                  onPress={() =>
+                    this.state.isLoading_something === false
+                      ? this.props.UpdateErrorModalLog(
+                          true,
+                          'trip_cancellation_confirmation',
+                          'any',
+                        )
+                      : {}
+                  }
+                  style={{
+                    padding: 20,
+                    paddingBottom: 30,
+                    paddingTop: 30,
+                    borderBottomWidth: 0.7,
+                    borderBottomColor: '#d0d0d0',
+                  }}>
+                  <View>
+                    <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                      <IconMaterialIcons
+                        name="block"
+                        color="#b22222"
+                        size={25}
+                      />
+                      <Text
+                        style={{
+                          fontFamily: 'Allrounder-Grotesk-Regular',
+                          fontSize: 16,
+                          color: '#b22222',
+                          marginLeft: 5,
+                        }}>
+                        Cancel the trip
+                      </Text>
+                    </View>
                   </View>
-                </View>
-              </TouchableOpacity>
+                </TouchableOpacity>
+              )}
+
               {/**Guardian */}
               <View
                 style={{
@@ -1147,7 +1315,13 @@ class ErrorModal extends React.PureComponent {
                   }}>
                   Safety
                 </Text>
-                <View>
+                <TouchableOpacity
+                  onPress={() =>
+                    call({
+                      number: '061302302',
+                      prompt: true,
+                    })
+                  }>
                   <View style={{flexDirection: 'row', alignItems: 'center'}}>
                     <IconMaterialIcons
                       name="shield"
@@ -1164,7 +1338,7 @@ class ErrorModal extends React.PureComponent {
                       Emergency call
                     </Text>
                   </View>
-                </View>
+                </TouchableOpacity>
               </View>
             </ScrollView>
           </View>
@@ -1314,7 +1488,7 @@ class ErrorModal extends React.PureComponent {
           </View>
         </View>
       );
-    } else if (/error_cancelling/i.test(error_status)) {
+    } else if (/error_confirming_pickup/i.test(error_status)) {
       return (
         <View
           style={{
@@ -1362,6 +1536,152 @@ class ErrorModal extends React.PureComponent {
           </View>
         </View>
       );
+    } else if (/error_confirming_dropoff/i.test(error_status)) {
+      return (
+        <View
+          style={{
+            backgroundColor: '#fff',
+            padding: 20,
+            height: 300,
+          }}>
+          <View style={{flexDirection: 'row', alignItems: 'center'}}>
+            <IconMaterialIcons
+              name="error-outline"
+              size={22}
+              style={{marginRight: 5}}
+            />
+            <Text
+              style={{fontFamily: 'Allrounder-Grotesk-Medium', fontSize: 22}}>
+              Couldn't confirm drop off
+            </Text>
+          </View>
+          <View>
+            <Text
+              style={{
+                fontFamily: 'Allrounder-Grotesk-Book',
+                fontSize: 17,
+                marginTop: 10,
+              }}>
+              Sorry due to an unexpected error we were unable to move forward
+              with the drop off confirmation of the request. Maybe try again
+              later.
+            </Text>
+          </View>
+          <View style={{flex: 1, justifyContent: 'center'}}>
+            <TouchableOpacity
+              onPress={() =>
+                this.props.UpdateErrorModalLog(false, false, 'any')
+              }
+              style={styles.bttnGenericTc}>
+              <Text
+                style={{
+                  fontFamily: 'Allrounder-Grotesk-Medium',
+                  fontSize: 19,
+                  color: '#fff',
+                }}>
+                Try again
+              </Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      );
+    } else if (/error_cancelling/i.test(error_status)) {
+      return (
+        <View
+          style={{
+            backgroundColor: '#fff',
+            padding: 20,
+            height: 300,
+          }}>
+          <View style={{flexDirection: 'row', alignItems: 'center'}}>
+            <IconMaterialIcons
+              name="error-outline"
+              size={22}
+              style={{marginRight: 5}}
+            />
+            <Text
+              style={{fontFamily: 'Allrounder-Grotesk-Medium', fontSize: 22}}>
+              Couldn't confirm pickup
+            </Text>
+          </View>
+          <View>
+            <Text
+              style={{
+                fontFamily: 'Allrounder-Grotesk-Book',
+                fontSize: 17,
+                marginTop: 10,
+              }}>
+              Sorry due to an unexpected error we were unable to move forward
+              with the pickup confirmation of the request. Maybe try again
+              later.
+            </Text>
+          </View>
+          <View style={{flex: 1, justifyContent: 'center'}}>
+            <TouchableOpacity
+              onPress={() =>
+                this.props.UpdateErrorModalLog(false, false, 'any')
+              }
+              style={styles.bttnGenericTc}>
+              <Text
+                style={{
+                  fontFamily: 'Allrounder-Grotesk-Medium',
+                  fontSize: 19,
+                  color: '#fff',
+                }}>
+                Try again
+              </Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      );
+    } else if (/error_accepting_request/i.test(error_status)) {
+      return (
+        <View
+          style={{
+            backgroundColor: '#fff',
+            padding: 20,
+            height: 300,
+          }}>
+          <View style={{flexDirection: 'row', alignItems: 'center'}}>
+            <IconMaterialIcons
+              name="error-outline"
+              size={22}
+              style={{marginRight: 5}}
+            />
+            <Text
+              style={{fontFamily: 'Allrounder-Grotesk-Medium', fontSize: 22}}>
+              Couldn't accept
+            </Text>
+          </View>
+          <View>
+            <Text
+              style={{
+                fontFamily: 'Allrounder-Grotesk-Book',
+                fontSize: 17,
+                marginTop: 10,
+              }}>
+              Sorry due to an unexpected error we were unable to move forward
+              with accepting this request for you. Maybe try again later.
+            </Text>
+          </View>
+          <View style={{flex: 1, justifyContent: 'center'}}>
+            <TouchableOpacity
+              onPress={() =>
+                this.props.UpdateErrorModalLog(false, false, 'any')
+              }
+              style={styles.bttnGenericTc}>
+              <Text
+                style={{
+                  fontFamily: 'Allrounder-Grotesk-Medium',
+                  fontSize: 19,
+                  color: '#fff',
+                }}>
+                Try again
+              </Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      );
     } else if (/trip_cancellation_confirmation/i.test(error_status)) {
       return (
         <View
@@ -1385,7 +1705,7 @@ class ErrorModal extends React.PureComponent {
             <TouchableOpacity
               onPress={() =>
                 this.state.isLoading_something === false
-                  ? this.cancelRequest_rider()
+                  ? this.cancelRequest_driver()
                   : {}
               }
               style={[
@@ -1413,6 +1733,8 @@ class ErrorModal extends React.PureComponent {
                       true,
                       'show_modalMore_tripDetails',
                       'any',
+                      this.props.App.requests_data_main_vars
+                        .moreDetailsFocused_request,
                     )
                   : {}
               }
@@ -1460,14 +1782,14 @@ class ErrorModal extends React.PureComponent {
                 marginTop: 10,
               }}>
               By confirming the pickup you confirm that you've picked up the
-              passenger and you're ready to headd to the destination.
+              passenger and you're ready to head to the destination.
             </Text>
           </View>
           <View style={{flex: 1, justifyContent: 'center'}}>
             <TouchableOpacity
               onPress={() =>
                 this.state.isLoading_something === false
-                  ? this.cancelRequest_rider()
+                  ? this.confirmPickupRequest_driver()
                   : {}
               }
               style={[
@@ -1484,7 +1806,7 @@ class ErrorModal extends React.PureComponent {
                 {this.state.isLoading_something === false ? (
                   'Confirm pickup'
                 ) : (
-                  <ActivityIndicator size="small" color="#fff" />
+                  <ActivityIndicator size="large" color="#fff" />
                 )}
               </Text>
             </TouchableOpacity>
@@ -1495,6 +1817,92 @@ class ErrorModal extends React.PureComponent {
                       true,
                       'show_modalMore_tripDetails',
                       'any',
+                      this.props.App.requests_data_main_vars
+                        .moreDetailsFocused_request,
+                    )
+                  : {}
+              }
+              style={[
+                styles.bttnGenericTc,
+                {borderRadius: 2, marginBottom: 10, backgroundColor: '#f0f0f0'},
+              ]}>
+              <Text
+                style={{
+                  fontFamily: 'Allrounder-Grotesk-Medium',
+                  fontSize: 19,
+                  color: '#000',
+                  marginLeft: 5,
+                }}>
+                Cancel
+              </Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      );
+    } else if (/trip_dropoffConfirmation_confirmation/i.test(error_status)) {
+      return (
+        <View
+          style={{
+            backgroundColor: '#fff',
+            padding: 20,
+            height: 360,
+          }}>
+          <View
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}>
+            <Text
+              style={{fontFamily: 'Allrounder-Grotesk-Medium', fontSize: 22}}>
+              Confirm drop off?
+            </Text>
+          </View>
+          <View>
+            <Text
+              style={{
+                fontFamily: 'Allrounder-Grotesk-Book',
+                fontSize: 17,
+                marginTop: 10,
+              }}>
+              By confirming the drop off you confirm that you've taken the
+              passenger up to final destination.
+            </Text>
+          </View>
+          <View style={{flex: 1, justifyContent: 'center'}}>
+            <TouchableOpacity
+              onPress={() =>
+                this.state.isLoading_something === false
+                  ? this.confirmDropoffRequest_driver()
+                  : {}
+              }
+              style={[
+                styles.bttnGenericTc,
+                {borderRadius: 2, marginBottom: 20},
+              ]}>
+              <Text
+                style={{
+                  fontFamily: 'Allrounder-Grotesk-Medium',
+                  fontSize: 19,
+                  color: '#fff',
+                  marginLeft: 5,
+                }}>
+                {this.state.isLoading_something === false ? (
+                  'Confirm pickup'
+                ) : (
+                  <ActivityIndicator size="large" color="#fff" />
+                )}
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() =>
+                this.state.isLoading_something === false
+                  ? this.props.UpdateErrorModalLog(
+                      true,
+                      'show_modalMore_tripDetails',
+                      'any',
+                      this.props.App.requests_data_main_vars
+                        .moreDetailsFocused_request,
                     )
                   : {}
               }

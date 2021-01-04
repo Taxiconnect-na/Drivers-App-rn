@@ -14,7 +14,9 @@ const STATE = {
   //PERSISTANT INTERVAL VARIABLES
   //Interval persister for updating requests data
   _TMP_TRIP_INTERVAL_PERSISTER: null, //The interval for updating rides related data
-  _TMP_TRIP_INTERVAL_PERSISTER_TIME: 5000, //THe frequency of repetition - default:5s
+  _TMP_TRIP_INTERVAL_PERSISTER_TIME: 3000, //THe frequency of repetition - default:3s
+
+  _TMP_TIMEOUT_AFTER_REQUEST_RESPONSE: 4000, //The timeout after the response to show updated content - default: 4s
 
   //ASSETS
   windowWidth: windowWidth,

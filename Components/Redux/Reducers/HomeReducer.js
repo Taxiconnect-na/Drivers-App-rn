@@ -40,6 +40,14 @@ const HomeReducer = (state = INIT_STATE, action) => {
         ? newState.generalErrorModal_vars.network_type
         : action.payload.network_type; //Only update the network type of not 'any' value provided (dummy value)
 
+      //Update global vars for some processes
+      //1. Update the focused trip details data - additional data in action.additionalData
+      if (/show_modalMore_tripDetails/i.test(action.payload.errorMessage)) {
+        console.log('Updated focused data');
+        newState.requests_data_main_vars.moreDetailsFocused_request =
+          action.payload.additionalData;
+      }
+
       //...
       return {...state, ...newState};
 
@@ -66,9 +74,26 @@ const HomeReducer = (state = INIT_STATE, action) => {
       //Auto reset if expected array is false
       newState.requests_data_main_vars.fetchedRequests_data_store =
         action.payload;
+
+      //Update the focused data for more details
+      if (
+        newState.requests_data_main_vars.moreDetailsFocused_request !== false &&
+        action.payload !== false
+      ) {
+        action.payload.map((request) => {
+          if (
+            request.request_fp ===
+            newState.requests_data_main_vars.moreDetailsFocused_request
+              .request_fp
+          ) {
+            //Found - update
+            newState.requests_data_main_vars.moreDetailsFocused_request = request;
+          }
+        });
+      }
       //DEBUG - auto fill for more details
-      newState.requests_data_main_vars.moreDetailsFocused_request =
-        action.payload[0]; //Just one request
+      //newState.requests_data_main_vars.moreDetailsFocused_request =
+      //action.payload[0]; //Just one request
       //...
       return {...state, ...newState};
     default:

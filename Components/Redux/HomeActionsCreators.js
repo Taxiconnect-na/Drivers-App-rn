@@ -23,12 +23,14 @@ export const UpdateErrorModalLog = (
   activeStatus,
   errorMessage,
   network_type,
+  additionalData = false,
 ) => ({
   type: 'UPDATE_GENERAL_ERROR_MODAL',
   payload: {
     activeStatus: activeStatus,
     errorMessage: errorMessage,
     network_typenetwork_type: network_type,
+    additionalData: additionalData,
   },
 });
 

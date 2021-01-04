@@ -1160,8 +1160,10 @@ class Home extends React.PureComponent {
     return (
       <SafeAreaView style={styles.mainView}>
         <ErrorModal
-          active={true}
-          error_status={'trip_pickupConfirmation_confirmation'}
+          active={this.props.App.generalErrorModal_vars.showErrorGeneralModal}
+          error_status={
+            this.props.App.generalErrorModal_vars.generalErrorModalType
+          }
           parentNode={this}
         />
         {this.renderMainComponent()}

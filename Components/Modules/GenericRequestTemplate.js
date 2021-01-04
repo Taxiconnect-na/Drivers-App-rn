@@ -31,21 +31,46 @@ class GenericRequestTemplate extends React.PureComponent {
     /**
      * SOCKET.IO RESPONSES
      */
+    //1. Handler for declining a request
     this.props.App.socket.on(
       'declineRequest_driver-response',
       function (response) {
+        setTimeout(function () {
+          globalObject.state.isDeclinignRequest = false;
+          globalObject.state.isAcceptingRequest = false;
+          if (
+            response.response !== undefined &&
+            /unable/i.test(response.response)
+          ) {
+            globalObject.props.UpdateErrorModalLog(
+              true,
+              'error_declining',
+              'any',
+            );
+          }
+        }, globalObject.props.App._TMP_TIMEOUT_AFTER_REQUEST_RESPONSE);
+      },
+    );
+
+    //2. Handler for accepting a request
+    this.props.App.socket.on('accept_request_io-response', function (response) {
+      setTimeout(function () {
+        globalObject.setState({
+          isDeclinignRequest: false,
+          isAcceptingRequest: false,
+        });
         if (
           response.response !== undefined &&
           /unable/i.test(response.response)
         ) {
           globalObject.props.UpdateErrorModalLog(
             true,
-            'error_declining',
+            'error_accepting_request',
             'any',
           );
         }
-      },
-    );
+      }, globalObject.props.App._TMP_TIMEOUT_AFTER_REQUEST_RESPONSE);
+    });
   }
 
   /**
@@ -55,9 +80,24 @@ class GenericRequestTemplate extends React.PureComponent {
    */
   declineThisRequest(request_fp) {
     //Activate the decline loader
-    this.setState({isDeclinignRequest: true});
+    this.setState({isDeclinignRequest: true, isAcceptingRequest: false});
     //..
     this.props.App.socket.emit('declineRequest_driver', {
+      request_fp: request_fp,
+      driver_fingerprint: this.props.App.user_fingerprint,
+    });
+  }
+
+  /**
+   * @func acceptThisRequest
+   * Responsible for accepting any request from the driver side.
+   * @param request_fp
+   */
+  acceptThisRequest(request_fp) {
+    //Activate the accept loader
+    this.setState({isAcceptingRequest: true, isDeclinignRequest: false});
+    //..
+    this.props.App.socket.emit('accept_request_io', {
       request_fp: request_fp,
       driver_fingerprint: this.props.App.user_fingerprint,
     });
@@ -338,8 +378,8 @@ class GenericRequestTemplate extends React.PureComponent {
             flexDirection: 'row',
           }}>
           <View style={{flex: 1, justifyContent: 'flex-end'}}>
-            {this.props.requestLightData.ride_basic_infos.isAccepted ===
-            false ? (
+            {this.state.isAcceptingRequest ? null : this.props.requestLightData
+                .ride_basic_infos.isAccepted === false ? (
               <TouchableOpacity
                 onPress={() =>
                   this.state.isAcceptingRequest === false &&
@@ -366,68 +406,77 @@ class GenericRequestTemplate extends React.PureComponent {
             ) : null}
           </View>
           <View style={{flex: 1}}>
-            <TouchableOpacity
-              onPress={() =>
-                this.state.isAcceptingRequest === false &&
-                this.state.isDeclinignRequest === false
-                  ? this.props.requestLightData.ride_basic_infos.isAccepted ===
-                    false
-                    ? console.log('proceed to accept')
-                    : console.log('proceed to details')
-                  : {}
-              }
-              style={{
-                flexDirection: 'row',
-                backgroundColor: '#096ED4',
-                padding: 18,
-                alignItems: 'center',
-                justifyContent: 'center',
-                borderRadius: 4,
-                shadowColor: '#000',
-                shadowOffset: {
-                  width: 0,
-                  height: 2,
-                },
-                shadowOpacity: 0.25,
-                shadowRadius: 3.84,
+            {this.state.isDeclinignRequest ? null : (
+              <TouchableOpacity
+                onPress={() =>
+                  this.state.isAcceptingRequest === false &&
+                  this.state.isDeclinignRequest === false
+                    ? this.props.requestLightData.ride_basic_infos
+                        .isAccepted === false
+                      ? this.acceptThisRequest(
+                          this.props.requestLightData.request_fp,
+                        )
+                      : this.props.UpdateErrorModalLog(
+                          true,
+                          'show_modalMore_tripDetails',
+                          'any',
+                          this.props.requestLightData,
+                        )
+                    : {}
+                }
+                style={{
+                  flexDirection: 'row',
+                  backgroundColor: '#096ED4',
+                  padding: 18,
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  borderRadius: 4,
+                  shadowColor: '#000',
+                  shadowOffset: {
+                    width: 0,
+                    height: 2,
+                  },
+                  shadowOpacity: 0.25,
+                  shadowRadius: 3.84,
 
-                elevation: 5,
-                height: 65,
-              }}>
-              {this.state.isAcceptingRequest === false ? (
-                this.props.requestLightData.ride_basic_infos.isAccepted ===
-                false ? (
-                  <>
-                    <Text
-                      style={{
-                        fontFamily: 'Allrounder-Grotesk-Medium',
-                        fontSize: 18,
-                        color: '#fff',
-                      }}>
-                      Accept
-                    </Text>
-                    <IconFeather
-                      name="check"
-                      size={17}
-                      style={{top: 1, marginLeft: 3, color: '#fff'}}
-                    />
-                  </>
+                  elevation: 5,
+                  height: 65,
+                }}>
+                {this.state.isAcceptingRequest === false ? (
+                  this.props.requestLightData.ride_basic_infos.isAccepted ===
+                  false ? (
+                    <>
+                      <Text
+                        style={{
+                          fontFamily: 'Allrounder-Grotesk-Medium',
+                          fontSize: 18,
+                          color: '#fff',
+                        }}>
+                        Accept
+                      </Text>
+                      <IconFeather
+                        name="check"
+                        size={17}
+                        style={{top: 1, marginLeft: 3, color: '#fff'}}
+                      />
+                    </>
+                  ) : (
+                    <>
+                      <Text
+                        style={{
+                          fontFamily: 'Allrounder-Grotesk-Medium',
+                          fontSize: 18,
+                          color: '#fff',
+                        }}>
+                        View details
+                      </Text>
+                    </>
+                  )
                 ) : (
-                  <>
-                    <Text
-                      style={{
-                        fontFamily: 'Allrounder-Grotesk-Medium',
-                        fontSize: 18,
-                        color: '#fff',
-                      }}>
-                      View details
-                    </Text>
-                  </>
-                )
-              ) : (
-                <ActivityIndicator size="large" color="#fff" />
-              )}
-            </TouchableOpacity>
+                  <ActivityIndicator size="large" color="#fff" />
+                )}
+              </TouchableOpacity>
+            )}
           </View>
         </View>
       </View>
