@@ -67,89 +67,20 @@ const STATE = {
   shownRides_types: 'Rides', //To govern which ride to show :Rides, Delivery or Scheduled - default: false
   //Responsible for defining the state of the interface at any time
   main_interfaceState_vars: {
-    isApp_inNavigation_mode: true, //To know if the app is in navigation mode or not. - default: false
-    isRideInProgress: true, //TO know whether a ride is in progress or not - default: false
+    isApp_inNavigation_mode: false, //To know if the app is in navigation mode or not. - default: false
+    isRideInProgress: false, //TO know whether a ride is in progress or not - default: false
     isDriver_online: true, //To know whether the driver is online or offline - default: false - SERVER DEPENDENT
     isComputing_route: true, //To know whether the app is computing the optimal route to destination - default: true
     isApp_inTrackingMode: false, //To know whether the driver pressed the closest tracking mode feature or not - default: false
     //..
     navigationRouteData: false, //The data for the navigation mode during an active ride in progress - default: false
+    dailyAmount_madeSoFar: false, //Contains the array with the details about the amount made today so far - default: false
   },
   //2. Requests main vars
   //Hold all the requests related data storages
   requests_data_main_vars: {
     fetchedRequests_data_store: false, //To store all the fetched targeted requests list from the server - default: false
-    moreDetailsFocused_request: {
-      request_fp:
-        '999999f5c51c380ef9dee9680872a6538cc9708ef079a8e42de4d762bfa7d49efdcde41c6009cbdd9cdf6f0ae0544f74cb52caa84439cbcda40ce264f90825e8',
-      passenger_infos: {
-        name: 'Dominique',
-        phone_number: '+264856997167',
-      },
-      eta_to_passenger_infos: {
-        eta: '1 min away',
-        distance: 1061.153,
-      },
-      ride_basic_infos: {
-        payment_method: 'CASH',
-        fare_amount: 45,
-        passengers_number: 2,
-        connect_type: 'ConnectUs',
-        isAccepted: true,
-        inRideToDestination: false,
-        isRideCompleted_driverSide: false,
-        ride_mode: 'RIDE',
-        request_type: 'now',
-        delivery_infos: null,
-        rider_infos: {
-          actualRider: 'me',
-          actualRiderPhone_number: 'false',
-        },
-      },
-      origin_destination_infos: {
-        pickup_infos: {
-          location_name: 'NUST MAIN CAMPUS',
-          street_name: 'Mozart Street',
-          suburb: 'Windhoek West',
-          coordinates: {
-            latitude: '-22.57015',
-            longitude: '17.0811883',
-          },
-        },
-        eta_to_destination_infos: {
-          eta: '3 min away',
-          distance: 2486.172,
-        },
-        destination_infos: [
-          {
-            passenger_number_id: '1',
-            dropoff_type: 'PrivateLocation',
-            coordinates: {
-              latitude: '17.094469349299942',
-              longitude: '-22.58091645',
-            },
-            location_name: 'Maerua Heights',
-            street_name: 'false',
-            suburb: 'Luxury Hill',
-            state: 'Khomas Region',
-            city: 'Windhoek',
-          },
-          {
-            passenger_number_id: '2',
-            dropoff_type: 'PrivateLocation',
-            coordinates: {
-              latitude: '17.094469349299942',
-              longitude: '-22.58091645',
-            },
-            location_name: 'Maerua Heights',
-            street_name: 'false',
-            suburb: 'Luxury Hill',
-            state: 'Khomas Region',
-            city: 'Windhoek',
-          },
-        ],
-      },
-    }, //To hold the details about the interested request clicked by the driver for more details. - default: false
+    moreDetailsFocused_request: false, //To hold the details about the interested request clicked by the driver for more details. - default: false
   },
 };
 

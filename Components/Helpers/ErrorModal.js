@@ -25,6 +25,7 @@ import {
   ResetGenericPhoneNumberInput,
   UpdateType_rideShown_YourRides_screen,
   UpdateErrorModalLog,
+  SwitchToNavigation_modeOrBack,
 } from '../Redux/HomeActionsCreators';
 import call from 'react-native-phone-call';
 
@@ -112,6 +113,9 @@ class ErrorModal extends React.PureComponent {
               ); //Close modal
             } //Success
             else {
+              //Activate computing route variable
+              globalObject.props.App.main_interfaceState_vars.isComputing_route = true;
+              //...
               globalObject.props.UpdateErrorModalLog(
                 true,
                 'show_modalMore_tripDetails',
@@ -890,6 +894,14 @@ class ErrorModal extends React.PureComponent {
                   padding: 20,
                 }}>
                 <TouchableOpacity
+                  onPress={() => {
+                    this.props.SwitchToNavigation_modeOrBack({
+                      isApp_inNavigation_mode: true,
+                      isRideInProgress: true,
+                      requestData: this.props.App.requests_data_main_vars
+                        .moreDetailsFocused_request,
+                    })
+                  }}
                   style={{
                     flexDirection: 'row',
                     alignItems: 'center',
@@ -2028,6 +2040,7 @@ const mapDispatchToProps = (dispatch) =>
       ResetGenericPhoneNumberInput,
       UpdateType_rideShown_YourRides_screen,
       UpdateErrorModalLog,
+      SwitchToNavigation_modeOrBack,
     },
     dispatch,
   );

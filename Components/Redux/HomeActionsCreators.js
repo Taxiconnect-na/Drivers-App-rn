@@ -103,3 +103,13 @@ export const UpdateRealtimeNavigationData = (navigationData) => ({
   type: 'UPDATE_REALTIME_NAVIGATION_DATA',
   payload: navigationData,
 });
+
+/**
+ * 10. Update daily amount made so far
+ * Responsible for updating the daily amount made in the global variables.
+ * @param amountBundle: contains all the information about the daily amount made.
+ */
+export const UpdateDailyAmount_madeSoFar = (amountBundle) => ({
+  type: 'UPDATE_DAILY_AMOUNT_MADESOFAR',
+  payload: amountBundle,
+});

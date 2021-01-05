@@ -22,7 +22,9 @@ import {
   PermissionsAndroid,
   Image,
   FlatList,
+  ActivityIndicator,
 } from 'react-native';
+import {TouchableOpacity as TouchableOpacityGesture} from 'react-native-gesture-handler';
 import GeolocationP from 'react-native-geolocation-service';
 import {
   UpdateErrorModalLog,
@@ -32,6 +34,7 @@ import {
   UpdateFetchedRequests_dataServer,
   SwitchToNavigation_modeOrBack,
   UpdateRealtimeNavigationData,
+  UpdateDailyAmount_madeSoFar,
 } from '../Redux/HomeActionsCreators';
 import {systemWeights} from 'react-native-typography';
 import PulseCircleLayer from '../Modules/PulseCircleLayer';
@@ -118,6 +121,8 @@ class Home extends React.PureComponent {
       globalObject.getCurrentPositionCusto();
       //Get requests
       globalObject.updateRemoteLocationsData();
+      //Get the daily amount made so far
+      globalObject.computeDaily_amountriver();
     }, this.props.App._TMP_TRIP_INTERVAL_PERSISTER_TIME);
 
     /**
@@ -193,6 +198,20 @@ class Home extends React.PureComponent {
         }
       },
     );
+
+    //5. Handler for daily amount response
+    this.props.App.socket.on(
+      'computeDaily_amountMadeSoFar_io-response',
+      function (response) {
+        if (
+          response !== false &&
+          response !== undefined &&
+          response.response !== undefined
+        ) {
+          globalObject.props.UpdateDailyAmount_madeSoFar(response);
+        }
+      },
+    );
   }
 
   componentWillUnmount() {
@@ -208,7 +227,18 @@ class Home extends React.PureComponent {
   }
 
   /**
-   * @func  updateRemoteLocationsData()
+   * @func computeDaily_amountriver
+   * Responsible for making the request to compute the daily driver profit so far.
+   */
+  computeDaily_amountriver() {
+    let bundleData = {
+      driver_fingerprint: this.props.App.user_fingerprint,
+    };
+    this.props.App.socket.emit('computeDaily_amountMadeSoFar_io', bundleData);
+  }
+
+  /**
+   * @func updateRemoteLocationsData()
    * Sent update locations informations to the server
    */
   updateRemoteLocationsData(origin = 'other') {
@@ -379,6 +409,7 @@ class Home extends React.PureComponent {
             }}>
             <View style={{flexDirection: 'row', alignItems: 'center'}}>
               <TouchableOpacity
+                onPress={() => console.log('ok')}
                 style={{
                   top: 1.5,
                   backgroundColor: '#fff',
@@ -423,24 +454,38 @@ class Home extends React.PureComponent {
 
                     elevation: 15,
                   }}>
-                  <Text
-                    style={[
-                      {
-                        fontSize: 16.5,
-                        fontFamily: 'Allrounder-Grotesk-Medium',
-                        color: '#fff',
-                      },
-                    ]}>
-                    N$40
-                  </Text>
+                  {this.props.App.main_interfaceState_vars
+                    .dailyAmount_madeSoFar === false ? (
+                    <ActivityIndicator size="small" color="#fff" />
+                  ) : (
+                    <Text
+                      style={[
+                        {
+                          fontSize: 16.5,
+                          fontFamily: 'Allrounder-Grotesk-Medium',
+                          color: '#fff',
+                        },
+                      ]}>
+                      {this.props.App.main_interfaceState_vars
+                        .dailyAmount_madeSoFar.currency_symbol +
+                        '' +
+                        this.props.App.main_interfaceState_vars
+                          .dailyAmount_madeSoFar.amount}
+                    </Text>
+                  )}
                 </View>
               </View>
-              <View
+              <TouchableOpacity
+                onPress={() => {
+                  this.props.SwitchToNavigation_modeOrBack({
+                    isApp_inNavigation_mode: false,
+                  });
+                }}
                 style={{
                   borderWidth: 1,
                   borderColor: '#096ED4',
-                  width: 40,
-                  height: 40,
+                  width: 43,
+                  height: 43,
                   alignItems: 'center',
                   justifyContent: 'center',
                   borderRadius: 150,
@@ -454,13 +499,10 @@ class Home extends React.PureComponent {
                   shadowRadius: 5.46,
 
                   elevation: 9,
+                  zIndex: 9000000000,
                 }}>
-                <IconFontAwesome
-                  name="location-arrow"
-                  color="#096ED4"
-                  size={22}
-                />
-              </View>
+                <IconCommunity name="map" color="#096ED4" size={22} />
+              </TouchableOpacity>
             </View>
           </View>
         );
@@ -800,7 +842,7 @@ class Home extends React.PureComponent {
               }}>
               <View
                 style={{
-                  padding: 8,
+                  padding: 10,
                   width: 100,
                   alignItems: 'center',
                   justifyContent: 'center',
@@ -816,24 +858,40 @@ class Home extends React.PureComponent {
 
                   elevation: 14,
                 }}>
-                <Text
-                  style={[
-                    {
-                      fontSize: 16.5,
-                      fontFamily: 'Allrounder-Grotesk-Medium',
-                      color: '#fff',
-                    },
-                  ]}>
-                  N$40
-                </Text>
+                {this.props.App.main_interfaceState_vars
+                  .dailyAmount_madeSoFar === false ? (
+                  <ActivityIndicator size="small" color="#fff" />
+                ) : (
+                  <Text
+                    style={[
+                      {
+                        fontSize: 16.5,
+                        fontFamily: 'Allrounder-Grotesk-Medium',
+                        color: '#fff',
+                      },
+                    ]}>
+                    {this.props.App.main_interfaceState_vars
+                      .dailyAmount_madeSoFar.currency_symbol +
+                      '' +
+                      this.props.App.main_interfaceState_vars
+                        .dailyAmount_madeSoFar.amount}
+                  </Text>
+                )}
               </View>
             </View>
-            <View
+            <TouchableOpacity
+              onPress={() =>
+                this.props.SwitchToNavigation_modeOrBack({
+                  isApp_inNavigation_mode: true,
+                  isRideInProgress: false,
+                  requestData: false,
+                })
+              }
               style={{
                 borderWidth: 1,
                 borderColor: '#096ED4',
-                width: 40,
-                height: 40,
+                width: 43,
+                height: 43,
                 alignItems: 'center',
                 justifyContent: 'center',
                 borderRadius: 150,
@@ -844,7 +902,7 @@ class Home extends React.PureComponent {
                 color="#096ED4"
                 size={22}
               />
-            </View>
+            </TouchableOpacity>
           </View>
         </View>
       );
@@ -924,12 +982,18 @@ class Home extends React.PureComponent {
             pulseRadius={25}
             innerCircleStyle={{
               circleColor: '#fff',
-              circleStrokeColor: '#007fff',
+              circleStrokeColor: this.props.App.requests_data_main_vars
+                .moreDetailsFocused_request.ride_basic_infos.inRideToDestination
+                ? '#b22222'
+                : '#007fff',
               circleStrokeWidth: 0.5,
             }}
             outerCircleStyle={{
               circleOpacity: 0.4,
-              circleColor: '#007fff',
+              circleColor: this.props.App.requests_data_main_vars
+                .moreDetailsFocused_request.ride_basic_infos.inRideToDestination
+                ? '#b22222'
+                : '#007fff',
             }}
             shape={{
               type: 'Point',
@@ -1318,7 +1382,13 @@ class Home extends React.PureComponent {
                     </Text>
                   </View>
                 </TouchableOpacity>
-                <TouchableOpacity style={{padding: 10, marginLeft: 10}}>
+                <TouchableOpacity
+                  onPress={() => {
+                    this.props.SwitchToNavigation_modeOrBack({
+                      isApp_inNavigation_mode: false,
+                    });
+                  }}
+                  style={{padding: 10, marginLeft: 10}}>
                   <IconCommunity
                     name="format-list-bulleted-square"
                     color="#000"
@@ -1530,6 +1600,7 @@ const mapDispatchToProps = (dispatch) =>
       UpdateFetchedRequests_dataServer,
       SwitchToNavigation_modeOrBack,
       UpdateRealtimeNavigationData,
+      UpdateDailyAmount_madeSoFar,
     },
     dispatch,
   );
