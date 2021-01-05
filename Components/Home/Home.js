@@ -34,6 +34,7 @@ import {
   UpdateRealtimeNavigationData,
 } from '../Redux/HomeActionsCreators';
 import {systemWeights} from 'react-native-typography';
+import PulseCircleLayer from '../Modules/PulseCircleLayer';
 import IconAnt from 'react-native-vector-icons/AntDesign';
 import IconCommunity from 'react-native-vector-icons/MaterialCommunityIcons';
 import IconMaterialIcons from 'react-native-vector-icons/MaterialIcons';
@@ -473,7 +474,7 @@ class Home extends React.PureComponent {
               padding: 20,
               paddingTop: 15,
               paddingBottom: 15,
-              position: 'absolute',
+              position: 'relative', //Critical fix - relative
               top: 0,
               width: '100%',
               zIndex: 900000000,
@@ -851,6 +852,98 @@ class Home extends React.PureComponent {
   }
 
   /**
+   * @func renderRouteElements
+   * Responsible for rendering any kind of polyline and navigation elements in the map component.
+   * Scenarios:
+   * 1. If there's a ride in progress.
+   */
+  renderRouteElements() {
+    if (
+      this.props.App.main_interfaceState_vars.isApp_inNavigation_mode &&
+      this.props.App.main_interfaceState_vars.isRideInProgress &&
+      this.props.App.main_interfaceState_vars.navigationRouteData !== false &&
+      this.props.App.main_interfaceState_vars.navigationRouteData
+        .routePoints !== undefined
+    ) {
+      //Fit bounds
+      if (this.camera !== undefined && this.camera != null) {
+        this.camera.fitBounds(
+          [this.props.App.longitude, this.props.App.latitude],
+          this.props.App.main_interfaceState_vars.navigationRouteData.destinationPoint.map(
+            parseFloat,
+          ),
+          80,
+          2000,
+        );
+      }
+      //Render polyline to destination/passenger
+      return (
+        <>
+          <Animated.ShapeSource
+            id={'shape'}
+            aboveLayerID={'driver-location'}
+            shape={
+              new Animated.Shape({
+                type: 'LineString',
+                coordinates: this.props.App.main_interfaceState_vars
+                  .navigationRouteData.routePoints,
+              })
+            }>
+            <Animated.LineLayer
+              id={'lineRoutePickup'}
+              aboveLayerID={'driver-location'}
+              style={{
+                lineCap: 'round',
+                lineWidth: this.props.App.main_interfaceState_vars
+                  .isApp_inTrackingMode
+                  ? 10
+                  : 6,
+                lineOpacity: 1,
+                lineColor: '#096ED4',
+              }}
+            />
+          </Animated.ShapeSource>
+          {/**Destination / passenger's location */}
+          <Animated.ShapeSource
+            id={'shape'}
+            aboveLayerID={'lineRoutePickup'}
+            shape={
+              new Animated.Shape({
+                type: 'LineString',
+                coordinates: [
+                  [0, 0],
+                  [1, 1],
+                ],
+              })
+            }>
+            <Animated.LineLayer id={'lineRoutePickup'} />
+          </Animated.ShapeSource>
+          <PulseCircleLayer
+            radius={10}
+            aboveLayerID={'lineRoutePickup'}
+            pulseRadius={25}
+            innerCircleStyle={{
+              circleColor: '#fff',
+              circleStrokeColor: '#007fff',
+              circleStrokeWidth: 0.5,
+            }}
+            outerCircleStyle={{
+              circleOpacity: 0.4,
+              circleColor: '#007fff',
+            }}
+            shape={{
+              type: 'Point',
+              coordinates: this.props.App.main_interfaceState_vars.navigationRouteData.destinationPoint.map(
+                parseFloat,
+              ),
+            }}
+          />
+        </>
+      );
+    }
+  }
+
+  /**
    * @function renderCenterMainHome
    * Responsible for rendering the center part of the home screen based on if the app is in normal or navigation
    * mode.
@@ -879,10 +972,9 @@ class Home extends React.PureComponent {
             }
             pitch={
               this.props.App.main_interfaceState_vars.isApp_inTrackingMode
-                ? 100
+                ? 50
                 : 0
             }
-            paddingTop={800}
             followUserMode="compass"
             centerCoordinate={[
               this.props.App.longitude,
@@ -904,6 +996,7 @@ class Home extends React.PureComponent {
               }}
             />
           </UserLocation>
+          {this.renderRouteElements()}
         </MapView>
       );
     } //Navigation off - show requests list
