@@ -26,6 +26,7 @@ import {
   UpdateType_rideShown_YourRides_screen,
   UpdateErrorModalLog,
   SwitchToNavigation_modeOrBack,
+  UpdateRequestType_focused,
 } from '../Redux/HomeActionsCreators';
 import call from 'react-native-phone-call';
 
@@ -179,6 +180,7 @@ class ErrorModal extends React.PureComponent {
    * Responsible for updating the type of ride shown in the "Main" tab.
    */
   updateYourRidesSHownOnes(type, parentNode) {
+    parentNode.setState({loaderState: true});
     this.props.UpdateErrorModalLog(false, false, 'any'); //Close modal
     this.props.UpdateType_rideShown_YourRides_screen(type);
     //Update the list of requests from the server
@@ -405,7 +407,17 @@ class ErrorModal extends React.PureComponent {
           style={{
             backgroundColor: '#fff',
             //padding: 20,
-            height: 360,
+            minHeight:
+              /ride/i.test(
+                this.props.App.main_interfaceState_vars.dailyAmount_madeSoFar
+                  .supported_requests_types,
+              ) &&
+              /delivery/i.test(
+                this.props.App.main_interfaceState_vars.dailyAmount_madeSoFar
+                  .supported_requests_types,
+              )
+                ? 360
+                : 270,
           }}>
           <View
             style={{
@@ -421,130 +433,152 @@ class ErrorModal extends React.PureComponent {
             </Text>
           </View>
           <View style={{flex: 1, justifyContent: 'center'}}>
-            <TouchableOpacity
-              onPress={() =>
-                this.updateYourRidesSHownOnes('Rides', this.props.parentNode)
-              }
-              style={[
-                styles.bttnGenericTc,
-                {
-                  borderRadius: 2,
-                  marginBottom: 10,
-                  justifyContent: 'flex-start',
-                  borderBottomColor: '#d0d0d0',
-                  borderBottomWidth: 1,
-                  paddingLeft: 20,
-                  paddingRight: 20,
-                  backgroundColor: '#fff',
-                  shadowColor: '#fff',
-                  shadowOffset: {
-                    width: 0,
-                    height: 0,
-                  },
-                  shadowOpacity: 0,
-                  shadowRadius: 0,
+            {/ride/i.test(
+              this.props.App.main_interfaceState_vars.dailyAmount_madeSoFar
+                .supported_requests_types,
+            ) ? (
+              <TouchableOpacity
+                onPress={() =>
+                  this.updateYourRidesSHownOnes('Rides', this.props.parentNode)
+                }
+                style={[
+                  styles.bttnGenericTc,
+                  {
+                    borderRadius: 2,
+                    marginBottom: 10,
+                    justifyContent: 'flex-start',
+                    borderBottomColor: '#d0d0d0',
+                    borderBottomWidth: 1,
+                    paddingLeft: 20,
+                    paddingRight: 20,
+                    backgroundColor: '#fff',
+                    shadowColor: '#fff',
+                    shadowOffset: {
+                      width: 0,
+                      height: 0,
+                    },
+                    shadowOpacity: 0,
+                    shadowRadius: 0,
 
-                  elevation: 0,
-                },
-              ]}>
-              <Text
-                style={{
-                  fontFamily: 'Allrounder-Grotesk-Book',
-                  fontSize: 19,
-                  color: '#000',
-                  marginLeft: 5,
-                  flex: 1,
-                }}>
-                Rides
-              </Text>
-              {/Rides/i.test(this.props.App.shownRides_types) ? (
-                <IconFeather name="check" color="#0e8491" size={20} />
-              ) : null}
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() =>
-                this.updateYourRidesSHownOnes('Delivery', this.props.parentNode)
-              }
-              style={[
-                styles.bttnGenericTc,
-                {
-                  borderRadius: 2,
-                  marginBottom: 10,
-                  justifyContent: 'flex-start',
-                  borderBottomColor: '#d0d0d0',
-                  borderBottomWidth: 1,
-                  paddingLeft: 20,
-                  paddingRight: 20,
-                  backgroundColor: '#fff',
-                  shadowColor: '#fff',
-                  shadowOffset: {
-                    width: 0,
-                    height: 0,
+                    elevation: 0,
                   },
-                  shadowOpacity: 0,
-                  shadowRadius: 0,
+                ]}>
+                <Text
+                  style={{
+                    fontFamily: 'Allrounder-Grotesk-Book',
+                    fontSize: 19,
+                    color: '#000',
+                    marginLeft: 5,
+                    flex: 1,
+                  }}>
+                  Rides
+                </Text>
+                {/Rides/i.test(this.props.App.shownRides_types) ? (
+                  <IconFeather name="check" color="#0e8491" size={20} />
+                ) : null}
+              </TouchableOpacity>
+            ) : null}
+            {/**For deliveries */}
+            {/delivery/i.test(
+              this.props.App.main_interfaceState_vars.dailyAmount_madeSoFar
+                .supported_requests_types,
+            ) ? (
+              <TouchableOpacity
+                onPress={() =>
+                  this.updateYourRidesSHownOnes(
+                    'Delivery',
+                    this.props.parentNode,
+                  )
+                }
+                style={[
+                  styles.bttnGenericTc,
+                  {
+                    borderRadius: 2,
+                    marginBottom: 10,
+                    justifyContent: 'flex-start',
+                    borderBottomColor: '#d0d0d0',
+                    borderBottomWidth: 1,
+                    paddingLeft: 20,
+                    paddingRight: 20,
+                    backgroundColor: '#fff',
+                    shadowColor: '#fff',
+                    shadowOffset: {
+                      width: 0,
+                      height: 0,
+                    },
+                    shadowOpacity: 0,
+                    shadowRadius: 0,
 
-                  elevation: 0,
-                },
-              ]}>
-              <Text
-                style={{
-                  fontFamily: 'Allrounder-Grotesk-Book',
-                  fontSize: 19,
-                  color: '#000',
-                  marginLeft: 5,
-                  flex: 1,
-                }}>
-                Deliveries
-              </Text>
-              {/Delivery/i.test(this.props.App.shownRides_types) ? (
-                <IconFeather name="check" color="#0e8491" size={20} />
-              ) : null}
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() =>
-                this.updateYourRidesSHownOnes(
-                  'Scheduled',
-                  this.props.parentNode,
-                )
-              }
-              style={[
-                styles.bttnGenericTc,
-                {
-                  borderRadius: 2,
-                  marginBottom: 10,
-                  justifyContent: 'flex-start',
-                  borderBottomColor: '#d0d0d0',
-                  borderBottomWidth: 1,
-                  paddingLeft: 20,
-                  paddingRight: 20,
-                  backgroundColor: '#fff',
-                  shadowColor: '#fff',
-                  shadowOffset: {
-                    width: 0,
-                    height: 0,
+                    elevation: 0,
                   },
-                  shadowOpacity: 0,
-                  shadowRadius: 0,
+                ]}>
+                <Text
+                  style={{
+                    fontFamily: 'Allrounder-Grotesk-Book',
+                    fontSize: 19,
+                    color: '#000',
+                    marginLeft: 5,
+                    flex: 1,
+                  }}>
+                  Deliveries
+                </Text>
+                {/Delivery/i.test(this.props.App.shownRides_types) ? (
+                  <IconFeather name="check" color="#0e8491" size={20} />
+                ) : null}
+              </TouchableOpacity>
+            ) : null}
+            {/**For scheduled rides/deliveries */}
+            {/(rides|delivery)/i.test(
+              this.props.App.main_interfaceState_vars.dailyAmount_madeSoFar
+                .supported_requests_types,
+            ) ? (
+              <TouchableOpacity
+                onPress={() =>
+                  this.updateYourRidesSHownOnes(
+                    'Scheduled',
+                    this.props.parentNode,
+                  )
+                }
+                style={[
+                  styles.bttnGenericTc,
+                  {
+                    borderRadius: 2,
+                    marginBottom: 10,
+                    justifyContent: 'flex-start',
+                    borderBottomColor: '#d0d0d0',
+                    borderBottomWidth: 1,
+                    paddingLeft: 20,
+                    paddingRight: 20,
+                    backgroundColor: '#fff',
+                    shadowColor: '#fff',
+                    shadowOffset: {
+                      width: 0,
+                      height: 0,
+                    },
+                    shadowOpacity: 0,
+                    shadowRadius: 0,
 
-                  elevation: 0,
-                },
-              ]}>
-              <Text
-                style={{
-                  fontFamily: 'Allrounder-Grotesk-Book',
-                  fontSize: 19,
-                  color: '#000',
-                  marginLeft: 5,
-                  flex: 1,
-                }}>
-                Scheduled
-              </Text>
-              {/Scheduled/i.test(this.props.App.shownRides_types) ? (
-                <IconFeather name="check" color="#0e8491" size={20} />
-              ) : null}
-            </TouchableOpacity>
+                    elevation: 0,
+                  },
+                ]}>
+                <Text
+                  style={{
+                    fontFamily: 'Allrounder-Grotesk-Book',
+                    fontSize: 19,
+                    color: '#000',
+                    marginLeft: 5,
+                    flex: 1,
+                  }}>
+                  Scheduled
+                </Text>
+                {/Scheduled/i.test(this.props.App.shownRides_types) ? (
+                  <IconFeather name="check" color="#0e8491" size={20} />
+                ) : null}
+              </TouchableOpacity>
+            ) : null}
+            {/**LOG OUT BUTTON */}
             <TouchableOpacity
+              onPress={() => this.props.parentNode.goOnlineOrOffline('offline')}
               style={[
                 styles.bttnGenericTc,
                 {
@@ -900,7 +934,7 @@ class ErrorModal extends React.PureComponent {
                       isRideInProgress: true,
                       requestData: this.props.App.requests_data_main_vars
                         .moreDetailsFocused_request,
-                    })
+                    });
                   }}
                   style={{
                     flexDirection: 'row',
@@ -2041,6 +2075,7 @@ const mapDispatchToProps = (dispatch) =>
       UpdateType_rideShown_YourRides_screen,
       UpdateErrorModalLog,
       SwitchToNavigation_modeOrBack,
+      UpdateRequestType_focused,
     },
     dispatch,
   );

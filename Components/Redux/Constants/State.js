@@ -64,17 +64,17 @@ const STATE = {
   },
 
   //1.Home screen
-  shownRides_types: 'Rides', //To govern which ride to show :Rides, Delivery or Scheduled - default: false
+  shownRides_types: 'Rides', //To govern which ride to show :Rides, Delivery or Scheduled - default: Rides
   //Responsible for defining the state of the interface at any time
   main_interfaceState_vars: {
     isApp_inNavigation_mode: false, //To know if the app is in navigation mode or not. - default: false
     isRideInProgress: false, //TO know whether a ride is in progress or not - default: false
-    isDriver_online: true, //To know whether the driver is online or offline - default: false - SERVER DEPENDENT
+    isDriver_online: false, //To know whether the driver is online or offline - default: false - SERVER DEPENDENT
     isComputing_route: true, //To know whether the app is computing the optimal route to destination - default: true
     isApp_inTrackingMode: false, //To know whether the driver pressed the closest tracking mode feature or not - default: false
     //..
     navigationRouteData: false, //The data for the navigation mode during an active ride in progress - default: false
-    dailyAmount_madeSoFar: false, //Contains the array with the details about the amount made today so far - default: false
+    dailyAmount_madeSoFar: false, //Contains the array with the details about the amount made today so far - ALSO HAS THE TYPE OF SUPPORTED REQUESTS FOR THE DRIVERS! - default: false
   },
   //2. Requests main vars
   //Hold all the requests related data storages

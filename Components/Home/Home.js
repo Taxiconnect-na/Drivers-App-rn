@@ -15,10 +15,12 @@ import {
 import {
   View,
   Text,
+  Animated as AnimatedNative,
   SafeAreaView,
   StyleSheet,
   TouchableOpacity,
   ScrollView,
+  Easing,
   PermissionsAndroid,
   Image,
   FlatList,
@@ -35,6 +37,7 @@ import {
   SwitchToNavigation_modeOrBack,
   UpdateRealtimeNavigationData,
   UpdateDailyAmount_madeSoFar,
+  UpdateDriverOperational_status,
 } from '../Redux/HomeActionsCreators';
 import {systemWeights} from 'react-native-typography';
 import PulseCircleLayer from '../Modules/PulseCircleLayer';
@@ -56,6 +59,11 @@ class Home extends React.PureComponent {
     this.state = {
       loaderState: false,
       networkStateChecker: false,
+      isGoingOnline: false, //TO know whether it is loading to go online - default: false
+      offlineOnlineText: 'Hold on...', //The text to show when the driver is offline/online in animation - default: Hold on
+      offlineOnlinePositionOffset: new AnimatedNative.Value(15), //The vertical offset position of the text - default: 10
+      offlineOnlineOpacity: new AnimatedNative.Value(0), //The opacity of the text 0 - default: 0
+      wasAnimatedOfflineStateCalled: false, //TO know whether the animated state function was called to avoid calling it more than once - default: false
     };
   }
 
@@ -120,14 +128,64 @@ class Home extends React.PureComponent {
       //Geocode the location
       globalObject.getCurrentPositionCusto();
       //Get requests
-      globalObject.updateRemoteLocationsData();
+      if (globalObject.props.App.main_interfaceState_vars.isDriver_online) {
+        //Only if driver online
+        globalObject.updateRemoteLocationsData();
+      }
       //Get the daily amount made so far
       globalObject.computeDaily_amountriver();
+      //Get the operational status
+      globalObject.props.App.socket.emit('goOnline_offlineDrivers_io', {
+        driver_fingerprint: globalObject.props.App.user_fingerprint,
+        action: 'get',
+      });
     }, this.props.App._TMP_TRIP_INTERVAL_PERSISTER_TIME);
 
     /**
      * SOCKET.IO RESPONSES
      */
+    /**
+     * GET/SET THE OPERATIONAL STATUS OF THE DRIVER
+     * event: goOnline_offlineDrivers_io
+     * Get the status of the driver : online/offline, can also handle the "Go online/offline" actions
+     */
+    this.props.App.socket.on(
+      'goOnline_offlineDrivers_io-response',
+      function (response) {
+        if (globalObject.state.isGoingOnline) {
+          globalObject.setState({isGoingOnline: false, loaderState: false}); //close the loader
+        }
+        if (
+          response !== undefined &&
+          response !== null &&
+          response.response !== undefined &&
+          response.response !== null &&
+          response.flag !== undefined &&
+          response.flag !== null
+        ) {
+          //Responded
+          //Check if it was a get or make
+          if (/got/i.test(response.response)) {
+            //Get
+            let boolDriverStatus = /online/i.test(response.flag);
+            //Update the driver status - only if the state changed
+            if (
+              globalObject.props.App.main_interfaceState_vars
+                .isDriver_online !== boolDriverStatus
+            ) {
+              //New state
+              globalObject.props.UpdateDriverOperational_status(response.flag);
+            }
+          } else if (/done/i.test(response.response)) {
+            //Make
+            globalObject.state.wasAnimatedOfflineStateCalled = false;
+            //Update driver status anyways
+            globalObject.props.UpdateDriverOperational_status(response.flag);
+          }
+        }
+      },
+    );
+
     /**
      * GET GEOCODED USER LOCATION
      * event: geocode-this-point
@@ -162,14 +220,26 @@ class Home extends React.PureComponent {
      * Responsible for redirecting updates to map graphics data based on if the status of the request is: pending, in route to pickup, in route to drop off or completed
      */
     this.props.App.socket.on('trackdriverroute-response', function (response) {
+      //Deactivate the loader
+      if (globalObject.state.loaderState) {
+        //only if active
+        globalObject.setState({loaderState: false});
+      }
+      //...
       if (
         response !== null &&
         response !== undefined &&
         response !== false &&
         /no_rides/i.test(response.request_status) === false &&
-        /no_requests/i.test(response.response) === false
+        /no_requests/i.test(response.response) === false &&
+        response[0].request_type !== undefined
       ) {
-        globalObject.props.UpdateFetchedRequests_dataServer(response);
+        //Check that the request type is respected by the new incomming data
+        let regChecker = new RegExp(globalObject.props.App.requestType, 'i');
+        if (regChecker.test(response[0].request_type)) {
+          //Consistent with the choosed in app request type
+          globalObject.props.UpdateFetchedRequests_dataServer(response);
+        }
       } //No rides
       else {
         //Reset only if not already empty
@@ -501,7 +571,7 @@ class Home extends React.PureComponent {
                   elevation: 9,
                   zIndex: 9000000000,
                 }}>
-                <IconCommunity name="map" color="#096ED4" size={22} />
+                <IconCommunity name="bell" color="#096ED4" size={22} />
               </TouchableOpacity>
             </View>
           </View>
@@ -1070,6 +1140,7 @@ class Home extends React.PureComponent {
           <GenericLoader
             active={this.state.loaderState}
             backgroundColor={'#f0f0f0'}
+            thickness={4}
           />
           {/*Request template*/}
           {this.props.App.requests_data_main_vars.fetchedRequests_data_store !==
@@ -1123,7 +1194,15 @@ class Home extends React.PureComponent {
                   alignItems: 'center',
                   paddingTop: '35%',
                 }}>
-                <IconSimpleLineIcons name="refresh" size={40} color="#7d7d7d" />
+                {this.props.App.main_interfaceState_vars.isDriver_online ? (
+                  <IconSimpleLineIcons
+                    name="refresh"
+                    size={40}
+                    color="#7d7d7d"
+                  />
+                ) : (
+                  <IconAnt name="poweroff" size={40} color="#7d7d7d" />
+                )}
                 <Text
                   style={{
                     fontFamily: 'Allrounder-Grotesk-Book',
@@ -1131,7 +1210,13 @@ class Home extends React.PureComponent {
                     marginTop: 20,
                     color: '#7d7d7d',
                   }}>
-                  No rides so far.
+                  {this.props.App.main_interfaceState_vars.isDriver_online
+                    ? /ride/i.test(this.props.App.requestType)
+                      ? 'No rides so far.'
+                      : /delivery/i.test(this.props.App.requestType)
+                      ? 'No deliveries so far.'
+                      : 'No scheduled requests so far.'
+                    : "You're offline"}
                 </Text>
                 <Text
                   style={{
@@ -1140,7 +1225,13 @@ class Home extends React.PureComponent {
                     marginTop: 10,
                     color: '#7d7d7d',
                   }}>
-                  We'll notify you when new rides come.
+                  {this.props.App.main_interfaceState_vars.isDriver_online
+                    ? /ride/i.test(this.props.App.requestType)
+                      ? "We'll notify you when new rides come."
+                      : /delivery/i.test(this.props.App.requestType)
+                      ? "We'll notify you when new deliveries come."
+                      : "We'll notify you when new requests come."
+                    : 'Go online to receive requests.'}
                 </Text>
               </View>
             </View>
@@ -1165,148 +1256,290 @@ class Home extends React.PureComponent {
   }
 
   /**
+   * @func goOnlineOrOffline
+   * Responsible for going online or offline
+   * ? Super function.
+   * @param state: online/offline
+   */
+  goOnlineOrOffline(state) {
+    if (/online/i.test(state)) {
+      this.props.UpdateErrorModalLog(false, false, 'any'); //Close modal
+      this.setState({isGoingOnline: true, loaderState: true}); //Activate the loader
+      //Go online
+      this.props.App.socket.emit('goOnline_offlineDrivers_io', {
+        driver_fingerprint: this.props.App.user_fingerprint,
+        state: 'online',
+        action: 'make',
+      });
+    } else if (/offline/i.test(state)) {
+      this.props.UpdateErrorModalLog(false, false, 'any'); //Close modal
+      this.setState({isGoingOnline: true, loaderState: true}); //Activate the loader
+      //Go offline
+      this.props.App.socket.emit('goOnline_offlineDrivers_io', {
+        driver_fingerprint: this.props.App.user_fingerprint,
+        state: 'offline',
+        action: 'make',
+      });
+    }
+  }
+
+  /**
    * @function renderFooterMainHome
    * Responsible for rendering the footer part of the home screen based on if the app is in normal or navigation
    * mode.
    */
   renderFooterMainHome() {
-    if (this.props.App.main_interfaceState_vars.isApp_inNavigation_mode) {
-      //Navigation on - hide footer
-      if (this.props.App.main_interfaceState_vars.isRideInProgress) {
-        let globalObject = this;
-        //START THE INTERVAL PERSISTER FOR THE NAVIGATION DATA
-        if (this.props.App._TMP_NAVIATION_DATA_INTERVAL_PERSISTER === null) {
-          console.log('INterval navigation started');
-          //Initialize
-          this.props.App._TMP_NAVIATION_DATA_INTERVAL_PERSISTER = setInterval(
-            function () {
-              if (
-                globalObject.props.App.main_interfaceState_vars.isRideInProgress
-              ) {
-                //Get data
-                //Check the driver's latitude and longitude (!= false or null or 0)
+    //Check if ONLINE OR OFFLINE
+    if (this.props.App.main_interfaceState_vars.isDriver_online) {
+      //Driver online
+      if (this.props.App.main_interfaceState_vars.isApp_inNavigation_mode) {
+        //Navigation on - hide footer
+        if (this.props.App.main_interfaceState_vars.isRideInProgress) {
+          let globalObject = this;
+          //START THE INTERVAL PERSISTER FOR THE NAVIGATION DATA
+          if (this.props.App._TMP_NAVIATION_DATA_INTERVAL_PERSISTER === null) {
+            console.log('INterval navigation started');
+            //Initialize
+            this.props.App._TMP_NAVIATION_DATA_INTERVAL_PERSISTER = setInterval(
+              function () {
                 if (
-                  globalObject.props.App.latitude !== false &&
-                  globalObject.props.App.latitude !== null &&
-                  globalObject.props.App.latitude !== undefined &&
-                  globalObject.props.App.latitude !== 0 &&
-                  globalObject.props.App.longitude !== false &&
-                  globalObject.props.App.longitude !== null &&
-                  globalObject.props.App.longitude !== undefined &&
-                  globalObject.props.App.longitude !== 0
+                  globalObject.props.App.main_interfaceState_vars
+                    .isRideInProgress &&
+                  globalObject.props.App.main_interfaceState_vars
+                    .isApp_inNavigation_mode
                 ) {
-                  let bundleData = {
-                    user_fingerprint: globalObject.props.App.user_fingerprint,
-                    request_fp:
-                      globalObject.props.App.requests_data_main_vars
-                        .moreDetailsFocused_request.request_fp,
-                    org_latitude: globalObject.props.App.latitude,
-                    org_longitude: globalObject.props.App.longitude,
+                  //Get data
+                  //Check the driver's latitude and longitude (!= false or null or 0)
+                  if (
+                    globalObject.props.App.latitude !== false &&
+                    globalObject.props.App.latitude !== null &&
+                    globalObject.props.App.latitude !== undefined &&
+                    globalObject.props.App.latitude !== 0 &&
+                    globalObject.props.App.longitude !== false &&
+                    globalObject.props.App.longitude !== null &&
+                    globalObject.props.App.longitude !== undefined &&
+                    globalObject.props.App.longitude !== 0
+                  ) {
+                    let bundleData = {
+                      user_fingerprint: globalObject.props.App.user_fingerprint,
+                      request_fp:
+                        globalObject.props.App.requests_data_main_vars
+                          .moreDetailsFocused_request.request_fp,
+                      org_latitude: globalObject.props.App.latitude,
+                      org_longitude: globalObject.props.App.longitude,
 
-                    dest_latitude: globalObject.props.App
-                      .requests_data_main_vars.moreDetailsFocused_request
-                      .ride_basic_infos.inRideToDestination
-                      ? globalObject.props.App.requests_data_main_vars
-                          .moreDetailsFocused_request.origin_destination_infos
-                          .destination_infos[0].coordinates.longitude
-                      : globalObject.props.App.requests_data_main_vars
-                          .moreDetailsFocused_request.origin_destination_infos
-                          .pickup_infos.coordinates.latitude,
+                      dest_latitude: globalObject.props.App
+                        .requests_data_main_vars.moreDetailsFocused_request
+                        .ride_basic_infos.inRideToDestination
+                        ? globalObject.props.App.requests_data_main_vars
+                            .moreDetailsFocused_request.origin_destination_infos
+                            .destination_infos[0].coordinates.longitude
+                        : globalObject.props.App.requests_data_main_vars
+                            .moreDetailsFocused_request.origin_destination_infos
+                            .pickup_infos.coordinates.latitude,
 
-                    dest_longitude: globalObject.props.App
-                      .requests_data_main_vars.moreDetailsFocused_request
-                      .ride_basic_infos.inRideToDestination
-                      ? globalObject.props.App.requests_data_main_vars
-                          .moreDetailsFocused_request.origin_destination_infos
-                          .destination_infos[0].coordinates.latitude
-                      : globalObject.props.App.requests_data_main_vars
-                          .moreDetailsFocused_request.origin_destination_infos
-                          .pickup_infos.coordinates.longitude,
-                  };
-                  //...
-                  globalObject.props.App.socket.emit(
-                    'getRealtimeTrackingRoute_forTHIS_io',
-                    bundleData,
+                      dest_longitude: globalObject.props.App
+                        .requests_data_main_vars.moreDetailsFocused_request
+                        .ride_basic_infos.inRideToDestination
+                        ? globalObject.props.App.requests_data_main_vars
+                            .moreDetailsFocused_request.origin_destination_infos
+                            .destination_infos[0].coordinates.latitude
+                        : globalObject.props.App.requests_data_main_vars
+                            .moreDetailsFocused_request.origin_destination_infos
+                            .pickup_infos.coordinates.longitude,
+                    };
+                    //...
+                    globalObject.props.App.socket.emit(
+                      'getRealtimeTrackingRoute_forTHIS_io',
+                      bundleData,
+                    );
+                  }
+                } //No rides in progress - kill the interval updater
+                else {
+                  console.log('Cleared navigation data persister');
+                  clearInterval(
+                    globalObject.props.App
+                      ._TMP_NAVIATION_DATA_INTERVAL_PERSISTER,
                   );
+                  globalObject.props.App._TMP_NAVIATION_DATA_INTERVAL_PERSISTER = null;
                 }
-              } //No rides in progress - kill the interval updater
-              else {
-                clearInterval(
-                  globalObject.props.App._TMP_NAVIATION_DATA_INTERVAL_PERSISTER,
-                );
-                globalObject.props.App._TMP_NAVIATION_DATA_INTERVAL_PERSISTER = null;
-              }
-            },
-            globalObject.props.App._TMP_NAVIATION_DATA_INTERVAL_PERSISTER_TIME,
-          );
-        }
+              },
+              globalObject.props.App
+                ._TMP_NAVIATION_DATA_INTERVAL_PERSISTER_TIME,
+            );
+          }
 
-        //A ride is in progress actively in navigation mode
-        return (
-          <View>
-            <View
-              style={{
-                position: 'absolute',
-                top: -160,
-                right: 15,
-                zIndex: 9000000,
-                alignItems: 'center',
-              }}>
-              <TouchableOpacity
-                onPress={() =>
-                  this.props.UpdateErrorModalLog(
-                    true,
-                    'show_guardian_toolkit',
-                    'any',
-                  )
-                }
+          //A ride is in progress actively in navigation mode
+          return (
+            <View>
+              <View
                 style={{
-                  width: 57,
-                  height: 57,
-                  borderRadius: 160,
+                  position: 'absolute',
+                  top: -160,
+                  right: 15,
+                  zIndex: 9000000,
+                  alignItems: 'center',
+                }}>
+                <TouchableOpacity
+                  onPress={() =>
+                    this.props.UpdateErrorModalLog(
+                      true,
+                      'show_guardian_toolkit',
+                      'any',
+                    )
+                  }
+                  style={{
+                    width: 57,
+                    height: 57,
+                    borderRadius: 160,
+                    backgroundColor: '#fff',
+                    shadowColor: '#000',
+                    shadowOffset: {
+                      width: 0,
+                      height: 5,
+                    },
+                    shadowOpacity: 0.36,
+                    shadowRadius: 6.68,
+                    elevation: 11,
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    marginBottom: 20,
+                    zIndex: 900000000,
+                  }}>
+                  <IconMaterialIcons name="shield" color={'#000'} size={32} />
+                </TouchableOpacity>
+                <TouchableOpacity
+                  onPress={() => this.updateMapTrackingState()}
+                  style={{
+                    width: 57,
+                    height: 57,
+                    borderRadius: 160,
+                    backgroundColor: '#fff',
+                    shadowColor: '#000',
+                    shadowOffset: {
+                      width: 0,
+                      height: 5,
+                    },
+                    shadowOpacity: 0.36,
+                    shadowRadius: 6.68,
+
+                    elevation: 11,
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}>
+                  <IconMaterialIcons
+                    name="navigation"
+                    color={'#096ED4'}
+                    size={32}
+                  />
+                </TouchableOpacity>
+              </View>
+              <View
+                style={{
+                  height: 90,
+                  justifyContent: 'center',
                   backgroundColor: '#fff',
                   shadowColor: '#000',
                   shadowOffset: {
                     width: 0,
-                    height: 5,
+                    height: 12,
                   },
-                  shadowOpacity: 0.36,
-                  shadowRadius: 6.68,
-                  elevation: 11,
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  marginBottom: 20,
-                  zIndex: 900000000,
-                }}>
-                <IconMaterialIcons name="shield" color={'#000'} size={32} />
-              </TouchableOpacity>
-              <TouchableOpacity
-                onPress={() => this.updateMapTrackingState()}
-                style={{
-                  width: 57,
-                  height: 57,
-                  borderRadius: 160,
-                  backgroundColor: '#fff',
-                  shadowColor: '#000',
-                  shadowOffset: {
-                    width: 0,
-                    height: 5,
-                  },
-                  shadowOpacity: 0.36,
-                  shadowRadius: 6.68,
+                  shadowOpacity: 0.58,
+                  shadowRadius: 16.0,
 
-                  elevation: 11,
-                  alignItems: 'center',
-                  justifyContent: 'center',
+                  elevation: 24,
                 }}>
-                <IconMaterialIcons
-                  name="navigation"
-                  color={'#096ED4'}
-                  size={32}
-                />
-              </TouchableOpacity>
+                <View
+                  style={{
+                    padding: 20,
+                    flexDirection: 'row',
+                    flex: 1,
+                    alignItems: 'center',
+                  }}>
+                  <TouchableOpacity
+                    onPress={() =>
+                      this.props.UpdateErrorModalLog(
+                        true,
+                        'show_modalMore_tripDetails',
+                        'any',
+                        this.props.App.requests_data_main_vars
+                          .moreDetailsFocused_request,
+                      )
+                    }
+                    style={{
+                      flex: 1,
+                      flexDirection: 'row',
+                      alignItems: 'center',
+                      borderRightWidth: 0.7,
+                      borderRightColor: '#d0d0d0',
+                    }}>
+                    <View style={{padding: 10, marginRight: 10}}>
+                      <IconMaterialIcons
+                        name="keyboard-arrow-down"
+                        color={'#000'}
+                        size={22}
+                      />
+                    </View>
+                    <View
+                      style={{
+                        flex: 1,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}>
+                      <Text
+                        style={{
+                          fontFamily: 'Allrounder-Grotesk-Medium',
+                          fontSize: 17.5,
+                        }}>
+                        {
+                          this.props.App.requests_data_main_vars
+                            .moreDetailsFocused_request.passenger_infos.name
+                        }
+                      </Text>
+                      <Text
+                        style={{
+                          fontFamily: 'Allrounder-Grotesk-Book',
+                          fontSize: 15,
+                          color: '#096ED4',
+                        }}>
+                        {
+                          this.props.App.requests_data_main_vars
+                            .moreDetailsFocused_request.ride_basic_infos
+                            .connect_type
+                        }
+                      </Text>
+                    </View>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    onPress={() => {
+                      this.props.SwitchToNavigation_modeOrBack({
+                        isApp_inNavigation_mode: false,
+                      });
+                    }}
+                    style={{padding: 10, marginLeft: 10}}>
+                    <IconCommunity
+                      name="format-list-bulleted-square"
+                      color="#000"
+                      size={28}
+                    />
+                  </TouchableOpacity>
+                </View>
+              </View>
             </View>
-            <View
+          );
+        } //No active ride in navigation mode
+        else {
+          return (
+            <TouchableOpacity
+              onPress={() =>
+                this.props.App.main_interfaceState_vars.isDriver_online
+                  ? this.props.UpdateErrorModalLog(
+                      true,
+                      'show_select_ride_type_modal',
+                      'any',
+                    )
+                  : {}
+              }
               style={{
                 height: 90,
                 justifyContent: 'center',
@@ -1321,211 +1554,278 @@ class Home extends React.PureComponent {
 
                 elevation: 24,
               }}>
-              <View
-                style={{
-                  padding: 20,
-                  flexDirection: 'row',
-                  flex: 1,
-                  alignItems: 'center',
-                }}>
-                <TouchableOpacity
-                  onPress={() =>
-                    this.props.UpdateErrorModalLog(
-                      true,
-                      'show_modalMore_tripDetails',
-                      'any',
-                      this.props.App.requests_data_main_vars
-                        .moreDetailsFocused_request,
-                    )
-                  }
+              {this.props.App.main_interfaceState_vars.isDriver_online ? (
+                <View
                   style={{
-                    flex: 1,
                     flexDirection: 'row',
                     alignItems: 'center',
-                    borderRightWidth: 0.7,
-                    borderRightColor: '#d0d0d0',
+                    padding: 20,
                   }}>
-                  <View style={{padding: 10, marginRight: 10}}>
-                    <IconMaterialIcons
-                      name="keyboard-arrow-down"
-                      color={'#000'}
-                      size={22}
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      alignItems: 'center',
+                      flex: 1,
+                    }}>
+                    <IconCommunity
+                      name="square"
+                      size={10}
+                      style={{top: 1, marginRight: 5}}
                     />
+                    <Text
+                      style={{
+                        fontFamily: 'Allrounder-Grotesk-Regular',
+                        fontSize: 18,
+                      }}>
+                      {this.props.App.shownRides_types}
+                    </Text>
                   </View>
+                  <IconMaterialIcons
+                    name="keyboard-arrow-down"
+                    color={'#000'}
+                    size={22}
+                  />
+                </View>
+              ) : (
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    flex: 1,
+                    backgroundColor: '#096ED4',
+                  }}>
                   <View
                     style={{
                       flex: 1,
                       alignItems: 'center',
-                      justifyContent: 'center',
                     }}>
                     <Text
                       style={{
                         fontFamily: 'Allrounder-Grotesk-Medium',
-                        fontSize: 17.5,
+                        fontSize: 20,
+                        color: '#fff',
                       }}>
-                      {
-                        this.props.App.requests_data_main_vars
-                          .moreDetailsFocused_request.passenger_infos.name
-                      }
-                    </Text>
-                    <Text
-                      style={{
-                        fontFamily: 'Allrounder-Grotesk-Book',
-                        fontSize: 15,
-                        color: '#096ED4',
-                      }}>
-                      {
-                        this.props.App.requests_data_main_vars
-                          .moreDetailsFocused_request.ride_basic_infos
-                          .connect_type
-                      }
+                      Go online
                     </Text>
                   </View>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  onPress={() => {
-                    this.props.SwitchToNavigation_modeOrBack({
-                      isApp_inNavigation_mode: false,
-                    });
-                  }}
-                  style={{padding: 10, marginLeft: 10}}>
-                  <IconCommunity
-                    name="format-list-bulleted-square"
-                    color="#000"
-                    size={28}
-                  />
-                </TouchableOpacity>
-              </View>
-            </View>
-          </View>
-        );
-      } //No active ride in navigation mode
+                </View>
+              )}
+            </TouchableOpacity>
+          );
+        }
+      } //Navigation off - show footer
       else {
         return (
           <TouchableOpacity
             onPress={() =>
-              this.props.App.main_interfaceState_vars.isDriver_online
+              this.props.UpdateErrorModalLog(
+                true,
+                'show_select_ride_type_modal',
+                'any',
+              )
+            }
+            style={{
+              height: 80,
+              justifyContent: 'center',
+              backgroundColor: '#fff',
+              borderTopWidth: 2,
+            }}>
+            <View
+              style={{flexDirection: 'row', alignItems: 'center', padding: 20}}>
+              <View
+                style={{flexDirection: 'row', alignItems: 'center', flex: 1}}>
+                <IconCommunity
+                  name="square"
+                  size={10}
+                  style={{top: 1, marginRight: 5}}
+                />
+                <Text
+                  style={{
+                    fontFamily: 'Allrounder-Grotesk-Regular',
+                    fontSize: 18,
+                  }}>
+                  {this.props.App.shownRides_types}
+                </Text>
+              </View>
+              <IconMaterialIcons
+                name="keyboard-arrow-down"
+                color={'#000'}
+                size={22}
+              />
+            </View>
+          </TouchableOpacity>
+        );
+      }
+    } //Driver offline
+    else {
+      //Call the animated offline state once
+      if (this.state.wasAnimatedOfflineStateCalled === false) {
+        this.setState({wasAnimatedOfflineStateCalled: true}); //Lock the calling of the animated offline state.
+        this.animatedOfflineState();
+      }
+
+      return (
+        <TouchableOpacity
+          onPress={() =>
+            this.props.App.main_interfaceState_vars.dailyAmount_madeSoFar !==
+            false
+              ? this.props.App.main_interfaceState_vars.isDriver_online
                 ? this.props.UpdateErrorModalLog(
                     true,
                     'show_select_ride_type_modal',
                     'any',
                   )
-                : {}
-            }
-            style={{
-              height: 90,
-              justifyContent: 'center',
-              backgroundColor: '#fff',
-              shadowColor: '#000',
-              shadowOffset: {
-                width: 0,
-                height: 12,
-              },
-              shadowOpacity: 0.58,
-              shadowRadius: 16.0,
-
-              elevation: 24,
-            }}>
-            {this.props.App.main_interfaceState_vars.isDriver_online ? (
-              <View
-                style={{
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  padding: 20,
-                }}>
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                    flex: 1,
-                  }}>
-                  <IconCommunity
-                    name="square"
-                    size={10}
-                    style={{top: 1, marginRight: 5}}
-                  />
-                  <Text
-                    style={{
-                      fontFamily: 'Allrounder-Grotesk-Regular',
-                      fontSize: 18,
-                    }}>
-                    {this.props.App.shownRides_types}
-                  </Text>
-                </View>
-                <IconMaterialIcons
-                  name="keyboard-arrow-down"
-                  color={'#000'}
-                  size={22}
-                />
-              </View>
-            ) : (
-              <View
-                style={{
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  flex: 1,
-                  backgroundColor: '#096ED4',
-                }}>
-                <View
-                  style={{
-                    flex: 1,
-                    alignItems: 'center',
-                  }}>
-                  <Text
-                    style={{
-                      fontFamily: 'Allrounder-Grotesk-Medium',
-                      fontSize: 20,
-                      color: '#fff',
-                    }}>
-                    Go online
-                  </Text>
-                </View>
-              </View>
-            )}
-          </TouchableOpacity>
-        );
-      }
-    } //Navigation off - show footer
-    else {
-      return (
-        <TouchableOpacity
-          onPress={() =>
-            this.props.UpdateErrorModalLog(
-              true,
-              'show_select_ride_type_modal',
-              'any',
-            )
+                : this.goOnlineOrOffline('online')
+              : {}
           }
           style={{
             height: 80,
             justifyContent: 'center',
-            backgroundColor: '#fff',
+            backgroundColor:
+              this.state.isGoingOnline === false ? '#fff' : '#096ED4',
             borderTopWidth: 2,
           }}>
           <View
             style={{flexDirection: 'row', alignItems: 'center', padding: 20}}>
-            <View style={{flexDirection: 'row', alignItems: 'center', flex: 1}}>
-              <IconCommunity
-                name="square"
-                size={10}
-                style={{top: 1, marginRight: 5}}
-              />
-              <Text
-                style={{
-                  fontFamily: 'Allrounder-Grotesk-Regular',
-                  fontSize: 18,
-                }}>
-                {this.props.App.shownRides_types}
-              </Text>
-            </View>
-            <IconMaterialIcons
-              name="keyboard-arrow-down"
-              color={'#000'}
-              size={22}
-            />
+            <AnimatedNative.View
+              style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+                justifyContent: 'center',
+                flex: 1,
+                opacity: this.state.offlineOnlineOpacity,
+                transform: [
+                  {translateY: this.state.offlineOnlinePositionOffset},
+                ],
+              }}>
+              {this.state.isGoingOnline === false ? (
+                <Text
+                  style={{
+                    fontFamily: 'Allrounder-Grotesk-Medium',
+                    fontSize: this.props.App.main_interfaceState_vars
+                      .isDriver_online
+                      ? 18
+                      : 19,
+                    color: /Hold on/i.test(this.state.offlineOnlineText)
+                      ? '#000'
+                      : /Offline/i.test(this.state.offlineOnlineText)
+                      ? '#b22222'
+                      : '#096ED4',
+                  }}>
+                  {this.state.offlineOnlineText}
+                </Text>
+              ) : (
+                <>
+                  <ActivityIndicator size="small" color="#fff" />
+                  <Text
+                    style={{
+                      fontFamily: 'Allrounder-Grotesk-Regular',
+                      fontSize: 18.5,
+                      marginLeft: 5,
+                      color: '#fff',
+                    }}>
+                    Going online
+                  </Text>
+                </>
+              )}
+            </AnimatedNative.View>
           </View>
         </TouchableOpacity>
       );
+    }
+  }
+
+  /**
+   * @func animatedOfflineState
+   * Responsible for animating the Offline text and the proposition to Go Online text.
+   * Only with UseNativeDriver.
+   * Only if the driver's offline.
+   * isGoingOnline: false, //TO know whether it is loading to go online - default: false
+      offlineOnlineText: 'Hold on', //The text to show when the driver is offline/online in animation - default: Hold on
+      offlineOnlinePositionOffset: 15, //The vertical offset position of the text - default: 10
+      offlineOnlineOpacity: 0, //The opacity of the text 0 - default: 0
+   */
+  animatedOfflineState() {
+    if (
+      this.props.App.main_interfaceState_vars.isDriver_online === false &&
+      this.state.isGoingOnline === false
+    ) {
+      let globalObject = this;
+      //Offline state
+      //Go up
+      AnimatedNative.parallel([
+        AnimatedNative.timing(this.state.offlineOnlineOpacity, {
+          toValue: 1,
+          duration: 250,
+          easing: Easing.bezier(0.5, 0.0, 0.0, 0.8),
+          useNativeDriver: true,
+        }),
+        AnimatedNative.timing(this.state.offlineOnlinePositionOffset, {
+          toValue: 0,
+          duration: 200,
+          easing: Easing.bezier(0.5, 0.0, 0.0, 0.8),
+          useNativeDriver: true,
+        }),
+      ]).start(() => {
+        //Go down after 3 sec
+        setTimeout(
+          function () {
+            AnimatedNative.parallel([
+              AnimatedNative.timing(globalObject.state.offlineOnlineOpacity, {
+                toValue: 0,
+                duration: 250,
+                easing: Easing.bezier(0.5, 0.0, 0.0, 0.8),
+                useNativeDriver: true,
+              }),
+              AnimatedNative.timing(
+                globalObject.state.offlineOnlinePositionOffset,
+                {
+                  toValue: 10,
+                  duration: 300,
+                  easing: Easing.bezier(0.5, 0.0, 0.0, 0.8),
+                  useNativeDriver: true,
+                },
+              ),
+            ]).start(() => {
+              //Update label text
+              let labelText = /Hold on/i.test(
+                globalObject.state.offlineOnlineText,
+              )
+                ? "You're offline"
+                : /Offline/i.test(globalObject.state.offlineOnlineText)
+                ? 'Go online'
+                : "You're offline";
+              globalObject.setState({offlineOnlineText: labelText});
+              //...
+              //Recall the function
+              setTimeout(function () {
+                globalObject.animatedOfflineState();
+              }, 200);
+            });
+          },
+          /Hold on/i.test(globalObject.state.offlineOnlineText)
+            ? 3000
+            : /Go online/i.test(globalObject.state.offlineOnlineText)
+            ? 10000
+            : 4000,
+        );
+      });
+    } //Put everything back ON
+    else {
+      AnimatedNative.parallel([
+        AnimatedNative.timing(this.state.offlineOnlineOpacity, {
+          toValue: 1,
+          duration: 250,
+          easing: Easing.bezier(0.5, 0.0, 0.0, 0.8),
+          useNativeDriver: true,
+        }),
+        AnimatedNative.timing(this.state.offlineOnlinePositionOffset, {
+          toValue: 0,
+          duration: 200,
+          easing: Easing.bezier(0.5, 0.0, 0.0, 0.8),
+          useNativeDriver: true,
+        }),
+      ]).start();
     }
   }
 
@@ -1601,6 +1901,7 @@ const mapDispatchToProps = (dispatch) =>
       SwitchToNavigation_modeOrBack,
       UpdateRealtimeNavigationData,
       UpdateDailyAmount_madeSoFar,
+      UpdateDriverOperational_status,
     },
     dispatch,
   );

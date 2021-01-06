@@ -14,6 +14,8 @@ const INIT_STATE = STATE;
 const HomeReducer = (state = INIT_STATE, action) => {
   //Predefined variables
   let newState = state;
+  let phoneNumberModuleTmp = null; //Multipurpose phone number input variable
+
   switch (action.type) {
     case 'UPDATE_GRANTED_GPRS_VARS':
       //Update the previous state
@@ -27,6 +29,61 @@ const HomeReducer = (state = INIT_STATE, action) => {
       newState.isPhoneNumberValid = false; //TO know if the phone number is valid or not.
 
       //..
+      return {...state, ...newState};
+
+    case 'VALIDATE_GENERIC_PHONE_NUMBER':
+      //Check the phone number validity
+      console.log(
+        newState.countryPhoneCode +
+          newState.phoneNumberEntered.replace(/ /g, '').replace(/^0/, ''),
+      );
+      phoneNumberModuleTmp = parsePhoneNumber(
+        newState.countryPhoneCode +
+          newState.phoneNumberEntered.replace(/ /g, '').replace(/^0/, ''),
+        newState.countryCodeSelected.toUpperCase(),
+      );
+      if (phoneNumberModuleTmp && phoneNumberModuleTmp.isValid()) {
+        if (
+          /^0/.test(newState.phoneNumberEntered.replace(/ /g, '')) &&
+          newState.phoneNumberEntered.replace(/ /g, '').trim().length === 10
+        ) {
+          //Most african countries
+          //Valid
+          newState.errorReceiverPhoneNumberShow = false; //Hide corresponding error text
+          console.log('VALID DETAILS');
+          newState.isPhoneNumberValid = true; //MARK phone number as valid - try to reset it later
+          newState.finalPhoneNumber =
+            newState.countryPhoneCode +
+            newState.phoneNumberEntered.replace(/ /g, '').replace(/^0/, ''); //Save the final phone number
+        } else if (
+          /^0/.test(newState.phoneNumberEntered.replace(/ /g, '')) === false &&
+          newState.phoneNumberEntered.replace(/ /g, '').trim().length === 9
+        ) {
+          //Valid
+          newState.errorReceiverPhoneNumberShow = false; //Hide corresponding error text
+          console.log('VALID DETAILS');
+          newState.isPhoneNumberValid = true; //MARK phone number as valid - try to reset it later
+          newState.finalPhoneNumber =
+            newState.countryPhoneCode +
+            newState.phoneNumberEntered.replace(/ /g, '').replace(/^0/, ''); //Save the final phone number
+        } //Invalid
+        else {
+          newState.errorReceiverPhoneNumberShow = true;
+          newState.errorReceiverPhoneNumberText = 'The number looks wrong';
+        }
+      } //Invalid phone
+      else {
+        newState.errorReceiverPhoneNumberShow = true;
+        if (newState.phoneNumberEntered.trim().length === 0) {
+          //Empty
+          newState.errorReceiverPhoneNumberText = "Shouldn't be empty";
+        } //Just wrong
+        else {
+          newState.errorReceiverPhoneNumberText = 'The number looks wrong';
+        }
+      }
+
+      //...
       return {...state, ...newState};
 
     case 'UPDATE_GENERAL_ERROR_MODAL':
@@ -54,11 +111,26 @@ const HomeReducer = (state = INIT_STATE, action) => {
     case 'UPDATE_TYPE_RIDESHOWN_YOURRIDES_SCREEN':
       newState.shownRides_types = action.payload;
 
+      //Update the requestType
+      if (/ride/i.test(action.payload)) {
+        //ride
+        newState.requestType = 'ride';
+      } else if (/delivery/i.test(action.payload)) {
+        //delivery
+        newState.requestType = 'delivery';
+      } //Scheduled
+      else {
+        newState.requestType = 'scheduled';
+      }
+      //Reset the previously stored array and focused array, navigation data
+      newState.main_interfaceState_vars.navigationRouteData = false;
+      newState.requests_data_main_vars.fetchedRequests_data_store = false;
+      newState.requests_data_main_vars.moreDetailsFocused_request = false;
+
       //...
       return {...state, ...newState};
 
     case 'UPDATE_TRACKING_MODE_STATE':
-      console.log(action.payload);
       newState.main_interfaceState_vars.isApp_inTrackingMode = action.payload;
 
       //...
@@ -142,6 +214,36 @@ const HomeReducer = (state = INIT_STATE, action) => {
 
     case 'UPDATE_DAILY_AMOUNT_MADESOFAR':
       newState.main_interfaceState_vars.dailyAmount_madeSoFar = action.payload;
+
+      //...
+      return {...state, ...newState};
+
+    case 'UPDATE_DDRIVER_OPERATIONAL_STATUS':
+      //Check status
+      //If online: just update
+      //If offline: clear temporary data storages
+      if (/online/i.test(action.payload)) {
+        //Online
+        newState.main_interfaceState_vars.isDriver_online = true;
+      } else if (/offline/i.test(action.payload)) {
+        //Offline
+        //Clear tmp storages
+        //Reset all the main variables
+        //Reset the navigation route data
+        newState.main_interfaceState_vars.navigationRouteData = false;
+        //..
+        newState.main_interfaceState_vars.isRideInProgress = false;
+        newState.main_interfaceState_vars.isComputing_route = true;
+        newState.main_interfaceState_vars.isApp_inNavigation_mode = false;
+        //Reset the tracking mode to false
+        newState.main_interfaceState_vars.isApp_inTrackingMode = false;
+        //Reset focused data
+        newState.requests_data_main_vars.moreDetailsFocused_request = false;
+        newState.requests_data_main_vars.fetchedRequests_data_store = false;
+
+        //Update the status
+        newState.main_interfaceState_vars.isDriver_online = false;
+      }
 
       //...
       return {...state, ...newState};

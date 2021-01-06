@@ -10,7 +10,8 @@ import 'react-native-gesture-handler';
 import {Provider} from 'react-redux';
 import {createStore} from 'redux';
 import HomeReducer from './Components/Redux/Reducers/HomeReducer';
-import Home from './Components/Home/Home';
+import {NavigationContainer} from '@react-navigation/native';
+import RootScreens from './Navigation/RootScreens';
 import config from './Components/Helpers/config';
 
 const store = createStore(HomeReducer);
@@ -21,7 +22,9 @@ MapboxGL.removeCustomHeader('Authorization');
 const App: () => React$Node = () => {
   return (
     <Provider store={store}>
-      <Home />
+      <NavigationContainer>
+        <RootScreens />
+      </NavigationContainer>
     </Provider>
   );
 };

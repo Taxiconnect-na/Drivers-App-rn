@@ -113,3 +113,20 @@ export const UpdateDailyAmount_madeSoFar = (amountBundle) => ({
   type: 'UPDATE_DAILY_AMOUNT_MADESOFAR',
   payload: amountBundle,
 });
+
+/**
+ * 11. Update driver's operational status
+ * Responsible for updating from the server the driver's operational status : online/offline.
+ * @param status: online or offline.
+ */
+export const UpdateDriverOperational_status = (status) => ({
+  type: 'UPDATE_DDRIVER_OPERATIONAL_STATUS',
+  payload: status,
+});
+
+//12. Validate generic phone number
+//Responsible for validiting globally any phone number inputed in the phone number input module
+export const ValidateGenericPhoneNumber = () => ({
+  type: 'VALIDATE_GENERIC_PHONE_NUMBER',
+  payload: false,
+});
