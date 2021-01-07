@@ -61,13 +61,12 @@ class PhoneDetailsScreen extends React.PureComponent {
       globalObject.props.App.socket.connect();
     });
     this.props.App.socket.on('connect_error', () => {
-      console.log('connect_error');
       //Ask for the OTP again
-      globalObject.props.UpdateErrorModalLog(
+      /*globalObject.props.UpdateErrorModalLog(
         true,
         'connection_no_network',
         'any',
-      );
+      );*/
       globalObject.props.App.socket.connect();
     });
     this.props.App.socket.on('connect_timeout', () => {

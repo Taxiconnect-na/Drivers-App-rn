@@ -37,8 +37,8 @@ export function MainDrawerContent(props) {
         </View>
         <Text
           style={{
-            fontFamily: 'Allrounder-Grotesk-Regular',
-            fontSize: 17,
+            fontFamily: 'Allrounder-Grotesk-Medium',
+            fontSize: 18,
             width: '100%',
             textAlign: 'center',
             paddingLeft: 10,
@@ -58,11 +58,11 @@ export function MainDrawerContent(props) {
             justifyContent: 'center',
             alignItems: 'center',
           }}>
-          <IconMaterialIcons name="location-on" color="#fff" size={18} />
+          <IconMaterialIcons name="location-on" color="#fff" size={16} />
           <Text
             style={{
-              fontFamily: 'Allrounder-Grotesk-Book',
-              fontSize: 13,
+              fontFamily: 'Allrounder-Grotesk-Regular',
+              fontSize: 14,
               textAlign: 'center',
               color: '#ffff',
             }}>
@@ -73,38 +73,26 @@ export function MainDrawerContent(props) {
       <ScrollView style={styles.menuContent}>
         <TouchableOpacity
           onPress={() => props.navigation.navigate('YourRidesEntry_drawer')}
-          style={[styles.menuItem]}>
-          <Text
-            style={{fontFamily: 'Allrounder-Grotesk-Regular', fontSize: 17.5}}>
-            Your rides
-          </Text>
+          style={[styles.menuItem, {paddingTop: 30}]}>
+          <Text style={styles.menuTitles}>Your rides</Text>
         </TouchableOpacity>
         <View
           onPress={() => props.navigation.navigate('Wallet_drawer')}
-          style={[styles.menuItem, {paddingTop: 10}]}>
-          <Text
-            style={{fontFamily: 'Allrounder-Grotesk-Regular', fontSize: 17.5}}>
-            Wallet
-          </Text>
+          style={[styles.menuItem, {paddingTop: 15}]}>
+          <Text style={styles.menuTitles}>Wallet</Text>
         </View>
-        <View style={[styles.menuItem, {paddingTop: 10}]}>
-          <Text
-            style={{fontFamily: 'Allrounder-Grotesk-Regular', fontSize: 17.5}}>
-            Settings
-          </Text>
+        <View style={[styles.menuItem, {paddingTop: 15}]}>
+          <Text style={styles.menuTitles}>Settings</Text>
         </View>
-        <View style={[styles.menuItem, {paddingTop: 10}]}>
-          <Text
-            style={{fontFamily: 'Allrounder-Grotesk-Regular', fontSize: 17.5}}>
-            Support
-          </Text>
+        <View style={[styles.menuItem, {paddingTop: 15}]}>
+          <Text style={styles.menuTitles}>Support</Text>
         </View>
       </ScrollView>
       <View style={styles.footerDrawer}>
         <Text
           style={{
-            fontFamily: 'Allrounder-Grotesk-Book',
-            fontSize: 14,
+            fontFamily: 'Allrounder-Grotesk-Regular',
+            fontSize: 15,
             flex: 1,
           }}>
           Legal
@@ -129,7 +117,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     height: 160,
-    backgroundColor: '#0e8491',
+    backgroundColor: '#000',
   },
   menuContent: {
     flex: 1,
@@ -137,6 +125,7 @@ const styles = StyleSheet.create({
   menuItem: {
     padding: 20,
   },
+  menuTitles: {fontFamily: 'Allrounder-Grotesk-Medium', fontSize: 19},
   footerDrawer: {
     borderTopWidth: 0.5,
     borderTopColor: '#d0d0d0',

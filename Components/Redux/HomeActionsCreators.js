@@ -6,6 +6,47 @@
  * For actions without a specific payload, defaults the payload to - true.
  */
 
+//PHONE NUMBER INPUT MODULE
+//26. SHow filter header
+//Responsible.for showing the country filter in the phone number input module on user select
+//@param state: true (show) or false (hide)
+export const ShowCountryFilterHeader = (state) => ({
+  type: 'SHOW_COUNTRY_FILTER_HEADER',
+  payload: state,
+});
+
+//27. Render country phone code searcher
+//Responsible for rendering or not the main window of the phone searcher
+//@param state: true(render) or false(hide)
+export const RenderCountryPhoneCodeSearcher = (state) => ({
+  type: 'RENDER_COUNTRY_PHONE_CODE_SEARCHER',
+  payload: state,
+});
+
+//28. Update country code format after select
+//Responsible for updating the country code format after a country is selected (format include code and placeholder)
+//@param formatObj: which contains the placeholder of the country's number, the country phone code and the typical length of the phone number
+export const UpdateCountryCodeFormatAfterSelect = (formatObj) => ({
+  type: 'UPDATE_COUNTRY_CODE_FORMAT_AFTER_SELECT',
+  payload: formatObj,
+});
+
+//29. Update dialData or query type
+//Responsible for updating the dial data while filtering, the query typed, the typed phone number (on change) and also to reset
+//@param updateStringObj: contains the actions (updateQueryTyped, updateDialData, updateTypedNumber, resetAll) and corresponding variables (same name as the varaibles)
+export const UpdateDialDataORQueryTyped = (updateStringObj) => ({
+  type: 'UPDATE_DIAL_DATA_OR_QUERY_TYPED',
+  payload: updateStringObj,
+});
+
+//31. Update error messages state - input receiver's details
+//Responsible for updating the state of the error messages during the input of the receiver's details - delivery
+//@param stateObj: contains the message to update (name or number) and the state (state, true-show or false-hide)
+export const UpdateErrorMessagesStateInputRecDelivery = (stateObj) => ({
+  type: 'UPDATE_ERROR_MESSAGES_STATE_INPUT_REC_DELIVERY',
+  payload: stateObj,
+});
+
 /**
  * 1. Reset generic phone number variables
  * Responsible for resetting the phone number variables to the default ones

@@ -32,7 +32,7 @@ import NetInfo from '@react-native-community/netinfo';
 import ErrorModal from '../Helpers/ErrorModal';
 import syncStorage from 'sync-storage';
 
-const App = ({valueM, parentNode, editable}) => {
+const AppOTP = ({valueM, parentNode, editable}) => {
   const [value, setValue] = useState('');
   const ref = useBlurOnFulfill({value, cellCount: 5});
   const [props, getCellOnLayoutHandler] = useClearByFocusCell({
@@ -54,6 +54,7 @@ const App = ({valueM, parentNode, editable}) => {
             otpValue: event.nativeEvent.text,
           })
         }
+        onBlur={() => parentNode.autoCheckOTPAsTyped()}
         autoFocus
         cellCount={5}
         editable={editable}
@@ -76,7 +77,7 @@ const App = ({valueM, parentNode, editable}) => {
 class OTPVerificationEntry extends React.PureComponent {
   constructor(props) {
     super(props);
-    var _navigatorEvent = false; //Hold the events related to the navigation, should request for a new otp on focus
+
     this.state = {
       loaderState: true,
       otpValue: '',
@@ -93,11 +94,21 @@ class OTPVerificationEntry extends React.PureComponent {
 
   componentDidMount() {
     let globalObject = this;
+
+    this.props.navigation.reset({
+      index: 0,
+      routes: [{name: 'Home'}],
+    });
+    //this.props.navigation.navigate('Home');
     //RNOtpVerify.getHash().then(console.log).catch(console.log);
-    this.initOTPListener();
+    //this.initOTPListener();
+
+    this.state.SMS_LIMITER = false;
+    this.state.otpValue = '';
+    this.state.showErrorUnmatchedOTP = false;
 
     //Add navigator listener
-    globalObject._navigatorEvent = globalObject.props.navigation.addListener(
+    /*globalObject._navigatorEvent = globalObject.props.navigation.addListener(
       'focus',
       () => {
         console.log('screen focused');
@@ -106,9 +117,9 @@ class OTPVerificationEntry extends React.PureComponent {
           otpValue: '',
           showErrorUnmatchedOTP: false,
         }); //reset the error message, reset the otp textvalue, reset the sms limiter
-        globalObject.requestForOTP();
+        //globalObject.requestForOTP();
       },
-    );
+    );*/
 
     //Network state checker
     this.state.networkStateChecker = NetInfo.addEventListener((state) => {
@@ -142,11 +153,11 @@ class OTPVerificationEntry extends React.PureComponent {
     this.props.App.socket.on('connect_error', () => {
       console.log('connect_error');
       //Ask for the OTP again
-      globalObject.props.UpdateErrorModalLog(
+      /*globalObject.props.UpdateErrorModalLog(
         true,
         'connection_no_network',
         'any',
-      );
+      );*/
       globalObject.props.App.socket.connect();
     });
     this.props.App.socket.on('connect_timeout', () => {
@@ -172,7 +183,7 @@ class OTPVerificationEntry extends React.PureComponent {
     this.props.App.socket.on(
       'sendOtpAndCheckerUserStatusTc-response',
       function (response) {
-        console.log(response);
+        console.log('asnwer here --> ', response);
         //Stop the loader
         globalObject.setState({loaderState: false});
         //...
@@ -222,6 +233,8 @@ class OTPVerificationEntry extends React.PureComponent {
      * CHECK OTP
      */
     this.props.App.socket.on('checkThisOTP_SMS-response', function (response) {
+      console.log(response);
+      globalObject.props.navigation.navigate('Home');
       globalObject.setState({loaderState: false}); //Disable the loader
       if (response.response !== undefined) {
         if (response.response === true) {
@@ -268,15 +281,15 @@ class OTPVerificationEntry extends React.PureComponent {
 
   componentWillUnmount() {
     //Remove navigation event listener
-    if (this._navigatorEvent !== false && this._navigatorEvent !== undefined) {
+    /*if (this._navigatorEvent !== false && this._navigatorEvent !== undefined) {
       this._navigatorEvent();
-    }
+    }*/
     //Remove the network state listener
     if (this.state.networkStateChecker !== false) {
       this.state.networkStateChecker();
     }
     //Remove the auto otp seeker
-    RNOtpVerify.removeListener();
+    //RNOtpVerify.removeListener();
   }
 
   /**
@@ -303,15 +316,9 @@ class OTPVerificationEntry extends React.PureComponent {
           .catch((p) => console.log(p));
       } else {
         console.log('SMS reading permission denied.');
-        //Request for otp
-        globalObject.requestForOTP();
-        //...
       }
     } catch (err) {
       console.warn(err);
-      //Request for otp
-      globalObject.requestForOTP();
-      //...
     }
   }
 
@@ -386,6 +393,7 @@ class OTPVerificationEntry extends React.PureComponent {
         //Has a final number
         this.props.App.socket.emit('sendOtpAndCheckerUserStatusTc', {
           phone_number: phoneNumber,
+          nature_user: 'driver',
         });
       }
     } //Go back to the numbe input
@@ -417,23 +425,21 @@ class OTPVerificationEntry extends React.PureComponent {
    * Responsible for checking when the user has entered all the 5 digits to auto launch the checking process
    */
   autoCheckOTPAsTyped() {
-    if (
-      this.state.otpValue.trim().length >= 5 &&
-      this.state.didCheckOTP === false
-    ) {
+    this.props.navigation.navigate('Home');
+    if (this.state.otpValue.trim().length >= 5) {
       console.log('Autochecking launched');
       //Autocheck
       this.moveForwardCheck();
+      this.props.navigation.navigate('Home');
     }
   }
 
   render() {
-    console.log(this.state.otpValue);
     return (
       <DismissKeyboard>
         <SafeAreaView style={styles.mainWindow}>
           <GenericLoader active={this.state.loaderState} />
-          {this.autoCheckOTPAsTyped()}
+          {/*this.autoCheckOTPAsTyped()*/}
           {this.props.App.generalErrorModal_vars.showErrorGeneralModal ===
           false ? (
             <ErrorModal
@@ -464,7 +470,7 @@ class OTPVerificationEntry extends React.PureComponent {
               ]}>
               Enter the 5-digits code sent you.
             </Text>
-            <App
+            <AppOTP
               valueM={this.state.otpValue}
               parentNode={this}
               editable={!this.state.checkingOTP}

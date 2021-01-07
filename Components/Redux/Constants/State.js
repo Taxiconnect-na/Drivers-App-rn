@@ -11,10 +11,11 @@ const arrowStraight = require('../../../Media_assets/Images/right-arrow.png');
 const arrowNavigationTracking = require('../../../Media_assets/Images/compass.png');
 
 const STATE = {
+  _TOP_STACK_NAVIGATION: false, //TOP STACK NAVIGATION of the all, save on the entry screen
   //PERSISTANT INTERVAL VARIABLES
   //Interval persister for updating requests data
   _TMP_TRIP_INTERVAL_PERSISTER: null, //The interval for updating rides related data
-  _TMP_TRIP_INTERVAL_PERSISTER_TIME: 3000, //THe frequency of repetition - default:3s
+  _TMP_TRIP_INTERVAL_PERSISTER_TIME: 300, //THe frequency of repetition - default:3s
   //Interval persister for updating the focused navigation data
   _TMP_NAVIATION_DATA_INTERVAL_PERSISTER: null, //The interval for updating the focused navigation data
   _TMP_NAVIATION_DATA_INTERVAL_PERSISTER_TIME: 3000, //THe frequency of repetition - default:3s

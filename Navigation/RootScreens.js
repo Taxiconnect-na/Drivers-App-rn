@@ -197,8 +197,25 @@ function MainDrawer_navigator() {
 }
 
 function RootScreens() {
+  {
+    /*<Stack.Screen
+        name="CreateAccountEntry"
+        component={CreateAccountEntry}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="NewAccountAdditionalDetails"
+        component={NewAccountAdditionalDetails}
+        options={{headerShown: false}}
+      />*/
+  }
   return (
-    <Stack.Navigator>
+    <Stack.Navigator initialRouteName="EntryScreen">
+      <Stack.Screen
+        name="Home"
+        component={MainDrawer_navigator}
+        options={{headerShown: false}}
+      />
       <Stack.Screen
         name="EntryScreen"
         component={EntryScreen}
@@ -212,21 +229,6 @@ function RootScreens() {
       <Stack.Screen
         name="OTPVerificationEntry"
         component={OTPVerificationEntry}
-        options={{headerShown: false}}
-      />
-      {/*<Stack.Screen
-        name="CreateAccountEntry"
-        component={CreateAccountEntry}
-        options={{headerShown: false}}
-      />
-      <Stack.Screen
-        name="NewAccountAdditionalDetails"
-        component={NewAccountAdditionalDetails}
-        options={{headerShown: false}}
-      />*/}
-      <Stack.Screen
-        name="Home"
-        component={MainDrawer_navigator}
         options={{headerShown: false}}
       />
     </Stack.Navigator>

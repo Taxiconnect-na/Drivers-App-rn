@@ -29,4 +29,20 @@ const App: () => React$Node = () => {
   );
 };
 
+/*class App extends React.PureComponent {
+  constructor(props) {
+    super(props);
+  }
+
+  render() {
+    return (
+      <Provider store={store}>
+        <NavigationContainer>
+          <RootScreens />
+        </NavigationContainer>
+      </Provider>
+    );
+  }
+}*/
+
 export default App;

@@ -479,7 +479,7 @@ class Home extends React.PureComponent {
             }}>
             <View style={{flexDirection: 'row', alignItems: 'center'}}>
               <TouchableOpacity
-                onPress={() => console.log('ok')}
+                onPress={() => this.props.navigation.openDrawer()}
                 style={{
                   top: 1.5,
                   backgroundColor: '#fff',
@@ -901,9 +901,11 @@ class Home extends React.PureComponent {
             elevation: 10,
           }}>
           <View style={{flexDirection: 'row', alignItems: 'center'}}>
-            <View style={{top: 1.5}}>
+            <TouchableOpacity
+              onPress={() => this.props.navigation.openDrawer()}
+              style={{top: 1.5}}>
               <IconMaterialIcons name="menu" size={30} />
-            </View>
+            </TouchableOpacity>
             <View
               style={{
                 flex: 1,
@@ -1806,7 +1808,7 @@ class Home extends React.PureComponent {
           /Hold on/i.test(globalObject.state.offlineOnlineText)
             ? 3000
             : /Go online/i.test(globalObject.state.offlineOnlineText)
-            ? 10000
+            ? 7000
             : 4000,
         );
       });

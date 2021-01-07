@@ -24,6 +24,63 @@ const HomeReducer = (state = INIT_STATE, action) => {
       newState.gprsGlobals.didAskForGprs = action.payload.didAskForGprs;
 
       return {...state, ...newState};
+
+    case 'SHOW_COUNTRY_FILTER_HEADER':
+      //receive header state : true (show) or false (hide)
+      newState.isFilterCountryShown = action.payload;
+
+      //..
+      return {...state, ...newState};
+
+    case 'RENDER_COUNTRY_PHONE_CODE_SEARCHER':
+      //receive render state : true (show) or false (hide)
+      newState.renderCountryCodeSeacher = action.payload;
+
+      //...
+      return {...state, ...newState};
+
+    case 'UPDATE_COUNTRY_CODE_FORMAT_AFTER_SELECT':
+      //Update phone placeholder, country code and basic number length
+      newState.phoneNumberPlaceholder = action.payload.phoneNumberPlaceholder;
+      newState.countryPhoneCode = action.payload.countryPhoneCode;
+      newState.dynamicMaxLength = action.payload.dynamicMaxLength;
+
+      //...
+      return {...state, ...newState};
+
+    case 'UPDATE_DIAL_DATA_OR_QUERY_TYPED':
+      if (action.payload.action === 'updateQueryTyped') {
+        //Update query typed
+        newState.typedCountrySearchQuery =
+          action.payload.typedCountrySearchQuery;
+      } else if (action.payload.action === 'updateDialData') {
+        //Update dial data filtered
+        newState.countriesDialDataState = action.payload.countriesDialDataState;
+      } else if (action.payload.action === 'resetAll') {
+        //Reset dialdata and query typed
+        newState.countriesDialDataState =
+          action.payload.countriesDialDataStateInvariant;
+        newState.typedCountrySearchQuery = '';
+      } else if (action.payload.action === 'updateTypedNumber') {
+        newState.errorReceiverPhoneNumberShow = false; //Hide corresponding error text
+        newState.phoneNumberEntered = action.payload.phoneNumberEntered;
+      }
+
+      //..
+      return {...state, ...newState};
+
+    case 'UPDATE_ERROR_MESSAGES_STATE_INPUT_REC_DELIVERY':
+      if (action.payload.kidName === 'name') {
+        //Name error text
+        newState.errorReceiverNameShow = action.payload.state;
+      } else if (action.payload.kidName === 'number') {
+        //Number error text
+        newState.errorReceiverPhoneNumberShow = action.payload.state;
+      }
+
+      //...
+      return {...state, ...newState};
+
     case 'RESET_GENERIC_PHONE_NUMBER_INPUT':
       //Generic phone number input variable
       newState.isPhoneNumberValid = false; //TO know if the phone number is valid or not.
