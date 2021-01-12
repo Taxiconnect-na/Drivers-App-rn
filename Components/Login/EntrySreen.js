@@ -66,8 +66,14 @@ class EntryScreen extends React.PureComponent {
             </View>
             <View style={{flex: 1, width: '100%'}}>
               <Image
-                source={require('../../Media_assets/Images/entryImage0.png')}
-                style={{resizeMode: 'contain', width: '105%', height: '105%'}}
+                source={require('../../Media_assets/Images/driver_entry_image.png')}
+                style={{
+                  resizeMode: 'contain',
+                  width: '120%',
+                  height: '120%',
+                  right: '2%',
+                  bottom: '5%',
+                }}
               />
             </View>
             <View style={{height: 70, flexDirection: 'row'}}>
