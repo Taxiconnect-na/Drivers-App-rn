@@ -77,6 +77,10 @@
 		<string>Octicons.ttf</string>
 		<string>SimpleLineIcons.ttf</string>
 		<string>Zocial.ttf</string>
+		<string>MoveBold.otf</string>
+		<string>MoveLight.ttf</string>
+		<string>MoveMedium.otf</string>
+		<string>MoveRegular.ttf</string>
 	</array>
 </dict>
 </plist>

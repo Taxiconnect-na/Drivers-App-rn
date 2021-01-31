@@ -38,6 +38,10 @@
 		47F2C6D27FFF4F98A3C9BFD7 /* Octicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 48C1892EBE734A8CA14DAD7E /* Octicons.ttf */; };
 		C510001DB3B14CF791BA6421 /* SimpleLineIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B9BF5D1EB6F1467EB3EDD840 /* SimpleLineIcons.ttf */; };
 		2028563D3D3D4AB391F0B430 /* Zocial.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 66A6110F613542C3A5E129B5 /* Zocial.ttf */; };
+		02604DBEFD3B444785C22C8C /* MoveBold.otf in Resources */ = {isa = PBXBuildFile; fileRef = BF14907EC806429495E94991 /* MoveBold.otf */; };
+		3F81E21DA9544FDFBAC8F0EC /* MoveLight.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 834241C43AD04CFCA72F8DEF /* MoveLight.ttf */; };
+		EF0171F2862D4E4391FC1680 /* MoveMedium.otf in Resources */ = {isa = PBXBuildFile; fileRef = 1B74BBC4000F4E2B8B0F2DEC /* MoveMedium.otf */; };
+		79B95A6292C843F2854D2A94 /* MoveRegular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E88BDA0F9AA64AD59B14178E /* MoveRegular.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -95,6 +99,10 @@
 		48C1892EBE734A8CA14DAD7E /* Octicons.ttf */ = {isa = PBXFileReference; name = "Octicons.ttf"; path = "../node_modules/react-native-vector-icons/Fonts/Octicons.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 		B9BF5D1EB6F1467EB3EDD840 /* SimpleLineIcons.ttf */ = {isa = PBXFileReference; name = "SimpleLineIcons.ttf"; path = "../node_modules/react-native-vector-icons/Fonts/SimpleLineIcons.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 		66A6110F613542C3A5E129B5 /* Zocial.ttf */ = {isa = PBXFileReference; name = "Zocial.ttf"; path = "../node_modules/react-native-vector-icons/Fonts/Zocial.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		BF14907EC806429495E94991 /* MoveBold.otf */ = {isa = PBXFileReference; name = "MoveBold.otf"; path = "../Media_assets/fonts/MoveBold.otf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		834241C43AD04CFCA72F8DEF /* MoveLight.ttf */ = {isa = PBXFileReference; name = "MoveLight.ttf"; path = "../Media_assets/fonts/MoveLight.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		1B74BBC4000F4E2B8B0F2DEC /* MoveMedium.otf */ = {isa = PBXFileReference; name = "MoveMedium.otf"; path = "../Media_assets/fonts/MoveMedium.otf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		E88BDA0F9AA64AD59B14178E /* MoveRegular.ttf */ = {isa = PBXFileReference; name = "MoveRegular.ttf"; path = "../Media_assets/fonts/MoveRegular.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -227,6 +235,10 @@
 				48C1892EBE734A8CA14DAD7E /* Octicons.ttf */,
 				B9BF5D1EB6F1467EB3EDD840 /* SimpleLineIcons.ttf */,
 				66A6110F613542C3A5E129B5 /* Zocial.ttf */,
+				BF14907EC806429495E94991 /* MoveBold.otf */,
+				834241C43AD04CFCA72F8DEF /* MoveLight.ttf */,
+				1B74BBC4000F4E2B8B0F2DEC /* MoveMedium.otf */,
+				E88BDA0F9AA64AD59B14178E /* MoveRegular.ttf */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -392,6 +404,10 @@
 				47F2C6D27FFF4F98A3C9BFD7 /* Octicons.ttf in Resources */,
 				C510001DB3B14CF791BA6421 /* SimpleLineIcons.ttf in Resources */,
 				2028563D3D3D4AB391F0B430 /* Zocial.ttf in Resources */,
+				02604DBEFD3B444785C22C8C /* MoveBold.otf in Resources */,
+				3F81E21DA9544FDFBAC8F0EC /* MoveLight.ttf in Resources */,
+				EF0171F2862D4E4391FC1680 /* MoveMedium.otf in Resources */,
+				79B95A6292C843F2854D2A94 /* MoveRegular.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -125,7 +125,7 @@ const styles = StyleSheet.create({
   menuItem: {
     padding: 20,
   },
-  menuTitles: {fontFamily: 'Allrounder-Grotesk-Medium', fontSize: 19},
+  menuTitles: {fontFamily: 'Allrounder-Grotesk-Medium', fontSize: 21},
   footerDrawer: {
     borderTopWidth: 0.5,
     borderTopColor: '#d0d0d0',

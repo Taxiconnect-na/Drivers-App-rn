@@ -6,13 +6,15 @@ import {
   SectionList,
   View,
   Text,
-  StyleSheet,
   TextInput,
   Image,
   Dimensions,
   Animated,
   Easing,
   TouchableOpacity,
+  Platform,
+  SafeAreaView,
+  StatusBar,
 } from 'react-native';
 import examples from 'libphonenumber-js/examples.mobile.json';
 import {getExampleNumber, AsYouType} from 'libphonenumber-js';
@@ -39,6 +41,13 @@ class PhoneNumberInput extends React.PureComponent {
 
     //Initialize emojis data
     this.props.App.countriesDialDataState = countriesDialData;
+
+    this.state = {
+      selection: {
+        start: 0,
+        end: 0,
+      },
+    };
   }
 
   /**
@@ -127,9 +136,6 @@ class PhoneNumberInput extends React.PureComponent {
    * Responsible for rendering the header of the country searcher (nromal or filter mode)
    */
   renderHeaderCountryCodeSearcher() {
-    //DEBUG
-    //this.state.isFilterCountryShown = true;
-    //DEBUG
     if (this.props.App.isFilterCountryShown) {
       //Show filter
       return (
@@ -155,7 +161,10 @@ class PhoneNumberInput extends React.PureComponent {
               style={[
                 systemWeights.regular,
                 {
-                  fontFamily: 'Allrounder-Grotesk-Regular',
+                  fontFamily:
+                    Platform.OS === 'android'
+                      ? 'Allrounder-Grotesk-Regular'
+                      : 'Allrounder Grotesk',
                   fontSize: 17,
                   color: '#fff',
                 },
@@ -204,8 +213,11 @@ class PhoneNumberInput extends React.PureComponent {
               style={[
                 systemWeights.regular,
                 {
-                  fontFamily: 'Allrounder-Grotesk-Regular',
-                  fontSize: 18,
+                  fontFamily:
+                    Platform.OS === 'android'
+                      ? 'Allrounder-Grotesk-Regular'
+                      : 'Allrounder Grotesk',
+                  fontSize: 19,
                   color: '#fff',
                 },
               ]}>
@@ -257,6 +269,7 @@ class PhoneNumberInput extends React.PureComponent {
             left: 0,
             width: windowWidth,
             height: windowHeight,
+            flex: 1,
             opacity: this.props.App.searchCountryScreenOpacity,
             transform: [
               {translateY: this.props.App.searchCountryScreenPosition},
@@ -266,10 +279,11 @@ class PhoneNumberInput extends React.PureComponent {
           <View
             style={{
               backgroundColor: '#000',
-              //paddingTop: '6.5%',
-              height: 75,
+              paddingTop: Platform.OS === 'android' ? '7%' : '21%',
+              minHeight: 75,
               paddingLeft: 20,
               paddingRight: 20,
+              paddingBottom: 10,
               justifyContent: 'center',
             }}>
             {this.renderHeaderCountryCodeSearcher()}
@@ -297,7 +311,10 @@ class PhoneNumberInput extends React.PureComponent {
                     style={[
                       systemWeights.regular,
                       {
-                        fontFamily: 'Allrounder-Grotesk-Regular',
+                        fontFamily:
+                          Platform.OS === 'android'
+                            ? 'Allrounder-Grotesk-Regular'
+                            : 'Allrounder Grotesk',
                         fontSize: 15,
                         color: '#797979',
                       },
@@ -341,14 +358,20 @@ class PhoneNumberInput extends React.PureComponent {
       }),
     ]).start(() => {
       //Reset search values
-      globalObject.setState({
+      /*globalObject.setState({
         renderCountryCodeSeacher: false,
         countriesDialDataState: countriesDialData,
         typedCountrySearchQuery: '',
         countryCodeSelected: countryCode,
         countryPhoneCode: countryDial,
         isFilterCountryShown: false,
-      });
+      });*/
+      globalObject.props.App.renderCountryCodeSeacher = false;
+      globalObject.props.App.countriesDialDataState = countriesDialData;
+      globalObject.props.App.typedCountrySearchQuery = '';
+      globalObject.props.App.countryCodeSelected = countryCode;
+      globalObject.props.App.countryPhoneCode = countryDial;
+      globalObject.props.App.isFilterCountryShown = false;
       //Update formats and placeholders
       globalObject.updateCountryFormat();
     });
@@ -375,6 +398,14 @@ class PhoneNumberInput extends React.PureComponent {
       }),
     ]).start();
   }
+
+  /**
+   * @func handleSelectionChange
+   * Responsible for
+   * selection is an object: { start:number, end:number }
+   */
+  handleSelectionChange = ({nativeEvent: {selection}}) =>
+    this.setState({selection});
 
   render() {
     return (
@@ -420,8 +451,11 @@ class PhoneNumberInput extends React.PureComponent {
                 style={[
                   systemWeights.regular,
                   {
-                    fontFamily: 'Allrounder-Grotesk-Regular',
-                    fontSize: 17,
+                    fontFamily:
+                      Platform.OS === 'android'
+                        ? 'Allrounder-Grotesk-Regular'
+                        : 'Allrounder Grotesk',
+                    fontSize: 18,
                     left: 2,
                   },
                 ]}>
@@ -432,6 +466,10 @@ class PhoneNumberInput extends React.PureComponent {
           <View style={{flex: 1}}>
             <TextInput
               placeholder={this.props.App.phoneNumberPlaceholder}
+              /*selection={this.state.selection}
+              onSelectionChange={this.handleSelectionChange}*/
+              clearTextOnFocus
+              selectTextOnFocus
               onFocus={() =>
                 this.props.UpdateErrorMessagesStateInputRecDelivery({
                   kidName: 'number',
@@ -452,12 +490,16 @@ class PhoneNumberInput extends React.PureComponent {
               style={[
                 systemWeights.regular,
                 {
-                  fontFamily: 'Allrounder-Grotesk-Regular',
-                  fontSize: 17,
+                  fontFamily:
+                    Platform.OS === 'android'
+                      ? 'Allrounder-Grotesk-Regular'
+                      : 'Allrounder Grotesk',
+                  fontSize: 18,
                   borderBottomWidth: 1.5,
                   flex: 1,
                   marginLeft: 5,
                   paddingLeft: 0,
+                  top: 1,
                 },
               ]}
               autoFocus={

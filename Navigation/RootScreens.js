@@ -6,9 +6,9 @@ import IconAnt from 'react-native-vector-icons/AntDesign';
 import EntryScreen from '../Components/Login/EntrySreen';
 import PhoneDetailsScreen from '../Components/Login/PhoneDetailsScreen';
 import OTPVerificationEntry from '../Components/Login/OTPVerificationEntry';
-/*import CreateAccountEntry from '../Components/Login/CreateAccountEntry';
-import NewAccountAdditionalDetails from '../Components/Login/NewAccountAdditionalDetails';
-import WalletEntry from '../Components/Wallet/WalletEntry';
+import NewDriverDetected from '../Components/Login/NewDriverDetected';
+import AccountProblemDetected from '../Components/Login/AccountProblemDetected';
+/*import WalletEntry from '../Components/Wallet/WalletEntry';
 import SendFundsEntry from '../Components/Wallet/SendFundsEntry';
 import PayTaxiInputNumber from '../Components/Wallet/PayTaxiInputNumber';
 import SendFundsInputAmount from '../Components/Wallet/SendFundsInputAmount';
@@ -212,13 +212,13 @@ function RootScreens() {
   return (
     <Stack.Navigator initialRouteName="EntryScreen">
       <Stack.Screen
-        name="Home"
-        component={MainDrawer_navigator}
+        name="EntryScreen"
+        component={EntryScreen}
         options={{headerShown: false}}
       />
       <Stack.Screen
-        name="EntryScreen"
-        component={EntryScreen}
+        name="Home"
+        component={MainDrawer_navigator}
         options={{headerShown: false}}
       />
       <Stack.Screen
@@ -229,6 +229,16 @@ function RootScreens() {
       <Stack.Screen
         name="OTPVerificationEntry"
         component={OTPVerificationEntry}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="NewDriverDetected"
+        component={NewDriverDetected}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="AccountProblemDetected"
+        component={AccountProblemDetected}
         options={{headerShown: false}}
       />
     </Stack.Navigator>

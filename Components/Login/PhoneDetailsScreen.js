@@ -8,7 +8,7 @@ import {
   StatusBar,
   TouchableOpacity,
   StyleSheet,
-  Image,
+  Platform,
 } from 'react-native';
 import {systemWeights} from 'react-native-typography';
 import IconMaterialIcons from 'react-native-vector-icons/MaterialIcons';
@@ -25,6 +25,9 @@ import NetInfo from '@react-native-community/netinfo';
 class PhoneDetailsScreen extends React.PureComponent {
   constructor(props) {
     super(props);
+
+    this._shouldShow_errorModal = true; //! ERROR MODAL AUTO-LOCKER - PERFORMANCE IMPROVER.
+
     this.state = {
       networkStateChecker: false,
     };
@@ -53,35 +56,28 @@ class PhoneDetailsScreen extends React.PureComponent {
       globalObject.props.UpdateErrorModalLog(false, false, 'any');
     });
     //Socket error handling
-    this.props.App.socket.on('error', (error) => {
-      //console.log('something');
-    });
+    this.props.App.socket.on('error', (error) => {});
     this.props.App.socket.on('disconnect', () => {
-      //console.log('something');
       globalObject.props.App.socket.connect();
     });
     this.props.App.socket.on('connect_error', () => {
+      console.log('connect_error');
       //Ask for the OTP again
-      /*globalObject.props.UpdateErrorModalLog(
+      globalObject.props.UpdateErrorModalLog(
         true,
-        'connection_no_network',
+        'service_unavailable',
         'any',
-      );*/
+      );
       globalObject.props.App.socket.connect();
     });
     this.props.App.socket.on('connect_timeout', () => {
-      console.log('connect_timeout');
       globalObject.props.App.socket.connect();
     });
-    this.props.App.socket.on('reconnect', () => {
-      ////console.log('something');
-    });
+    this.props.App.socket.on('reconnect', () => {});
     this.props.App.socket.on('reconnect_error', () => {
-      console.log('reconnect_error');
       globalObject.props.App.socket.connect();
     });
     this.props.App.socket.on('reconnect_failed', () => {
-      console.log('reconnect_failed');
       globalObject.props.App.socket.connect();
     });
   }
@@ -99,16 +95,61 @@ class PhoneDetailsScreen extends React.PureComponent {
     }
   }
 
+  /**
+   * @func renderError_modalView
+   * Responsible for rendering the modal view only once.
+   */
+  renderError_modalView() {
+    if (
+      this._shouldShow_errorModal &&
+      this.props.App.generalErrorModal_vars.showErrorGeneralModal
+    ) {
+      //Show once, and lock
+      this._shouldShow_errorModal = false; //!LOCK MODAL
+      return (
+        <ErrorModal
+          active={this.props.App.generalErrorModal_vars.showErrorGeneralModal}
+          error_status={
+            this.props.App.generalErrorModal_vars.generalErrorModalType
+          }
+          parentNode={this}
+        />
+      );
+    } else if (
+      this.props.App.generalErrorModal_vars.showErrorGeneralModal === false
+    ) {
+      //Disable modal lock when modal off
+      this._shouldShow_errorModal = true; //!UNLOCK MODAL
+      return (
+        <ErrorModal
+          active={this.props.App.generalErrorModal_vars.showErrorGeneralModal}
+          error_status={
+            this.props.App.generalErrorModal_vars.generalErrorModalType
+          }
+          parentNode={this}
+        />
+      );
+    } else {
+      return (
+        <ErrorModal
+          active={this.props.App.generalErrorModal_vars.showErrorGeneralModal}
+          error_status={
+            this.props.App.generalErrorModal_vars.generalErrorModalType
+          }
+          parentNode={this}
+        />
+      );
+    }
+  }
+
   render() {
     return (
       <DismissKeyboard>
         <SafeAreaView style={styles.mainWindow}>
-          <ErrorModal
-            active={this.props.App.generalErrorModal_vars.showErrorGeneralModal}
-            error_status={
-              this.props.App.generalErrorModal_vars.generalErrorModalType
-            }
-          />
+          <StatusBar backgroundColor="black" />
+          {this.props.App.generalErrorModal_vars.showErrorGeneralModal
+            ? this.renderError_modalView()
+            : null}
           {this.automoveForward()}
           <View style={styles.presentationWindow}>
             <TouchableOpacity
@@ -120,8 +161,11 @@ class PhoneDetailsScreen extends React.PureComponent {
               style={[
                 systemWeights.semibold,
                 {
-                  fontSize: 19,
-                  fontFamily: 'Allrounder-Grotesk-Book',
+                  fontSize: 21,
+                  fontFamily:
+                    Platform.OS === 'android'
+                      ? 'Allrounder-Grotesk-Medium'
+                      : 'Allrounder Grotesk Medium',
                   marginTop: 15,
                   marginBottom: 35,
                 },
@@ -142,10 +186,13 @@ class PhoneDetailsScreen extends React.PureComponent {
                 <Text
                   style={[
                     {
-                      fontSize: 12,
+                      fontSize: 13,
                       marginLeft: 6,
                       lineHeight: 18,
-                      fontFamily: 'Allrounder-Grotesk-Book',
+                      fontFamily:
+                        Platform.OS === 'android'
+                          ? 'Allrounder-Grotesk-Book'
+                          : 'Allrounder Grotesk Book',
                     },
                   ]}>
                   By proceeding, you will receive an SMS and additional fees may
@@ -153,18 +200,20 @@ class PhoneDetailsScreen extends React.PureComponent {
                 </Text>
               </View>
               <View style={{flex: 1, alignItems: 'flex-end'}}>
-                <TouchableOpacity
-                  onPress={() => this.props.ValidateGenericPhoneNumber()}
-                  style={[
-                    styles.arrowCircledForwardBasic,
-                    styles.shadowButtonArrowCircledForward,
-                  ]}>
-                  <IconMaterialIcons
-                    name="arrow-forward-ios"
-                    size={30}
-                    color="#fff"
-                  />
-                </TouchableOpacity>
+                {this.props.App.renderCountryCodeSeacher === false ? (
+                  <TouchableOpacity
+                    onPress={() => this.props.ValidateGenericPhoneNumber()}
+                    style={[
+                      styles.arrowCircledForwardBasic,
+                      styles.shadowButtonArrowCircledForward,
+                    ]}>
+                    <IconMaterialIcons
+                      name="arrow-forward-ios"
+                      size={30}
+                      color="#fff"
+                    />
+                  </TouchableOpacity>
+                ) : null}
               </View>
             </View>
           </View>

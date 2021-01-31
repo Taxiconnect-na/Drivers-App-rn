@@ -10,6 +10,7 @@ import {
   SafeAreaView,
   ScrollView,
   Image,
+  Platform,
   TextInput,
 } from 'react-native';
 import Modal from 'react-native-modal';
@@ -308,6 +309,67 @@ class ErrorModal extends React.PureComponent {
           </View>
         </View>
       );
+    } else if (/service_unavailable/i.test(error_status)) {
+      //Show delivery input modal
+      return (
+        <View
+          style={{
+            backgroundColor: '#fff',
+            padding: 20,
+            height: 260,
+          }}>
+          <View style={{flexDirection: 'row', alignItems: 'center'}}>
+            <IconCommunity
+              name="network-strength-1-alert"
+              size={22}
+              style={{marginRight: 5}}
+            />
+            <Text
+              style={{
+                fontFamily:
+                  Platform.OS === 'android'
+                    ? 'Allrounder-Grotesk-Medium'
+                    : 'Allrounder Grotesk Medium',
+                fontSize: 22,
+              }}>
+              Oups, something's wrong
+            </Text>
+          </View>
+          <View>
+            <Text
+              style={{
+                fontFamily:
+                  Platform.OS === 'android'
+                    ? 'Allrounder-Grotesk-Book'
+                    : 'Allrounder Grotesk Book',
+                fontSize: 17,
+                marginTop: 10,
+              }}>
+              Sorry, we are unable to establish the connection to TaxiConnect,
+              please try again later.
+            </Text>
+          </View>
+          <View style={{flex: 1, justifyContent: 'center'}}>
+            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+              <ActivityIndicator
+                size="small"
+                color="#0e8491"
+                style={{marginRight: 5}}
+              />
+              <Text
+                style={{
+                  fontFamily:
+                    Platform.OS === 'android'
+                      ? 'Allrounder-Grotesk-Regular'
+                      : 'Allrounder Grotesk',
+                  fontSize: 17,
+                }}>
+                Establishing connection.
+              </Text>
+            </View>
+          </View>
+        </View>
+      );
     } else if (/error_checking_user_status_login/i.test(error_status)) {
       //Show delivery input modal
       return (
@@ -428,7 +490,7 @@ class ErrorModal extends React.PureComponent {
               paddingBottom: 5,
             }}>
             <Text
-              style={{fontFamily: 'Allrounder-Grotesk-Regular', fontSize: 20}}>
+              style={{fontFamily: 'Allrounder-Grotesk-Medium', fontSize: 21}}>
               What do you want to see?
             </Text>
           </View>
@@ -465,8 +527,8 @@ class ErrorModal extends React.PureComponent {
                 ]}>
                 <Text
                   style={{
-                    fontFamily: 'Allrounder-Grotesk-Book',
-                    fontSize: 19,
+                    fontFamily: 'Allrounder-Grotesk-Regular',
+                    fontSize: 20,
                     color: '#000',
                     marginLeft: 5,
                     flex: 1,
@@ -514,8 +576,8 @@ class ErrorModal extends React.PureComponent {
                 ]}>
                 <Text
                   style={{
-                    fontFamily: 'Allrounder-Grotesk-Book',
-                    fontSize: 19,
+                    fontFamily: 'Allrounder-Grotesk-Regular',
+                    fontSize: 20,
                     color: '#000',
                     marginLeft: 5,
                     flex: 1,
@@ -2000,6 +2062,7 @@ class ErrorModal extends React.PureComponent {
   }
 
   render() {
+    console.log('Modal called');
     return (
       <View>
         <Modal

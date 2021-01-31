@@ -5,12 +5,11 @@ import {
   SafeAreaView,
   View,
   Text,
-  StatusBar,
   TouchableOpacity,
   StyleSheet,
-  Image,
   Keyboard,
   PermissionsAndroid,
+  Platform,
 } from 'react-native';
 import {systemWeights} from 'react-native-typography';
 import IconMaterialIcons from 'react-native-vector-icons/MaterialIcons';
@@ -30,17 +29,15 @@ import {
 } from '../Redux/HomeActionsCreators';
 import NetInfo from '@react-native-community/netinfo';
 import ErrorModal from '../Helpers/ErrorModal';
-import syncStorage from 'sync-storage';
+import SyncStorage from 'sync-storage';
 
-const AppOTP = ({valueM, parentNode, editable}) => {
+const App = ({valueM, parentNode, editable}) => {
   const [value, setValue] = useState('');
   const ref = useBlurOnFulfill({value, cellCount: 5});
   const [props, getCellOnLayoutHandler] = useClearByFocusCell({
     value,
     setValue,
   });
-
-  console.log(valueM);
 
   return (
     <View style={styles.root}>
@@ -52,23 +49,36 @@ const AppOTP = ({valueM, parentNode, editable}) => {
         onChange={(event) =>
           parentNode.setState({
             otpValue: event.nativeEvent.text,
+            showErrorUnmatchedOTP: false, //? Disbale any error messages
           })
         }
-        onBlur={() => parentNode.autoCheckOTPAsTyped()}
         autoFocus
         cellCount={5}
         editable={editable}
         rootStyle={styles.codeFieldRoot}
         keyboardType="number-pad"
         textContentType="oneTimeCode"
-        renderCell={({index, symbol, isFocused}) => (
-          <Text
-            key={index}
-            style={[styles.cell, isFocused && styles.focusCell]}
-            onLayout={getCellOnLayoutHandler(index)}>
-            {symbol || (isFocused ? <Cursor /> : null)}
-          </Text>
-        )}
+        renderCell={({index, symbol, isFocused}) =>
+          Platform.OS === 'android' ? (
+            <Text
+              key={index}
+              style={[styles.cell, isFocused && styles.focusCell]}
+              onLayout={getCellOnLayoutHandler(index)}>
+              {symbol || (isFocused ? <Cursor /> : null)}
+            </Text>
+          ) : (
+            <View
+              key={index}
+              style={[styles.cell, isFocused && styles.focusCell]}>
+              <Text
+                key={index}
+                style={[styles.cell, isFocused && styles.focusCell]}
+                onLayout={getCellOnLayoutHandler(index)}>
+                {symbol || (isFocused ? <Cursor /> : null)}
+              </Text>
+            </View>
+          )
+        }
       />
     </View>
   );
@@ -77,6 +87,8 @@ const AppOTP = ({valueM, parentNode, editable}) => {
 class OTPVerificationEntry extends React.PureComponent {
   constructor(props) {
     super(props);
+
+    this._shouldShow_errorModal = true; //! ERROR MODAL AUTO-LOCKER - PERFORMANCE IMPROVER.
 
     this.state = {
       loaderState: true,
@@ -88,38 +100,38 @@ class OTPVerificationEntry extends React.PureComponent {
       checkingOTP: false, //TO know whether the app is checking the OTP or not, basedd on that show or hide the net button
       didCheckOTP: false, //TO know if the otp was already check - once
       networkStateChecker: false,
+      accountCreation_state: 'full', //To know whether or not to redirecto to the addditional page for minimal account or not: minimal or full
+      smsHashLinker: '####', //Has to link to the sms for the auto-completion
+      userAccountDetails: null, //Will hold the user details if already registered and assign them to the globals when the OTP is checked.
     };
     this.otpHandler = this.otpHandler.bind(this);
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     let globalObject = this;
 
-    this.props.navigation.reset({
-      index: 0,
-      routes: [{name: 'Home'}],
-    });
-    //this.props.navigation.navigate('Home');
-    //RNOtpVerify.getHash().then(console.log).catch(console.log);
-    //this.initOTPListener();
-
-    this.state.SMS_LIMITER = false;
-    this.state.otpValue = '';
-    this.state.showErrorUnmatchedOTP = false;
+    //? Generate the SMS hash linker to auto pick the verification code from the SMS.
+    Platform.OS === 'android' &&
+      RNOtpVerify.getHash().then((result) => {
+        try {
+          globalObject.state.smsHashLinker = result[0];
+        } catch (error) {}
+      });
+    Platform.OS === 'android'
+      ? this.initOTPListener()
+      : globalObject.requestForOTP();
 
     //Add navigator listener
-    /*globalObject._navigatorEvent = globalObject.props.navigation.addListener(
+    globalObject._navigatorEvent = globalObject.props.navigation.addListener(
       'focus',
       () => {
-        console.log('screen focused');
         globalObject.setState({
           SMS_LIMITER: false,
           otpValue: '',
           showErrorUnmatchedOTP: false,
         }); //reset the error message, reset the otp textvalue, reset the sms limiter
-        //globalObject.requestForOTP();
       },
-    );*/
+    );
 
     //Network state checker
     this.state.networkStateChecker = NetInfo.addEventListener((state) => {
@@ -133,9 +145,6 @@ class OTPVerificationEntry extends React.PureComponent {
       else {
         globalObject.props.UpdateErrorModalLog(false, false, state.type);
       }
-
-      console.log('Connection type', state.type);
-      console.log('Is connected?', state.isConnected);
     });
 
     //connection
@@ -143,36 +152,27 @@ class OTPVerificationEntry extends React.PureComponent {
       globalObject.props.UpdateErrorModalLog(false, false, 'any');
     });
     //Socket error handling
-    this.props.App.socket.on('error', (error) => {
-      //console.log('something');
-    });
+    this.props.App.socket.on('error', () => {});
     this.props.App.socket.on('disconnect', () => {
-      //console.log('something');
       globalObject.props.App.socket.connect();
     });
     this.props.App.socket.on('connect_error', () => {
-      console.log('connect_error');
       //Ask for the OTP again
-      /*globalObject.props.UpdateErrorModalLog(
+      globalObject.props.UpdateErrorModalLog(
         true,
-        'connection_no_network',
+        'service_unavailable',
         'any',
-      );*/
+      );
       globalObject.props.App.socket.connect();
     });
     this.props.App.socket.on('connect_timeout', () => {
-      console.log('connect_timeout');
       globalObject.props.App.socket.connect();
     });
-    this.props.App.socket.on('reconnect', () => {
-      ////console.log('something');
-    });
+    this.props.App.socket.on('reconnect', () => {});
     this.props.App.socket.on('reconnect_error', () => {
-      console.log('reconnect_error');
       globalObject.props.App.socket.connect();
     });
     this.props.App.socket.on('reconnect_failed', () => {
-      console.log('reconnect_failed');
       globalObject.props.App.socket.connect();
     });
 
@@ -183,7 +183,6 @@ class OTPVerificationEntry extends React.PureComponent {
     this.props.App.socket.on(
       'sendOtpAndCheckerUserStatusTc-response',
       function (response) {
-        console.log('asnwer here --> ', response);
         //Stop the loader
         globalObject.setState({loaderState: false});
         //...
@@ -202,10 +201,13 @@ class OTPVerificationEntry extends React.PureComponent {
             } else if (/^registered$/i.test(response.response)) {
               //Registered user
               globalObject.state.userStatus = 'registered_user';
-              //Save the user_fp!!!!
-              syncStorage.set('@ufp', response.user_fp);
+              //? Save the account details
+              globalObject.state.userAccountDetails = response;
             } //Error
             else {
+              globalObject.props.App.user_fingerprint = null; //Nullify user fingerprint
+              SyncStorage.remove('@user_fp');
+
               globalObject.props.UpdateErrorModalLog(
                 true,
                 'error_checking_user_status_login',
@@ -214,6 +216,9 @@ class OTPVerificationEntry extends React.PureComponent {
             }
           } //Error - call error modal with try again button going back to phone number input
           else {
+            globalObject.props.App.user_fingerprint = null; //Nullify user fingerprint
+            SyncStorage.remove('@user_fp');
+
             globalObject.setState({loaderState: false});
             globalObject.props.UpdateErrorModalLog(
               true,
@@ -223,6 +228,9 @@ class OTPVerificationEntry extends React.PureComponent {
           }
         } //Error - go back to phone number
         else {
+          globalObject.props.App.user_fingerprint = null; //Nullify user fingerprint
+          SyncStorage.remove('@user_fp');
+
           globalObject.setState({loaderState: false});
           globalObject.goBackFUnc();
         }
@@ -234,21 +242,65 @@ class OTPVerificationEntry extends React.PureComponent {
      */
     this.props.App.socket.on('checkThisOTP_SMS-response', function (response) {
       console.log(response);
-      globalObject.props.navigation.navigate('Home');
       globalObject.setState({loaderState: false}); //Disable the loader
+      //! Reset otp value - to avoid loop hell
+      globalObject.setState({otpValue: ''});
+      //----
       if (response.response !== undefined) {
         if (response.response === true) {
-          //Reset otp value
-          globalObject.setState({otpValue: ''});
           //true
           //Correct
           //Check the net navigation
           if (/new_user/i.test(globalObject.state.userStatus)) {
+            console.log('new user');
             //Create new account
-            globalObject.props.navigation.navigate('CreateAccountEntry');
+            globalObject.props.navigation.navigate('NewDriverDetected'); //Go to new drivers information page
           } //Home
           else {
-            globalObject.props.navigation.navigate('Home');
+            //? Restore the saved account details
+            //Minimal details already added - update big vars
+            response = globalObject.state.userAccountDetails;
+            console.log(response);
+            //! Save the user_fp and the rest of the globals
+            globalObject.props.App.user_fingerprint = response.user_fp;
+            globalObject.props.App.gender_user = response.gender;
+            globalObject.props.App.username = response.name;
+            globalObject.props.App.surname_user = response.surname;
+            globalObject.props.App.user_email = response.email;
+            globalObject.props.App.phone_user = response.phone_number;
+            globalObject.props.App.user_profile_pic = response.profile_picture;
+            globalObject.props.App.pushnotif_token = response.pushnotif_token;
+            globalObject.props.App.account_state = response.account_state;
+            //! Save to storage as well.
+            SyncStorage.set('@user_fp', response.user_fp);
+            SyncStorage.set('@gender_user', response.gender);
+            SyncStorage.set('@username', response.name);
+            SyncStorage.set('@surname_user', response.surname);
+            SyncStorage.set('@user_email', response.email);
+            SyncStorage.set('@phone_user', response.phone_number);
+            SyncStorage.set('@user_profile_pic', response.profile_picture);
+            SyncStorage.set('@account_state', response.account_state);
+            //....
+
+            //Check the state of the account creation
+            if (
+              /true/i.test(response.account_state) ||
+              response.account_state
+            ) {
+              globalObject.props.navigation.navigate('Home');
+            } //Minimal account - move to the additional details screen
+            else if (
+              /(suspended|blocked|deactivated)/i.test(response.account_state)
+            ) {
+              //Account suspended
+              globalObject.props.navigation.navigate('AccountProblemDetected', {
+                suspension_message:
+                  response.suspension_message !== undefined &&
+                  response.suspension_message !== null
+                    ? response.suspension_message
+                    : null,
+              });
+            }
           }
         } else if (response.response === false) {
           //wrong otp
@@ -281,15 +333,15 @@ class OTPVerificationEntry extends React.PureComponent {
 
   componentWillUnmount() {
     //Remove navigation event listener
-    /*if (this._navigatorEvent !== false && this._navigatorEvent !== undefined) {
+    if (this._navigatorEvent !== false && this._navigatorEvent !== undefined) {
       this._navigatorEvent();
-    }*/
+    }
     //Remove the network state listener
     if (this.state.networkStateChecker !== false) {
       this.state.networkStateChecker();
     }
     //Remove the auto otp seeker
-    //RNOtpVerify.removeListener();
+    Platform.OS === 'android' && RNOtpVerify.removeListener();
   }
 
   /**
@@ -307,18 +359,21 @@ class OTPVerificationEntry extends React.PureComponent {
         //Request for otp
         globalObject.requestForOTP();
         //...
-        console.log('Can read sms');
         RNOtpVerify.getOtp()
-          .then((p) => {
-            console.log('here');
+          .then(() => {
             RNOtpVerify.addListener(this.otpHandler);
           })
-          .catch((p) => console.log(p));
+          .catch((p) => {});
       } else {
-        console.log('SMS reading permission denied.');
+        //Request for otp
+        globalObject.requestForOTP();
+        //...
       }
     } catch (err) {
       console.warn(err);
+      //Request for otp
+      globalObject.requestForOTP();
+      //...
     }
   }
 
@@ -336,9 +391,7 @@ class OTPVerificationEntry extends React.PureComponent {
         Keyboard.dismiss();
         //Auto check
         this.moveForwardCheck();
-      } catch (error) {
-        console.log(error);
-      }
+      } catch (error) {}
     }
   }
 
@@ -367,7 +420,6 @@ class OTPVerificationEntry extends React.PureComponent {
    */
   requestForOTP(reset = false) {
     if (reset) {
-      console.log('here');
       this.state.SMS_LIMITER = false;
     }
     //..
@@ -375,8 +427,6 @@ class OTPVerificationEntry extends React.PureComponent {
     if (phoneNumber !== false) {
       this.setState({loaderState: true});
       if (this.state.SMS_LIMITER === false) {
-        console.log(this.state.SMS_LIMITER);
-        console.log(phoneNumber);
         //Limit the sms
         //this.state.SMS_LIMITER = true;
         this.setState({
@@ -393,7 +443,8 @@ class OTPVerificationEntry extends React.PureComponent {
         //Has a final number
         this.props.App.socket.emit('sendOtpAndCheckerUserStatusTc', {
           phone_number: phoneNumber,
-          nature_user: 'driver',
+          smsHashLinker: this.state.smsHashLinker,
+          user_nature: 'driver',
         });
       }
     } //Go back to the numbe input
@@ -409,15 +460,18 @@ class OTPVerificationEntry extends React.PureComponent {
    */
   moveForwardCheck() {
     //Request for otp check
-    this.setState({
-      showErrorUnmatchedOTP: false,
-      loaderState: true,
-      checkingOTP: true,
-    });
-    this.props.App.socket.emit('checkThisOTP_SMS', {
-      phone_number: this.props.App.finalPhoneNumber,
-      otp: this.state.otpValue,
-    });
+    if (this.state.checkingOTP === false) {
+      this.setState({
+        showErrorUnmatchedOTP: false,
+        loaderState: true,
+        checkingOTP: true,
+      });
+      this.props.App.socket.emit('checkThisOTP_SMS', {
+        phone_number: this.props.App.finalPhoneNumber,
+        otp: this.state.otpValue,
+        user_nature: 'driver',
+      });
+    }
   }
 
   /**
@@ -425,12 +479,60 @@ class OTPVerificationEntry extends React.PureComponent {
    * Responsible for checking when the user has entered all the 5 digits to auto launch the checking process
    */
   autoCheckOTPAsTyped() {
-    this.props.navigation.navigate('Home');
-    if (this.state.otpValue.trim().length >= 5) {
-      console.log('Autochecking launched');
+    if (
+      this.state.otpValue.trim().length >= 5 &&
+      this.state.didCheckOTP === false
+    ) {
+      console.log('AUTOCHECK', 'color:red');
       //Autocheck
       this.moveForwardCheck();
-      this.props.navigation.navigate('Home');
+    }
+  }
+
+  /**
+   * @func renderError_modalView
+   * Responsible for rendering the modal view only once.
+   */
+  renderError_modalView() {
+    if (
+      this._shouldShow_errorModal &&
+      this.props.App.generalErrorModal_vars.showErrorGeneralModal
+    ) {
+      //Show once, and lock
+      this._shouldShow_errorModal = false; //!LOCK MODAL
+      return (
+        <ErrorModal
+          active={this.props.App.generalErrorModal_vars.showErrorGeneralModal}
+          error_status={
+            this.props.App.generalErrorModal_vars.generalErrorModalType
+          }
+          parentNode={this}
+        />
+      );
+    } else if (
+      this.props.App.generalErrorModal_vars.showErrorGeneralModal === false
+    ) {
+      //Disable modal lock when modal off
+      this._shouldShow_errorModal = true; //!UNLOCK MODAL
+      return (
+        <ErrorModal
+          active={this.props.App.generalErrorModal_vars.showErrorGeneralModal}
+          error_status={
+            this.props.App.generalErrorModal_vars.generalErrorModalType
+          }
+          parentNode={this}
+        />
+      );
+    } else {
+      return (
+        <ErrorModal
+          active={this.props.App.generalErrorModal_vars.showErrorGeneralModal}
+          error_status={
+            this.props.App.generalErrorModal_vars.generalErrorModalType
+          }
+          parentNode={this}
+        />
+      );
     }
   }
 
@@ -439,19 +541,10 @@ class OTPVerificationEntry extends React.PureComponent {
       <DismissKeyboard>
         <SafeAreaView style={styles.mainWindow}>
           <GenericLoader active={this.state.loaderState} />
-          {/*this.autoCheckOTPAsTyped()*/}
-          {this.props.App.generalErrorModal_vars.showErrorGeneralModal ===
-          false ? (
-            <ErrorModal
-              active={
-                this.props.App.generalErrorModal_vars.showErrorGeneralModal
-              }
-              error_status={
-                this.props.App.generalErrorModal_vars.generalErrorModalType
-              }
-              parentNode={this}
-            />
-          ) : null}
+          {this.autoCheckOTPAsTyped()}
+          {this.props.App.generalErrorModal_vars.showErrorGeneralModal
+            ? this.renderError_modalView()
+            : null}
           <View style={styles.presentationWindow}>
             <TouchableOpacity
               onPress={() => this.goBackFUnc()}
@@ -462,15 +555,18 @@ class OTPVerificationEntry extends React.PureComponent {
               style={[
                 systemWeights.semibold,
                 {
-                  fontSize: 19,
-                  fontFamily: 'Allrounder-Grotesk-Book',
+                  fontSize: 21,
+                  fontFamily:
+                    Platform.OS === 'android'
+                      ? 'Allrounder-Grotesk-Regular'
+                      : 'Allrounder Grotesk',
                   marginTop: 15,
                   marginBottom: 35,
                 },
               ]}>
               Enter the 5-digits code sent you.
             </Text>
-            <AppOTP
+            <App
               valueM={this.state.otpValue}
               parentNode={this}
               editable={!this.state.checkingOTP}
@@ -483,7 +579,10 @@ class OTPVerificationEntry extends React.PureComponent {
                 <Text
                   style={[
                     {
-                      fontFamily: 'Allrounder-Grotesk-Book',
+                      fontFamily:
+                        Platform.OS === 'android'
+                          ? 'Allrounder-Grotesk-Book'
+                          : 'Allrounder Grotesk Book',
                       color: '#0e8491',
                       fontSize: 17,
                     },
@@ -496,7 +595,10 @@ class OTPVerificationEntry extends React.PureComponent {
                 <Text
                   style={[
                     {
-                      fontFamily: 'Allrounder-Grotesk-Book',
+                      fontFamily:
+                        Platform.OS === 'android'
+                          ? 'Allrounder-Grotesk-Book'
+                          : 'Allrounder Grotesk Book',
                       color: '#b22222',
                       fontSize: 17,
                     },
@@ -517,10 +619,8 @@ class OTPVerificationEntry extends React.PureComponent {
               }}>
               <View style={{flexDirection: 'row', flex: 1}}>
                 <Text
-                  style={[
-                    systemWeights.light,
-                    {fontSize: 12, marginLeft: 6},
-                  ]}></Text>
+                  style={[systemWeights.light, {fontSize: 12, marginLeft: 6}]}
+                />
               </View>
               <View style={{flex: 1, alignItems: 'flex-end'}}>
                 {this.state.checkingOTP === false ? (

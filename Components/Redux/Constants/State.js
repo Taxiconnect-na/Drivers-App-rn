@@ -1,4 +1,5 @@
 import React from 'react';
+import {Animated} from 'react-native';
 import SOCKET_CORE from '../../Helpers/managerNode';
 import {Dimensions} from 'react-native';
 const windowWidth = Dimensions.get('window').width;
@@ -15,7 +16,7 @@ const STATE = {
   //PERSISTANT INTERVAL VARIABLES
   //Interval persister for updating requests data
   _TMP_TRIP_INTERVAL_PERSISTER: null, //The interval for updating rides related data
-  _TMP_TRIP_INTERVAL_PERSISTER_TIME: 300, //THe frequency of repetition - default:3s
+  _TMP_TRIP_INTERVAL_PERSISTER_TIME: 2000, //THe frequency of repetition - default:3s
   //Interval persister for updating the focused navigation data
   _TMP_NAVIATION_DATA_INTERVAL_PERSISTER: null, //The interval for updating the focused navigation data
   _TMP_NAVIATION_DATA_INTERVAL_PERSISTER_TIME: 3000, //THe frequency of repetition - default:3s
@@ -57,12 +58,27 @@ const STATE = {
   //Generic phone number input variable
   isPhoneNumberValid: false, //TO know if the phone number is valid or not.
 
+  //ANIMATION OF SEARCH COUNTRY SCREEN
+  searchCountryScreenOpacity: new Animated.Value(0), //Opacity of the seach country screen - default: 0
+  searchCountryScreenPosition: new Animated.Value(200), //Top offset of the search country screen - default: 200
+
   //Error manager
   generalErrorModal_vars: {
     showErrorGeneralModal: false, //Whether to show or not the error modal - default: false
     generalErrorModalType: false, //The type of the error to handle, based on this the content of the modal will be very different - careful! - default: false
     network_type: false, //The type of the network currently connected.
   },
+
+  //User generic variables
+  gender_user: 'male', //The gender of the user - default: male (male, female, unknown)
+  username: false, //The name of the user - default: false - name
+  surname_user: false, //The name of the user - default: false - surname
+  phone_user: false, //The user's phone number - default: false
+  user_email: false, //The email of the user - default: false
+  user_profile_pic: null, //The user's profile picture
+  last_dataPersoUpdated: null, //The last data updated - default: null
+
+  account_state: null, //! THE ACCOUNT STATE: true, false, suspended and so on. To determine the current state of the account.
 
   //1.Home screen
   shownRides_types: 'Rides', //To govern which ride to show :Rides, Delivery or Scheduled - default: Rides
