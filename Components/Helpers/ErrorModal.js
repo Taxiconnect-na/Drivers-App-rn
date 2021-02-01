@@ -625,8 +625,8 @@ class ErrorModal extends React.PureComponent {
                 ]}>
                 <Text
                   style={{
-                    fontFamily: 'Allrounder-Grotesk-Book',
-                    fontSize: 19,
+                    fontFamily: 'Allrounder-Grotesk-Regular',
+                    fontSize: 20,
                     color: '#000',
                     marginLeft: 5,
                     flex: 1,
@@ -664,8 +664,8 @@ class ErrorModal extends React.PureComponent {
               ]}>
               <Text
                 style={{
-                  fontFamily: 'Allrounder-Grotesk-Book',
-                  fontSize: 19,
+                  fontFamily: 'Allrounder-Grotesk-Regular',
+                  fontSize: 20,
                   color: '#b22222',
                   marginLeft: 5,
                   flex: 1,

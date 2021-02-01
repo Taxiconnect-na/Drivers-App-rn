@@ -260,7 +260,6 @@ class OTPVerificationEntry extends React.PureComponent {
             //? Restore the saved account details
             //Minimal details already added - update big vars
             response = globalObject.state.userAccountDetails;
-            console.log(response);
             //! Save the user_fp and the rest of the globals
             globalObject.props.App.user_fingerprint = response.user_fp;
             globalObject.props.App.gender_user = response.gender;
@@ -287,11 +286,7 @@ class OTPVerificationEntry extends React.PureComponent {
               /true/i.test(response.account_state) ||
               response.account_state
             ) {
-              //globalObject.props.navigation.navigate('Home');
-              globalObject.props.navigation.reset({
-                index: 0,
-                routes: [{name: 'Home'}],
-              });
+              globalObject.props.navigation.navigate('Home');
             } //Minimal account - move to the additional details screen
             else if (
               /(suspended|blocked|deactivated)/i.test(response.account_state)

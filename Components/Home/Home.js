@@ -2135,8 +2135,8 @@ class Home extends React.PureComponent {
                     fontFamily: 'Allrounder-Grotesk-Medium',
                     fontSize: this.props.App.main_interfaceState_vars
                       .isDriver_online
-                      ? 18
-                      : 19,
+                      ? 20
+                      : 22,
                     color: /Hold on/i.test(this.state.offlineOnlineText)
                       ? '#000'
                       : /Offline/i.test(this.state.offlineOnlineText)
@@ -2151,7 +2151,7 @@ class Home extends React.PureComponent {
                   <Text
                     style={{
                       fontFamily: 'Allrounder-Grotesk-Regular',
-                      fontSize: 18.5,
+                      fontSize: 20,
                       marginLeft: 5,
                       color: '#fff',
                     }}>
