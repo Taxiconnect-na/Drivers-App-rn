@@ -2,7 +2,6 @@ import React from 'react';
 import {View, Text} from 'react-native';
 import {createStackNavigator, TransitionPresets} from '@react-navigation/stack';
 import {createDrawerNavigator, DrawerContent} from '@react-navigation/drawer';
-import IconAnt from 'react-native-vector-icons/AntDesign';
 import EntryScreen from '../Components/Login/EntrySreen';
 import PhoneDetailsScreen from '../Components/Login/PhoneDetailsScreen';
 import OTPVerificationEntry from '../Components/Login/OTPVerificationEntry';

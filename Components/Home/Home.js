@@ -6,11 +6,7 @@ import {
   MapView,
   Camera,
   UserLocation,
-  ShapeSource,
   SymbolLayer,
-  CircleLayer,
-  PointAnnotation,
-  MarkerView,
 } from '@react-native-mapbox-gl/maps';
 import {
   View,
@@ -19,7 +15,6 @@ import {
   SafeAreaView,
   StyleSheet,
   TouchableOpacity,
-  ScrollView,
   Platform,
   Easing,
   PermissionsAndroid,
@@ -42,13 +37,11 @@ import {
   UpdateDailyAmount_madeSoFar,
   UpdateDriverOperational_status,
 } from '../Redux/HomeActionsCreators';
-import {systemWeights} from 'react-native-typography';
 import PulseCircleLayer from '../Modules/PulseCircleLayer';
 import IconAnt from 'react-native-vector-icons/AntDesign';
 import IconCommunity from 'react-native-vector-icons/MaterialCommunityIcons';
 import IconMaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import IconFontAwesome from 'react-native-vector-icons/FontAwesome';
-import IconFeather from 'react-native-vector-icons/Feather';
 import IconSimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
 import GenericRequestTemplate from '../Modules/GenericRequestTemplate';
 import GenericLoader from '../Modules/GenericLoader/GenericLoader';

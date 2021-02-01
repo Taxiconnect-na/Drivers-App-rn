@@ -5,17 +5,11 @@ import {UpdateErrorModalLog} from '../Redux/HomeActionsCreators';
 import {
   View,
   Text,
-  StyleSheet,
   TouchableOpacity,
   ActivityIndicator,
   InteractionManager,
 } from 'react-native';
-import {systemWeights} from 'react-native-typography';
 import IconAnt from 'react-native-vector-icons/AntDesign';
-import IconCommunity from 'react-native-vector-icons/MaterialCommunityIcons';
-import IconMaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import IconFontAwesome from 'react-native-vector-icons/FontAwesome';
-import IconFeather from 'react-native-vector-icons/Feather';
 
 class GenericRequestTemplate extends React.PureComponent {
   constructor(props) {
@@ -439,7 +433,7 @@ class GenericRequestTemplate extends React.PureComponent {
                 <Text
                   style={{
                     fontFamily: 'Allrounder-Grotesk-Regular',
-                    fontSize: 17,
+                    fontSize: 18,
                     color: '#b22222',
                   }}>
                   {this.state.isDeclinignRequest === false ? (

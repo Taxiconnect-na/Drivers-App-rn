@@ -13,16 +13,11 @@ import {
 } from 'react-native';
 import {systemWeights} from 'react-native-typography';
 import IconMaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import IconAnt from 'react-native-vector-icons/AntDesign';
-import PhoneNumberInput from '../Modules/PhoneNumberInput/Components/PhoneNumberInput';
-import DismissKeyboard from '../Helpers/DismissKeyboard';
 import {
   ValidateGenericPhoneNumber,
   UpdateErrorModalLog,
 } from '../Redux/HomeActionsCreators';
-import ErrorModal from '../Helpers/ErrorModal';
 import SyncStorage from 'sync-storage';
-import NetInfo from '@react-native-community/netinfo';
 
 class PhoneDetailsScreen extends React.PureComponent {
   constructor(props) {
