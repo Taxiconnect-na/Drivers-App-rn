@@ -801,7 +801,6 @@ class ErrorModal extends React.PureComponent {
         <SafeAreaView
           style={{
             backgroundColor: '#fff',
-            //padding: 20,
             flex: 1,
           }}>
           <View style={styles.presentationWindow}>
@@ -837,8 +836,8 @@ class ErrorModal extends React.PureComponent {
                   style={[
                     systemWeights.semibold,
                     {
-                      fontSize: 17.5,
-                      fontFamily: 'Allrounder-Grotesk-Regular',
+                      fontSize: 18,
+                      fontFamily: 'Allrounder-Grotesk-Medium',
                       marginLeft: 5,
                     },
                   ]}>
@@ -899,8 +898,8 @@ class ErrorModal extends React.PureComponent {
                     }}>
                     <Text
                       style={{
-                        fontFamily: 'Allrounder-Grotesk-Regular',
-                        fontSize: 17,
+                        fontFamily: 'Allrounder-Grotesk-Medium',
+                        fontSize: 19,
                       }}>
                       {this.props.App.requests_data_main_vars
                         .moreDetailsFocused_request.passenger_infos.name !==
@@ -917,8 +916,8 @@ class ErrorModal extends React.PureComponent {
                       }}>
                       <Text
                         style={{
-                          fontFamily: 'Allrounder-Grotesk-Regular',
-                          fontSize: 15,
+                          fontFamily: 'MoveMedium',
+                          fontSize: 17,
                           color: '#096ED4',
                         }}>
                         {parseInt(
@@ -971,15 +970,7 @@ class ErrorModal extends React.PureComponent {
                     flexDirection: 'row',
                     padding: 15,
                   }}>
-                  <IconMaterialIcons name="phone" color="#096ED4" size={21} />
-                  <Text
-                    style={{
-                      fontFamily: 'Allrounder-Grotesk-Regular',
-                      color: '#096ED4',
-                      fontSize: 16.5,
-                    }}>
-                    Call
-                  </Text>
+                  <IconMaterialIcons name="phone" color="#096ED4" size={30} />
                 </TouchableOpacity>
               </View>
               {/**Confirmation buttons: pickup/drop off */}
@@ -1020,7 +1011,7 @@ class ErrorModal extends React.PureComponent {
                   <IconCommunity name="navigation" size={22} />
                   <Text
                     style={{
-                      fontFamily: 'Allrounder-Grotesk-Regular',
+                      fontFamily: 'Allrounder-Grotesk-Medium',
                       fontSize: 16,
                       color: '#000',
                     }}>
@@ -1076,8 +1067,8 @@ class ErrorModal extends React.PureComponent {
                   }}>
                   <Text
                     style={{
-                      fontFamily: 'Allrounder-Grotesk-Medium',
-                      fontSize: 15,
+                      fontFamily: 'MoveBold',
+                      fontSize: 17,
                       color: '#fff',
                     }}>
                     {this.props.App.requests_data_main_vars
@@ -1094,8 +1085,8 @@ class ErrorModal extends React.PureComponent {
               <View style={{}}>
                 <Text
                   style={{
-                    fontSize: 16,
-                    fontFamily: 'Allrounder-Grotesk-Book',
+                    fontSize: 17,
+                    fontFamily: 'Allrounder-Grotesk-Regular',
                     color: '#a5a5a5',
                     padding: 20,
                     paddingBottom: 0,
@@ -1157,8 +1148,8 @@ class ErrorModal extends React.PureComponent {
                           <View style={{width: 35}}>
                             <Text
                               style={{
-                                fontFamily: 'Allrounder-Grotesk-Book',
-                                fontSize: 13,
+                                fontFamily: 'Allrounder-Grotesk-Regular',
+                                fontSize: 14,
                                 top: 2,
                               }}>
                               From
@@ -1176,8 +1167,8 @@ class ErrorModal extends React.PureComponent {
                               }}>
                               <Text
                                 style={{
-                                  fontFamily: 'Allrounder-Grotesk-Medium',
-                                  fontSize: 15,
+                                  fontFamily: 'MoveMedium',
+                                  fontSize: 18,
                                   marginLeft: 5,
                                   flex: 1,
                                 }}>
@@ -1190,8 +1181,8 @@ class ErrorModal extends React.PureComponent {
                               </Text>
                               <Text
                                 style={{
-                                  fontFamily: 'Allrounder-Grotesk-Book',
-                                  fontSize: 14,
+                                  fontFamily: 'Allrounder-Grotesk-Regular',
+                                  fontSize: 15,
                                   marginLeft: 5,
                                   marginTop: 3,
                                   flex: 1,
@@ -1242,8 +1233,8 @@ class ErrorModal extends React.PureComponent {
                                     }}>
                                     <Text
                                       style={{
-                                        fontFamily: 'Allrounder-Grotesk-Medium',
-                                        fontSize: 15,
+                                        fontFamily: 'MoveMedium',
+                                        fontSize: 18,
                                         marginLeft: 5,
                                         flex: 1,
                                       }}>
@@ -1253,9 +1244,8 @@ class ErrorModal extends React.PureComponent {
                                         .destination_infos.length > 1 ? (
                                         <Text
                                           style={{
-                                            fontFamily:
-                                              'Allrounder-Grotesk-Regular',
-                                            fontSize: 13,
+                                            fontFamily: 'MoveRegular',
+                                            fontSize: 14,
                                             marginLeft: 5,
                                             flex: 1,
                                             color: '#096ED4',
@@ -1267,8 +1257,9 @@ class ErrorModal extends React.PureComponent {
                                     </Text>
                                     <Text
                                       style={{
-                                        fontFamily: 'Allrounder-Grotesk-Book',
-                                        fontSize: 14,
+                                        fontFamily:
+                                          'Allrounder-Grotesk-Regular',
+                                        fontSize: 15,
                                         marginLeft: 5,
                                         marginTop: 3,
                                         flex: 1,
@@ -1279,8 +1270,9 @@ class ErrorModal extends React.PureComponent {
                                     destination.street_name !== false ? (
                                       <Text
                                         style={{
-                                          fontFamily: 'Allrounder-Grotesk-Book',
-                                          fontSize: 14,
+                                          fontFamily:
+                                            'Allrounder-Grotesk-Regular',
+                                          fontSize: 15,
                                           marginLeft: 5,
                                           marginTop: 3,
                                           flex: 1,
@@ -1330,8 +1322,8 @@ class ErrorModal extends React.PureComponent {
 
                   <Text
                     style={{
-                      fontFamily: 'Allrounder-Grotesk-Regular',
-                      fontSize: 17,
+                      fontFamily: 'MoveMedium',
+                      fontSize: 18,
                       marginLeft: 4,
                     }}>
                     {String(
@@ -1357,13 +1349,13 @@ class ErrorModal extends React.PureComponent {
                 </View>
                 <Text
                   style={{
-                    fontFamily: 'Allrounder-Grotesk-Medium',
-                    fontSize: 18,
+                    fontFamily: 'MoveBold',
+                    fontSize: 22,
                     color: 'green',
                     flex: 1,
                     textAlign: 'center',
                   }}>
-                  {'N$' +
+                  {'N$ ' +
                     this.props.App.requests_data_main_vars
                       .moreDetailsFocused_request.ride_basic_infos.fare_amount}
                 </Text>
@@ -1378,7 +1370,7 @@ class ErrorModal extends React.PureComponent {
                   <Text
                     style={{
                       fontFamily: 'Allrounder-Grotesk-Medium',
-                      fontSize: 17.5,
+                      fontSize: 19,
                       marginLeft: 4,
                     }}>
                     {
@@ -1421,7 +1413,7 @@ class ErrorModal extends React.PureComponent {
                       <Text
                         style={{
                           fontFamily: 'Allrounder-Grotesk-Regular',
-                          fontSize: 16,
+                          fontSize: 19,
                           color: '#b22222',
                           marginLeft: 5,
                         }}>
@@ -1442,7 +1434,7 @@ class ErrorModal extends React.PureComponent {
                 <Text
                   style={{
                     fontSize: 16,
-                    fontFamily: 'Allrounder-Grotesk-Book',
+                    fontFamily: 'Allrounder-Grotesk-Regular',
                     color: '#a5a5a5',
                     paddingBottom: 25,
                   }}>
@@ -1463,9 +1455,9 @@ class ErrorModal extends React.PureComponent {
                     />
                     <Text
                       style={{
-                        fontFamily: 'Allrounder-Grotesk-Book',
-                        fontSize: 17,
-                        color: '#b22222',
+                        fontFamily: 'Allrounder-Grotesk-Medium',
+                        fontSize: 19,
+                        color: '#000',
                         marginLeft: 5,
                       }}>
                       Emergency call
@@ -1612,7 +1604,7 @@ class ErrorModal extends React.PureComponent {
               <Text
                 style={{
                   fontFamily: 'Allrounder-Grotesk-Medium',
-                  fontSize: 19,
+                  fontSize: 22,
                   color: '#fff',
                 }}>
                 Try again
@@ -1709,7 +1701,7 @@ class ErrorModal extends React.PureComponent {
               <Text
                 style={{
                   fontFamily: 'Allrounder-Grotesk-Medium',
-                  fontSize: 19,
+                  fontSize: 22,
                   color: '#fff',
                 }}>
                 Try again
@@ -1758,7 +1750,7 @@ class ErrorModal extends React.PureComponent {
               <Text
                 style={{
                   fontFamily: 'Allrounder-Grotesk-Medium',
-                  fontSize: 19,
+                  fontSize: 22,
                   color: '#fff',
                 }}>
                 Try again
@@ -1806,7 +1798,7 @@ class ErrorModal extends React.PureComponent {
               <Text
                 style={{
                   fontFamily: 'Allrounder-Grotesk-Medium',
-                  fontSize: 19,
+                  fontSize: 22,
                   color: '#fff',
                 }}>
                 Try again
@@ -2062,7 +2054,6 @@ class ErrorModal extends React.PureComponent {
   }
 
   render() {
-    console.log('Modal called');
     return (
       <View>
         <Modal

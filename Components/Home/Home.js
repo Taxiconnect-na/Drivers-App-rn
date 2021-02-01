@@ -63,6 +63,7 @@ class Home extends React.PureComponent {
     this._shouldShow_errorModal = true; //! ERROR MODAL AUTO-LOCKER - PERFORMANCE IMPROVER.
 
     this.state = {
+      locationWatcher: null, //Responsible for holding the watcher for the location changes.
       loaderState: false,
       networkStateChecker: false,
       isGoingOnline: false, //TO know whether it is loading to go online - default: false
@@ -279,6 +280,23 @@ class Home extends React.PureComponent {
         if (regChecker.test(response[0].request_type)) {
           //Consistent with the choosed in app request type
           globalObject.props.UpdateFetchedRequests_dataServer(response);
+          //Fit bounds
+          if (
+            globalObject.camera !== undefined &&
+            globalObject.camera != null
+          ) {
+            globalObject.camera.fitBounds(
+              [
+                globalObject.props.App.longitude,
+                globalObject.props.App.latitude,
+              ],
+              globalObject.props.App.main_interfaceState_vars.navigationRouteData.destinationPoint.map(
+                parseFloat,
+              ),
+              80,
+              2000,
+            );
+          }
         }
       } //No rides
       else {
@@ -359,6 +377,7 @@ class Home extends React.PureComponent {
       user_nature: 'driver',
       requestType: this.props.App.requestType,
     };
+
     this.props.App.socket.emit('update-passenger-location', bundle);
   }
 
@@ -394,106 +413,6 @@ class Home extends React.PureComponent {
       },
     );
   };
-
-  /**
-   * @func requestGPSPermission()
-   * Responsible for getting the permission to the GPRS location for the user and
-   * lock them from useing the app without the proper GPRS permissions.
-   *
-   */
-  async requestGPSPermission(activateRest = true) {
-    let globalObject = this;
-    if (this.props.App.gprsGlobals.didAskForGprs === false) {
-      this.props.App.gprsGlobals.didAskForGprs = true;
-      //Ask only once at start
-      try {
-        const granted = await PermissionsAndroid.request(
-          PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
-          {
-            title: 'Location Permission',
-            message: 'TaxiConnect needs access to your location',
-          },
-        );
-        if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-          if (activateRest) {
-            globalObject.getCurrentPositionCusto();
-            GeolocationP.getCurrentPosition(
-              (position) => {
-                globalObject.props.App.latitude = position.coords.latitude;
-                globalObject.props.App.longitude = position.coords.longitude;
-                //Update GPRS permission global var
-                let newStateVars = {};
-                newStateVars.hasGPRSPermissions = true;
-                newStateVars.didAskForGprs = true;
-                globalObject.props.UpdateGrantedGRPS(newStateVars);
-                //Launch recalibration
-                //globalObject.recalibrateMap();
-              },
-              (error) => {
-                // See error code charts below.
-                //Launch recalibration
-                //globalObject.recalibrateMap();
-              },
-              {enableHighAccuracy: true, timeout: 10000, maximumAge: 3000},
-            );
-            globalObject.props.App.isMapPermitted = true;
-            GeolocationP.getCurrentPosition(
-              (position) => {
-                globalObject.props.App.latitude = position.coords.latitude;
-                globalObject.props.App.longitude = position.coords.longitude;
-                //Update GPRS permission global var
-                let newStateVars = {};
-                newStateVars.hasGPRSPermissions = true;
-                newStateVars.didAskForGprs = true;
-                globalObject.props.UpdateGrantedGRPS(newStateVars);
-                //Launch recalibration
-                //globalObject.recalibrateMap();
-              },
-              (error) => {},
-              {enableHighAccuracy: true, timeout: 10000, maximumAge: 3000},
-            );
-          }
-        } else {
-          console.log('GPS permission denied');
-          //Permission denied, update gprs global vars and lock the platform
-          let newStateVars = {};
-          newStateVars.hasGPRSPermissions = false;
-          newStateVars.didAskForGprs = true;
-          globalObject.props.UpdateGrantedGRPS(newStateVars);
-        }
-      } catch (err) {
-        //console.warn(err);
-        //Permission denied, update gprs global vars and lock the platform
-        let newStateVars = {};
-        newStateVars.hasGPRSPermissions = false;
-        newStateVars.didAskForGprs = true;
-        globalObject.props.UpdateGrantedGRPS(newStateVars);
-        //Close loading animation
-        //globalObject.resetAnimationLoader();
-      }
-    } //Lock the interface
-    else {
-      //Check if the permission was given or not
-      if (this.props.App.gprsGlobals.hasGPRSPermissions) {
-        //Has the GPRS permissions
-        let newStateVars = {};
-        newStateVars.hasGPRSPermissions = true;
-        newStateVars.didAskForGprs = true;
-        globalObject.props.UpdateGrantedGRPS(newStateVars);
-        //Launch recalibration
-        //globalObject.recalibrateMap();
-      } //No permissions
-      else {
-        //Permission denied, update gprs global vars and lock the platform
-        let newStateVars = {};
-        newStateVars.hasGPRSPermissions = false;
-        newStateVars.didAskForGprs = true;
-        globalObject.props.UpdateGrantedGRPS(newStateVars);
-        //Close loading animation
-        //globalObject.resetAnimationLoader();
-      }
-    }
-  }
 
   /**
    * @func GPRS_resolver()
@@ -567,6 +486,11 @@ class Home extends React.PureComponent {
                 );
                 this.props.App.isMapPermitted = true;
               } else {
+                if (this.state.locationWatcher === null) {
+                  //Initializedd the location watcher
+                  this.state.locationWatcher = GeolocationP.watchPosition();
+                }
+
                 GeolocationP.getCurrentPosition(
                   (position) => {
                     globalObject.props.App.latitude = position.coords.latitude;
@@ -963,12 +887,16 @@ class Home extends React.PureComponent {
             }}>
             <View style={{flexDirection: 'row', alignItems: 'center'}}>
               <TouchableOpacity
-                onPress={() => this.props.navigation.openDrawer()}
+                onPress={() =>
+                  InteractionManager.runAfterInteractions(() => {
+                    this.props.navigation.openDrawer();
+                  })
+                }
                 style={{
                   top: 1.5,
                   backgroundColor: '#fff',
-                  width: 45,
-                  height: 45,
+                  width: 50,
+                  height: 50,
                   borderRadius: 150,
                   alignItems: 'center',
                   justifyContent: 'center',
@@ -982,7 +910,7 @@ class Home extends React.PureComponent {
 
                   elevation: 9,
                 }}>
-                <IconMaterialIcons name="menu" size={29} />
+                <IconMaterialIcons name="menu" size={35} />
               </TouchableOpacity>
               <View
                 style={{
@@ -1015,14 +943,14 @@ class Home extends React.PureComponent {
                     <Text
                       style={[
                         {
-                          fontSize: 16.5,
-                          fontFamily: 'Allrounder-Grotesk-Medium',
+                          fontSize: 19,
+                          fontFamily: 'MoveBold',
                           color: '#fff',
                         },
                       ]}>
                       {this.props.App.main_interfaceState_vars
                         .dailyAmount_madeSoFar.currency_symbol +
-                        '' +
+                        ' ' +
                         this.props.App.main_interfaceState_vars
                           .dailyAmount_madeSoFar.amount}
                     </Text>
@@ -1038,8 +966,8 @@ class Home extends React.PureComponent {
                 style={{
                   borderWidth: 1,
                   borderColor: '#096ED4',
-                  width: 43,
-                  height: 43,
+                  width: 45,
+                  height: 45,
                   alignItems: 'center',
                   justifyContent: 'center',
                   borderRadius: 150,
@@ -1055,7 +983,7 @@ class Home extends React.PureComponent {
                   elevation: 9,
                   zIndex: 9000000000,
                 }}>
-                <IconCommunity name="bell" color="#096ED4" size={22} />
+                <IconCommunity name="bell" color="#096ED4" size={29} />
               </TouchableOpacity>
             </View>
           </View>
@@ -1140,10 +1068,9 @@ class Home extends React.PureComponent {
                     <View style={{flex: 1}}>
                       <Text
                         style={[
-                          systemWeights.bold,
                           {
-                            fontFamily: 'Allrounder-Grotesk-Medium',
-                            fontSize: 20,
+                            fontFamily: 'MoveBold',
+                            fontSize: 23,
                             color: '#fff',
                           },
                         ]}>
@@ -1160,8 +1087,8 @@ class Home extends React.PureComponent {
                     <View style={{flexDirection: 'row'}}>
                       <Text
                         style={{
-                          fontFamily: 'Allrounder-Grotesk-Book',
-                          fontSize: 16,
+                          fontFamily: 'Allrounder-Grotesk-Medium',
+                          fontSize: 17,
                           flex: 1,
                           color: '#fff',
                         }}>
@@ -1186,8 +1113,8 @@ class Home extends React.PureComponent {
                       </Text>
                       <Text
                         style={{
-                          fontFamily: 'Allrounder-Grotesk-Regular',
-                          fontSize: 16,
+                          fontFamily: 'Allrounder-Grotesk-Medium',
+                          fontSize: 17,
                           flex: 1,
                           textAlign: 'right',
                           color: '#fff',
@@ -1249,8 +1176,8 @@ class Home extends React.PureComponent {
                     <Text
                       style={{
                         flex: 1,
-                        fontFamily: 'Allrounder-Grotesk-Medium',
-                        fontSize: 16,
+                        fontFamily: 'MoveBold',
+                        fontSize: 17.5,
                         color: '#fff',
                       }}>
                       {/**Check if the client was already picked up, if yes show the 1st destination location, if not show the pickup location */}
@@ -1267,8 +1194,8 @@ class Home extends React.PureComponent {
                     <Text
                       style={{
                         flex: 1,
-                        fontFamily: 'Allrounder-Grotesk-Book',
-                        fontSize: 15,
+                        fontFamily: 'Allrounder-Grotesk-Regular',
+                        fontSize: 16.5,
                         color: '#fff',
                       }}>
                       {this.props.App.requests_data_main_vars
@@ -1292,8 +1219,8 @@ class Home extends React.PureComponent {
                           .destination_infos[0].street_name !== false ? (
                           <Text
                             style={{
-                              fontFamily: 'Allrounder-Grotesk-Book',
-                              fontSize: 14,
+                              fontFamily: 'Allrounder-Grotesk-Regular',
+                              fontSize: 16.5,
                               marginLeft: 5,
                               marginTop: 3,
                               flex: 1,
@@ -1313,8 +1240,8 @@ class Home extends React.PureComponent {
                           .pickup_infos.street_name !== false ? (
                         <Text
                           style={{
-                            fontFamily: 'Allrounder-Grotesk-Book',
-                            fontSize: 14,
+                            fontFamily: 'Allrounder-Grotesk-Regular',
+                            fontSize: 16.5,
                             marginLeft: 5,
                             marginTop: 3,
                             flex: 1,
@@ -1349,7 +1276,7 @@ class Home extends React.PureComponent {
                   }}>
                   <Text
                     style={{
-                      fontFamily: 'Allrounder-Grotesk-Medium',
+                      fontFamily: 'MoveBold',
                       fontSize: 24,
                       color: '#fff',
                     }}>
@@ -1386,9 +1313,13 @@ class Home extends React.PureComponent {
           }}>
           <View style={{flexDirection: 'row', alignItems: 'center'}}>
             <TouchableOpacity
-              onPress={() => this.props.navigation.openDrawer()}
+              onPress={() =>
+                InteractionManager.runAfterInteractions(() => {
+                  this.props.navigation.openDrawer();
+                })
+              }
               style={{top: 1.5}}>
-              <IconMaterialIcons name="menu" size={30} />
+              <IconMaterialIcons name="menu" size={35} />
             </TouchableOpacity>
             <View
               style={{
@@ -1428,7 +1359,7 @@ class Home extends React.PureComponent {
                     ]}>
                     {this.props.App.main_interfaceState_vars
                       .dailyAmount_madeSoFar.currency_symbol +
-                      '' +
+                      ' ' +
                       this.props.App.main_interfaceState_vars
                         .dailyAmount_madeSoFar.amount}
                   </Text>
@@ -1480,7 +1411,7 @@ class Home extends React.PureComponent {
         .routePoints !== undefined
     ) {
       //Fit bounds
-      if (this.camera !== undefined && this.camera != null) {
+      /*if (this.camera !== undefined && this.camera != null) {
         this.camera.fitBounds(
           [this.props.App.longitude, this.props.App.latitude],
           this.props.App.main_interfaceState_vars.navigationRouteData.destinationPoint.map(
@@ -1489,7 +1420,7 @@ class Home extends React.PureComponent {
           80,
           2000,
         );
-      }
+      }*/
       //Render polyline to destination/passenger
       return (
         <>
@@ -1564,6 +1495,45 @@ class Home extends React.PureComponent {
   }
 
   /**
+   * @func generateBasic_ridesDeliveriesList
+   * Responsible for organizing and creating the list of rides received from the server.
+   */
+  generateBasic_ridesDeliveriesList() {
+    return (
+      <FlatList
+        style={{
+          flex: 1,
+          backgroundColor: '#f0f0f0',
+          padding: 10,
+          paddingBottom: 50,
+        }}
+        data={
+          this.props.App.requests_data_main_vars.fetchedRequests_data_store !==
+            undefined &&
+          this.props.App.requests_data_main_vars.fetchedRequests_data_store !==
+            null &&
+          this.props.App.requests_data_main_vars.fetchedRequests_data_store !==
+            false
+            ? this.props.App.requests_data_main_vars.fetchedRequests_data_store
+            : []
+        }
+        initialNumToRender={15}
+        keyboardShouldPersistTaps={'always'}
+        maxToRenderPerBatch={35}
+        windowSize={61}
+        updateCellsBatchingPeriod={10}
+        keyExtractor={(item, index) => String(index)}
+        renderItem={(item) => (
+          <GenericRequestTemplate
+            requestLightData={item.item}
+            parentNode={this}
+          />
+        )}
+      />
+    );
+  }
+
+  /**
    * @function renderCenterMainHome
    * Responsible for rendering the center part of the home screen based on if the app is in normal or navigation
    * mode.
@@ -1635,37 +1605,7 @@ class Home extends React.PureComponent {
             null &&
           this.props.App.requests_data_main_vars.fetchedRequests_data_store !==
             false ? (
-            <FlatList
-              style={{
-                flex: 1,
-                backgroundColor: '#f0f0f0',
-                padding: 10,
-                paddingBottom: 50,
-              }}
-              data={
-                this.props.App.requests_data_main_vars
-                  .fetchedRequests_data_store !== undefined &&
-                this.props.App.requests_data_main_vars
-                  .fetchedRequests_data_store !== null &&
-                this.props.App.requests_data_main_vars
-                  .fetchedRequests_data_store !== false
-                  ? this.props.App.requests_data_main_vars
-                      .fetchedRequests_data_store
-                  : []
-              }
-              initialNumToRender={15}
-              keyboardShouldPersistTaps={'always'}
-              maxToRenderPerBatch={35}
-              windowSize={61}
-              updateCellsBatchingPeriod={10}
-              keyExtractor={(item, index) => String(index)}
-              renderItem={(item) => (
-                <GenericRequestTemplate
-                  requestLightData={item.item}
-                  parentNode={this}
-                />
-              )}
-            />
+            this.generateBasic_ridesDeliveriesList()
           ) : (
             <View
               style={{
@@ -1691,8 +1631,8 @@ class Home extends React.PureComponent {
                 )}
                 <Text
                   style={{
-                    fontFamily: 'Allrounder-Grotesk-Book',
-                    fontSize: 16,
+                    fontFamily: 'Allrounder-Grotesk-Regular',
+                    fontSize: 18,
                     marginTop: 20,
                     color: '#7d7d7d',
                   }}>
@@ -1706,7 +1646,7 @@ class Home extends React.PureComponent {
                 </Text>
                 <Text
                   style={{
-                    fontFamily: 'Allrounder-Grotesk-Book',
+                    fontFamily: 'Allrounder-Grotesk-Regular',
                     fontSize: 16,
                     marginTop: 10,
                     color: '#7d7d7d',
@@ -1868,11 +1808,13 @@ class Home extends React.PureComponent {
                 }}>
                 <TouchableOpacity
                   onPress={() =>
-                    this.props.UpdateErrorModalLog(
-                      true,
-                      'show_guardian_toolkit',
-                      'any',
-                    )
+                    InteractionManager.runAfterInteractions(() => {
+                      this.props.UpdateErrorModalLog(
+                        true,
+                        'show_guardian_toolkit',
+                        'any',
+                      );
+                    })
                   }
                   style={{
                     width: 57,
@@ -1944,13 +1886,15 @@ class Home extends React.PureComponent {
                   }}>
                   <TouchableOpacity
                     onPress={() =>
-                      this.props.UpdateErrorModalLog(
-                        true,
-                        'show_modalMore_tripDetails',
-                        'any',
-                        this.props.App.requests_data_main_vars
-                          .moreDetailsFocused_request,
-                      )
+                      InteractionManager.runAfterInteractions(() => {
+                        this.props.UpdateErrorModalLog(
+                          true,
+                          'show_modalMore_tripDetails',
+                          'any',
+                          this.props.App.requests_data_main_vars
+                            .moreDetailsFocused_request,
+                        );
+                      })
                     }
                     style={{
                       flex: 1,
@@ -1975,7 +1919,7 @@ class Home extends React.PureComponent {
                       <Text
                         style={{
                           fontFamily: 'Allrounder-Grotesk-Medium',
-                          fontSize: 17.5,
+                          fontSize: 19,
                         }}>
                         {
                           this.props.App.requests_data_main_vars
@@ -1984,8 +1928,8 @@ class Home extends React.PureComponent {
                       </Text>
                       <Text
                         style={{
-                          fontFamily: 'Allrounder-Grotesk-Book',
-                          fontSize: 15,
+                          fontFamily: 'Allrounder-Grotesk-Regular',
+                          fontSize: 17,
                           color: '#096ED4',
                         }}>
                         {
@@ -1998,8 +1942,10 @@ class Home extends React.PureComponent {
                   </TouchableOpacity>
                   <TouchableOpacity
                     onPress={() => {
-                      this.props.SwitchToNavigation_modeOrBack({
-                        isApp_inNavigation_mode: false,
+                      InteractionManager.runAfterInteractions(() => {
+                        this.props.SwitchToNavigation_modeOrBack({
+                          isApp_inNavigation_mode: false,
+                        });
                       });
                     }}
                     style={{padding: 10, marginLeft: 10}}>
@@ -2019,11 +1965,13 @@ class Home extends React.PureComponent {
             <TouchableOpacity
               onPress={() =>
                 this.props.App.main_interfaceState_vars.isDriver_online
-                  ? this.props.UpdateErrorModalLog(
-                      true,
-                      'show_select_ride_type_modal',
-                      'any',
-                    )
+                  ? InteractionManager.runAfterInteractions(() => {
+                      this.props.UpdateErrorModalLog(
+                        true,
+                        'show_select_ride_type_modal',
+                        'any',
+                      );
+                    })
                   : {}
               }
               style={{
@@ -2060,8 +2008,8 @@ class Home extends React.PureComponent {
                     />
                     <Text
                       style={{
-                        fontFamily: 'Allrounder-Grotesk-Regular',
-                        fontSize: 18,
+                        fontFamily: 'Allrounder-Grotesk-Medium',
+                        fontSize: 20,
                       }}>
                       {this.props.App.shownRides_types}
                     </Text>
@@ -2104,11 +2052,13 @@ class Home extends React.PureComponent {
         return (
           <TouchableOpacity
             onPress={() =>
-              this.props.UpdateErrorModalLog(
-                true,
-                'show_select_ride_type_modal',
-                'any',
-              )
+              InteractionManager.runAfterInteractions(() => {
+                this.props.UpdateErrorModalLog(
+                  true,
+                  'show_select_ride_type_modal',
+                  'any',
+                );
+              })
             }
             style={{
               height: 80,
@@ -2128,7 +2078,7 @@ class Home extends React.PureComponent {
                 <Text
                   style={{
                     fontFamily: 'Allrounder-Grotesk-Medium',
-                    fontSize: 19,
+                    fontSize: 20,
                   }}>
                   {this.props.App.shownRides_types}
                 </Text>
@@ -2156,11 +2106,13 @@ class Home extends React.PureComponent {
             this.props.App.main_interfaceState_vars.dailyAmount_madeSoFar !==
             false
               ? this.props.App.main_interfaceState_vars.isDriver_online
-                ? this.props.UpdateErrorModalLog(
-                    true,
-                    'show_select_ride_type_modal',
-                    'any',
-                  )
+                ? InteractionManager.runAfterInteractions(() => {
+                    this.props.UpdateErrorModalLog(
+                      true,
+                      'show_select_ride_type_modal',
+                      'any',
+                    );
+                  })
                 : this.goOnlineOrOffline('online')
               : {}
           }

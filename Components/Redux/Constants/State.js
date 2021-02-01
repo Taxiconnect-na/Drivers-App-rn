@@ -33,8 +33,7 @@ const STATE = {
   arrowNavigationTracking: arrowNavigationTracking,
 
   socket: SOCKET_CORE, //MAIN SOCKET CONNECTOR
-  user_fingerprint:
-    '23c9d088e03653169b9c18193a0b8dd329ea1e43eb0626ef9f16b5b979694a429710561a3cb3ddae',
+  user_fingerprint: null,
   userCurrentLocationMetaData: {}, //Metadata of the user's current location - directly geocoded and shallowly processed
   requestType: 'ride', //THE TYPE OF REQUEST SELECTED BY THE DRIVER - ride, delivery or scheduled
   latitude: 0,

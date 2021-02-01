@@ -6,128 +6,113 @@ import {
   ScrollView,
   StyleSheet,
   TouchableOpacity,
+  Platform,
 } from 'react-native';
-import {DrawerContentScrollView, DrawerItem} from '@react-navigation/drawer';
-import IconAnt from 'react-native-vector-icons/AntDesign';
+import HeaderDrawerContent from './HeaderDrawerContent';
 import IconMaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
 export function MainDrawerContent(props) {
   return (
-    <SafeAreaView style={{flex: 1}}>
-      <View style={styles.headerDrawer}>
-        <View
-          style={{
-            width: 60,
-            height: 60,
-            borderRadius: 160,
-            alignItems: 'center',
-            justifyContent: 'center',
-            backgroundColor: '#fff',
-            shadowColor: '#000',
-            shadowOffset: {
-              width: 0,
-              height: 5,
-            },
-            shadowOpacity: 0.34,
-            shadowRadius: 6.27,
-
-            elevation: 10,
-          }}>
-          <IconAnt name="user" size={30} />
-        </View>
-        <Text
-          style={{
-            fontFamily: 'Allrounder-Grotesk-Medium',
-            fontSize: 18,
-            width: '100%',
-            textAlign: 'center',
-            paddingLeft: 10,
-            paddingRight: 10,
-            marginTop: 10,
-            color: '#fff',
-          }}>
-          Dominique
-        </Text>
-        <View
-          style={{
-            flexDirection: 'row',
-            paddingLeft: 10,
-            paddingRight: 10,
-            marginTop: 5,
-            width: '100%',
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}>
-          <IconMaterialIcons name="location-on" color="#fff" size={16} />
+    <View style={{flex: 1}}>
+      <SafeAreaView style={{backgroundColor: '#000'}}>
+        <HeaderDrawerContent />
+      </SafeAreaView>
+      <SafeAreaView style={{flex: 1}}>
+        <ScrollView style={styles.menuContent}>
+          <TouchableOpacity
+            onPress={() => props.navigation.navigate('YourRidesEntry_drawer')}
+            style={[styles.menuItem, {paddingTop: 30}]}>
+            <Text style={styles.menuTitles}>Your rides</Text>
+            <IconMaterialIcons
+              name="keyboard-arrow-right"
+              color="#a5a5a5"
+              size={20}
+            />
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => props.navigation.navigate('Wallet_drawer')}
+            style={[styles.menuItem, {paddingTop: 10}]}>
+            <Text style={styles.menuTitles}>Wallet</Text>
+            <IconMaterialIcons
+              name="keyboard-arrow-right"
+              color="#a5a5a5"
+              size={20}
+            />
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => props.navigation.navigate('SettingsEntryScreen')}
+            style={[styles.menuItem, {paddingTop: 10}]}>
+            <Text style={styles.menuTitles}>Settings</Text>
+            <IconMaterialIcons
+              name="keyboard-arrow-right"
+              color="#a5a5a5"
+              size={20}
+            />
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => props.navigation.navigate('Support_drawer')}
+            style={[styles.menuItem, {paddingTop: 10, borderBottomWidth: 0}]}>
+            <Text style={styles.menuTitles}>Support</Text>
+            <IconMaterialIcons
+              name="keyboard-arrow-right"
+              color="#a5a5a5"
+              size={20}
+            />
+          </TouchableOpacity>
+        </ScrollView>
+        <View style={styles.footerDrawer}>
           <Text
             style={{
-              fontFamily: 'Allrounder-Grotesk-Regular',
-              fontSize: 14,
-              textAlign: 'center',
-              color: '#ffff',
+              fontFamily:
+                Platform.OS === 'android'
+                  ? 'Allrounder-Grotesk-Regular'
+                  : 'Allrounder Grotesk',
+              fontSize: 15,
+              flex: 1,
             }}>
-            Windhoek, Namibia
+            Legal
+          </Text>
+          <Text
+            style={{
+              fontFamily:
+                Platform.OS === 'android'
+                  ? 'Allrounder-Grotesk-Book'
+                  : 'Allrounder Grotesk Book',
+              fontSize: 14,
+              flex: 1,
+              color: '#a5a5a5',
+              textAlign: 'right',
+            }}>
+            v2.1.248
           </Text>
         </View>
-      </View>
-      <ScrollView style={styles.menuContent}>
-        <TouchableOpacity
-          onPress={() => props.navigation.navigate('YourRidesEntry_drawer')}
-          style={[styles.menuItem, {paddingTop: 30}]}>
-          <Text style={styles.menuTitles}>Your rides</Text>
-        </TouchableOpacity>
-        <View
-          onPress={() => props.navigation.navigate('Wallet_drawer')}
-          style={[styles.menuItem, {paddingTop: 15}]}>
-          <Text style={styles.menuTitles}>Wallet</Text>
-        </View>
-        <View style={[styles.menuItem, {paddingTop: 15}]}>
-          <Text style={styles.menuTitles}>Settings</Text>
-        </View>
-        <View style={[styles.menuItem, {paddingTop: 15}]}>
-          <Text style={styles.menuTitles}>Support</Text>
-        </View>
-      </ScrollView>
-      <View style={styles.footerDrawer}>
-        <Text
-          style={{
-            fontFamily: 'Allrounder-Grotesk-Regular',
-            fontSize: 15,
-            flex: 1,
-          }}>
-          Legal
-        </Text>
-        <Text
-          style={{
-            fontFamily: 'Allrounder-Grotesk-Book',
-            fontSize: 14,
-            flex: 1,
-            color: '#a5a5a5',
-            textAlign: 'right',
-          }}>
-          v2.0.0
-        </Text>
-      </View>
-    </SafeAreaView>
+      </SafeAreaView>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
-  headerDrawer: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    height: 160,
-    backgroundColor: '#000',
-  },
   menuContent: {
     flex: 1,
   },
   menuItem: {
     padding: 20,
+    marginBottom: 10,
+    borderBottomWidth: 0.5,
+    borderBottomColor: '#d0d0d0',
+    flexDirection: 'row',
+    alignItems: 'center',
   },
-  menuTitles: {fontFamily: 'Allrounder-Grotesk-Medium', fontSize: 21},
+  menuTitles: {
+    fontFamily:
+      Platform.OS === 'android'
+        ? 'Allrounder-Grotesk-Regular'
+        : 'Allrounder Grotesk',
+    fontSize: 20,
+    flex: 1,
+  },
   footerDrawer: {
-    borderTopWidth: 0.5,
+    borderTopWidth: 1,
     borderTopColor: '#d0d0d0',
     flexDirection: 'row',
     padding: 20,

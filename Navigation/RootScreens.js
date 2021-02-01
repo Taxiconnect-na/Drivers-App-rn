@@ -1,6 +1,6 @@
 import React from 'react';
 import {View, Text} from 'react-native';
-import {createStackNavigator} from '@react-navigation/stack';
+import {createStackNavigator, TransitionPresets} from '@react-navigation/stack';
 import {createDrawerNavigator, DrawerContent} from '@react-navigation/drawer';
 import IconAnt from 'react-native-vector-icons/AntDesign';
 import EntryScreen from '../Components/Login/EntrySreen';
@@ -19,6 +19,7 @@ import Home from '../Components/Home/Home';
 /*import YourRidesEntry from '../Components/Rides/YourRidesEntry';
 import HeaderRideTypesSelector from '../Components/Rides/HeaderRideTypesSelector';
 import DetailsRidesGenericScreen from '../Components/Rides/DetailsRidesGenericScreen';*/
+import SupportEntry from '../Components/Support/SupportEntry';
 import {MainDrawerContent} from './MainDrawerContent';
 
 const Stack = createStackNavigator();
@@ -180,6 +181,42 @@ const Drawer = createDrawerNavigator();
   );
 }*/
 
+//c. Support
+function Support_drawer() {
+  return (
+    <Stack.Navigator
+      initialRouteName="SupportEntry"
+      screenOptions={{...TransitionPresets.ScaleFromCenterAndroid}}>
+      <Stack.Screen
+        name="SupportEntry"
+        component={SupportEntry}
+        options={{
+          headerShown: true,
+          headerStyle: {backgroundColor: '#000'},
+          headerTintColor: '#fff',
+          headerBackTitle: 'Back',
+          headerTitle: (
+            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+              <Text
+                style={{
+                  fontFamily:
+                    Platform.OS === 'android'
+                      ? 'Allrounder-Grotesk-Regular'
+                      : 'Allrounder Grotesk',
+                  fontSize: 20,
+                  right: Platform.OS === 'android' ? 20 : 0,
+                  color: '#fff',
+                }}>
+                Support
+              </Text>
+            </View>
+          ),
+        }}
+      />
+    </Stack.Navigator>
+  );
+}
+
 //1. MAIN SCREEN DRAWER NAVIGATOR
 function MainDrawer_navigator() {
   return (
@@ -192,6 +229,7 @@ function MainDrawer_navigator() {
         component={YourRidesEntry_drawer}
       />
       <Drawer.Screen name="Wallet_drawer" component={Wallet_drawer} />*/}
+      <Drawer.Screen name="Support_drawer" component={Support_drawer} />
     </Drawer.Navigator>
   );
 }
@@ -210,15 +248,12 @@ function RootScreens() {
       />*/
   }
   return (
-    <Stack.Navigator initialRouteName="EntryScreen">
+    <Stack.Navigator
+      initialRouteName="EntryScreen"
+      screenOptions={{...TransitionPresets.ScaleFromCenterAndroid}}>
       <Stack.Screen
         name="EntryScreen"
         component={EntryScreen}
-        options={{headerShown: false}}
-      />
-      <Stack.Screen
-        name="Home"
-        component={MainDrawer_navigator}
         options={{headerShown: false}}
       />
       <Stack.Screen
@@ -239,6 +274,11 @@ function RootScreens() {
       <Stack.Screen
         name="AccountProblemDetected"
         component={AccountProblemDetected}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="Home"
+        component={MainDrawer_navigator}
         options={{headerShown: false}}
       />
     </Stack.Navigator>

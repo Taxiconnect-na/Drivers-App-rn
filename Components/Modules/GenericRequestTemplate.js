@@ -8,6 +8,7 @@ import {
   StyleSheet,
   TouchableOpacity,
   ActivityIndicator,
+  InteractionManager,
 } from 'react-native';
 import {systemWeights} from 'react-native-typography';
 import IconAnt from 'react-native-vector-icons/AntDesign';
@@ -129,8 +130,8 @@ class GenericRequestTemplate extends React.PureComponent {
           {this.props.requestLightData.ride_basic_infos.inRideToDestination ? (
             <Text
               style={{
-                fontFamily: 'Allrounder-Grotesk-Medium',
-                fontSize: 16.5,
+                fontFamily: 'MoveMedium',
+                fontSize: 18,
                 flex: 1,
               }}>
               Picked up
@@ -138,8 +139,8 @@ class GenericRequestTemplate extends React.PureComponent {
           ) : (
             <Text
               style={{
-                fontFamily: 'Allrounder-Grotesk-Medium',
-                fontSize: 16.5,
+                fontFamily: 'MoveMedium',
+                fontSize: 18,
                 flex: 1,
               }}>
               {parseInt(
@@ -205,7 +206,8 @@ class GenericRequestTemplate extends React.PureComponent {
             justifyContent: 'center',
           }}>
           <View style={{flex: 1, alignItems: 'center'}}>
-            <Text style={{fontFamily: 'Allrounder-Grotesk-Book', fontSize: 16}}>
+            <Text
+              style={{fontFamily: 'Allrounder-Grotesk-Regular', fontSize: 17}}>
               {/connectus/i.test(
                 this.props.requestLightData.ride_basic_infos.connect_type,
               )
@@ -217,12 +219,12 @@ class GenericRequestTemplate extends React.PureComponent {
             <Text
               style={[
                 {
-                  fontFamily: 'Allrounder-Grotesk-Medium',
-                  fontSize: 22,
+                  fontFamily: 'MoveBold',
+                  fontSize: 26,
                   color: 'green',
                 },
               ]}>
-              {'N$' + this.props.requestLightData.ride_basic_infos.fare_amount}
+              {'N$ ' + this.props.requestLightData.ride_basic_infos.fare_amount}
             </Text>
           </View>
           <View
@@ -236,7 +238,7 @@ class GenericRequestTemplate extends React.PureComponent {
             <Text
               style={{
                 fontFamily: 'Allrounder-Grotesk-Medium',
-                fontSize: 18,
+                fontSize: 19,
                 marginLeft: 3,
                 bottom: 1,
               }}>
@@ -291,11 +293,11 @@ class GenericRequestTemplate extends React.PureComponent {
                 style={{
                   flexDirection: 'row',
                 }}>
-                <View style={{width: 35}}>
+                <View style={{width: 40}}>
                   <Text
                     style={{
-                      fontFamily: 'Allrounder-Grotesk-Book',
-                      fontSize: 13,
+                      fontFamily: 'Allrounder-Grotesk-Regular',
+                      fontSize: 14,
                       top: 2,
                     }}>
                     From
@@ -313,8 +315,8 @@ class GenericRequestTemplate extends React.PureComponent {
                     }}>
                     <Text
                       style={{
-                        fontFamily: 'Allrounder-Grotesk-Medium',
-                        fontSize: 15,
+                        fontFamily: 'MoveMedium',
+                        fontSize: 18,
                         marginLeft: 5,
                         flex: 1,
                       }}>
@@ -325,10 +327,11 @@ class GenericRequestTemplate extends React.PureComponent {
                     </Text>
                     <Text
                       style={{
-                        fontFamily: 'Allrounder-Grotesk-Book',
-                        fontSize: 13,
+                        fontFamily: 'Allrounder-Grotesk-Regular',
+                        fontSize: 15,
                         marginLeft: 5,
                         flex: 1,
+                        color: '#333333',
                       }}>
                       {this.props.requestLightData.origin_destination_infos
                         .pickup_infos.location_name +
@@ -348,8 +351,8 @@ class GenericRequestTemplate extends React.PureComponent {
                 <View style={{width: 35}}>
                   <Text
                     style={{
-                      fontFamily: 'Allrounder-Grotesk-Book',
-                      fontSize: 13,
+                      fontFamily: 'Allrounder-Grotesk-Regular',
+                      fontSize: 14,
                       top: 1,
                     }}>
                     To
@@ -367,8 +370,8 @@ class GenericRequestTemplate extends React.PureComponent {
                     }}>
                     <Text
                       style={{
-                        fontFamily: 'Allrounder-Grotesk-Medium',
-                        fontSize: 15,
+                        fontFamily: 'MoveMedium',
+                        fontSize: 18,
                         marginLeft: 5,
                         flex: 1,
                       }}>
@@ -379,19 +382,19 @@ class GenericRequestTemplate extends React.PureComponent {
                     </Text>
                     <Text
                       style={{
-                        fontFamily: 'Allrounder-Grotesk-Book',
+                        fontFamily: 'Allrounder-Grotesk-Regular',
                         fontSize:
                           this.props.requestLightData.origin_destination_infos
                             .destination_infos.length > 1
-                            ? 14
-                            : 13,
+                            ? 15
+                            : 15,
                         marginLeft: 5,
                         flex: 1,
                         color:
                           this.props.requestLightData.origin_destination_infos
                             .destination_infos.length > 1
                             ? '#096ED4'
-                            : '#000',
+                            : '#333333',
                       }}>
                       {this.props.requestLightData.origin_destination_infos
                         .destination_infos.length > 1
@@ -459,12 +462,14 @@ class GenericRequestTemplate extends React.PureComponent {
                       ? this.acceptThisRequest(
                           this.props.requestLightData.request_fp,
                         )
-                      : this.props.UpdateErrorModalLog(
-                          true,
-                          'show_modalMore_tripDetails',
-                          'any',
-                          this.props.requestLightData,
-                        )
+                      : InteractionManager.runAfterInteractions(() => {
+                          this.props.UpdateErrorModalLog(
+                            true,
+                            'show_modalMore_tripDetails',
+                            'any',
+                            this.props.requestLightData,
+                          );
+                        })
                     : {}
                 }
                 style={{
@@ -491,24 +496,19 @@ class GenericRequestTemplate extends React.PureComponent {
                     <>
                       <Text
                         style={{
-                          fontFamily: 'Allrounder-Grotesk-Medium',
-                          fontSize: 18,
+                          fontFamily: 'MoveBold',
+                          fontSize: 23,
                           color: '#fff',
                         }}>
                         Accept
                       </Text>
-                      <IconFeather
-                        name="check"
-                        size={17}
-                        style={{top: 1, marginLeft: 3, color: '#fff'}}
-                      />
                     </>
                   ) : (
                     <>
                       <Text
                         style={{
-                          fontFamily: 'Allrounder-Grotesk-Medium',
-                          fontSize: 18,
+                          fontFamily: 'MoveBold',
+                          fontSize: 20,
                           color: '#fff',
                         }}>
                         View details
