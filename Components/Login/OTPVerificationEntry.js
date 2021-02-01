@@ -101,7 +101,7 @@ class OTPVerificationEntry extends React.PureComponent {
       didCheckOTP: false, //TO know if the otp was already check - once
       networkStateChecker: false,
       accountCreation_state: 'full', //To know whether or not to redirecto to the addditional page for minimal account or not: minimal or full
-      smsHashLinker: '####', //Has to link to the sms for the auto-completion
+      smsHashLinker: 'gHyxKL', //Has to link to the sms for the auto-completion
       userAccountDetails: null, //Will hold the user details if already registered and assign them to the globals when the OTP is checked.
     };
     this.otpHandler = this.otpHandler.bind(this);
@@ -557,7 +557,9 @@ class OTPVerificationEntry extends React.PureComponent {
                   fontSize: 21,
                   fontFamily:
                     Platform.OS === 'android'
-                      ? 'Allrounder-Grotesk-Regular'
+                      ? Platform.OS === 'android'
+                        ? 'Allrounder-Grotesk-Regular'
+                        : 'Allrounder Grotesk'
                       : 'Allrounder Grotesk',
                   marginTop: 15,
                   marginBottom: 35,
@@ -580,7 +582,9 @@ class OTPVerificationEntry extends React.PureComponent {
                     {
                       fontFamily:
                         Platform.OS === 'android'
-                          ? 'Allrounder-Grotesk-Book'
+                          ? Platform.OS === 'android'
+                            ? 'Allrounder-Grotesk-Book'
+                            : 'Allrounder Grotesk Book'
                           : 'Allrounder Grotesk Book',
                       color: '#0e8491',
                       fontSize: 17,
@@ -596,7 +600,9 @@ class OTPVerificationEntry extends React.PureComponent {
                     {
                       fontFamily:
                         Platform.OS === 'android'
-                          ? 'Allrounder-Grotesk-Book'
+                          ? Platform.OS === 'android'
+                            ? 'Allrounder-Grotesk-Book'
+                            : 'Allrounder Grotesk Book'
                           : 'Allrounder Grotesk Book',
                       color: '#b22222',
                       fontSize: 17,

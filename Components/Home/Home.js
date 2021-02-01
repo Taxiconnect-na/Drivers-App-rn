@@ -2,11 +2,12 @@ import React from 'react';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import {
-  Animated,
+  Animated as AnimatedMap,
   MapView,
   Camera,
   UserLocation,
   SymbolLayer,
+  ShapeSource,
 } from '@react-native-mapbox-gl/maps';
 import {
   View,
@@ -23,6 +24,7 @@ import {
   ActivityIndicator,
   InteractionManager,
   BackHandler,
+  StatusBar,
 } from 'react-native';
 import {TouchableOpacity as TouchableOpacityGesture} from 'react-native-gesture-handler';
 import GeolocationP from 'react-native-geolocation-service';
@@ -186,6 +188,7 @@ class Home extends React.PureComponent {
     this.props.App.socket.on(
       'goOnline_offlineDrivers_io-response',
       function (response) {
+        console.log('Online offline status -> ', response);
         if (globalObject.state.isGoingOnline) {
           globalObject.setState({isGoingOnline: false, loaderState: false}); //close the loader
         }
@@ -878,7 +881,8 @@ class Home extends React.PureComponent {
               top: 0,
               zIndex: 900000000,
             }}>
-            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+            <StatusBar barStyle={'dark-content'} />
+            <SafeAreaView style={{flexDirection: 'row', alignItems: 'center'}}>
               <TouchableOpacity
                 onPress={() =>
                   InteractionManager.runAfterInteractions(() => {
@@ -937,7 +941,10 @@ class Home extends React.PureComponent {
                       style={[
                         {
                           fontSize: 19,
-                          fontFamily: 'MoveBold',
+                          fontFamily:
+                            Platform.OS === 'android'
+                              ? 'MoveBold'
+                              : 'Uber Move Bold',
                           color: '#fff',
                         },
                       ]}>
@@ -978,7 +985,7 @@ class Home extends React.PureComponent {
                 }}>
                 <IconCommunity name="bell" color="#096ED4" size={29} />
               </TouchableOpacity>
-            </View>
+            </SafeAreaView>
           </View>
         );
       } //A ride is in progress actively in navigation mode
@@ -1062,7 +1069,10 @@ class Home extends React.PureComponent {
                       <Text
                         style={[
                           {
-                            fontFamily: 'MoveBold',
+                            fontFamily:
+                              Platform.OS === 'android'
+                                ? 'MoveBold'
+                                : 'Uber Move Bold',
                             fontSize: 23,
                             color: '#fff',
                           },
@@ -1080,7 +1090,10 @@ class Home extends React.PureComponent {
                     <View style={{flexDirection: 'row'}}>
                       <Text
                         style={{
-                          fontFamily: 'Allrounder-Grotesk-Medium',
+                          fontFamily:
+                            Platform.OS === 'android'
+                              ? 'Allrounder-Grotesk-Medium'
+                              : 'Allrounder Grotesk',
                           fontSize: 17,
                           flex: 1,
                           color: '#fff',
@@ -1106,7 +1119,10 @@ class Home extends React.PureComponent {
                       </Text>
                       <Text
                         style={{
-                          fontFamily: 'Allrounder-Grotesk-Medium',
+                          fontFamily:
+                            Platform.OS === 'android'
+                              ? 'Allrounder-Grotesk-Medium'
+                              : 'Allrounder Grotesk',
                           fontSize: 17,
                           flex: 1,
                           textAlign: 'right',
@@ -1169,7 +1185,10 @@ class Home extends React.PureComponent {
                     <Text
                       style={{
                         flex: 1,
-                        fontFamily: 'MoveBold',
+                        fontFamily:
+                          Platform.OS === 'android'
+                            ? 'MoveBold'
+                            : 'Uber Move Bold',
                         fontSize: 17.5,
                         color: '#fff',
                       }}>
@@ -1187,7 +1206,10 @@ class Home extends React.PureComponent {
                     <Text
                       style={{
                         flex: 1,
-                        fontFamily: 'Allrounder-Grotesk-Regular',
+                        fontFamily:
+                          Platform.OS === 'android'
+                            ? 'Allrounder-Grotesk-Regular'
+                            : 'Allrounder Grotesk',
                         fontSize: 16.5,
                         color: '#fff',
                       }}>
@@ -1212,7 +1234,10 @@ class Home extends React.PureComponent {
                           .destination_infos[0].street_name !== false ? (
                           <Text
                             style={{
-                              fontFamily: 'Allrounder-Grotesk-Regular',
+                              fontFamily:
+                                Platform.OS === 'android'
+                                  ? 'Allrounder-Grotesk-Regular'
+                                  : 'Allrounder Grotesk',
                               fontSize: 16.5,
                               marginLeft: 5,
                               marginTop: 3,
@@ -1233,7 +1258,10 @@ class Home extends React.PureComponent {
                           .pickup_infos.street_name !== false ? (
                         <Text
                           style={{
-                            fontFamily: 'Allrounder-Grotesk-Regular',
+                            fontFamily:
+                              Platform.OS === 'android'
+                                ? 'Allrounder-Grotesk-Regular'
+                                : 'Allrounder Grotesk',
                             fontSize: 16.5,
                             marginLeft: 5,
                             marginTop: 3,
@@ -1269,7 +1297,10 @@ class Home extends React.PureComponent {
                   }}>
                   <Text
                     style={{
-                      fontFamily: 'MoveBold',
+                      fontFamily:
+                        Platform.OS === 'android'
+                          ? 'MoveBold'
+                          : 'Uber Move Bold',
                       fontSize: 24,
                       color: '#fff',
                     }}>
@@ -1304,7 +1335,8 @@ class Home extends React.PureComponent {
 
             elevation: 10,
           }}>
-          <View style={{flexDirection: 'row', alignItems: 'center'}}>
+          <StatusBar barStyle={'dark-content'} />
+          <SafeAreaView style={{flexDirection: 'row', alignItems: 'center'}}>
             <TouchableOpacity
               onPress={() =>
                 InteractionManager.runAfterInteractions(() => {
@@ -1346,7 +1378,10 @@ class Home extends React.PureComponent {
                     style={[
                       {
                         fontSize: 19,
-                        fontFamily: 'MoveBold',
+                        fontFamily:
+                          Platform.OS === 'android'
+                            ? 'MoveBold'
+                            : 'Uber Move Bold',
                         color: '#fff',
                       },
                     ]}>
@@ -1383,7 +1418,7 @@ class Home extends React.PureComponent {
                 size={22}
               />
             </TouchableOpacity>
-          </View>
+          </SafeAreaView>
         </View>
       );
     }
@@ -1564,21 +1599,23 @@ class Home extends React.PureComponent {
               this.props.App.latitude,
             ]}
           />
-          <UserLocation
-            animated={true}
-            showsUserHeadingIndicator
-            androidRenderMode="gps">
+          <ShapeSource
+            id="symbolCarIcon"
+            shape={{
+              type: 'Point',
+              coordinates: [this.props.App.longitude, this.props.App.latitude],
+            }}>
             <SymbolLayer
-              id={'driver-location'}
+              id="symbolCarLayer"
+              minZoomLevel={1}
               style={{
+                iconAllowOverlap: true,
+                iconRotationAlignment: 'map',
                 iconImage: this.props.App.arrowNavigationTracking,
                 iconSize: 0.18,
-                //iconRotate: this.state.phoneOrientation,
-                iconRotationAlignment: 'map',
-                iconAllowOverlap: true,
               }}
             />
-          </UserLocation>
+          </ShapeSource>
           {this.renderRouteElements()}
         </MapView>
       );
@@ -1624,7 +1661,10 @@ class Home extends React.PureComponent {
                 )}
                 <Text
                   style={{
-                    fontFamily: 'Allrounder-Grotesk-Regular',
+                    fontFamily:
+                      Platform.OS === 'android'
+                        ? 'Allrounder-Grotesk-Regular'
+                        : 'Allrounder Grotesk',
                     fontSize: 18,
                     marginTop: 20,
                     color: '#7d7d7d',
@@ -1639,7 +1679,10 @@ class Home extends React.PureComponent {
                 </Text>
                 <Text
                   style={{
-                    fontFamily: 'Allrounder-Grotesk-Regular',
+                    fontFamily:
+                      Platform.OS === 'android'
+                        ? 'Allrounder-Grotesk-Regular'
+                        : 'Allrounder Grotesk',
                     fontSize: 16,
                     marginTop: 10,
                     color: '#7d7d7d',
@@ -1790,7 +1833,7 @@ class Home extends React.PureComponent {
 
           //A ride is in progress actively in navigation mode
           return (
-            <View>
+            <SafeAreaView style={{backgroundColor: '#fff'}}>
               <View
                 style={{
                   position: 'absolute',
@@ -1911,7 +1954,10 @@ class Home extends React.PureComponent {
                       }}>
                       <Text
                         style={{
-                          fontFamily: 'Allrounder-Grotesk-Medium',
+                          fontFamily:
+                            Platform.OS === 'android'
+                              ? 'Allrounder-Grotesk-Medium'
+                              : 'Allrounder Grotesk Medium',
                           fontSize: 19,
                         }}>
                         {
@@ -1921,7 +1967,10 @@ class Home extends React.PureComponent {
                       </Text>
                       <Text
                         style={{
-                          fontFamily: 'Allrounder-Grotesk-Regular',
+                          fontFamily:
+                            Platform.OS === 'android'
+                              ? 'Allrounder-Grotesk-Regular'
+                              : 'Allrounder Grotesk',
                           fontSize: 17,
                           color: '#096ED4',
                         }}>
@@ -1950,139 +1999,161 @@ class Home extends React.PureComponent {
                   </TouchableOpacity>
                 </View>
               </View>
-            </View>
+            </SafeAreaView>
           );
         } //No active ride in navigation mode
         else {
           return (
-            <TouchableOpacity
-              onPress={() =>
-                this.props.App.main_interfaceState_vars.isDriver_online
-                  ? InteractionManager.runAfterInteractions(() => {
-                      this.props.UpdateErrorModalLog(
-                        true,
-                        'show_select_ride_type_modal',
-                        'any',
-                      );
-                    })
-                  : {}
-              }
-              style={{
-                height: 90,
-                justifyContent: 'center',
-                backgroundColor: '#fff',
-                shadowColor: '#000',
-                shadowOffset: {
-                  width: 0,
-                  height: 12,
-                },
-                shadowOpacity: 0.58,
-                shadowRadius: 16.0,
+            <View>
+              <SafeAreaView
+                style={{
+                  backgroundColor: '#fff',
+                  shadowColor: '#000',
+                  shadowOffset: {
+                    width: 0,
+                    height: 12,
+                  },
+                  shadowOpacity: 0.58,
+                  shadowRadius: 16.0,
 
-                elevation: 24,
-              }}>
-              {this.props.App.main_interfaceState_vars.isDriver_online ? (
-                <View
+                  elevation: 24,
+                }}>
+                <TouchableOpacity
+                  onPress={() =>
+                    this.props.App.main_interfaceState_vars.isDriver_online
+                      ? InteractionManager.runAfterInteractions(() => {
+                          this.props.UpdateErrorModalLog(
+                            true,
+                            'show_select_ride_type_modal',
+                            'any',
+                          );
+                        })
+                      : {}
+                  }
                   style={{
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                    padding: 20,
+                    height: 90,
+                    justifyContent: 'center',
+                    backgroundColor: '#fff',
                   }}>
-                  <View
-                    style={{
-                      flexDirection: 'row',
-                      alignItems: 'center',
-                      flex: 1,
-                    }}>
-                    <IconCommunity
-                      name="square"
-                      size={10}
-                      style={{top: 1, marginRight: 5}}
-                    />
-                    <Text
+                  {this.props.App.main_interfaceState_vars.isDriver_online ? (
+                    <View
                       style={{
-                        fontFamily: 'Allrounder-Grotesk-Medium',
-                        fontSize: 20,
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                        padding: 20,
                       }}>
-                      {this.props.App.shownRides_types}
-                    </Text>
-                  </View>
-                  <IconMaterialIcons
-                    name="keyboard-arrow-down"
-                    color={'#000'}
-                    size={22}
-                  />
-                </View>
-              ) : (
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                    flex: 1,
-                    backgroundColor: '#096ED4',
-                  }}>
-                  <View
-                    style={{
-                      flex: 1,
-                      alignItems: 'center',
-                    }}>
-                    <Text
+                      <View
+                        style={{
+                          flexDirection: 'row',
+                          alignItems: 'center',
+                          flex: 1,
+                        }}>
+                        <IconCommunity
+                          name="square"
+                          size={10}
+                          style={{top: 1, marginRight: 5}}
+                        />
+                        <Text
+                          style={{
+                            fontFamily:
+                              Platform.OS === 'android'
+                                ? 'Allrounder-Grotesk-Medium'
+                                : 'Allrounder Grotesk Medium',
+                            fontSize: 20,
+                          }}>
+                          {this.props.App.shownRides_types}
+                        </Text>
+                      </View>
+                      <IconMaterialIcons
+                        name="keyboard-arrow-down"
+                        color={'#000'}
+                        size={22}
+                      />
+                    </View>
+                  ) : (
+                    <View
                       style={{
-                        fontFamily: 'Allrounder-Grotesk-Medium',
-                        fontSize: 20,
-                        color: '#fff',
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                        flex: 1,
+                        backgroundColor: '#096ED4',
                       }}>
-                      Go online
-                    </Text>
-                  </View>
-                </View>
-              )}
-            </TouchableOpacity>
+                      <View
+                        style={{
+                          flex: 1,
+                          alignItems: 'center',
+                        }}>
+                        <Text
+                          style={{
+                            fontFamily:
+                              Platform.OS === 'android'
+                                ? 'Allrounder-Grotesk-Medium'
+                                : 'Allrounder Grotesk Medium',
+                            fontSize: 20,
+                            color: '#fff',
+                          }}>
+                          Go online
+                        </Text>
+                      </View>
+                    </View>
+                  )}
+                </TouchableOpacity>
+              </SafeAreaView>
+            </View>
           );
         }
       } //Navigation off - show footer
       else {
         return (
-          <TouchableOpacity
-            onPress={() =>
-              InteractionManager.runAfterInteractions(() => {
-                this.props.UpdateErrorModalLog(
-                  true,
-                  'show_select_ride_type_modal',
-                  'any',
-                );
-              })
-            }
-            style={{
-              height: 80,
-              justifyContent: 'center',
-              backgroundColor: '#fff',
-              borderTopWidth: 2,
-            }}>
-            <View
-              style={{flexDirection: 'row', alignItems: 'center', padding: 20}}>
+          <SafeAreaView style={{backgroundColor: '#fff'}}>
+            <TouchableOpacity
+              onPress={() =>
+                InteractionManager.runAfterInteractions(() => {
+                  this.props.UpdateErrorModalLog(
+                    true,
+                    'show_select_ride_type_modal',
+                    'any',
+                  );
+                })
+              }
+              style={{
+                height: 80,
+                justifyContent: 'center',
+                backgroundColor: '#fff',
+                borderTopWidth: 2,
+              }}>
               <View
-                style={{flexDirection: 'row', alignItems: 'center', flex: 1}}>
-                <IconCommunity
-                  name="square"
-                  size={10}
-                  style={{top: 1, marginRight: 5}}
+                style={{
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  padding: 20,
+                }}>
+                <View
+                  style={{flexDirection: 'row', alignItems: 'center', flex: 1}}>
+                  <IconCommunity
+                    name="square"
+                    size={10}
+                    style={{top: 1, marginRight: 5}}
+                  />
+                  <Text
+                    style={{
+                      fontFamily:
+                        Platform.OS === 'android'
+                          ? 'Allrounder-Grotesk-Medium'
+                          : 'Allrounder Grotesk Medium',
+                      fontSize: 20,
+                    }}>
+                    {this.props.App.shownRides_types}
+                  </Text>
+                </View>
+                <IconMaterialIcons
+                  name="keyboard-arrow-down"
+                  color={'#000'}
+                  size={22}
                 />
-                <Text
-                  style={{
-                    fontFamily: 'Allrounder-Grotesk-Medium',
-                    fontSize: 20,
-                  }}>
-                  {this.props.App.shownRides_types}
-                </Text>
               </View>
-              <IconMaterialIcons
-                name="keyboard-arrow-down"
-                color={'#000'}
-                size={22}
-              />
-            </View>
-          </TouchableOpacity>
+            </TouchableOpacity>
+          </SafeAreaView>
         );
       }
     } //Driver offline
@@ -2094,74 +2165,82 @@ class Home extends React.PureComponent {
       }
 
       return (
-        <TouchableOpacity
-          onPress={() =>
-            this.props.App.main_interfaceState_vars.dailyAmount_madeSoFar !==
-            false
-              ? this.props.App.main_interfaceState_vars.isDriver_online
-                ? InteractionManager.runAfterInteractions(() => {
-                    this.props.UpdateErrorModalLog(
-                      true,
-                      'show_select_ride_type_modal',
-                      'any',
-                    );
-                  })
-                : this.goOnlineOrOffline('online')
-              : {}
-          }
-          style={{
-            height: 80,
-            justifyContent: 'center',
-            backgroundColor:
-              this.state.isGoingOnline === false ? '#fff' : '#096ED4',
-            borderTopWidth: 2,
-          }}>
-          <View
-            style={{flexDirection: 'row', alignItems: 'center', padding: 20}}>
-            <AnimatedNative.View
-              style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-                justifyContent: 'center',
-                flex: 1,
-                opacity: this.state.offlineOnlineOpacity,
-                transform: [
-                  {translateY: this.state.offlineOnlinePositionOffset},
-                ],
-              }}>
-              {this.state.isGoingOnline === false ? (
-                <Text
-                  style={{
-                    fontFamily: 'Allrounder-Grotesk-Medium',
-                    fontSize: this.props.App.main_interfaceState_vars
-                      .isDriver_online
-                      ? 20
-                      : 22,
-                    color: /Hold on/i.test(this.state.offlineOnlineText)
-                      ? '#000'
-                      : /Offline/i.test(this.state.offlineOnlineText)
-                      ? '#b22222'
-                      : '#096ED4',
-                  }}>
-                  {this.state.offlineOnlineText}
-                </Text>
-              ) : (
-                <>
-                  <ActivityIndicator size="small" color="#fff" />
+        <SafeAreaView style={{backgroundColor: '#fff'}}>
+          <TouchableOpacity
+            onPress={() =>
+              this.props.App.main_interfaceState_vars.dailyAmount_madeSoFar !==
+              false
+                ? this.props.App.main_interfaceState_vars.isDriver_online
+                  ? InteractionManager.runAfterInteractions(() => {
+                      this.props.UpdateErrorModalLog(
+                        true,
+                        'show_select_ride_type_modal',
+                        'any',
+                      );
+                    })
+                  : this.goOnlineOrOffline('online')
+                : {}
+            }
+            style={{
+              height: 80,
+              justifyContent: 'center',
+              backgroundColor:
+                this.state.isGoingOnline === false ? '#fff' : '#096ED4',
+              borderTopWidth: 2,
+            }}>
+            <View
+              style={{flexDirection: 'row', alignItems: 'center', padding: 20}}>
+              <AnimatedNative.View
+                style={{
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  flex: 1,
+                  opacity: this.state.offlineOnlineOpacity,
+                  transform: [
+                    {translateY: this.state.offlineOnlinePositionOffset},
+                  ],
+                }}>
+                {this.state.isGoingOnline === false ? (
                   <Text
                     style={{
-                      fontFamily: 'Allrounder-Grotesk-Regular',
-                      fontSize: 20,
-                      marginLeft: 5,
-                      color: '#fff',
+                      fontFamily:
+                        Platform.OS === 'android'
+                          ? 'Allrounder-Grotesk-Medium'
+                          : 'Allrounder Grotesk Medium',
+                      fontSize: this.props.App.main_interfaceState_vars
+                        .isDriver_online
+                        ? 20
+                        : 22,
+                      color: /Hold on/i.test(this.state.offlineOnlineText)
+                        ? '#000'
+                        : /Offline/i.test(this.state.offlineOnlineText)
+                        ? '#b22222'
+                        : '#096ED4',
                     }}>
-                    Going online
+                    {this.state.offlineOnlineText}
                   </Text>
-                </>
-              )}
-            </AnimatedNative.View>
-          </View>
-        </TouchableOpacity>
+                ) : (
+                  <>
+                    <ActivityIndicator size="small" color="#fff" />
+                    <Text
+                      style={{
+                        fontFamily:
+                          Platform.OS === 'android'
+                            ? 'Allrounder-Grotesk-Regular'
+                            : 'Allrounder Grotesk',
+                        fontSize: 20,
+                        marginLeft: 5,
+                        color: '#fff',
+                      }}>
+                      Going online
+                    </Text>
+                  </>
+                )}
+              </AnimatedNative.View>
+            </View>
+          </TouchableOpacity>
+        </SafeAreaView>
       );
     }
   }
@@ -2336,12 +2415,12 @@ class Home extends React.PureComponent {
 
   render() {
     return (
-      <SafeAreaView style={styles.mainView}>
+      <View style={styles.mainView}>
         {this.props.App.generalErrorModal_vars.showErrorGeneralModal
           ? this.renderError_modalView()
           : null}
         {this.renderMainComponent()}
-      </SafeAreaView>
+      </View>
     );
   }
 }

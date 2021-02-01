@@ -103,63 +103,70 @@ class PhoneDetailsScreen extends React.PureComponent {
 
   render() {
     return (
-      <SafeAreaView style={styles.mainWindow}>
-        <StatusBar backgroundColor="#000" />
+      <View style={styles.mainWindow}>
+        <StatusBar backgroundColor="#0e8491" barStyle={'light-content'} />
         <TouchableOpacity
           style={{flex: 1}}
           onPressIn={() =>
             this.props.navigation.navigate('PhoneDetailsScreen')
           }>
-          <View style={styles.presentationWindow}>
-            <View
-              style={{
-                backgroundColor: '#fff',
-                width: 60,
-                height: 60,
-                borderRadius: 100,
-                marginTop: '5%',
-              }}>
-              <Image
-                source={require('../../Media_assets/Images/logo.png')}
+          <SafeAreaView style={{flex: 1, backgroundColor: '#000'}}>
+            <View style={styles.presentationWindow}>
+              <View
                 style={{
-                  resizeMode: 'contain',
-                  width: '100%',
-                  height: '100%',
-                  borderRadius: 300,
-                }}
-              />
+                  backgroundColor: '#fff',
+                  width: 60,
+                  height: 60,
+                  borderRadius: 100,
+                  marginTop: '5%',
+                }}>
+                <Image
+                  source={require('../../Media_assets/Images/logo.png')}
+                  style={{
+                    resizeMode: 'contain',
+                    width: '100%',
+                    height: '100%',
+                    borderRadius: 300,
+                  }}
+                />
+              </View>
+              <View style={{flex: 1, width: '100%'}}>
+                <Image
+                  source={require('../../Media_assets/Images/driver_entry_image.png')}
+                  style={{
+                    resizeMode: 'contain',
+                    width: '120%',
+                    height: '120%',
+                    right: '2%',
+                    bottom: '5%',
+                  }}
+                />
+              </View>
+              <View style={{height: 70, flexDirection: 'row'}}>
+                <Image
+                  source={require('../../Media_assets/Images/Namibia_rect.png')}
+                  style={{width: 28, height: 28}}
+                />
+                <Text
+                  style={[
+                    systemWeights.bold,
+                    {
+                      marginLeft: 4,
+                      fontSize: 24,
+                      fontFamily:
+                        Platform.OS === 'android'
+                          ? 'Allrounder-Grotesk-Medium'
+                          : Platform.OS === 'android'
+                          ? 'MoveBold'
+                          : 'Uber Move Bold',
+                      color: '#fff',
+                    },
+                  ]}>
+                  Connecting the City!
+                </Text>
+              </View>
             </View>
-            <View style={{flex: 1, width: '100%'}}>
-              <Image
-                source={require('../../Media_assets/Images/driver_entry_image.png')}
-                style={{
-                  resizeMode: 'contain',
-                  width: '120%',
-                  height: '120%',
-                  right: '2%',
-                  bottom: '5%',
-                }}
-              />
-            </View>
-            <View style={{height: 70, flexDirection: 'row'}}>
-              <Image
-                source={require('../../Media_assets/Images/Namibia_rect.png')}
-                style={{width: 28, height: 28}}
-              />
-              <Text
-                style={[
-                  systemWeights.bold,
-                  {
-                    marginLeft: 4,
-                    fontSize: 24,
-                    fontFamily: 'Allrounder-Grotesk-Medium',
-                    color: '#fff',
-                  },
-                ]}>
-                Connecting the City!
-              </Text>
-            </View>
-          </View>
+          </SafeAreaView>
           <View
             style={{
               height: 170,
@@ -182,7 +189,9 @@ class PhoneDetailsScreen extends React.PureComponent {
                   {
                     fontFamily:
                       Platform.OS === 'android'
-                        ? 'Allrounder-Grotesk-Regular'
+                        ? Platform.OS === 'android'
+                          ? 'Allrounder-Grotesk-Regular'
+                          : 'Allrounder Grotesk'
                         : 'Allrounder Grotesk',
                     fontSize: 19,
                   },
@@ -197,7 +206,7 @@ class PhoneDetailsScreen extends React.PureComponent {
             />
           </View>
         </TouchableOpacity>
-      </SafeAreaView>
+      </View>
     );
   }
 }

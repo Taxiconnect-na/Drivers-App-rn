@@ -38,7 +38,7 @@ const Drawer = createDrawerNavigator();
               <IconAnt name="arrowleft" size={25} style={{top: 1}} />
               <Text
                 style={{
-                  fontFamily: 'Allrounder-Grotesk-Regular',
+                  fontFamily: Platform.OS==='android'?'Allrounder-Grotesk-Regular':'Allrounder Grotesk',
                   fontSize: 18,
                   marginLeft: 5,
                 }}>
@@ -58,7 +58,7 @@ const Drawer = createDrawerNavigator();
             <View style={{flexDirection: 'row', alignItems: 'center'}}>
               <Text
                 style={{
-                  fontFamily: 'Allrounder-Grotesk-Regular',
+                  fontFamily: Platform.OS==='android'?'Allrounder-Grotesk-Regular':'Allrounder Grotesk',
                   fontSize: 18,
                   right: 20,
                 }}>
@@ -86,7 +86,7 @@ const Drawer = createDrawerNavigator();
               <IconAnt name="arrowleft" size={25} style={{top: 1}} />
               <Text
                 style={{
-                  fontFamily: 'Allrounder-Grotesk-Regular',
+                  fontFamily: Platform.OS==='android'?'Allrounder-Grotesk-Regular':'Allrounder Grotesk',
                   fontSize: 18,
                   marginLeft: 5,
                 }}>
@@ -106,7 +106,7 @@ const Drawer = createDrawerNavigator();
               <IconAnt name="arrowleft" size={25} style={{top: 1}} />
               <Text
                 style={{
-                  fontFamily: 'Allrounder-Grotesk-Regular',
+                  fontFamily: Platform.OS==='android'?'Allrounder-Grotesk-Regular':'Allrounder Grotesk',
                   fontSize: 18,
                   marginLeft: 5,
                 }}>
@@ -126,7 +126,7 @@ const Drawer = createDrawerNavigator();
               <IconAnt name="arrowleft" size={25} style={{top: 1}} />
               <Text
                 style={{
-                  fontFamily: 'Allrounder-Grotesk-Regular',
+                  fontFamily: Platform.OS==='android'?'Allrounder-Grotesk-Regular':'Allrounder Grotesk',
                   fontSize: 18,
                   marginLeft: 5,
                 }}>
@@ -146,7 +146,7 @@ const Drawer = createDrawerNavigator();
               <IconAnt name="arrowleft" size={25} style={{top: 1}} />
               <Text
                 style={{
-                  fontFamily: 'Allrounder-Grotesk-Regular',
+                  fontFamily: Platform.OS==='android'?'Allrounder-Grotesk-Regular':'Allrounder Grotesk',
                   fontSize: 18,
                   marginLeft: 5,
                 }}>
@@ -166,7 +166,7 @@ const Drawer = createDrawerNavigator();
               <IconAnt name="arrowleft" size={25} style={{top: 1}} />
               <Text
                 style={{
-                  fontFamily: 'Allrounder-Grotesk-Regular',
+                  fontFamily: Platform.OS==='android'?'Allrounder-Grotesk-Regular':'Allrounder Grotesk',
                   fontSize: 18,
                   marginLeft: 5,
                 }}>
@@ -200,7 +200,9 @@ function Support_drawer() {
                 style={{
                   fontFamily:
                     Platform.OS === 'android'
-                      ? 'Allrounder-Grotesk-Regular'
+                      ? Platform.OS === 'android'
+                        ? 'Allrounder-Grotesk-Regular'
+                        : 'Allrounder Grotesk'
                       : 'Allrounder Grotesk',
                   fontSize: 20,
                   right: Platform.OS === 'android' ? 20 : 0,

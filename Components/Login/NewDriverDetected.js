@@ -97,8 +97,10 @@ class NewDriverDetected extends React.PureComponent {
                 fontSize: 30,
                 fontFamily:
                   Platform.OS === 'android'
-                    ? 'Allrounder-Grotesk-Medium'
-                    : 'Allrounder Grotesk Medium',
+                    ? Platform.OS === 'android'
+                      ? 'Allrounder-Grotesk-Medium'
+                      : 'Allrounder Grotesk'
+                    : 'Allrounder Grotesk',
                 marginTop: 15,
                 marginBottom: 35,
                 width: '100%',
@@ -124,8 +126,10 @@ class NewDriverDetected extends React.PureComponent {
                 flex: 1,
                 fontFamily:
                   Platform.OS === 'android'
-                    ? 'Allrounder-Grotesk-Medium'
-                    : 'Allrounder Grotesk Medium',
+                    ? Platform.OS === 'android'
+                      ? 'Allrounder-Grotesk-Medium'
+                      : 'Allrounder Grotesk'
+                    : 'Allrounder Grotesk',
                 color: '#000',
                 fontSize: 21,
                 marginTop: '10%',
@@ -156,8 +160,10 @@ class NewDriverDetected extends React.PureComponent {
                         {
                           fontFamily:
                             Platform.OS === 'android'
-                              ? 'Allrounder-Grotesk-Medium'
-                              : 'Allrounder Grotesk Medium',
+                              ? Platform.OS === 'android'
+                                ? 'Allrounder-Grotesk-Medium'
+                                : 'Allrounder Grotesk'
+                              : 'Allrounder Grotesk',
                           fontSize: 23,
                           color: '#fff',
                         },

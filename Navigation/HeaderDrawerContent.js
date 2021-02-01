@@ -67,8 +67,10 @@ class HeaderDrawerContent extends React.PureComponent {
             style={{
               fontFamily:
                 Platform.OS === 'android'
-                  ? 'Allrounder-Grotesk-Medium'
-                  : 'Allrounder Grotesk Medium',
+                  ? Platform.OS === 'android'
+                    ? 'Allrounder-Grotesk-Medium'
+                    : 'Allrounder Grotesk'
+                  : 'Allrounder Grotesk',
               fontSize: 18,
               width: '100%',
               textAlign: 'left',
@@ -95,7 +97,9 @@ class HeaderDrawerContent extends React.PureComponent {
               style={{
                 fontFamily:
                   Platform.OS === 'android'
-                    ? 'Allrounder-Grotesk-Regular'
+                    ? Platform.OS === 'android'
+                      ? 'Allrounder-Grotesk-Regular'
+                      : 'Allrounder Grotesk'
                     : 'Allrounder Grotesk',
                 fontSize: 15,
                 textAlign: 'center',
@@ -142,7 +146,9 @@ const styles = StyleSheet.create({
   menuTitles: {
     fontFamily:
       Platform.OS === 'android'
-        ? 'Allrounder-Grotesk-Regular'
+        ? Platform.OS === 'android'
+          ? 'Allrounder-Grotesk-Regular'
+          : 'Allrounder Grotesk'
         : 'Allrounder Grotesk',
     fontSize: 20,
   },

@@ -97,8 +97,10 @@ class AccountProblemDetected extends React.PureComponent {
                 fontSize: 21,
                 fontFamily:
                   Platform.OS === 'android'
-                    ? 'Allrounder-Grotesk-Medium'
-                    : 'Allrounder Grotesk Medium',
+                    ? Platform.OS === 'android'
+                      ? 'Allrounder-Grotesk-Medium'
+                      : 'Allrounder Grotesk'
+                    : 'Allrounder Grotesk',
                 marginTop: 15,
                 marginBottom: 35,
                 width: '100%',
@@ -118,7 +120,10 @@ class AccountProblemDetected extends React.PureComponent {
             style={[
               {
                 flex: 1,
-                fontFamily: 'Allrounder-Grotesk-Regular',
+                fontFamily:
+                  Platform.OS === 'android'
+                    ? 'Allrounder-Grotesk-Regular'
+                    : 'Allrounder Grotesk',
                 color: '#000',
                 fontSize: 18,
                 marginTop: '10%',
@@ -152,8 +157,10 @@ class AccountProblemDetected extends React.PureComponent {
                         {
                           fontFamily:
                             Platform.OS === 'android'
-                              ? 'Allrounder-Grotesk-Medium'
-                              : 'Allrounder Grotesk Medium',
+                              ? Platform.OS === 'android'
+                                ? 'Allrounder-Grotesk-Medium'
+                                : 'Allrounder Grotesk'
+                              : 'Allrounder Grotesk',
                           fontSize: 23,
                           color: '#fff',
                         },

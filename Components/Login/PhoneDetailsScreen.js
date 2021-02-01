@@ -164,8 +164,12 @@ class PhoneDetailsScreen extends React.PureComponent {
                   fontSize: 21,
                   fontFamily:
                     Platform.OS === 'android'
-                      ? 'Allrounder-Grotesk-Medium'
-                      : 'Allrounder Grotesk Medium',
+                      ? Platform.OS === 'android'
+                        ? 'Allrounder-Grotesk-Medium'
+                        : Platform.OS === 'android'
+                        ? 'MoveBold'
+                        : 'Uber Move Bold'
+                      : 'Allrounder Grotesk',
                   marginTop: 15,
                   marginBottom: 35,
                 },
@@ -191,7 +195,9 @@ class PhoneDetailsScreen extends React.PureComponent {
                       lineHeight: 18,
                       fontFamily:
                         Platform.OS === 'android'
-                          ? 'Allrounder-Grotesk-Book'
+                          ? Platform.OS === 'android'
+                            ? 'Allrounder-Grotesk-Book'
+                            : 'Allrounder Grotesk Book'
                           : 'Allrounder Grotesk Book',
                     },
                   ]}>

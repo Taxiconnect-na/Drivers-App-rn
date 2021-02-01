@@ -112,6 +112,7 @@ class GenericRequestTemplate extends React.PureComponent {
           shadowOpacity: 0.36,
           shadowRadius: 6.68,
           elevation: 11,
+          marginBottom: 15,
         }}>
         <View
           style={{
@@ -124,7 +125,8 @@ class GenericRequestTemplate extends React.PureComponent {
           {this.props.requestLightData.ride_basic_infos.inRideToDestination ? (
             <Text
               style={{
-                fontFamily: 'MoveMedium',
+                fontFamily:
+                  Platform.OS === 'android' ? 'MoveMedium' : 'Uber Move Medium',
                 fontSize: 18,
                 flex: 1,
               }}>
@@ -133,7 +135,8 @@ class GenericRequestTemplate extends React.PureComponent {
           ) : (
             <Text
               style={{
-                fontFamily: 'MoveMedium',
+                fontFamily:
+                  Platform.OS === 'android' ? 'MoveMedium' : 'Uber Move Medium',
                 fontSize: 18,
                 flex: 1,
               }}>
@@ -172,7 +175,10 @@ class GenericRequestTemplate extends React.PureComponent {
             .inRideToDestination ? null : (
             <Text
               style={{
-                fontFamily: 'Allrounder-Grotesk-Regular',
+                fontFamily:
+                  Platform.OS === 'android'
+                    ? 'Allrounder-Grotesk-Regular'
+                    : 'Allrounder Grotesk',
                 fontSize: 16.5,
               }}>
               {Math.round(
@@ -201,7 +207,13 @@ class GenericRequestTemplate extends React.PureComponent {
           }}>
           <View style={{flex: 1, alignItems: 'center'}}>
             <Text
-              style={{fontFamily: 'Allrounder-Grotesk-Regular', fontSize: 17}}>
+              style={{
+                fontFamily:
+                  Platform.OS === 'android'
+                    ? 'Allrounder-Grotesk-Regular'
+                    : 'Allrounder Grotesk',
+                fontSize: 17,
+              }}>
               {/connectus/i.test(
                 this.props.requestLightData.ride_basic_infos.connect_type,
               )
@@ -213,7 +225,8 @@ class GenericRequestTemplate extends React.PureComponent {
             <Text
               style={[
                 {
-                  fontFamily: 'MoveBold',
+                  fontFamily:
+                    Platform.OS === 'android' ? 'MoveBold' : 'Uber Move Bold',
                   fontSize: 26,
                   color: 'green',
                 },
@@ -231,7 +244,10 @@ class GenericRequestTemplate extends React.PureComponent {
             <IconAnt name="user" size={15} />
             <Text
               style={{
-                fontFamily: 'Allrounder-Grotesk-Medium',
+                fontFamily:
+                  Platform.OS === 'android'
+                    ? 'Allrounder-Grotesk-Medium'
+                    : 'Allrounder Grotesk',
                 fontSize: 19,
                 marginLeft: 3,
                 bottom: 1,
@@ -290,7 +306,10 @@ class GenericRequestTemplate extends React.PureComponent {
                 <View style={{width: 40}}>
                   <Text
                     style={{
-                      fontFamily: 'Allrounder-Grotesk-Regular',
+                      fontFamily:
+                        Platform.OS === 'android'
+                          ? 'Allrounder-Grotesk-Regular'
+                          : 'Allrounder Grotesk',
                       fontSize: 14,
                       top: 2,
                     }}>
@@ -309,7 +328,10 @@ class GenericRequestTemplate extends React.PureComponent {
                     }}>
                     <Text
                       style={{
-                        fontFamily: 'MoveMedium',
+                        fontFamily:
+                          Platform.OS === 'android'
+                            ? 'MoveMedium'
+                            : 'Uber Move Medium',
                         fontSize: 18,
                         marginLeft: 5,
                         flex: 1,
@@ -321,7 +343,10 @@ class GenericRequestTemplate extends React.PureComponent {
                     </Text>
                     <Text
                       style={{
-                        fontFamily: 'Allrounder-Grotesk-Regular',
+                        fontFamily:
+                          Platform.OS === 'android'
+                            ? 'Allrounder-Grotesk-Regular'
+                            : 'Allrounder Grotesk',
                         fontSize: 15,
                         marginLeft: 5,
                         flex: 1,
@@ -345,7 +370,10 @@ class GenericRequestTemplate extends React.PureComponent {
                 <View style={{width: 35}}>
                   <Text
                     style={{
-                      fontFamily: 'Allrounder-Grotesk-Regular',
+                      fontFamily:
+                        Platform.OS === 'android'
+                          ? 'Allrounder-Grotesk-Regular'
+                          : 'Allrounder Grotesk',
                       fontSize: 14,
                       top: 1,
                     }}>
@@ -364,7 +392,10 @@ class GenericRequestTemplate extends React.PureComponent {
                     }}>
                     <Text
                       style={{
-                        fontFamily: 'MoveMedium',
+                        fontFamily:
+                          Platform.OS === 'android'
+                            ? 'MoveMedium'
+                            : 'Uber Move Medium',
                         fontSize: 18,
                         marginLeft: 5,
                         flex: 1,
@@ -376,7 +407,10 @@ class GenericRequestTemplate extends React.PureComponent {
                     </Text>
                     <Text
                       style={{
-                        fontFamily: 'Allrounder-Grotesk-Regular',
+                        fontFamily:
+                          Platform.OS === 'android'
+                            ? 'Allrounder-Grotesk-Regular'
+                            : 'Allrounder Grotesk',
                         fontSize:
                           this.props.requestLightData.origin_destination_infos
                             .destination_infos.length > 1
@@ -432,7 +466,10 @@ class GenericRequestTemplate extends React.PureComponent {
                 style={{paddingLeft: 10, width: '70%'}}>
                 <Text
                   style={{
-                    fontFamily: 'Allrounder-Grotesk-Regular',
+                    fontFamily:
+                      Platform.OS === 'android'
+                        ? 'Allrounder-Grotesk-Regular'
+                        : 'Allrounder Grotesk',
                     fontSize: 18,
                     color: '#b22222',
                   }}>
@@ -490,7 +527,10 @@ class GenericRequestTemplate extends React.PureComponent {
                     <>
                       <Text
                         style={{
-                          fontFamily: 'MoveBold',
+                          fontFamily:
+                            Platform.OS === 'android'
+                              ? 'MoveBold'
+                              : 'Uber Move Bold',
                           fontSize: 23,
                           color: '#fff',
                         }}>
@@ -501,7 +541,10 @@ class GenericRequestTemplate extends React.PureComponent {
                     <>
                       <Text
                         style={{
-                          fontFamily: 'MoveBold',
+                          fontFamily:
+                            Platform.OS === 'android'
+                              ? 'MoveBold'
+                              : 'Uber Move Bold',
                           fontSize: 20,
                           color: '#fff',
                         }}>

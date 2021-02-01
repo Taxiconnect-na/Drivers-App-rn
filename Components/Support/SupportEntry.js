@@ -76,7 +76,9 @@ class SupportEntry extends React.PureComponent {
                     fontSize: 20,
                     fontFamily:
                       Platform.OS === 'android'
-                        ? 'Allrounder-Grotesk-Regular'
+                        ? Platform.OS === 'android'
+                          ? 'Allrounder-Grotesk-Regular'
+                          : 'Allrounder Grotesk'
                         : 'Allrounder Grotesk',
                     marginLeft: 5,
                   }}>
@@ -96,7 +98,9 @@ class SupportEntry extends React.PureComponent {
                     lineHeight: 23,
                     fontFamily:
                       Platform.OS === 'android'
-                        ? 'Allrounder-Grotesk-Book'
+                        ? Platform.OS === 'android'
+                          ? 'Allrounder-Grotesk-Book'
+                          : 'Allrounder Grotesk Book'
                         : 'Allrounder Grotesk Book',
                   }}>
                   If you <Text style={{fontWeight: 'bold'}}>left</Text> your
@@ -114,7 +118,9 @@ class SupportEntry extends React.PureComponent {
                     lineHeight: 23,
                     fontFamily:
                       Platform.OS === 'android'
-                        ? 'Allrounder-Grotesk-Book'
+                        ? Platform.OS === 'android'
+                          ? 'Allrounder-Grotesk-Book'
+                          : 'Allrounder Grotesk Book'
                         : 'Allrounder Grotesk Book',
                   }}>
                   If there is an{' '}
@@ -142,8 +148,10 @@ class SupportEntry extends React.PureComponent {
                     color: '#fff',
                     fontFamily:
                       Platform.OS === 'android'
-                        ? 'Allrounder-Grotesk-Medium'
-                        : 'Allrounder Grotesk Medium',
+                        ? Platform.OS === 'android'
+                          ? 'Allrounder-Grotesk-Medium'
+                          : 'Allrounder Grotesk'
+                        : 'Allrounder Grotesk',
                   }}>
                   Call TaxiConnect
                 </Text>
@@ -163,8 +171,10 @@ class SupportEntry extends React.PureComponent {
                     color: '#fff',
                     fontFamily:
                       Platform.OS === 'android'
-                        ? 'Allrounder-Grotesk-Medium'
-                        : 'Allrounder Grotesk Medium',
+                        ? Platform.OS === 'android'
+                          ? 'Allrounder-Grotesk-Medium'
+                          : 'Allrounder Grotesk'
+                        : 'Allrounder Grotesk',
                   }}>
                   Call City Police
                 </Text>

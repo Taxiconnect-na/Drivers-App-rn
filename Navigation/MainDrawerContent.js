@@ -14,7 +14,7 @@ import IconMaterialIcons from 'react-native-vector-icons/MaterialIcons';
 export function MainDrawerContent(props) {
   return (
     <View style={{flex: 1}}>
-      <SafeAreaView style={{backgroundColor: '#000'}}>
+      <SafeAreaView style={{backgroundColor: '#0e8491'}}>
         <HeaderDrawerContent />
       </SafeAreaView>
       <SafeAreaView style={{flex: 1}}>
@@ -65,7 +65,9 @@ export function MainDrawerContent(props) {
             style={{
               fontFamily:
                 Platform.OS === 'android'
-                  ? 'Allrounder-Grotesk-Regular'
+                  ? Platform.OS === 'android'
+                    ? 'Allrounder-Grotesk-Regular'
+                    : 'Allrounder Grotesk'
                   : 'Allrounder Grotesk',
               fontSize: 15,
               flex: 1,
@@ -76,14 +78,16 @@ export function MainDrawerContent(props) {
             style={{
               fontFamily:
                 Platform.OS === 'android'
-                  ? 'Allrounder-Grotesk-Book'
+                  ? Platform.OS === 'android'
+                    ? 'Allrounder-Grotesk-Book'
+                    : 'Allrounder Grotesk Book'
                   : 'Allrounder Grotesk Book',
               fontSize: 14,
               flex: 1,
               color: '#a5a5a5',
               textAlign: 'right',
             }}>
-            v2.0.103
+            v2.0.104
           </Text>
         </View>
       </SafeAreaView>
@@ -106,7 +110,9 @@ const styles = StyleSheet.create({
   menuTitles: {
     fontFamily:
       Platform.OS === 'android'
-        ? 'Allrounder-Grotesk-Regular'
+        ? Platform.OS === 'android'
+          ? 'Allrounder-Grotesk-Regular'
+          : 'Allrounder Grotesk'
         : 'Allrounder Grotesk',
     fontSize: 20,
     flex: 1,
