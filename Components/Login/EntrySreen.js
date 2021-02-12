@@ -11,13 +11,13 @@ import {
   Image,
   Platform,
 } from 'react-native';
-import {systemWeights} from 'react-native-typography';
 import IconMaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import {
   ValidateGenericPhoneNumber,
   UpdateErrorModalLog,
 } from '../Redux/HomeActionsCreators';
 import SyncStorage from 'sync-storage';
+import {RFValue} from 'react-native-responsive-fontsize';
 
 class PhoneDetailsScreen extends React.PureComponent {
   constructor(props) {
@@ -104,7 +104,7 @@ class PhoneDetailsScreen extends React.PureComponent {
   render() {
     return (
       <View style={styles.mainWindow}>
-        <StatusBar backgroundColor="#0e8491" barStyle={'light-content'} />
+        <StatusBar backgroundColor="#000" barStyle={'light-content'} />
         <TouchableOpacity
           style={{flex: 1}}
           onPressIn={() =>
@@ -145,18 +145,15 @@ class PhoneDetailsScreen extends React.PureComponent {
               <View style={{height: 70, flexDirection: 'row'}}>
                 <Image
                   source={require('../../Media_assets/Images/Namibia_rect.png')}
-                  style={{width: 28, height: 28}}
+                  style={{width: 28, height: 28, top: 1}}
                 />
                 <Text
                   style={[
-                    systemWeights.bold,
                     {
                       marginLeft: 4,
-                      fontSize: 24,
+                      fontSize: RFValue(24),
                       fontFamily:
                         Platform.OS === 'android'
-                          ? 'Allrounder-Grotesk-Medium'
-                          : Platform.OS === 'android'
                           ? 'MoveBold'
                           : 'Uber Move Bold',
                       color: '#fff',
@@ -179,21 +176,19 @@ class PhoneDetailsScreen extends React.PureComponent {
             <View style={{flexDirection: 'row', flex: 1, alignItems: 'center'}}>
               <IconMaterialIcons
                 name="phone"
-                size={25}
+                size={23}
                 style={{marginRight: 5}}
                 color="#000"
               />
               <Text
                 style={[
-                  systemWeights.regular,
                   {
                     fontFamily:
                       Platform.OS === 'android'
-                        ? Platform.OS === 'android'
-                          ? 'Allrounder-Grotesk-Regular'
-                          : 'Allrounder Grotesk'
-                        : 'Allrounder Grotesk',
-                    fontSize: 19,
+                        ? 'UberMoveTextRegular'
+                        : 'Uber Move Text',
+                    fontSize: RFValue(19),
+                    flex: 1,
                   },
                 ]}>
                 What's your phone number?
@@ -201,7 +196,7 @@ class PhoneDetailsScreen extends React.PureComponent {
             </View>
             <IconMaterialIcons
               name="arrow-forward-ios"
-              size={18}
+              size={17}
               color="#0e8491"
             />
           </View>

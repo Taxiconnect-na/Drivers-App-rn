@@ -9,7 +9,6 @@ import {
   TouchableOpacity,
   SafeAreaView,
   ScrollView,
-  Image,
   Platform,
   TextInput,
 } from 'react-native';
@@ -30,6 +29,7 @@ import {
   UpdateRequestType_focused,
 } from '../Redux/HomeActionsCreators';
 import call from 'react-native-phone-call';
+import {RFValue} from 'react-native-responsive-fontsize';
 
 class ErrorModal extends React.PureComponent {
   constructor(props) {
@@ -272,16 +272,16 @@ class ErrorModal extends React.PureComponent {
           <View style={{flexDirection: 'row', alignItems: 'center'}}>
             <IconCommunity
               name="network-strength-1-alert"
-              size={22}
+              size={20}
               style={{marginRight: 5}}
             />
             <Text
               style={{
                 fontFamily:
                   Platform.OS === 'android'
-                    ? 'Allrounder-Grotesk-Medium'
-                    : 'Allrounder Grotesk',
-                fontSize: 22,
+                    ? 'UberMoveTextMedium'
+                    : 'Uber Move Text Medium',
+                fontSize: RFValue(20),
               }}>
               No Internet connection
             </Text>
@@ -291,10 +291,11 @@ class ErrorModal extends React.PureComponent {
               style={{
                 fontFamily:
                   Platform.OS === 'android'
-                    ? 'Allrounder-Grotesk-Book'
-                    : 'Allrounder Grotesk Book',
-                fontSize: 17,
+                    ? 'UberMoveTextLight'
+                    : 'Uber Move Text',
+                fontSize: RFValue(17),
                 marginTop: 10,
+                lineHeight: 23,
               }}>
               It looks like your Internet connection is unavailable, please try
               connecting to a Wi-fi or mobile data point.
@@ -311,9 +312,9 @@ class ErrorModal extends React.PureComponent {
                 style={{
                   fontFamily:
                     Platform.OS === 'android'
-                      ? 'Allrounder-Grotesk-Regular'
-                      : 'Allrounder Grotesk',
-                  fontSize: 17,
+                      ? 'UberMoveTextRegular'
+                      : 'Uber Move Text',
+                  fontSize: RFValue(17),
                 }}>
                 Waiting for Internet connection
               </Text>
@@ -333,18 +334,16 @@ class ErrorModal extends React.PureComponent {
           <View style={{flexDirection: 'row', alignItems: 'center'}}>
             <IconCommunity
               name="network-strength-1-alert"
-              size={22}
+              size={20}
               style={{marginRight: 5}}
             />
             <Text
               style={{
                 fontFamily:
                   Platform.OS === 'android'
-                    ? Platform.OS === 'android'
-                      ? 'Allrounder-Grotesk-Medium'
-                      : 'Allrounder Grotesk'
-                    : 'Allrounder Grotesk',
-                fontSize: 22,
+                    ? 'UberMoveTextMedium'
+                    : 'Uber Move Text Medium',
+                fontSize: RFValue(20),
               }}>
               Oups, something's wrong
             </Text>
@@ -354,12 +353,11 @@ class ErrorModal extends React.PureComponent {
               style={{
                 fontFamily:
                   Platform.OS === 'android'
-                    ? Platform.OS === 'android'
-                      ? 'Allrounder-Grotesk-Book'
-                      : 'Allrounder Grotesk Book'
-                    : 'Allrounder Grotesk Book',
-                fontSize: 17,
+                    ? 'UberMoveTextLight'
+                    : 'Uber Move Text',
+                fontSize: RFValue(17),
                 marginTop: 10,
+                lineHeight: 23,
               }}>
               Sorry, we are unable to establish the connection to TaxiConnect,
               please try again later.
@@ -376,11 +374,9 @@ class ErrorModal extends React.PureComponent {
                 style={{
                   fontFamily:
                     Platform.OS === 'android'
-                      ? Platform.OS === 'android'
-                        ? 'Allrounder-Grotesk-Regular'
-                        : 'Allrounder Grotesk'
-                      : 'Allrounder Grotesk',
-                  fontSize: 17,
+                      ? 'UberMoveTextRegular'
+                      : 'Uber Move Text',
+                  fontSize: RFValue(17),
                 }}>
                 Establishing connection.
               </Text>
@@ -395,21 +391,21 @@ class ErrorModal extends React.PureComponent {
           style={{
             backgroundColor: '#fff',
             padding: 20,
-            height: 300,
+            height: 270,
           }}>
           <View style={{flexDirection: 'row', alignItems: 'center'}}>
             <IconMaterialIcons
               name="error-outline"
-              size={22}
+              size={20}
               style={{marginRight: 5}}
             />
             <Text
               style={{
                 fontFamily:
                   Platform.OS === 'android'
-                    ? 'Allrounder-Grotesk-Medium'
-                    : 'Allrounder Grotesk',
-                fontSize: 22,
+                    ? 'UberMoveTextMedium'
+                    : 'Uber Move Text Medium',
+                fontSize: RFValue(20),
               }}>
               Something's wrong
             </Text>
@@ -419,10 +415,11 @@ class ErrorModal extends React.PureComponent {
               style={{
                 fontFamily:
                   Platform.OS === 'android'
-                    ? 'Allrounder-Grotesk-Book'
-                    : 'Allrounder Grotesk Book',
-                fontSize: 17,
+                    ? 'UberMoveTextLight'
+                    : 'Uber Move Text',
+                fontSize: RFValue(17),
                 marginTop: 10,
+                lineHeight: 23,
               }}>
               Sorry due to an unexpected error we were unable to move forward
               with the authentication of your phone number, please try again.
@@ -436,9 +433,9 @@ class ErrorModal extends React.PureComponent {
                 style={{
                   fontFamily:
                     Platform.OS === 'android'
-                      ? 'Allrounder-Grotesk-Medium'
-                      : 'Allrounder Grotesk',
-                  fontSize: 19,
+                      ? 'UberMoveTextMedium'
+                      : 'Uber Move Text Medium',
+                  fontSize: RFValue(21),
                   color: '#fff',
                 }}>
                 Try again
@@ -453,21 +450,21 @@ class ErrorModal extends React.PureComponent {
           style={{
             backgroundColor: '#fff',
             padding: 20,
-            height: 300,
+            height: 270,
           }}>
           <View style={{flexDirection: 'row', alignItems: 'center'}}>
             <IconMaterialIcons
               name="error-outline"
-              size={22}
+              size={20}
               style={{marginRight: 5}}
             />
             <Text
               style={{
                 fontFamily:
                   Platform.OS === 'android'
-                    ? 'Allrounder-Grotesk-Medium'
-                    : 'Allrounder Grotesk',
-                fontSize: 22,
+                    ? 'UberMoveTextMedium'
+                    : 'Uber Move Text Medium',
+                fontSize: RFValue(20),
               }}>
               Couldn't check the OTP
             </Text>
@@ -477,10 +474,11 @@ class ErrorModal extends React.PureComponent {
               style={{
                 fontFamily:
                   Platform.OS === 'android'
-                    ? 'Allrounder-Grotesk-Book'
-                    : 'Allrounder Grotesk Book',
-                fontSize: 17,
+                    ? 'UberMoveTextLight'
+                    : 'Uber Move Text',
+                fontSize: RFValue(17),
                 marginTop: 10,
+                lineHeight: 23,
               }}>
               Sorry due to an unexpected error we were unable to move forward
               with the authentication of your OTP, please try again.
@@ -494,9 +492,9 @@ class ErrorModal extends React.PureComponent {
                 style={{
                   fontFamily:
                     Platform.OS === 'android'
-                      ? 'Allrounder-Grotesk-Medium'
-                      : 'Allrounder Grotesk',
-                  fontSize: 19,
+                      ? 'UberMoveTextMedium'
+                      : 'Uber Move Text Medium',
+                  fontSize: RFValue(21),
                   color: '#fff',
                 }}>
                 Try again
@@ -510,7 +508,6 @@ class ErrorModal extends React.PureComponent {
         <View
           style={{
             backgroundColor: '#fff',
-            //padding: 20,
             minHeight:
               /ride/i.test(
                 this.props.App.main_interfaceState_vars.dailyAmount_madeSoFar
@@ -521,7 +518,7 @@ class ErrorModal extends React.PureComponent {
                   .supported_requests_types,
               )
                 ? 360
-                : 270,
+                : 340,
           }}>
           <View
             style={{
@@ -535,9 +532,9 @@ class ErrorModal extends React.PureComponent {
               style={{
                 fontFamily:
                   Platform.OS === 'android'
-                    ? 'Allrounder-Grotesk-Medium'
-                    : 'Allrounder Grotesk',
-                fontSize: 21,
+                    ? 'UberMoveTextMedium'
+                    : 'Uber Move Text Medium',
+                fontSize: RFValue(20),
               }}>
               What do you want to see?
             </Text>
@@ -557,7 +554,7 @@ class ErrorModal extends React.PureComponent {
                     borderRadius: 2,
                     marginBottom: 10,
                     justifyContent: 'flex-start',
-                    borderBottomColor: '#d0d0d0',
+                    borderBottomColor: '#E2E2E2',
                     borderBottomWidth: 1,
                     paddingLeft: 20,
                     paddingRight: 20,
@@ -577,17 +574,16 @@ class ErrorModal extends React.PureComponent {
                   style={{
                     fontFamily:
                       Platform.OS === 'android'
-                        ? 'Allrounder-Grotesk-Regular'
-                        : 'Allrounder Grotesk',
-                    fontSize: 20,
+                        ? 'UberMoveTextRegular'
+                        : 'Uber Move Text',
+                    fontSize: RFValue(20),
                     color: '#000',
-                    marginLeft: 5,
                     flex: 1,
                   }}>
                   Rides
                 </Text>
                 {/Rides/i.test(this.props.App.shownRides_types) ? (
-                  <IconFeather name="check" color="#0e8491" size={20} />
+                  <IconFeather name="check" color="#0e8491" size={22} />
                 ) : null}
               </TouchableOpacity>
             ) : null}
@@ -609,7 +605,7 @@ class ErrorModal extends React.PureComponent {
                     borderRadius: 2,
                     marginBottom: 10,
                     justifyContent: 'flex-start',
-                    borderBottomColor: '#d0d0d0',
+                    borderBottomColor: '#E2E2E2',
                     borderBottomWidth: 1,
                     paddingLeft: 20,
                     paddingRight: 20,
@@ -629,22 +625,21 @@ class ErrorModal extends React.PureComponent {
                   style={{
                     fontFamily:
                       Platform.OS === 'android'
-                        ? 'Allrounder-Grotesk-Regular'
-                        : 'Allrounder Grotesk',
-                    fontSize: 20,
+                        ? 'UberMoveTextRegular'
+                        : 'Uber Move Text',
+                    fontSize: RFValue(20),
                     color: '#000',
-                    marginLeft: 5,
                     flex: 1,
                   }}>
                   Deliveries
                 </Text>
                 {/Delivery/i.test(this.props.App.shownRides_types) ? (
-                  <IconFeather name="check" color="#0e8491" size={20} />
+                  <IconFeather name="check" color="#0e8491" size={22} />
                 ) : null}
               </TouchableOpacity>
             ) : null}
             {/**For scheduled rides/deliveries */}
-            {/(rides|delivery)/i.test(
+            {/(ride|delivery)/i.test(
               this.props.App.main_interfaceState_vars.dailyAmount_madeSoFar
                 .supported_requests_types,
             ) ? (
@@ -661,7 +656,7 @@ class ErrorModal extends React.PureComponent {
                     borderRadius: 2,
                     marginBottom: 10,
                     justifyContent: 'flex-start',
-                    borderBottomColor: '#d0d0d0',
+                    borderBottomColor: '#E2E2E2',
                     borderBottomWidth: 1,
                     paddingLeft: 20,
                     paddingRight: 20,
@@ -681,17 +676,16 @@ class ErrorModal extends React.PureComponent {
                   style={{
                     fontFamily:
                       Platform.OS === 'android'
-                        ? 'Allrounder-Grotesk-Regular'
-                        : 'Allrounder Grotesk',
-                    fontSize: 20,
+                        ? 'UberMoveTextRegular'
+                        : 'Uber Move Text',
+                    fontSize: RFValue(20),
                     color: '#000',
-                    marginLeft: 5,
                     flex: 1,
                   }}>
                   Scheduled
                 </Text>
                 {/Scheduled/i.test(this.props.App.shownRides_types) ? (
-                  <IconFeather name="check" color="#0e8491" size={20} />
+                  <IconFeather name="check" color="#0e8491" size={22} />
                 ) : null}
               </TouchableOpacity>
             ) : null}
@@ -723,11 +717,10 @@ class ErrorModal extends React.PureComponent {
                 style={{
                   fontFamily:
                     Platform.OS === 'android'
-                      ? 'Allrounder-Grotesk-Regular'
-                      : 'Allrounder Grotesk',
-                  fontSize: 20,
+                      ? 'UberMoveTextMedium'
+                      : 'Uber Move Text Medium',
+                  fontSize: RFValue(20),
                   color: '#b22222',
-                  marginLeft: 5,
                   flex: 1,
                 }}>
                 Go offline
@@ -744,8 +737,7 @@ class ErrorModal extends React.PureComponent {
         <View
           style={{
             backgroundColor: '#fff',
-            //padding: 20,
-            height: 300,
+            height: Platform.OS === 'android' ? 250 : 260,
           }}>
           <View
             style={{
@@ -759,26 +751,30 @@ class ErrorModal extends React.PureComponent {
               style={{
                 fontFamily:
                   Platform.OS === 'android'
-                    ? 'Allrounder-Grotesk-Regular'
-                    : 'Allrounder Grotesk',
-                fontSize: 20,
+                    ? 'UberMoveTextMedium'
+                    : 'Uber Move Text Medium',
+                fontSize: RFValue(20),
               }}>
               Safety
             </Text>
           </View>
           <View style={{flex: 1, justifyContent: 'center'}}>
             <TouchableOpacity
-              onPress={() => {}}
+              onPress={() =>
+                call({
+                  number: '061302302',
+                  prompt: true,
+                })
+              }
               style={[
                 styles.bttnGenericTc,
                 {
                   borderRadius: 2,
-                  marginBottom: 10,
+                  marginBottom: 20,
                   justifyContent: 'flex-start',
-                  borderBottomColor: '#d0d0d0',
-                  borderBottomWidth: 1,
                   paddingLeft: 20,
                   paddingRight: 20,
+                  height: 100,
                   backgroundColor: '#fff',
                   shadowColor: '#fff',
                   shadowOffset: {
@@ -792,58 +788,37 @@ class ErrorModal extends React.PureComponent {
                   flexDirection: 'row',
                 },
               ]}>
-              <IconMaterialIcons name="shield" color="#b22222" size={28} />
-              <Text
-                style={{
-                  fontFamily:
-                    Platform.OS === 'android'
-                      ? 'Allrounder-Grotesk-Book'
-                      : 'Allrounder Grotesk Book',
-                  fontSize: 19,
-                  marginLeft: 5,
-                  flex: 1,
-                  color: '#b22222',
-                }}>
-                Emergency call
-              </Text>
+              <View style={{height: '100%'}}>
+                <IconMaterialIcons name="shield" color="#b22222" size={28} />
+              </View>
+              <View style={{flex: 1, marginLeft: 5}}>
+                <Text
+                  style={{
+                    fontFamily:
+                      Platform.OS === 'android'
+                        ? 'UberMoveTextRegular'
+                        : 'Uber Move Text',
+                    fontSize: RFValue(20),
+                    flex: 1,
+                    color: '#b22222',
+                  }}>
+                  Emergency call
+                </Text>
+                <Text
+                  style={{
+                    fontFamily:
+                      Platform.OS === 'android'
+                        ? 'UberMoveTextLight'
+                        : 'Uber Move Text Light',
+                    fontSize: RFValue(14),
+                    lineHeight: 19,
+                    flex: 1,
+                    bottom: 5,
+                  }}>
+                  Call immediatly the authorities if you feel a threaten.
+                </Text>
+              </View>
             </TouchableOpacity>
-            <View
-              style={[
-                styles.bttnGenericTc,
-                {
-                  borderRadius: 2,
-                  marginBottom: 10,
-                  justifyContent: 'flex-start',
-                  paddingLeft: 20,
-                  paddingRight: 20,
-                  backgroundColor: '#fff',
-                  shadowColor: '#fff',
-                  shadowOffset: {
-                    width: 0,
-                    height: 0,
-                  },
-                  shadowOpacity: 0,
-                  shadowRadius: 0,
-
-                  elevation: 0,
-                },
-              ]}>
-              <Text
-                style={{
-                  fontFamily:
-                    Platform.OS === 'android'
-                      ? 'Allrounder-Grotesk-Book'
-                      : 'Allrounder Grotesk Book',
-                  fontSize: 14,
-                  color: '#a5a5a5',
-                  marginLeft: 5,
-                  flex: 1,
-                  lineHeight: 17,
-                }}>
-                Use the Emergency call button only in the case of an extreme
-                emergency. Otherwise some additional charges may apply.
-              </Text>
-            </View>
           </View>
         </View>
       );
@@ -856,7 +831,7 @@ class ErrorModal extends React.PureComponent {
           false
       ) {
         //Invalid setup - close modal
-        this.props.UpdateErrorModalLog(false, false, 'any'); //Close modal - enable after
+        //this.props.UpdateErrorModalLog(false, false, 'any'); //Close modal - enable after
         /*return (
           <View
             style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
@@ -914,18 +889,17 @@ class ErrorModal extends React.PureComponent {
                   this.props.UpdateErrorModalLog(false, false, 'any')
                 }
                 style={{flexDirection: 'row'}}>
-                <View style={{top: 1.5}}>
+                <View>
                   <IconAnt name="arrowleft" size={23} />
                 </View>
                 <Text
                   style={[
-                    systemWeights.semibold,
                     {
-                      fontSize: 18,
+                      fontSize: RFValue(18),
                       fontFamily:
                         Platform.OS === 'android'
-                          ? 'Allrounder-Grotesk-Medium'
-                          : 'Allrounder Grotesk',
+                          ? 'UberMoveTextMedium'
+                          : 'Uber Move Text Medium',
                       marginLeft: 5,
                     },
                   ]}>
@@ -947,9 +921,7 @@ class ErrorModal extends React.PureComponent {
                   paddingTop: 18,
                   paddingBottom: 15,
                   alignItems: 'center',
-                  borderBottomWidth: 0.7,
-                  borderBottomColor: '#d0d0d0',
-                  backgroundColor: '#f9f9f9',
+                  backgroundColor: '#F6F6F6',
                 }}>
                 <View
                   style={{
@@ -988,9 +960,9 @@ class ErrorModal extends React.PureComponent {
                       style={{
                         fontFamily:
                           Platform.OS === 'android'
-                            ? 'Allrounder-Grotesk-Medium'
-                            : 'Allrounder Grotesk',
-                        fontSize: 19,
+                            ? 'UberMoveTextMedium'
+                            : 'Uber Move Text Medium',
+                        fontSize: RFValue(19),
                       }}>
                       {this.props.App.requests_data_main_vars
                         .moreDetailsFocused_request.passenger_infos.name !==
@@ -1009,9 +981,9 @@ class ErrorModal extends React.PureComponent {
                         style={{
                           fontFamily:
                             Platform.OS === 'android'
-                              ? 'MoveMedium'
-                              : 'Uber Move Medium',
-                          fontSize: 17,
+                              ? 'UberMoveTextMedium'
+                              : 'Uber Move Text Medium',
+                          fontSize: RFValue(17),
                           color: '#096ED4',
                         }}>
                         {parseInt(
@@ -1089,7 +1061,11 @@ class ErrorModal extends React.PureComponent {
                     justifyContent: 'center',
                     padding: 15,
                     height: 55,
-                    backgroundColor: '#fff',
+                    backgroundColor: this.props.App.requests_data_main_vars
+                      .moreDetailsFocused_request.ride_basic_infos
+                      .inRideToDestination
+                      ? '#000'
+                      : '#096ED4',
                     borderRadius: 7,
                     borderTopRightRadius: 0,
                     borderBottomRightRadius: 0,
@@ -1103,15 +1079,15 @@ class ErrorModal extends React.PureComponent {
 
                     elevation: 4,
                   }}>
-                  <IconCommunity name="navigation" size={22} />
+                  <IconCommunity name="navigation" color="#fff" size={20} />
                   <Text
                     style={{
                       fontFamily:
                         Platform.OS === 'android'
-                          ? 'Allrounder-Grotesk-Medium'
-                          : 'Allrounder Grotesk',
-                      fontSize: 16,
-                      color: '#000',
+                          ? 'UberMoveTextRegular'
+                          : 'Uber Move Text',
+                      fontSize: RFValue(16),
+                      color: '#fff',
                     }}>
                     Find client
                   </Text>
@@ -1168,9 +1144,9 @@ class ErrorModal extends React.PureComponent {
                     style={{
                       fontFamily:
                         Platform.OS === 'android'
-                          ? 'MoveBold'
-                          : 'Uber Move Bold',
-                      fontSize: 17,
+                          ? 'UberMoveTextMedium'
+                          : 'Uber Move Text Medium',
+                      fontSize: RFValue(17),
                       color: '#fff',
                     }}>
                     {this.props.App.requests_data_main_vars
@@ -1187,12 +1163,12 @@ class ErrorModal extends React.PureComponent {
               <View style={{}}>
                 <Text
                   style={{
-                    fontSize: 17,
+                    fontSize: RFValue(17),
                     fontFamily:
                       Platform.OS === 'android'
-                        ? 'Allrounder-Grotesk-Regular'
-                        : 'Allrounder Grotesk',
-                    color: '#a5a5a5',
+                        ? 'UberMoveTextMedium'
+                        : 'Uber Move Text Medium',
+                    color: '#757575',
                     padding: 20,
                     paddingBottom: 0,
                   }}>
@@ -1206,8 +1182,6 @@ class ErrorModal extends React.PureComponent {
                 <View
                   style={{
                     padding: 20,
-                    borderBottomWidth: 0.7,
-                    borderBottomColor: '#d0d0d0',
                   }}>
                   <View>
                     <View
@@ -1255,9 +1229,9 @@ class ErrorModal extends React.PureComponent {
                               style={{
                                 fontFamily:
                                   Platform.OS === 'android'
-                                    ? 'Allrounder-Grotesk-Regular'
-                                    : 'Allrounder Grotesk',
-                                fontSize: 14,
+                                    ? 'UberMoveTextLight'
+                                    : 'Uber Move Text Light',
+                                fontSize: RFValue(14),
                                 top: 2,
                               }}>
                               From
@@ -1277,9 +1251,9 @@ class ErrorModal extends React.PureComponent {
                                 style={{
                                   fontFamily:
                                     Platform.OS === 'android'
-                                      ? 'MoveMedium'
-                                      : 'Uber Move Medium',
-                                  fontSize: 18,
+                                      ? 'UberMoveTextMedium'
+                                      : 'Uber Move Text Medium',
+                                  fontSize: RFValue(17),
                                   marginLeft: 5,
                                   flex: 1,
                                 }}>
@@ -1294,9 +1268,9 @@ class ErrorModal extends React.PureComponent {
                                 style={{
                                   fontFamily:
                                     Platform.OS === 'android'
-                                      ? 'Allrounder-Grotesk-Regular'
-                                      : 'Allrounder Grotesk',
-                                  fontSize: 15,
+                                      ? 'UberMoveTextRegular'
+                                      : 'Uber Move Text',
+                                  fontSize: RFValue(15),
                                   marginLeft: 5,
                                   marginTop: 3,
                                   flex: 1,
@@ -1325,10 +1299,10 @@ class ErrorModal extends React.PureComponent {
                               style={{
                                 fontFamily:
                                   Platform.OS === 'android'
-                                    ? 'Allrounder-Grotesk-Book'
-                                    : 'Allrounder Grotesk Book',
-                                fontSize: 13,
-                                top: 1,
+                                    ? 'UberMoveTextLight'
+                                    : 'Uber Move Text Light',
+                                fontSize: RFValue(14),
+                                top: 2,
                               }}>
                               To
                             </Text>
@@ -1346,15 +1320,15 @@ class ErrorModal extends React.PureComponent {
                                     style={{
                                       flex: 1,
                                       alignItems: 'flex-start',
-                                      marginTop: index > 0 ? 5 : 0,
+                                      marginTop: index > 0 ? 15 : 0,
                                     }}>
                                     <Text
                                       style={{
                                         fontFamily:
                                           Platform.OS === 'android'
-                                            ? 'MoveMedium'
-                                            : 'Uber Move Medium',
-                                        fontSize: 18,
+                                            ? 'UberMoveTextMedium'
+                                            : 'Uber Move Text Medium',
+                                        fontSize: RFValue(18),
                                         marginLeft: 5,
                                         flex: 1,
                                       }}>
@@ -1364,8 +1338,11 @@ class ErrorModal extends React.PureComponent {
                                         .destination_infos.length > 1 ? (
                                         <Text
                                           style={{
-                                            fontFamily: 'MoveRegular',
-                                            fontSize: 14,
+                                            fontFamily:
+                                              Platform.OS === 'android'
+                                                ? 'UberMoveTextMedium'
+                                                : 'Uber Move Text Medium',
+                                            fontSize: RFValue(17),
                                             marginLeft: 5,
                                             flex: 1,
                                             color: '#096ED4',
@@ -1379,9 +1356,9 @@ class ErrorModal extends React.PureComponent {
                                       style={{
                                         fontFamily:
                                           Platform.OS === 'android'
-                                            ? 'Allrounder-Grotesk-Regular'
-                                            : 'Allrounder Grotesk',
-                                        fontSize: 15,
+                                            ? 'UberMoveTextRegular'
+                                            : 'Uber Move Text',
+                                        fontSize: RFValue(15),
                                         marginLeft: 5,
                                         marginTop: 3,
                                         flex: 1,
@@ -1394,9 +1371,9 @@ class ErrorModal extends React.PureComponent {
                                         style={{
                                           fontFamily:
                                             Platform.OS === 'android'
-                                              ? 'Allrounder-Grotesk-Regular'
-                                              : 'Allrounder Grotesk',
-                                          fontSize: 15,
+                                              ? 'UberMoveTextRegular'
+                                              : 'Uber Move Text',
+                                          fontSize: RFValue(15),
                                           marginLeft: 5,
                                           marginTop: 3,
                                           flex: 1,
@@ -1419,8 +1396,7 @@ class ErrorModal extends React.PureComponent {
               <View
                 style={{
                   padding: 20,
-                  borderBottomWidth: 0.7,
-                  borderBottomColor: '#d0d0d0',
+                  backgroundColor: '#F6F6F6',
                   height: 70,
                   flexDirection: 'row',
                   alignItems: 'center',
@@ -1448,9 +1424,9 @@ class ErrorModal extends React.PureComponent {
                     style={{
                       fontFamily:
                         Platform.OS === 'android'
-                          ? 'MoveMedium'
-                          : 'Uber Move Medium',
-                      fontSize: 18,
+                          ? 'UberMoveTextMedium'
+                          : 'Uber Move Text Medium',
+                      fontSize: RFValue(18),
                       marginLeft: 4,
                     }}>
                     {String(
@@ -1479,7 +1455,7 @@ class ErrorModal extends React.PureComponent {
                     fontFamily:
                       Platform.OS === 'android' ? 'MoveBold' : 'Uber Move Bold',
                     fontSize: 22,
-                    color: 'green',
+                    color: '#09864A',
                     flex: 1,
                     textAlign: 'center',
                   }}>
@@ -1499,9 +1475,9 @@ class ErrorModal extends React.PureComponent {
                     style={{
                       fontFamily:
                         Platform.OS === 'android'
-                          ? 'Allrounder-Grotesk-Medium'
-                          : 'Allrounder Grotesk',
-                      fontSize: 19,
+                          ? 'UberMoveTextMedium'
+                          : 'Uber Move Text Medium',
+                      fontSize: RFValue(19),
                       marginLeft: 4,
                     }}>
                     {
@@ -1531,23 +1507,23 @@ class ErrorModal extends React.PureComponent {
                     padding: 20,
                     paddingBottom: 30,
                     paddingTop: 30,
-                    borderBottomWidth: 0.7,
-                    borderBottomColor: '#d0d0d0',
+                    borderBottomWidth: 1,
+                    borderBottomColor: '#F6F6F6',
                   }}>
                   <View>
                     <View style={{flexDirection: 'row', alignItems: 'center'}}>
                       <IconMaterialIcons
                         name="block"
                         color="#b22222"
-                        size={25}
+                        size={20}
                       />
                       <Text
                         style={{
                           fontFamily:
                             Platform.OS === 'android'
-                              ? 'Allrounder-Grotesk-Regular'
-                              : 'Allrounder Grotesk',
-                          fontSize: 19,
+                              ? 'UberMoveTextRegular'
+                              : 'Uber Move Text',
+                          fontSize: RFValue(19),
                           color: '#b22222',
                           marginLeft: 5,
                         }}>
@@ -1567,12 +1543,12 @@ class ErrorModal extends React.PureComponent {
                 }}>
                 <Text
                   style={{
-                    fontSize: 16,
+                    fontSize: RFValue(16),
                     fontFamily:
                       Platform.OS === 'android'
-                        ? 'Allrounder-Grotesk-Regular'
-                        : 'Allrounder Grotesk',
-                    color: '#a5a5a5',
+                        ? 'UberMoveTextMedium'
+                        : 'Uber Move Text Medium',
+                    color: '#757575',
                     paddingBottom: 25,
                   }}>
                   Safety
@@ -1594,9 +1570,9 @@ class ErrorModal extends React.PureComponent {
                       style={{
                         fontFamily:
                           Platform.OS === 'android'
-                            ? 'Allrounder-Grotesk-Medium'
-                            : 'Allrounder Grotesk',
-                        fontSize: 19,
+                            ? 'UberMoveTextMedium'
+                            : 'Uber Move Text Medium',
+                        fontSize: RFValue(19),
                         color: '#000',
                         marginLeft: 5,
                       }}>
@@ -1609,114 +1585,6 @@ class ErrorModal extends React.PureComponent {
           </View>
         </SafeAreaView>
       );
-    } else if (/show_guardian_toolkit/i.test(error_status)) {
-      return (
-        <View
-          style={{
-            backgroundColor: '#fff',
-            //padding: 20,
-            height: 300,
-          }}>
-          <View
-            style={{
-              flexDirection: 'row',
-              alignItems: 'center',
-              justifyContent: 'center',
-              padding: 20,
-              paddingBottom: 5,
-            }}>
-            <Text
-              style={{
-                fontFamily:
-                  Platform.OS === 'android'
-                    ? 'Allrounder-Grotesk-Regular'
-                    : 'Allrounder Grotesk',
-                fontSize: 20,
-              }}>
-              Safety
-            </Text>
-          </View>
-          <View style={{flex: 1, justifyContent: 'center'}}>
-            <TouchableOpacity
-              onPress={() => {}}
-              style={[
-                styles.bttnGenericTc,
-                {
-                  borderRadius: 2,
-                  marginBottom: 10,
-                  justifyContent: 'flex-start',
-                  borderBottomColor: '#d0d0d0',
-                  borderBottomWidth: 1,
-                  paddingLeft: 20,
-                  paddingRight: 20,
-                  backgroundColor: '#fff',
-                  shadowColor: '#fff',
-                  shadowOffset: {
-                    width: 0,
-                    height: 0,
-                  },
-                  shadowOpacity: 0,
-                  shadowRadius: 0,
-
-                  elevation: 0,
-                  flexDirection: 'row',
-                },
-              ]}>
-              <IconMaterialIcons name="shield" color="#b22222" size={28} />
-              <Text
-                style={{
-                  fontFamily:
-                    Platform.OS === 'android'
-                      ? 'Allrounder-Grotesk-Book'
-                      : 'Allrounder Grotesk Book',
-                  fontSize: 19,
-                  marginLeft: 5,
-                  flex: 1,
-                  color: '#b22222',
-                }}>
-                Emergency call
-              </Text>
-            </TouchableOpacity>
-            <View
-              style={[
-                styles.bttnGenericTc,
-                {
-                  borderRadius: 2,
-                  marginBottom: 10,
-                  justifyContent: 'flex-start',
-                  paddingLeft: 20,
-                  paddingRight: 20,
-                  backgroundColor: '#fff',
-                  shadowColor: '#fff',
-                  shadowOffset: {
-                    width: 0,
-                    height: 0,
-                  },
-                  shadowOpacity: 0,
-                  shadowRadius: 0,
-
-                  elevation: 0,
-                },
-              ]}>
-              <Text
-                style={{
-                  fontFamily:
-                    Platform.OS === 'android'
-                      ? 'Allrounder-Grotesk-Book'
-                      : 'Allrounder Grotesk Book',
-                  fontSize: 14,
-                  color: '#a5a5a5',
-                  marginLeft: 5,
-                  flex: 1,
-                  lineHeight: 17,
-                }}>
-                Use the Emergency call button only in the case of an extreme
-                emergency. Otherwise some additional charges may apply.
-              </Text>
-            </View>
-          </View>
-        </View>
-      );
     } else if (/error_declining/i.test(error_status)) {
       return (
         <View
@@ -1728,16 +1596,16 @@ class ErrorModal extends React.PureComponent {
           <View style={{flexDirection: 'row', alignItems: 'center'}}>
             <IconMaterialIcons
               name="error-outline"
-              size={22}
+              size={20}
               style={{marginRight: 5}}
             />
             <Text
               style={{
                 fontFamily:
                   Platform.OS === 'android'
-                    ? 'Allrounder-Grotesk-Medium'
-                    : 'Allrounder Grotesk',
-                fontSize: 22,
+                    ? 'UberMoveTextMedium'
+                    : 'Uber Move Text Medium',
+                fontSize: RFValue(20),
               }}>
               Couldn't decline the request
             </Text>
@@ -1747,10 +1615,11 @@ class ErrorModal extends React.PureComponent {
               style={{
                 fontFamily:
                   Platform.OS === 'android'
-                    ? 'Allrounder-Grotesk-Book'
-                    : 'Allrounder Grotesk Book',
-                fontSize: 17,
+                    ? 'UberMoveTextLight'
+                    : 'Uber Move Text',
+                fontSize: RFValue(17),
                 marginTop: 10,
+                lineHeight: 23,
               }}>
               Sorry due to an unexpected error we were unable to move forward
               with the declining of the request. Maybe try again later.
@@ -1766,9 +1635,9 @@ class ErrorModal extends React.PureComponent {
                 style={{
                   fontFamily:
                     Platform.OS === 'android'
-                      ? 'Allrounder-Grotesk-Medium'
-                      : 'Allrounder Grotesk',
-                  fontSize: 22,
+                      ? 'UberMoveTextMedium'
+                      : 'Uber Move Text Medium',
+                  fontSize: RFValue(21),
                   color: '#fff',
                 }}>
                 Try again
@@ -1788,16 +1657,16 @@ class ErrorModal extends React.PureComponent {
           <View style={{flexDirection: 'row', alignItems: 'center'}}>
             <IconMaterialIcons
               name="error-outline"
-              size={22}
+              size={20}
               style={{marginRight: 5}}
             />
             <Text
               style={{
                 fontFamily:
                   Platform.OS === 'android'
-                    ? 'Allrounder-Grotesk-Medium'
-                    : 'Allrounder Grotesk',
-                fontSize: 22,
+                    ? 'UberMoveTextMedium'
+                    : 'Uber Move Text Medium',
+                fontSize: RFValue(20),
               }}>
               Couldn't cancel the request
             </Text>
@@ -1807,10 +1676,11 @@ class ErrorModal extends React.PureComponent {
               style={{
                 fontFamily:
                   Platform.OS === 'android'
-                    ? 'Allrounder-Grotesk-Book'
-                    : 'Allrounder Grotesk Book',
-                fontSize: 17,
+                    ? 'UberMoveTextLight'
+                    : 'Uber Move Text',
+                fontSize: RFValue(17),
                 marginTop: 10,
+                lineHeight: 23,
               }}>
               Sorry due to an unexpected error we were unable to move forward
               with the cancelling of the request. Maybe try again later.
@@ -1826,9 +1696,9 @@ class ErrorModal extends React.PureComponent {
                 style={{
                   fontFamily:
                     Platform.OS === 'android'
-                      ? 'Allrounder-Grotesk-Medium'
-                      : 'Allrounder Grotesk',
-                  fontSize: 19,
+                      ? 'UberMoveTextMedium'
+                      : 'Uber Move Text Medium',
+                  fontSize: RFValue(21),
                   color: '#fff',
                 }}>
                 Try again
@@ -1848,16 +1718,16 @@ class ErrorModal extends React.PureComponent {
           <View style={{flexDirection: 'row', alignItems: 'center'}}>
             <IconMaterialIcons
               name="error-outline"
-              size={22}
+              size={20}
               style={{marginRight: 5}}
             />
             <Text
               style={{
                 fontFamily:
                   Platform.OS === 'android'
-                    ? 'Allrounder-Grotesk-Medium'
-                    : 'Allrounder Grotesk',
-                fontSize: 22,
+                    ? 'UberMoveTextMedium'
+                    : 'Uber Move Text Medium',
+                fontSize: RFValue(20),
               }}>
               Couldn't confirm drop off
             </Text>
@@ -1867,10 +1737,11 @@ class ErrorModal extends React.PureComponent {
               style={{
                 fontFamily:
                   Platform.OS === 'android'
-                    ? 'Allrounder-Grotesk-Book'
-                    : 'Allrounder Grotesk Book',
-                fontSize: 17,
+                    ? 'UberMoveTextLight'
+                    : 'Uber Move Text',
+                fontSize: RFValue(17),
                 marginTop: 10,
+                lineHeight: 23,
               }}>
               Sorry due to an unexpected error we were unable to move forward
               with the drop off confirmation of the request. Maybe try again
@@ -1887,9 +1758,9 @@ class ErrorModal extends React.PureComponent {
                 style={{
                   fontFamily:
                     Platform.OS === 'android'
-                      ? 'Allrounder-Grotesk-Medium'
-                      : 'Allrounder Grotesk',
-                  fontSize: 22,
+                      ? 'UberMoveTextMedium'
+                      : 'Uber Move Text Medium',
+                  fontSize: RFValue(21),
                   color: '#fff',
                 }}>
                 Try again
@@ -1909,16 +1780,16 @@ class ErrorModal extends React.PureComponent {
           <View style={{flexDirection: 'row', alignItems: 'center'}}>
             <IconMaterialIcons
               name="error-outline"
-              size={22}
+              size={20}
               style={{marginRight: 5}}
             />
             <Text
               style={{
                 fontFamily:
                   Platform.OS === 'android'
-                    ? 'Allrounder-Grotesk-Medium'
-                    : 'Allrounder Grotesk',
-                fontSize: 22,
+                    ? 'UberMoveTextMedium'
+                    : 'Uber Move Text Medium',
+                fontSize: RFValue(20),
               }}>
               Couldn't confirm pickup
             </Text>
@@ -1928,10 +1799,11 @@ class ErrorModal extends React.PureComponent {
               style={{
                 fontFamily:
                   Platform.OS === 'android'
-                    ? 'Allrounder-Grotesk-Book'
-                    : 'Allrounder Grotesk Book',
-                fontSize: 17,
+                    ? 'UberMoveTextLight'
+                    : 'Uber Move Text',
+                fontSize: RFValue(17),
                 marginTop: 10,
+                lineHeight: 23,
               }}>
               Sorry due to an unexpected error we were unable to move forward
               with the pickup confirmation of the request. Maybe try again
@@ -1948,9 +1820,9 @@ class ErrorModal extends React.PureComponent {
                 style={{
                   fontFamily:
                     Platform.OS === 'android'
-                      ? 'Allrounder-Grotesk-Medium'
-                      : 'Allrounder Grotesk',
-                  fontSize: 22,
+                      ? 'UberMoveTextMedium'
+                      : 'Uber Move Text Medium',
+                  fontSize: RFValue(21),
                   color: '#fff',
                 }}>
                 Try again
@@ -1970,16 +1842,16 @@ class ErrorModal extends React.PureComponent {
           <View style={{flexDirection: 'row', alignItems: 'center'}}>
             <IconMaterialIcons
               name="error-outline"
-              size={22}
+              size={20}
               style={{marginRight: 5}}
             />
             <Text
               style={{
                 fontFamily:
                   Platform.OS === 'android'
-                    ? 'Allrounder-Grotesk-Medium'
-                    : 'Allrounder Grotesk',
-                fontSize: 22,
+                    ? 'UberMoveTextMedium'
+                    : 'Uber Move Text Medium',
+                fontSize: RFValue(20),
               }}>
               Couldn't accept
             </Text>
@@ -1989,10 +1861,11 @@ class ErrorModal extends React.PureComponent {
               style={{
                 fontFamily:
                   Platform.OS === 'android'
-                    ? 'Allrounder-Grotesk-Book'
-                    : 'Allrounder Grotesk Book',
-                fontSize: 17,
+                    ? 'UberMoveTextLight'
+                    : 'Uber Move Text',
+                fontSize: RFValue(17),
                 marginTop: 10,
+                lineHeight: 23,
               }}>
               Sorry due to an unexpected error we were unable to move forward
               with accepting this request for you. Maybe try again later.
@@ -2008,9 +1881,9 @@ class ErrorModal extends React.PureComponent {
                 style={{
                   fontFamily:
                     Platform.OS === 'android'
-                      ? 'Allrounder-Grotesk-Medium'
-                      : 'Allrounder Grotesk',
-                  fontSize: 22,
+                      ? 'UberMoveTextMedium'
+                      : 'Uber Move Text Medium',
+                  fontSize: RFValue(21),
                   color: '#fff',
                 }}>
                 Try again
@@ -2037,9 +1910,9 @@ class ErrorModal extends React.PureComponent {
               style={{
                 fontFamily:
                   Platform.OS === 'android'
-                    ? 'Allrounder-Grotesk-Medium'
-                    : 'Allrounder Grotesk',
-                fontSize: 22,
+                    ? 'UberMoveTextMedium'
+                    : 'Uber Move Text Medium',
+                fontSize: RFValue(20),
               }}>
               Cancel the trip?
             </Text>
@@ -2059,11 +1932,10 @@ class ErrorModal extends React.PureComponent {
                 style={{
                   fontFamily:
                     Platform.OS === 'android'
-                      ? 'Allrounder-Grotesk-Medium'
-                      : 'Allrounder Grotesk',
-                  fontSize: 19,
+                      ? 'UberMoveTextMedium'
+                      : 'Uber Move Text Medium',
+                  fontSize: RFValue(21),
                   color: '#000',
-                  marginLeft: 5,
                 }}>
                 {this.state.isLoading_something === false ? (
                   'Yes, cancel'
@@ -2092,11 +1964,10 @@ class ErrorModal extends React.PureComponent {
                 style={{
                   fontFamily:
                     Platform.OS === 'android'
-                      ? 'Allrounder-Grotesk-Medium'
-                      : 'Allrounder Grotesk',
-                  fontSize: 19,
+                      ? 'UberMoveTextMedium'
+                      : 'Uber Move Text Medium',
+                  fontSize: RFValue(21),
                   color: '#fff',
-                  marginLeft: 5,
                 }}>
                 Don't cancel
               </Text>
@@ -2122,9 +1993,9 @@ class ErrorModal extends React.PureComponent {
               style={{
                 fontFamily:
                   Platform.OS === 'android'
-                    ? 'Allrounder-Grotesk-Medium'
-                    : 'Allrounder Grotesk',
-                fontSize: 22,
+                    ? 'UberMoveTextMedium'
+                    : 'Uber Move Text Medium',
+                fontSize: RFValue(20),
               }}>
               Confirm pickup?
             </Text>
@@ -2134,13 +2005,15 @@ class ErrorModal extends React.PureComponent {
               style={{
                 fontFamily:
                   Platform.OS === 'android'
-                    ? 'Allrounder-Grotesk-Book'
-                    : 'Allrounder Grotesk Book',
-                fontSize: 17,
+                    ? 'UberMoveTextRegular'
+                    : 'Uber Move Text',
+                fontSize: RFValue(17),
                 marginTop: 10,
+                lineHeight: 23,
               }}>
-              By confirming the pickup you confirm that you've picked up the
-              passenger and you're ready to head to the destination.
+              By <Text style={{color: '#0e8491'}}>confirming the pickup</Text>{' '}
+              you confirm that you've picked up the passenger and you're ready
+              to head to the destination.
             </Text>
           </View>
           <View style={{flex: 1, justifyContent: 'center'}}>
@@ -2158,11 +2031,10 @@ class ErrorModal extends React.PureComponent {
                 style={{
                   fontFamily:
                     Platform.OS === 'android'
-                      ? 'Allrounder-Grotesk-Medium'
-                      : 'Allrounder Grotesk',
-                  fontSize: 19,
+                      ? 'UberMoveTextMedium'
+                      : 'Uber Move Text Medium',
+                  fontSize: RFValue(21),
                   color: '#fff',
-                  marginLeft: 5,
                 }}>
                 {this.state.isLoading_something === false ? (
                   'Confirm pickup'
@@ -2191,11 +2063,10 @@ class ErrorModal extends React.PureComponent {
                 style={{
                   fontFamily:
                     Platform.OS === 'android'
-                      ? 'Allrounder-Grotesk-Medium'
-                      : 'Allrounder Grotesk',
-                  fontSize: 19,
+                      ? 'UberMoveTextMedium'
+                      : 'Uber Move Text Medium',
+                  fontSize: RFValue(21),
                   color: '#000',
-                  marginLeft: 5,
                 }}>
                 Cancel
               </Text>
@@ -2221,9 +2092,9 @@ class ErrorModal extends React.PureComponent {
               style={{
                 fontFamily:
                   Platform.OS === 'android'
-                    ? 'Allrounder-Grotesk-Medium'
-                    : 'Allrounder Grotesk',
-                fontSize: 22,
+                    ? 'UberMoveTextMedium'
+                    : 'Uber Move Text Medium',
+                fontSize: RFValue(20),
               }}>
               Confirm drop off?
             </Text>
@@ -2233,10 +2104,11 @@ class ErrorModal extends React.PureComponent {
               style={{
                 fontFamily:
                   Platform.OS === 'android'
-                    ? 'Allrounder-Grotesk-Book'
-                    : 'Allrounder Grotesk Book',
-                fontSize: 17,
+                    ? 'UberMoveTextRegular'
+                    : 'Uber Move Text',
+                fontSize: RFValue(17),
                 marginTop: 10,
+                lineHeight: 23,
               }}>
               By confirming the drop off you confirm that you've taken the
               passenger up to final destination.
@@ -2257,11 +2129,10 @@ class ErrorModal extends React.PureComponent {
                 style={{
                   fontFamily:
                     Platform.OS === 'android'
-                      ? 'Allrounder-Grotesk-Medium'
-                      : 'Allrounder Grotesk',
-                  fontSize: 19,
+                      ? 'UberMoveTextMedium'
+                      : 'Uber Move Text Medium',
+                  fontSize: RFValue(21),
                   color: '#fff',
-                  marginLeft: 5,
                 }}>
                 {this.state.isLoading_something === false ? (
                   'Confirm pickup'
@@ -2290,11 +2161,10 @@ class ErrorModal extends React.PureComponent {
                 style={{
                   fontFamily:
                     Platform.OS === 'android'
-                      ? 'Allrounder-Grotesk-Medium'
-                      : 'Allrounder Grotesk',
-                  fontSize: 19,
+                      ? 'UberMoveTextMedium'
+                      : 'Uber Move Text Medium',
+                  fontSize: RFValue(21),
                   color: '#000',
-                  marginLeft: 5,
                 }}>
                 Cancel
               </Text>
@@ -2388,4 +2258,6 @@ const mapDispatchToProps = (dispatch) =>
     dispatch,
   );
 
-export default connect(mapStateToProps, mapDispatchToProps)(ErrorModal);
+export default React.memo(
+  connect(mapStateToProps, mapDispatchToProps)(ErrorModal),
+);

@@ -7,9 +7,11 @@ import {
   StyleSheet,
   TouchableOpacity,
   Platform,
+  Linking,
 } from 'react-native';
 import HeaderDrawerContent from './HeaderDrawerContent';
 import IconMaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import {RFValue} from 'react-native-responsive-fontsize';
 
 export function MainDrawerContent(props) {
   return (
@@ -62,14 +64,15 @@ export function MainDrawerContent(props) {
         </ScrollView>
         <View style={styles.footerDrawer}>
           <Text
+            onPress={() =>
+              Linking.openURL('https://www.taxiconnectna.com/privacy.html')
+            }
             style={{
               fontFamily:
                 Platform.OS === 'android'
-                  ? Platform.OS === 'android'
-                    ? 'Allrounder-Grotesk-Regular'
-                    : 'Allrounder Grotesk'
-                  : 'Allrounder Grotesk',
-              fontSize: 15,
+                  ? 'UberMoveTextRegular'
+                  : 'Uber Move Text',
+              fontSize: RFValue(16),
               flex: 1,
             }}>
             Legal
@@ -78,13 +81,11 @@ export function MainDrawerContent(props) {
             style={{
               fontFamily:
                 Platform.OS === 'android'
-                  ? Platform.OS === 'android'
-                    ? 'Allrounder-Grotesk-Book'
-                    : 'Allrounder Grotesk Book'
-                  : 'Allrounder Grotesk Book',
-              fontSize: 14,
+                  ? 'UberMoveTextRegular'
+                  : 'Uber Move Text',
+              fontSize: RFValue(15),
               flex: 1,
-              color: '#a5a5a5',
+              color: '#AFAFAF',
               textAlign: 'right',
             }}>
             v2.0.104
@@ -110,11 +111,9 @@ const styles = StyleSheet.create({
   menuTitles: {
     fontFamily:
       Platform.OS === 'android'
-        ? Platform.OS === 'android'
-          ? 'Allrounder-Grotesk-Regular'
-          : 'Allrounder Grotesk'
-        : 'Allrounder Grotesk',
-    fontSize: 20,
+        ? 'UberMoveTextMedium'
+        : 'Uber Move Text Medium',
+    fontSize: RFValue(20),
     flex: 1,
   },
   footerDrawer: {

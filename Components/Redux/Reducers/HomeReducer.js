@@ -83,6 +83,13 @@ const HomeReducer = (state = INIT_STATE, action) => {
 
     case 'RESET_GENERIC_PHONE_NUMBER_INPUT':
       //Generic phone number input variable
+      newState.countriesDialDataState = null; //Data for all the considered countries - default: complete set, can be filtereed but not altered! - to be initialized in the constructor of the module
+      newState.renderCountryCodeSeacher = false; //Whether to show or not the list of country code to select one
+      newState.phoneNumberEntered = ''; //Phone number entered by the user
+      newState.isFilterCountryShown = false; //Whether or not to show the country search filter on user action - default: false
+      newState.typedCountrySearchQuery = ''; //Query typed to search a specific country
+      newState.finalPhoneNumber = false; //Store the final generated phone number
+      //Generic phone number input variable
       newState.isPhoneNumberValid = false; //TO know if the phone number is valid or not.
 
       //..
@@ -157,7 +164,6 @@ const HomeReducer = (state = INIT_STATE, action) => {
       //Update global vars for some processes
       //1. Update the focused trip details data - additional data in action.additionalData
       if (/show_modalMore_tripDetails/i.test(action.payload.errorMessage)) {
-        console.log('Updated focused data');
         newState.requests_data_main_vars.moreDetailsFocused_request =
           action.payload.additionalData;
       }

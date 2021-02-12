@@ -1,12 +1,5 @@
 import React from 'react';
-import {
-  View,
-  Text,
-  Animated,
-  StyleSheet,
-  Easing,
-  Dimensions,
-} from 'react-native';
+import {View, Animated, StyleSheet, Easing, Dimensions} from 'react-native';
 
 const windowWidth = Dimensions.get('window').width;
 
@@ -97,7 +90,6 @@ class GenericLoader extends React.PureComponent {
    * based on the received props.
    */
   checkAnimationState(state) {
-    console.log(state);
     if (state !== undefined && state !== null) {
       if (state && this.state.showLocationSearch_loader === false) {
         //Active
@@ -118,15 +110,7 @@ class GenericLoader extends React.PureComponent {
 
   render() {
     return (
-      <View
-        style={{
-          width: '100%',
-          backgroundColor:
-            this.props.backgroundColor !== undefined &&
-            this.props.backgroundColor
-              ? this.props.backgroundColor
-              : '#fff',
-        }}>
+      <View style={{width: '100%'}}>
         <Animated.View
           style={[
             styles.loader,
@@ -167,8 +151,8 @@ const styles = StyleSheet.create({
   loader: {
     borderTopWidth: 6,
     width: 20,
-    marginBottom: 0,
+    marginBottom: 10,
   },
 });
 
-export default GenericLoader;
+export default React.memo(GenericLoader);

@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, Text} from 'react-native';
+import {View, Text, StyleSheet, Platform} from 'react-native';
 import {createStackNavigator, TransitionPresets} from '@react-navigation/stack';
 import {createDrawerNavigator, DrawerContent} from '@react-navigation/drawer';
 import EntryScreen from '../Components/Login/EntrySreen';
@@ -19,10 +19,22 @@ import Home from '../Components/Home/Home';
 import HeaderRideTypesSelector from '../Components/Rides/HeaderRideTypesSelector';
 import DetailsRidesGenericScreen from '../Components/Rides/DetailsRidesGenericScreen';*/
 import SupportEntry from '../Components/Support/SupportEntry';
+import SettingsEntryScreen from '../Components/Settings/SettingsEntryScreen';
 import {MainDrawerContent} from './MainDrawerContent';
+import {RFValue} from 'react-native-responsive-fontsize';
 
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
+
+const styles = StyleSheet.create({
+  genericHeader: {
+    fontFamily:
+      Platform.OS === 'android' ? 'UberMoveTextRegular' : 'Uber Move Text',
+    fontSize: RFValue(20),
+    right: Platform.OS === 'android' ? 20 : 0,
+    color: '#fff',
+  },
+});
 
 //a. Your rides screens
 /*function YourRidesEntry_drawer() {
@@ -198,18 +210,35 @@ function Support_drawer() {
             <View style={{flexDirection: 'row', alignItems: 'center'}}>
               <Text
                 style={{
-                  fontFamily:
-                    Platform.OS === 'android'
-                      ? Platform.OS === 'android'
-                        ? 'Allrounder-Grotesk-Regular'
-                        : 'Allrounder Grotesk'
-                      : 'Allrounder Grotesk',
-                  fontSize: 20,
-                  right: Platform.OS === 'android' ? 20 : 0,
-                  color: '#fff',
+                  style={styles.genericHeader}
                 }}>
                 Support
               </Text>
+            </View>
+          ),
+        }}
+      />
+    </Stack.Navigator>
+  );
+}
+
+//d. Settings
+function SettingsDrawer_navigator() {
+  return (
+    <Stack.Navigator
+      initialRouteName="SettingsEntryScreen"
+      screenOptions={{...TransitionPresets.ScaleFromCenterAndroid}}>
+      <Stack.Screen
+        name="SettingsEntryScreen"
+        component={SettingsEntryScreen}
+        options={{
+          headerShown: true,
+          headerStyle: {backgroundColor: '#000'},
+          headerTintColor: '#fff',
+          headerBackTitle: 'Back',
+          headerTitle: (
+            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+              <Text style={styles.genericHeader}>Settings</Text>
             </View>
           ),
         }}
@@ -230,6 +259,10 @@ function MainDrawer_navigator() {
         component={YourRidesEntry_drawer}
       />
       <Drawer.Screen name="Wallet_drawer" component={Wallet_drawer} />*/}
+      <Drawer.Screen
+        name="SettingsEntryScreen"
+        component={SettingsDrawer_navigator}
+      />
       <Drawer.Screen name="Support_drawer" component={Support_drawer} />
     </Drawer.Navigator>
   );

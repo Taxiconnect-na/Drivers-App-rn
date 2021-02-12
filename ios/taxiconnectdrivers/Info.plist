@@ -86,6 +86,10 @@
 		<string>MoveLight.ttf</string>
 		<string>MoveMedium.otf</string>
 		<string>MoveRegular.ttf</string>
+		<string>UberMoveTextBold.otf</string>
+		<string>UberMoveTextLight.otf</string>
+		<string>UberMoveTextMedium.otf</string>
+		<string>UberMoveTextRegular.otf</string>
 	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>

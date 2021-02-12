@@ -13,12 +13,11 @@ import {
   Easing,
   TouchableOpacity,
   Platform,
-  SafeAreaView,
-  StatusBar,
+  Keyboard,
+  BackHandler,
 } from 'react-native';
 import examples from 'libphonenumber-js/examples.mobile.json';
 import {getExampleNumber, AsYouType} from 'libphonenumber-js';
-import {systemWeights} from 'react-native-typography';
 import IconMaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import IconAnt from 'react-native-vector-icons/AntDesign';
 import flagsIco from './Assets/FlagImagesRessources';
@@ -31,6 +30,7 @@ import {
   UpdateDialDataORQueryTyped,
   UpdateErrorMessagesStateInputRecDelivery,
 } from '../../../Redux/HomeActionsCreators';
+import {RFValue} from 'react-native-responsive-fontsize';
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
@@ -139,7 +139,11 @@ class PhoneNumberInput extends React.PureComponent {
     if (this.props.App.isFilterCountryShown) {
       //Show filter
       return (
-        <View style={{flexDirection: 'row', alignItems: 'center'}}>
+        <View
+          style={{
+            flexDirection: 'row',
+            alignItems: 'center',
+          }}>
           <TouchableOpacity
             onPress={() => this.showFilterHeader(false)}
             style={{
@@ -147,10 +151,11 @@ class PhoneNumberInput extends React.PureComponent {
               height: 50,
               justifyContent: 'center',
             }}>
-            <IconAnt name="arrowleft" color={'#fff'} size={25} />
+            <IconAnt name="arrowleft" color={'#fff'} size={23} />
           </TouchableOpacity>
           <View style={{flex: 1}}>
             <TextInput
+              placeholderTextColor="#AFAFAF"
               placeholder="Search your country"
               placeholderTextColor="#a2a2a2"
               autoCorrect={false}
@@ -159,15 +164,12 @@ class PhoneNumberInput extends React.PureComponent {
               value={this.props.App.typedCountrySearchQuery}
               maxLength={25}
               style={[
-                systemWeights.regular,
                 {
                   fontFamily:
                     Platform.OS === 'android'
-                      ? Platform.OS === 'android'
-                        ? 'Allrounder-Grotesk-Regular'
-                        : 'Allrounder Grotesk'
-                      : 'Allrounder Grotesk',
-                  fontSize: 17,
+                      ? 'UberMoveTextRegular'
+                      : 'Uber Move Text',
+                  fontSize: RFValue(18),
                   color: '#fff',
                 },
               ]}
@@ -195,7 +197,11 @@ class PhoneNumberInput extends React.PureComponent {
     } //SHow normal header
     else {
       return (
-        <View style={{flexDirection: 'row', alignItems: 'center'}}>
+        <View
+          style={{
+            flexDirection: 'row',
+            alignItems: 'center',
+          }}>
           <TouchableOpacity
             onPress={() =>
               this.dismissCountrySearcher(
@@ -208,20 +214,17 @@ class PhoneNumberInput extends React.PureComponent {
               height: 50,
               justifyContent: 'center',
             }}>
-            <IconAnt name="arrowleft" color={'#fff'} size={25} />
+            <IconAnt name="arrowleft" color={'#fff'} size={23} />
           </TouchableOpacity>
           <View style={{flex: 1}}>
             <Text
               style={[
-                systemWeights.regular,
                 {
                   fontFamily:
                     Platform.OS === 'android'
-                      ? Platform.OS === 'android'
-                        ? 'Allrounder-Grotesk-Regular'
-                        : 'Allrounder Grotesk'
-                      : 'Allrounder Grotesk',
-                  fontSize: 19,
+                      ? 'UberMoveTextMedium'
+                      : 'Uber Move Text Medium',
+                  fontSize: RFValue(20),
                   color: '#fff',
                 },
               ]}>
@@ -294,7 +297,12 @@ class PhoneNumberInput extends React.PureComponent {
           </View>
           <View>
             <SectionList
-              sections={this.props.App.countriesDialDataState}
+              sections={
+                this.props.App.countriesDialDataState !== undefined &&
+                this.props.App.countriesDialDataState !== null
+                  ? this.props.App.countriesDialDataState
+                  : countriesDialData
+              }
               initialNumToRender={15}
               keyboardShouldPersistTaps={'always'}
               maxToRenderPerBatch={35}
@@ -313,15 +321,12 @@ class PhoneNumberInput extends React.PureComponent {
                   }}>
                   <Text
                     style={[
-                      systemWeights.regular,
                       {
                         fontFamily:
                           Platform.OS === 'android'
-                            ? Platform.OS === 'android'
-                              ? 'Allrounder-Grotesk-Regular'
-                              : 'Allrounder Grotesk'
-                            : 'Allrounder Grotesk',
-                        fontSize: 15,
+                            ? 'UberMoveTextMedium'
+                            : 'Uber Move Text Medium',
+                        fontSize: RFValue(16),
                         color: '#797979',
                       },
                     ]}>
@@ -336,6 +341,16 @@ class PhoneNumberInput extends React.PureComponent {
     } else {
       return null;
     }
+  }
+
+  componentDidMount() {
+    let globalObject = this;
+    this.backHander = BackHandler.addEventListener(
+      'hardwareBackPress',
+      function () {
+        globalObject.dismissCountrySearcher();
+      },
+    );
   }
 
   UNSAFE_componentWillMount() {
@@ -388,6 +403,10 @@ class PhoneNumberInput extends React.PureComponent {
    * Responsible for opening up the country code searcher and all the animations in between.
    */
   openCountrySearcherScreen() {
+    //? Dismiss the keyboard initially
+    Keyboard.dismiss();
+    //? ---
+    let globalObject = this;
     this.props.RenderCountryPhoneCodeSearcher(true);
     Animated.parallel([
       Animated.timing(this.props.App.searchCountryScreenOpacity, {
@@ -445,7 +464,6 @@ class PhoneNumberInput extends React.PureComponent {
                 width: 60,
                 right: 7,
                 alignItems: 'center',
-                //justifyContent: 'center',
                 flexDirection: 'row',
               }}>
               <IconMaterialIcons
@@ -455,15 +473,12 @@ class PhoneNumberInput extends React.PureComponent {
               />
               <Text
                 style={[
-                  systemWeights.regular,
                   {
                     fontFamily:
                       Platform.OS === 'android'
-                        ? Platform.OS === 'android'
-                          ? 'Allrounder-Grotesk-Regular'
-                          : 'Allrounder Grotesk'
-                        : 'Allrounder Grotesk',
-                    fontSize: 18,
+                        ? 'UberMoveTextMedium'
+                        : 'Uber Move Text Medium',
+                    fontSize: RFValue(21),
                     left: 2,
                   },
                 ]}>
@@ -473,6 +488,7 @@ class PhoneNumberInput extends React.PureComponent {
           </TouchableOpacity>
           <View style={{flex: 1}}>
             <TextInput
+              placeholderTextColor="#AFAFAF"
               placeholder={this.props.App.phoneNumberPlaceholder}
               /*selection={this.state.selection}
               onSelectionChange={this.handleSelectionChange}*/
@@ -496,15 +512,12 @@ class PhoneNumberInput extends React.PureComponent {
               value={this.props.App.phoneNumberEntered}
               maxLength={this.props.App.dynamicMaxLength}
               style={[
-                systemWeights.regular,
                 {
                   fontFamily:
                     Platform.OS === 'android'
-                      ? Platform.OS === 'android'
-                        ? 'Allrounder-Grotesk-Regular'
-                        : 'Allrounder Grotesk'
-                      : 'Allrounder Grotesk',
-                  fontSize: 18,
+                      ? 'UberMoveTextRegular'
+                      : 'Uber Move Text',
+                  fontSize: RFValue(21),
                   borderBottomWidth: 1.5,
                   flex: 1,
                   marginLeft: 5,
@@ -522,10 +535,13 @@ class PhoneNumberInput extends React.PureComponent {
             {this.props.App.errorReceiverPhoneNumberShow ? (
               <Text
                 style={[
-                  systemWeights.light,
                   {
                     color: '#b22222',
-                    fontSize: 13,
+                    fontSize: RFValue(14),
+                    fontFamily:
+                      Platform.OS === 'android'
+                        ? 'UberMoveTextRegular'
+                        : 'Uber Move Text',
                     bottom: -25,
                     position: 'absolute',
                     left: 5,
@@ -559,4 +575,6 @@ const mapDispatchToProps = (dispatch) =>
     dispatch,
   );
 
-export default connect(mapStateToProps, mapDispatchToProps)(PhoneNumberInput);
+export default React.memo(
+  connect(mapStateToProps, mapDispatchToProps)(PhoneNumberInput),
+);

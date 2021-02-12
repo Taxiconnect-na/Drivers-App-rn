@@ -2,7 +2,7 @@ import React from 'react';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import {
-  Animated as AnimatedMap,
+  Animated,
   MapView,
   Camera,
   UserLocation,
@@ -50,6 +50,7 @@ import GenericLoader from '../Modules/GenericLoader/GenericLoader';
 import NetInfo from '@react-native-community/netinfo';
 import ErrorModal from '../Helpers/ErrorModal';
 import {check, PERMISSIONS, RESULTS} from 'react-native-permissions';
+import {RFValue} from 'react-native-responsive-fontsize';
 
 class Home extends React.PureComponent {
   constructor(props) {
@@ -121,9 +122,6 @@ class Home extends React.PureComponent {
       else {
         globalObject.props.UpdateErrorModalLog(false, false, state.type);
       }
-
-      console.log('Connection type', state.type);
-      console.log('Is connected?', state.isConnected);
     });
 
     //connection
@@ -940,11 +938,11 @@ class Home extends React.PureComponent {
                     <Text
                       style={[
                         {
-                          fontSize: 19,
+                          fontSize: RFValue(19),
                           fontFamily:
                             Platform.OS === 'android'
-                              ? 'MoveBold'
-                              : 'Uber Move Bold',
+                              ? 'UberMoveTextBold'
+                              : 'Uber Move Text Bold',
                           color: '#fff',
                         },
                       ]}>
@@ -971,7 +969,7 @@ class Home extends React.PureComponent {
                   alignItems: 'center',
                   justifyContent: 'center',
                   borderRadius: 150,
-                  backgroundColor: '#fff',
+                  backgroundColor: '#096ED4',
                   shadowColor: '#000',
                   shadowOffset: {
                     width: 0,
@@ -983,7 +981,7 @@ class Home extends React.PureComponent {
                   elevation: 9,
                   zIndex: 9000000000,
                 }}>
-                <IconCommunity name="bell" color="#096ED4" size={29} />
+                <IconCommunity name="bell" color="#fff" size={29} />
               </TouchableOpacity>
             </SafeAreaView>
           </View>
@@ -1026,8 +1024,8 @@ class Home extends React.PureComponent {
                   }}>
                   <View
                     style={{
-                      width: 60,
-                      height: 60,
+                      width: 50,
+                      height: 50,
                       alignItems: 'center',
                       justifyContent: 'center',
                     }}>
@@ -1059,8 +1057,6 @@ class Home extends React.PureComponent {
                   </View>
                   <View
                     style={{
-                      borderLeftWidth: 0.7,
-                      borderLeftColor: '#a5a5a5',
                       paddingLeft: 10,
                       marginLeft: 5,
                       flex: 1,
@@ -1073,7 +1069,7 @@ class Home extends React.PureComponent {
                               Platform.OS === 'android'
                                 ? 'MoveBold'
                                 : 'Uber Move Bold',
-                            fontSize: 23,
+                            fontSize: RFValue(22),
                             color: '#fff',
                           },
                         ]}>
@@ -1087,14 +1083,18 @@ class Home extends React.PureComponent {
                               .navigationRouteData.instructions[0].text}
                       </Text>
                     </View>
-                    <View style={{flexDirection: 'row'}}>
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                        paddingTop: 5,
+                      }}>
                       <Text
                         style={{
                           fontFamily:
                             Platform.OS === 'android'
-                              ? 'Allrounder-Grotesk-Medium'
-                              : 'Allrounder Grotesk',
-                          fontSize: 17,
+                              ? 'UberMoveTextMedium'
+                              : 'Uber Move Text Medium',
+                          fontSize: RFValue(18),
                           flex: 1,
                           color: '#fff',
                         }}>
@@ -1121,9 +1121,9 @@ class Home extends React.PureComponent {
                         style={{
                           fontFamily:
                             Platform.OS === 'android'
-                              ? 'Allrounder-Grotesk-Medium'
-                              : 'Allrounder Grotesk',
-                          fontSize: 17,
+                              ? 'UberMoveTextMedium'
+                              : 'Uber Move Text Medium',
+                          fontSize: RFValue(18),
                           flex: 1,
                           textAlign: 'right',
                           color: '#fff',
@@ -1181,15 +1181,18 @@ class Home extends React.PureComponent {
                       size={20}
                     />
                   </View>
-                  <View style={{flex: 1}}>
+                  <View
+                    style={{
+                      flex: 1,
+                    }}>
                     <Text
                       style={{
                         flex: 1,
                         fontFamily:
                           Platform.OS === 'android'
-                            ? 'MoveBold'
-                            : 'Uber Move Bold',
-                        fontSize: 17.5,
+                            ? 'UberMoveTextBold'
+                            : 'Uber Move Text Bold',
+                        fontSize: RFValue(17.5),
                         color: '#fff',
                       }}>
                       {/**Check if the client was already picked up, if yes show the 1st destination location, if not show the pickup location */}
@@ -1208,9 +1211,9 @@ class Home extends React.PureComponent {
                         flex: 1,
                         fontFamily:
                           Platform.OS === 'android'
-                            ? 'Allrounder-Grotesk-Regular'
-                            : 'Allrounder Grotesk',
-                        fontSize: 16.5,
+                            ? 'UberMoveTextRegular'
+                            : 'Uber Move Text',
+                        fontSize: RFValue(16.5),
                         color: '#fff',
                       }}>
                       {this.props.App.requests_data_main_vars
@@ -1236,9 +1239,9 @@ class Home extends React.PureComponent {
                             style={{
                               fontFamily:
                                 Platform.OS === 'android'
-                                  ? 'Allrounder-Grotesk-Regular'
-                                  : 'Allrounder Grotesk',
-                              fontSize: 16.5,
+                                  ? 'UberMoveTextRegular'
+                                  : 'Uber Move Text',
+                              fontSize: RFValue(16.5),
                               marginLeft: 5,
                               marginTop: 3,
                               flex: 1,
@@ -1260,9 +1263,9 @@ class Home extends React.PureComponent {
                           style={{
                             fontFamily:
                               Platform.OS === 'android'
-                                ? 'Allrounder-Grotesk-Regular'
-                                : 'Allrounder Grotesk',
-                            fontSize: 16.5,
+                                ? 'UberMoveTextRegular'
+                                : 'Uber Move Text',
+                            fontSize: RFValue(16.5),
                             marginLeft: 5,
                             marginTop: 3,
                             flex: 1,
@@ -1299,9 +1302,9 @@ class Home extends React.PureComponent {
                     style={{
                       fontFamily:
                         Platform.OS === 'android'
-                          ? 'MoveBold'
-                          : 'Uber Move Bold',
-                      fontSize: 24,
+                          ? 'UberMoveTextMedium'
+                          : 'Uber Move Text Medium',
+                      fontSize: RFValue(23),
                       color: '#fff',
                     }}>
                     Finding route...
@@ -1377,11 +1380,11 @@ class Home extends React.PureComponent {
                   <Text
                     style={[
                       {
-                        fontSize: 19,
+                        fontSize: RFValue(19),
                         fontFamily:
                           Platform.OS === 'android'
-                            ? 'MoveBold'
-                            : 'Uber Move Bold',
+                            ? 'UberMoveTextBold'
+                            : 'Uber Move Text Bold',
                         color: '#fff',
                       },
                     ]}>
@@ -1410,13 +1413,9 @@ class Home extends React.PureComponent {
                 alignItems: 'center',
                 justifyContent: 'center',
                 borderRadius: 150,
-                backgroundColor: '#fff',
+                backgroundColor: '#096ED4',
               }}>
-              <IconFontAwesome
-                name="location-arrow"
-                color="#096ED4"
-                size={22}
-              />
+              <IconFontAwesome name="location-arrow" color="#fff" size={22} />
             </TouchableOpacity>
           </SafeAreaView>
         </View>
@@ -1663,9 +1662,9 @@ class Home extends React.PureComponent {
                   style={{
                     fontFamily:
                       Platform.OS === 'android'
-                        ? 'Allrounder-Grotesk-Regular'
-                        : 'Allrounder Grotesk',
-                    fontSize: 18,
+                        ? 'UberMoveTextMedium'
+                        : 'Uber Move Text Medium',
+                    fontSize: RFValue(18),
                     marginTop: 20,
                     color: '#7d7d7d',
                   }}>
@@ -1681,9 +1680,9 @@ class Home extends React.PureComponent {
                   style={{
                     fontFamily:
                       Platform.OS === 'android'
-                        ? 'Allrounder-Grotesk-Regular'
-                        : 'Allrounder Grotesk',
-                    fontSize: 16,
+                        ? 'UberMoveTextRegular'
+                        : 'Uber Move Text',
+                    fontSize: RFValue(16),
                     marginTop: 10,
                     color: '#7d7d7d',
                   }}>
@@ -1760,7 +1759,7 @@ class Home extends React.PureComponent {
           let globalObject = this;
           //START THE INTERVAL PERSISTER FOR THE NAVIGATION DATA
           if (this.props.App._TMP_NAVIATION_DATA_INTERVAL_PERSISTER === null) {
-            console.log('INterval navigation started');
+            console.log('Interval navigation started');
             //Initialize
             this.props.App._TMP_NAVIATION_DATA_INTERVAL_PERSISTER = setInterval(
               function () {
@@ -1891,8 +1890,8 @@ class Home extends React.PureComponent {
                     alignItems: 'center',
                     justifyContent: 'center',
                   }}>
-                  <IconMaterialIcons
-                    name="navigation"
+                  <IconCommunity
+                    name="map-marker-path"
                     color={'#096ED4'}
                     size={32}
                   />
@@ -1956,9 +1955,9 @@ class Home extends React.PureComponent {
                         style={{
                           fontFamily:
                             Platform.OS === 'android'
-                              ? 'Allrounder-Grotesk-Medium'
-                              : 'Allrounder Grotesk Medium',
-                          fontSize: 19,
+                              ? 'UberMoveTextMedium'
+                              : 'Uber Move Text Medium',
+                          fontSize: RFValue(19),
                         }}>
                         {
                           this.props.App.requests_data_main_vars
@@ -1969,9 +1968,9 @@ class Home extends React.PureComponent {
                         style={{
                           fontFamily:
                             Platform.OS === 'android'
-                              ? 'Allrounder-Grotesk-Regular'
-                              : 'Allrounder Grotesk',
-                          fontSize: 17,
+                              ? 'UberMoveTextRegular'
+                              : 'Uber Move Text',
+                          fontSize: RFValue(17),
                           color: '#096ED4',
                         }}>
                         {
@@ -2057,9 +2056,9 @@ class Home extends React.PureComponent {
                           style={{
                             fontFamily:
                               Platform.OS === 'android'
-                                ? 'Allrounder-Grotesk-Medium'
-                                : 'Allrounder Grotesk Medium',
-                            fontSize: 20,
+                                ? 'UberMoveTextMedium'
+                                : 'Uber Move Text Medium',
+                            fontSize: RFValue(20),
                           }}>
                           {this.props.App.shownRides_types}
                         </Text>
@@ -2139,9 +2138,9 @@ class Home extends React.PureComponent {
                     style={{
                       fontFamily:
                         Platform.OS === 'android'
-                          ? 'Allrounder-Grotesk-Medium'
-                          : 'Allrounder Grotesk Medium',
-                      fontSize: 20,
+                          ? 'UberMoveTextMedium'
+                          : 'Uber Move Text Medium',
+                      fontSize: RFValue(20),
                     }}>
                     {this.props.App.shownRides_types}
                   </Text>
@@ -2371,51 +2370,21 @@ class Home extends React.PureComponent {
    * Responsible for rendering the modal view only once.
    */
   renderError_modalView() {
-    if (
-      this._shouldShow_errorModal &&
-      this.props.App.generalErrorModal_vars.showErrorGeneralModal
-    ) {
-      //Show once, and lock
-      this._shouldShow_errorModal = false; //!LOCK MODAL
-      return (
-        <ErrorModal
-          active={this.props.App.generalErrorModal_vars.showErrorGeneralModal}
-          error_status={
-            this.props.App.generalErrorModal_vars.generalErrorModalType
-          }
-          parentNode={this}
-        />
-      );
-    } else if (
-      this.props.App.generalErrorModal_vars.showErrorGeneralModal === false
-    ) {
-      //Disable modal lock when modal off
-      this._shouldShow_errorModal = true; //!UNLOCK MODAL
-      return (
-        <ErrorModal
-          active={this.props.App.generalErrorModal_vars.showErrorGeneralModal}
-          error_status={
-            this.props.App.generalErrorModal_vars.generalErrorModalType
-          }
-          parentNode={this}
-        />
-      );
-    } else {
-      return (
-        <ErrorModal
-          active={this.props.App.generalErrorModal_vars.showErrorGeneralModal}
-          error_status={
-            this.props.App.generalErrorModal_vars.generalErrorModalType
-          }
-          parentNode={this}
-        />
-      );
-    }
+    return (
+      <ErrorModal
+        active={this.props.App.generalErrorModal_vars.showErrorGeneralModal}
+        error_status={
+          this.props.App.generalErrorModal_vars.generalErrorModalType
+        }
+        parentNode={this}
+      />
+    );
   }
 
   render() {
     return (
       <View style={styles.mainView}>
+        <StatusBar backgroundColor="#fff" barStyle={'dark-content'} />
         {this.props.App.generalErrorModal_vars.showErrorGeneralModal
           ? this.renderError_modalView()
           : null}
@@ -2459,4 +2428,4 @@ const mapDispatchToProps = (dispatch) =>
     dispatch,
   );
 
-export default connect(mapStateToProps, mapDispatchToProps)(Home);
+export default React.memo(connect(mapStateToProps, mapDispatchToProps)(Home));

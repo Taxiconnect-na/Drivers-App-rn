@@ -11,10 +11,14 @@ import {Provider} from 'react-redux';
 import {createStore} from 'redux';
 import HomeReducer from './Components/Redux/Reducers/HomeReducer';
 import {NavigationContainer} from '@react-navigation/native';
+import StorageManager from './Components/Helpers/StorageManager';
 import RootScreens from './Navigation/RootScreens';
 import config from './Components/Helpers/config';
 
 const store = createStore(HomeReducer);
+
+//Initiate the storage
+StorageManager('init');
 
 MapboxGL.setAccessToken(config.get('accessToken'));
 MapboxGL.removeCustomHeader('Authorization');
@@ -28,21 +32,5 @@ const App: () => React$Node = () => {
     </Provider>
   );
 };
-
-/*class App extends React.PureComponent {
-  constructor(props) {
-    super(props);
-  }
-
-  render() {
-    return (
-      <Provider store={store}>
-        <NavigationContainer>
-          <RootScreens />
-        </NavigationContainer>
-      </Provider>
-    );
-  }
-}*/
 
 export default App;

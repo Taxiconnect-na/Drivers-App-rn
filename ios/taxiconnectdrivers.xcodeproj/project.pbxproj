@@ -30,6 +30,10 @@
 		96C7F19425C801AC002906CF /* MoveMedium.otf in Resources */ = {isa = PBXBuildFile; fileRef = 1B74BBC4000F4E2B8B0F2DEC /* MoveMedium.otf */; };
 		96C7F19525C801AC002906CF /* MoveRegular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E88BDA0F9AA64AD59B14178E /* MoveRegular.ttf */; };
 		B3B27FCD1A635E021B91B8E5 /* libPods-taxiconnectdrivers-tvOSTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 61A4C99B2B1671774090B8A0 /* libPods-taxiconnectdrivers-tvOSTests.a */; };
+		4F59B2709BCA4F59A69226B7 /* UberMoveTextBold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 50D4CB90894141889BBE415E /* UberMoveTextBold.otf */; };
+		E3BA9119718243FEBBBE9179 /* UberMoveTextLight.otf in Resources */ = {isa = PBXBuildFile; fileRef = AC92B3623AA04BDB9EDD5044 /* UberMoveTextLight.otf */; };
+		85F24BBB7DB44683B6FF5061 /* UberMoveTextMedium.otf in Resources */ = {isa = PBXBuildFile; fileRef = ABACC60DA9F64D5ABF63D88C /* UberMoveTextMedium.otf */; };
+		E4AAD2B913E846E4AA787D25 /* UberMoveTextRegular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 5202D6875AE6453B9C8B4AA4 /* UberMoveTextRegular.otf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -103,6 +107,10 @@
 		ED2971642150620600B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS12.0.sdk/System/Library/Frameworks/JavaScriptCore.framework; sourceTree = DEVELOPER_DIR; };
 		F143F72B329E46D0868B16A2 /* Allrounder-Grotesk-Medium.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Allrounder-Grotesk-Medium.otf"; path = "../Media_assets/fonts/Allrounder-Grotesk-Medium.otf"; sourceTree = "<group>"; };
 		F97D7FDB878D4B36B4E5896D /* FontAwesome5_Brands.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Brands.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Brands.ttf"; sourceTree = "<group>"; };
+		50D4CB90894141889BBE415E /* UberMoveTextBold.otf */ = {isa = PBXFileReference; name = "UberMoveTextBold.otf"; path = "../Media_assets/fonts/UberMoveTextBold.otf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		AC92B3623AA04BDB9EDD5044 /* UberMoveTextLight.otf */ = {isa = PBXFileReference; name = "UberMoveTextLight.otf"; path = "../Media_assets/fonts/UberMoveTextLight.otf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		ABACC60DA9F64D5ABF63D88C /* UberMoveTextMedium.otf */ = {isa = PBXFileReference; name = "UberMoveTextMedium.otf"; path = "../Media_assets/fonts/UberMoveTextMedium.otf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		5202D6875AE6453B9C8B4AA4 /* UberMoveTextRegular.otf */ = {isa = PBXFileReference; name = "UberMoveTextRegular.otf"; path = "../Media_assets/fonts/UberMoveTextRegular.otf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -201,6 +209,10 @@
 				834241C43AD04CFCA72F8DEF /* MoveLight.ttf */,
 				1B74BBC4000F4E2B8B0F2DEC /* MoveMedium.otf */,
 				E88BDA0F9AA64AD59B14178E /* MoveRegular.ttf */,
+				50D4CB90894141889BBE415E /* UberMoveTextBold.otf */,
+				AC92B3623AA04BDB9EDD5044 /* UberMoveTextLight.otf */,
+				ABACC60DA9F64D5ABF63D88C /* UberMoveTextMedium.otf */,
+				5202D6875AE6453B9C8B4AA4 /* UberMoveTextRegular.otf */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -425,6 +437,10 @@
 				96C7F19525C801AC002906CF /* MoveRegular.ttf in Resources */,
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
+				4F59B2709BCA4F59A69226B7 /* UberMoveTextBold.otf in Resources */,
+				E3BA9119718243FEBBBE9179 /* UberMoveTextLight.otf in Resources */,
+				85F24BBB7DB44683B6FF5061 /* UberMoveTextMedium.otf in Resources */,
+				E4AAD2B913E846E4AA787D25 /* UberMoveTextRegular.otf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

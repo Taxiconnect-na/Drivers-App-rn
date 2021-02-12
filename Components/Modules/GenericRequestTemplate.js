@@ -10,6 +10,7 @@ import {
   InteractionManager,
 } from 'react-native';
 import IconAnt from 'react-native-vector-icons/AntDesign';
+import {RFValue} from 'react-native-responsive-fontsize';
 
 class GenericRequestTemplate extends React.PureComponent {
   constructor(props) {
@@ -127,7 +128,7 @@ class GenericRequestTemplate extends React.PureComponent {
               style={{
                 fontFamily:
                   Platform.OS === 'android' ? 'MoveMedium' : 'Uber Move Medium',
-                fontSize: 18,
+                fontSize: RFValue(18),
                 flex: 1,
               }}>
               Picked up
@@ -137,7 +138,7 @@ class GenericRequestTemplate extends React.PureComponent {
               style={{
                 fontFamily:
                   Platform.OS === 'android' ? 'MoveMedium' : 'Uber Move Medium',
-                fontSize: 18,
+                fontSize: RFValue(18),
                 flex: 1,
               }}>
               {parseInt(
@@ -177,9 +178,9 @@ class GenericRequestTemplate extends React.PureComponent {
               style={{
                 fontFamily:
                   Platform.OS === 'android'
-                    ? 'Allrounder-Grotesk-Regular'
-                    : 'Allrounder Grotesk',
-                fontSize: 16.5,
+                    ? 'UberMoveTextRegular'
+                    : 'Uber Move Text',
+                fontSize: RFValue(17),
               }}>
               {Math.round(
                 this.props.requestLightData.eta_to_passenger_infos.distance,
@@ -210,9 +211,9 @@ class GenericRequestTemplate extends React.PureComponent {
               style={{
                 fontFamily:
                   Platform.OS === 'android'
-                    ? 'Allrounder-Grotesk-Regular'
-                    : 'Allrounder Grotesk',
-                fontSize: 17,
+                    ? 'UberMoveTextRegular'
+                    : 'Uber Move Text',
+                fontSize: RFValue(17),
               }}>
               {/connectus/i.test(
                 this.props.requestLightData.ride_basic_infos.connect_type,
@@ -227,8 +228,8 @@ class GenericRequestTemplate extends React.PureComponent {
                 {
                   fontFamily:
                     Platform.OS === 'android' ? 'MoveBold' : 'Uber Move Bold',
-                  fontSize: 26,
-                  color: 'green',
+                  fontSize: RFValue(26),
+                  color: '#09864A',
                 },
               ]}>
               {'N$ ' + this.props.requestLightData.ride_basic_infos.fare_amount}
@@ -246,9 +247,9 @@ class GenericRequestTemplate extends React.PureComponent {
               style={{
                 fontFamily:
                   Platform.OS === 'android'
-                    ? 'Allrounder-Grotesk-Medium'
-                    : 'Allrounder Grotesk',
-                fontSize: 19,
+                    ? 'UberMoveTextMedium'
+                    : 'Uber Move Text Medium',
+                fontSize: RFValue(19),
                 marginLeft: 3,
                 bottom: 1,
               }}>
@@ -308,9 +309,9 @@ class GenericRequestTemplate extends React.PureComponent {
                     style={{
                       fontFamily:
                         Platform.OS === 'android'
-                          ? 'Allrounder-Grotesk-Regular'
-                          : 'Allrounder Grotesk',
-                      fontSize: 14,
+                          ? 'UberMoveTextLight'
+                          : 'Uber Move Text Light',
+                      fontSize: RFValue(14),
                       top: 2,
                     }}>
                     From
@@ -330,9 +331,9 @@ class GenericRequestTemplate extends React.PureComponent {
                       style={{
                         fontFamily:
                           Platform.OS === 'android'
-                            ? 'MoveMedium'
-                            : 'Uber Move Medium',
-                        fontSize: 18,
+                            ? 'UberMoveTextMedium'
+                            : 'Uber Move Text Medium',
+                        fontSize: RFValue(18),
                         marginLeft: 5,
                         flex: 1,
                       }}>
@@ -345,9 +346,9 @@ class GenericRequestTemplate extends React.PureComponent {
                       style={{
                         fontFamily:
                           Platform.OS === 'android'
-                            ? 'Allrounder-Grotesk-Regular'
-                            : 'Allrounder Grotesk',
-                        fontSize: 15,
+                            ? 'UberMoveTextRegular'
+                            : 'Uber Move Text',
+                        fontSize: RFValue(15),
                         marginLeft: 5,
                         flex: 1,
                         color: '#333333',
@@ -372,9 +373,9 @@ class GenericRequestTemplate extends React.PureComponent {
                     style={{
                       fontFamily:
                         Platform.OS === 'android'
-                          ? 'Allrounder-Grotesk-Regular'
-                          : 'Allrounder Grotesk',
-                      fontSize: 14,
+                          ? 'UberMoveTextLight'
+                          : 'Uber Move Text Light',
+                      fontSize: RFValue(14),
                       top: 1,
                     }}>
                     To
@@ -394,8 +395,8 @@ class GenericRequestTemplate extends React.PureComponent {
                       style={{
                         fontFamily:
                           Platform.OS === 'android'
-                            ? 'MoveMedium'
-                            : 'Uber Move Medium',
+                            ? 'UberMoveTextMedium'
+                            : 'Uber Move Text Medium',
                         fontSize: 18,
                         marginLeft: 5,
                         flex: 1,
@@ -409,8 +410,8 @@ class GenericRequestTemplate extends React.PureComponent {
                       style={{
                         fontFamily:
                           Platform.OS === 'android'
-                            ? 'Allrounder-Grotesk-Regular'
-                            : 'Allrounder Grotesk',
+                            ? 'UberMoveTextRegular'
+                            : 'Uber Move Text',
                         fontSize:
                           this.props.requestLightData.origin_destination_infos
                             .destination_infos.length > 1
@@ -468,9 +469,9 @@ class GenericRequestTemplate extends React.PureComponent {
                   style={{
                     fontFamily:
                       Platform.OS === 'android'
-                        ? 'Allrounder-Grotesk-Regular'
-                        : 'Allrounder Grotesk',
-                    fontSize: 18,
+                        ? 'UberMoveTextRegular'
+                        : 'Uber Move Text',
+                    fontSize: RFValue(18),
                     color: '#b22222',
                   }}>
                   {this.state.isDeclinignRequest === false ? (
@@ -543,8 +544,8 @@ class GenericRequestTemplate extends React.PureComponent {
                         style={{
                           fontFamily:
                             Platform.OS === 'android'
-                              ? 'MoveBold'
-                              : 'Uber Move Bold',
+                              ? 'UberMoveTextMedium'
+                              : 'Uber Move Text Medium',
                           fontSize: 20,
                           color: '#fff',
                         }}>
@@ -577,7 +578,6 @@ const mapDispatchToProps = (dispatch) =>
     dispatch,
   );
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(GenericRequestTemplate);
+export default React.memo(
+  connect(mapStateToProps, mapDispatchToProps)(GenericRequestTemplate),
+);

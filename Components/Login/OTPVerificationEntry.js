@@ -30,6 +30,7 @@ import {
 import NetInfo from '@react-native-community/netinfo';
 import ErrorModal from '../Helpers/ErrorModal';
 import SyncStorage from 'sync-storage';
+import {RFValue} from 'react-native-responsive-fontsize';
 
 const App = ({valueM, parentNode, editable}) => {
   const [value, setValue] = useState('');
@@ -552,15 +553,12 @@ class OTPVerificationEntry extends React.PureComponent {
             </TouchableOpacity>
             <Text
               style={[
-                systemWeights.semibold,
                 {
-                  fontSize: 21,
+                  fontSize: RFValue(21),
                   fontFamily:
                     Platform.OS === 'android'
-                      ? Platform.OS === 'android'
-                        ? 'Allrounder-Grotesk-Regular'
-                        : 'Allrounder Grotesk'
-                      : 'Allrounder Grotesk',
+                      ? 'UberMoveTextMedium'
+                      : 'Uber Move Text Medium',
                   marginTop: 15,
                   marginBottom: 35,
                 },
@@ -582,12 +580,10 @@ class OTPVerificationEntry extends React.PureComponent {
                     {
                       fontFamily:
                         Platform.OS === 'android'
-                          ? Platform.OS === 'android'
-                            ? 'Allrounder-Grotesk-Book'
-                            : 'Allrounder Grotesk Book'
-                          : 'Allrounder Grotesk Book',
+                          ? 'UberMoveTextRegular'
+                          : 'Uber Move Text',
                       color: '#0e8491',
-                      fontSize: 17,
+                      fontSize: RFValue(17),
                     },
                   ]}>
                   I didn't receive the code.
@@ -600,12 +596,10 @@ class OTPVerificationEntry extends React.PureComponent {
                     {
                       fontFamily:
                         Platform.OS === 'android'
-                          ? Platform.OS === 'android'
-                            ? 'Allrounder-Grotesk-Book'
-                            : 'Allrounder Grotesk Book'
-                          : 'Allrounder Grotesk Book',
+                          ? 'UberMoveTextRegular'
+                          : 'Uber Move Text',
                       color: '#b22222',
-                      fontSize: 17,
+                      fontSize: RFValue(17),
                     },
                   ]}>
                   The code entered is not correct.

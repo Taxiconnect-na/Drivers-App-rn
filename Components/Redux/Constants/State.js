@@ -5,6 +5,7 @@ import {Dimensions} from 'react-native';
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 //Images assets
+const supportMainImage = require('../../../Media_assets/Images/faq.jpg');
 //1. Turn by turn ddirections
 const arrowTurnLeft = require('../../../Media_assets/Images/turn-left.png');
 const arrowTurnRight = require('../../../Media_assets/Images/turn-right.png');
@@ -31,6 +32,8 @@ const STATE = {
   arrowTurnRight: arrowTurnRight,
   arrowStraight: arrowStraight,
   arrowNavigationTracking: arrowNavigationTracking,
+  //...
+  supportMainImage: supportMainImage,
 
   socket: SOCKET_CORE, //MAIN SOCKET CONNECTOR
   user_fingerprint: null,

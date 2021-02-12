@@ -18,6 +18,7 @@ import {
 } from '../Redux/HomeActionsCreators';
 import GenericLoader from '../Modules/GenericLoader/GenericLoader';
 import call from 'react-native-phone-call';
+import {RFValue} from 'react-native-responsive-fontsize';
 
 class NewDriverDetected extends React.PureComponent {
   constructor(props) {
@@ -94,13 +95,9 @@ class NewDriverDetected extends React.PureComponent {
           <Text
             style={[
               {
-                fontSize: 30,
+                fontSize: RFValue(30),
                 fontFamily:
-                  Platform.OS === 'android'
-                    ? Platform.OS === 'android'
-                      ? 'Allrounder-Grotesk-Medium'
-                      : 'Allrounder Grotesk'
-                    : 'Allrounder Grotesk',
+                  Platform.OS === 'android' ? 'MoveBold' : 'Uber Move Bold',
                 marginTop: 15,
                 marginBottom: 35,
                 width: '100%',
@@ -126,12 +123,10 @@ class NewDriverDetected extends React.PureComponent {
                 flex: 1,
                 fontFamily:
                   Platform.OS === 'android'
-                    ? Platform.OS === 'android'
-                      ? 'Allrounder-Grotesk-Medium'
-                      : 'Allrounder Grotesk'
-                    : 'Allrounder Grotesk',
+                    ? 'UberMoveTextMedium'
+                    : 'Uber Move Text Medium',
                 color: '#000',
-                fontSize: 21,
+                fontSize: RFValue(20),
                 marginTop: '10%',
                 textAlign: 'center',
                 width: '100%',
@@ -160,11 +155,9 @@ class NewDriverDetected extends React.PureComponent {
                         {
                           fontFamily:
                             Platform.OS === 'android'
-                              ? Platform.OS === 'android'
-                                ? 'Allrounder-Grotesk-Medium'
-                                : 'Allrounder Grotesk'
-                              : 'Allrounder Grotesk',
-                          fontSize: 23,
+                              ? 'UberMoveTextBold'
+                              : 'Uber Move Text Bold',
+                          fontSize: RFValue(23),
                           color: '#fff',
                         },
                       ]}>
