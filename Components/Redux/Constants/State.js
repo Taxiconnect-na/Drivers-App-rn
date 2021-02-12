@@ -37,6 +37,8 @@ const STATE = {
 
   socket: SOCKET_CORE, //MAIN SOCKET CONNECTOR
   user_fingerprint: null,
+  pushnotif_token: false, //Notification push notification (the full object) - default: false
+
   userCurrentLocationMetaData: {}, //Metadata of the user's current location - directly geocoded and shallowly processed
   requestType: 'ride', //THE TYPE OF REQUEST SELECTED BY THE DRIVER - ride, delivery or scheduled
   latitude: 0,

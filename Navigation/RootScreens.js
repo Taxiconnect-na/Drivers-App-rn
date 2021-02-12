@@ -208,12 +208,7 @@ function Support_drawer() {
           headerBackTitle: 'Back',
           headerTitle: (
             <View style={{flexDirection: 'row', alignItems: 'center'}}>
-              <Text
-                style={{
-                  style={styles.genericHeader}
-                }}>
-                Support
-              </Text>
+              <Text style={styles.genericHeader}>Support</Text>
             </View>
           ),
         }}

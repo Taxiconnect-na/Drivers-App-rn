@@ -186,7 +186,6 @@ class Home extends React.PureComponent {
     this.props.App.socket.on(
       'goOnline_offlineDrivers_io-response',
       function (response) {
-        console.log('Online offline status -> ', response);
         if (globalObject.state.isGoingOnline) {
           globalObject.setState({isGoingOnline: false, loaderState: false}); //close the loader
         }
@@ -368,6 +367,7 @@ class Home extends React.PureComponent {
       latitude: this.props.App.latitude,
       longitude: this.props.App.longitude,
       user_fingerprint: this.props.App.user_fingerprint,
+      pushnotif_token: this.props.App.pushnotif_token,
       user_nature: 'driver',
       requestType: this.props.App.requestType,
     };

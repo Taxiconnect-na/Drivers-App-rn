@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "826136309510",
+    "project_id": "taxiconnect-drivers",
+    "storage_bucket": "taxiconnect-drivers.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:826136309510:android:263fa6f632a86d7b9fb887",
+        "android_client_info": {
+          "package_name": "com.taxiconnectdrivers"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "826136309510-4i7c7r2deg51udv508gsd3e4l4fogrd7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAKFuMqcjjxVekNAWvvuLBAXGGwNOyMRP0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "826136309510-4i7c7r2deg51udv508gsd3e4l4fogrd7.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
