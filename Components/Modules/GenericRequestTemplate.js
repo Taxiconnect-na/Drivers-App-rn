@@ -112,7 +112,7 @@ class GenericRequestTemplate extends React.PureComponent {
           },
           shadowOpacity: 0.36,
           shadowRadius: 6.68,
-          elevation: 11,
+          elevation: 3,
           marginBottom: 15,
         }}>
         <View

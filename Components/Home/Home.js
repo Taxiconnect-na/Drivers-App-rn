@@ -26,7 +26,6 @@ import {
   BackHandler,
   StatusBar,
 } from 'react-native';
-import {TouchableOpacity as TouchableOpacityGesture} from 'react-native-gesture-handler';
 import GeolocationP from 'react-native-geolocation-service';
 import {
   UpdateErrorModalLog,
@@ -1463,7 +1462,6 @@ class Home extends React.PureComponent {
             }>
             <Animated.LineLayer
               id={'lineRoutePickup'}
-              aboveLayerID={'driver-location'}
               style={{
                 lineCap: 'round',
                 lineWidth: this.props.App.main_interfaceState_vars
@@ -1838,7 +1836,7 @@ class Home extends React.PureComponent {
                   position: 'absolute',
                   top: -160,
                   right: 15,
-                  zIndex: 9000000,
+                  zIndex: 900000000000,
                   alignItems: 'center',
                 }}>
                 <TouchableOpacity

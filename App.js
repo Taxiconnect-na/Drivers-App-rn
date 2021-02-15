@@ -30,7 +30,7 @@ class App extends React.PureComponent {
   constructor(props) {
     super(props);
 
-    OneSignal.setAppId('05ebefef-e2b4-48e3-a154-9a00285e394b');
+    OneSignal.setAppId('a7e445ea-0852-4bdc-afd0-345c9cd30095');
     OneSignal.setRequiresUserPrivacyConsent(false);
     if (Platform.OS === 'ios') {
       OneSignal.promptForPushNotificationsWithUserResponse((response) => {});

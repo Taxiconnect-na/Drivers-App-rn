@@ -43,7 +43,7 @@ class PhoneDetailsScreen extends React.PureComponent {
     //user_fp, pushnotif_token, userCurrentLocationMetaData, latitude, longitude
     await SyncStorage.init();
     let user_fp = SyncStorage.get('@user_fp');
-    let pushnotif_token = SyncStorage.get('@pushnotif_token');
+    let pushnotif_token = SyncStorage.get('@pushnotif_token_global_obj');
     let userCurrentLocationMetaData = SyncStorage.get(
       '@userCurrentLocationMetaData',
     );

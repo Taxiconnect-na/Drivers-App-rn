@@ -20,9 +20,9 @@ const STATE = {
   _TMP_TRIP_INTERVAL_PERSISTER_TIME: 2000, //THe frequency of repetition - default:3s
   //Interval persister for updating the focused navigation data
   _TMP_NAVIATION_DATA_INTERVAL_PERSISTER: null, //The interval for updating the focused navigation data
-  _TMP_NAVIATION_DATA_INTERVAL_PERSISTER_TIME: 3000, //THe frequency of repetition - default:3s
+  _TMP_NAVIATION_DATA_INTERVAL_PERSISTER_TIME: 1000, //THe frequency of repetition - default:3s
 
-  _TMP_TIMEOUT_AFTER_REQUEST_RESPONSE: 4000, //The timeout after the response to show updated content - default: 4s
+  _TMP_TIMEOUT_AFTER_REQUEST_RESPONSE: 3000, //The timeout after the response to show updated content - default: 4s
 
   //ASSETS
   windowWidth: windowWidth,
