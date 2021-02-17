@@ -171,3 +171,37 @@ export const ValidateGenericPhoneNumber = () => ({
   type: 'VALIDATE_GENERIC_PHONE_NUMBER',
   payload: false,
 });
+
+//38. UPdate the type of ride shown in the "Your rides" screen
+//Responsible for updating the state variable of the type of ride shown in the "Your rides" screen
+//@param type: Past, Scheduled or Business (coming soon)
+export const UpdateType_rideShown_YourRides_screenTab = (type) => ({
+  type: 'UPDATE_TYPE_RIDESHOWN_YOURRIDES_SCREENTAB',
+  payload: type,
+});
+
+//39. UPdate the ride history after fetch from the server for the "Your rides" tab
+//Responsible for getting the relevant rides as selected by the user (past, scheduled, business)
+//@param ridesHistory: the data fetched
+export const UpdateRides_history_YourRides_tab = (ridesHistory) => ({
+  type: 'UPDATERIDES_HISTORY_YOURRIDES_TAB',
+  payload: ridesHistory,
+});
+
+//40. Update the targeted request when selected on the "Your rides" tab
+//Responsible for updating the global variables for the targeted history ride
+//@param request_fp
+export const UpdateTargetedRequest_yourRides_history = (request_fp) => ({
+  type: 'UPDATE_TARGETED_REQUEST_YOURRIDES_HISTORY',
+  payload: request_fp,
+});
+
+/**
+ * 44. Update the total wallet amount for the rider
+ * Responsible for upddating the state vars for the total amount in the wallet.
+ * @param totalWalletAmount: the current total wallet amount.
+ */
+export const UpdateTotalWalletAmount = (totalWalletAmount) => ({
+  type: 'UPDATE_TOTAL_WALLET_AMOUNT',
+  payload: totalWalletAmount,
+});

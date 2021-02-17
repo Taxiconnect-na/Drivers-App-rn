@@ -310,6 +310,70 @@ const HomeReducer = (state = INIT_STATE, action) => {
 
       //...
       return {...state, ...newState};
+
+    case 'UPDATE_TYPE_RIDESHOWN_YOURRIDES_SCREENTAB':
+      newState.shownRides_types_tab = action.payload;
+
+      //...
+      return {...state, ...newState};
+
+    case 'UPDATERIDES_HISTORY_YOURRIDES_TAB':
+      newState.rides_history_details_data.rides_history_data = action.payload;
+
+      //...
+      return {...state, ...newState};
+
+    case 'UPDATE_TARGETED_REQUEST_YOURRIDES_HISTORY':
+      newState.rides_history_details_data.targetedRequestSelected.request_fp =
+        action.payload;
+
+      //...
+      return {...state, ...newState};
+
+    case 'UPDATE_TOTAL_WALLET_AMOUNT':
+      //Update the total wallet amount only when necessary
+      let tmpSizeLocal =
+        newState.wallet_state_vars.transactions_details !== undefined &&
+        newState.wallet_state_vars.transactions_details !== null
+          ? newState.wallet_state_vars.transactions_details.length
+          : 0;
+      let tmpSizeUpdate =
+        action.payload.transactions_data !== undefined &&
+        action.payload.transactions_data !== null
+          ? action.payload.transactions_data.length
+          : 0;
+
+      if (
+        newState.wallet_state_vars.totalWallet_amount !==
+          action.payload.total ||
+        tmpSizeLocal !== tmpSizeUpdate
+      ) {
+        //New values
+        newState.wallet_state_vars.totalWallet_amount = action.payload.total;
+        newState.wallet_state_vars.transactions_details =
+          action.payload.transactions_data !== undefined &&
+          action.payload.transactions_data !== null
+            ? action.payload.transactions_data
+            : [];
+        //Sort
+        if (
+          newState.wallet_state_vars.transactions_details !== undefined &&
+          newState.wallet_state_vars.transactions_details !== null
+        ) {
+          newState.wallet_state_vars.transactions_details = newState.wallet_state_vars.transactions_details.sort(
+            (a, b) =>
+              a.timestamp > b.timestamp
+                ? -1
+                : b.timestamp > a.timestamp
+                ? 1
+                : 0,
+          );
+        }
+        return {...state, ...newState};
+      } //Same values
+      else {
+        return state;
+      }
     default:
       return state;
   }

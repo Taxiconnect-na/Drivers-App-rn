@@ -84,8 +84,13 @@ class PhoneDetailsScreen extends React.PureComponent {
     //..
     try {
       userLocationPoint = JSON.parse(userLocationPoint);
-      this.props.App.latitude = userLocationPoint.latitude;
-      this.props.App.longitude = userLocationPoint.longitude;
+      if (Platform.OS === 'android') {
+        this.props.App.latitude = userLocationPoint.latitude;
+        this.props.App.longitude = userLocationPoint.longitude;
+      } else {
+        this.props.App.latitude = userLocationPoint.longitude;
+        this.props.App.longitude = userLocationPoint.latitude;
+      }
     } catch (error) {
       this.props.App.latitude = 0;
       this.props.App.longitude = 0;

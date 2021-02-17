@@ -188,6 +188,19 @@ class ErrorModal extends React.PureComponent {
   }
 
   /**
+   * @func updateYourRidesSHownOnesTAB
+   * @param type: Rides, Delivery or Scheduled
+   * Responsible for updating the type of ride shown in the "Your rides" tab.
+   */
+  updateYourRidesSHownOnesTab(type) {
+    this.props.UpdateErrorModalLog(false, false, 'any'); //Close modal
+    this.props.UpdateType_rideShown_YourRides_screen(type);
+    //Update the list of requests from the server
+    this.props.App.fetchRequestedRequests_history(type);
+    //Update the list of requests from the server
+  }
+
+  /**
    * @func cancelRequest_driver
    * Responsible for cancelling any current request as selected by the user
    */
@@ -381,6 +394,156 @@ class ErrorModal extends React.PureComponent {
                 Establishing connection.
               </Text>
             </View>
+          </View>
+        </View>
+      );
+    } else if (/show_select_ride_type_modal/i.test(error_status)) {
+      return (
+        <View
+          style={{
+            backgroundColor: '#fff',
+            height: 330,
+          }}>
+          <View
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              justifyContent: 'center',
+              padding: 20,
+              paddingBottom: 5,
+            }}>
+            <Text
+              style={{
+                fontFamily:
+                  Platform.OS === 'android'
+                    ? 'UberMoveTextMedium'
+                    : 'Uber Move Text Medium',
+                fontSize: RFValue(20),
+              }}>
+              What do you want to see?
+            </Text>
+          </View>
+          <View style={{flex: 1, justifyContent: 'center'}}>
+            <TouchableOpacity
+              onPress={() => this.updateYourRidesSHownOnesTab('Past')}
+              style={[
+                styles.bttnGenericTc,
+                {
+                  borderRadius: 2,
+                  marginBottom: 15,
+                  paddingBottom: 20,
+                  justifyContent: 'flex-start',
+                  borderBottomColor: '#d0d0d0',
+                  borderBottomWidth: 1,
+                  paddingLeft: 20,
+                  paddingRight: 20,
+                  backgroundColor: '#fff',
+                  shadowColor: '#fff',
+                  shadowOffset: {
+                    width: 0,
+                    height: 0,
+                  },
+                  shadowOpacity: 0,
+                  shadowRadius: 0,
+
+                  elevation: 0,
+                },
+              ]}>
+              <Text
+                style={{
+                  fontFamily:
+                    Platform.OS === 'android'
+                      ? 'UberMoveTextRegular'
+                      : 'Uber Move Text',
+                  fontSize: RFValue(19),
+                  color: '#000',
+                  flex: 1,
+                }}>
+                Past requests
+              </Text>
+              {/past/i.test(this.props.App.shownRides_types) ? (
+                <IconFeather name="check" color="#0e8491" size={23} />
+              ) : null}
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => this.updateYourRidesSHownOnesTab('Scheduled')}
+              style={[
+                styles.bttnGenericTc,
+                {
+                  borderRadius: 2,
+                  marginBottom: 15,
+                  paddingBottom: 20,
+                  justifyContent: 'flex-start',
+                  borderBottomColor: '#d0d0d0',
+                  borderBottomWidth: 1,
+                  paddingLeft: 20,
+                  paddingRight: 20,
+                  backgroundColor: '#fff',
+                  shadowColor: '#fff',
+                  shadowOffset: {
+                    width: 0,
+                    height: 0,
+                  },
+                  shadowOpacity: 0,
+                  shadowRadius: 0,
+
+                  elevation: 0,
+                },
+              ]}>
+              <Text
+                style={{
+                  fontFamily:
+                    Platform.OS === 'android'
+                      ? 'UberMoveTextRegular'
+                      : 'Uber Move Text',
+                  fontSize: RFValue(19),
+                  color: '#000',
+                  flex: 1,
+                }}>
+                Scheduled requests
+              </Text>
+              {/scheduled/i.test(this.props.App.shownRides_types) ? (
+                <IconFeather name="check" color="#0e8491" size={23} />
+              ) : null}
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={[
+                styles.bttnGenericTc,
+                {
+                  borderRadius: 2,
+                  marginBottom: 10,
+                  justifyContent: 'flex-start',
+                  borderBottomColor: '#d0d0d0',
+                  paddingLeft: 20,
+                  paddingRight: 20,
+                  backgroundColor: '#fff',
+                  shadowColor: '#fff',
+                  shadowOffset: {
+                    width: 0,
+                    height: 0,
+                  },
+                  shadowOpacity: 0,
+                  shadowRadius: 0,
+
+                  elevation: 0,
+                },
+              ]}>
+              <Text
+                style={{
+                  fontFamily:
+                    Platform.OS === 'android'
+                      ? 'UberMoveTextRegular'
+                      : 'Uber Move Text',
+                  fontSize: RFValue(19),
+                  color: '#E2E2E2',
+                  flex: 1,
+                }}>
+                Business requests
+              </Text>
+              {/business/i.test(this.props.App.shownRides_types) ? (
+                <IconFeather name="check" color="#0e8491" size={23} />
+              ) : null}
+            </TouchableOpacity>
           </View>
         </View>
       );

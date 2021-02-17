@@ -7,20 +7,16 @@ import PhoneDetailsScreen from '../Components/Login/PhoneDetailsScreen';
 import OTPVerificationEntry from '../Components/Login/OTPVerificationEntry';
 import NewDriverDetected from '../Components/Login/NewDriverDetected';
 import AccountProblemDetected from '../Components/Login/AccountProblemDetected';
-/*import WalletEntry from '../Components/Wallet/WalletEntry';
-import SendFundsEntry from '../Components/Wallet/SendFundsEntry';
-import PayTaxiInputNumber from '../Components/Wallet/PayTaxiInputNumber';
-import SendFundsInputAmount from '../Components/Wallet/SendFundsInputAmount';
-import SendFundsConfirmation from '../Components/Wallet/SendFundsConfirmation';
-import SendFundsFriendInputNumber from '../Components/Wallet/SendFundsFriendInputNumber';
-import WalletTopUpEntry from '../Components/Wallet/WalletTopUpEntry';*/
+import WalletEntry from '../Components/Wallet/WalletEntry';
+import ShowAllTransactionsEntry from '../Components/Wallet/ShowAllTransactionsEntry';
 import Home from '../Components/Home/Home';
-/*import YourRidesEntry from '../Components/Rides/YourRidesEntry';
+import YourRidesEntry from '../Components/Rides/YourRidesEntry';
 import HeaderRideTypesSelector from '../Components/Rides/HeaderRideTypesSelector';
-import DetailsRidesGenericScreen from '../Components/Rides/DetailsRidesGenericScreen';*/
+import DetailsRidesGenericScreen from '../Components/Rides/DetailsRidesGenericScreen';
 import SupportEntry from '../Components/Support/SupportEntry';
 import SettingsEntryScreen from '../Components/Settings/SettingsEntryScreen';
 import {MainDrawerContent} from './MainDrawerContent';
+import IconAnt from 'react-native-vector-icons/AntDesign';
 import {RFValue} from 'react-native-responsive-fontsize';
 
 const Stack = createStackNavigator();
@@ -37,25 +33,27 @@ const styles = StyleSheet.create({
 });
 
 //a. Your rides screens
-/*function YourRidesEntry_drawer() {
+function YourRidesEntry_drawer() {
   return (
-    <Stack.Navigator initialRouteName="YourRidesEntry">
+    <Stack.Navigator
+      initialRouteName="YourRidesEntry"
+      screenOptions={{...TransitionPresets.ScaleFromCenterAndroid}}>
       <Stack.Screen
         name="YourRidesEntry"
         component={YourRidesEntry}
         options={{
           headerShown: true,
+          headerBackTitle: 'Back',
+          headerStyle: {backgroundColor: '#000'},
+          headerTintColor: '#fff',
           headerTitle: (
-            <View style={{flexDirection: 'row', alignItems: 'center'}}>
-              <IconAnt name="arrowleft" size={25} style={{top: 1}} />
-              <Text
-                style={{
-                  fontFamily: Platform.OS==='android'?'Allrounder-Grotesk-Regular':'Allrounder Grotesk',
-                  fontSize: 18,
-                  marginLeft: 5,
-                }}>
-                Your rides
-              </Text>
+            <View
+              style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+                paddingRight: Platform.OS === 'android' ? 10 : 0,
+              }}>
+              <Text style={styles.genericHeader}>Your requests</Text>
             </View>
           ),
           headerRight: () => <HeaderRideTypesSelector />,
@@ -66,42 +64,51 @@ const styles = StyleSheet.create({
         component={DetailsRidesGenericScreen}
         options={{
           headerShown: true,
+          headerStyle: {backgroundColor: '#000'},
+          headerTintColor: '#fff',
+          headerBackTitle: 'Back',
           headerTitle: (
             <View style={{flexDirection: 'row', alignItems: 'center'}}>
-              <Text
-                style={{
-                  fontFamily: Platform.OS==='android'?'Allrounder-Grotesk-Regular':'Allrounder Grotesk',
-                  fontSize: 18,
-                  right: 20,
-                }}>
-                Details
-              </Text>
+              <Text style={styles.genericHeader}>Details</Text>
             </View>
           ),
         }}
       />
     </Stack.Navigator>
   );
-}*/
+}
 
 //b. Wallet screens
-/*function Wallet_drawer() {
+function Wallet_drawer() {
   return (
-    <Stack.Navigator>
+    <Stack.Navigator
+      initialRouteName="WalletEntry"
+      screenOptions={{...TransitionPresets.ScaleFromCenterAndroid}}>
       <Stack.Screen
-        name="EntryScreen"
+        name="WalletEntry"
         component={WalletEntry}
         options={{
           headerShown: true,
+          headerStyle: {
+            backgroundColor: '#fff',
+            elevation: 0,
+          },
+          headerTintColor: '#000',
+          headerBackTitle: 'Back',
           headerTitle: (
             <View style={{flexDirection: 'row', alignItems: 'center'}}>
-              <IconAnt name="arrowleft" size={25} style={{top: 1}} />
               <Text
-                style={{
-                  fontFamily: Platform.OS==='android'?'Allrounder-Grotesk-Regular':'Allrounder Grotesk',
-                  fontSize: 18,
-                  marginLeft: 5,
-                }}>
+                style={[
+                  styles.genericHeader,
+                  {
+                    color: '#000',
+                    fontFamily:
+                      Platform.OS === 'android'
+                        ? 'UberMoveTextMedium'
+                        : 'Uber Move Text Medium',
+                    fontSize: RFValue(21),
+                  },
+                ]}>
                 Connect Wallet
               </Text>
             </View>
@@ -109,88 +116,23 @@ const styles = StyleSheet.create({
         }}
       />
       <Stack.Screen
-        name="EntryScreen"
-        component={SendFundsEntry}
+        name="ShowAllTransactionsEntry"
+        component={ShowAllTransactionsEntry}
         options={{
           headerShown: true,
+          headerStyle: {backgroundColor: '#000'},
+          headerTintColor: '#fff',
+          headerBackTitle: 'Back',
           headerTitle: (
             <View style={{flexDirection: 'row', alignItems: 'center'}}>
-              <IconAnt name="arrowleft" size={25} style={{top: 1}} />
-              <Text
-                style={{
-                  fontFamily: Platform.OS==='android'?'Allrounder-Grotesk-Regular':'Allrounder Grotesk',
-                  fontSize: 18,
-                  marginLeft: 5,
-                }}>
-                Transfer funds
-              </Text>
-            </View>
-          ),
-        }}
-      />
-      <Stack.Screen
-        name="EntryScreen"
-        component={PayTaxiInputNumber}
-        options={{
-          headerShown: true,
-          headerTitle: (
-            <View style={{flexDirection: 'row', alignItems: 'center'}}>
-              <IconAnt name="arrowleft" size={25} style={{top: 1}} />
-              <Text
-                style={{
-                  fontFamily: Platform.OS==='android'?'Allrounder-Grotesk-Regular':'Allrounder Grotesk',
-                  fontSize: 18,
-                  marginLeft: 5,
-                }}>
-                Pay a driver
-              </Text>
-            </View>
-          ),
-        }}
-      />
-      <Stack.Screen
-        name="EntryScreen"
-        component={SendFundsFriendInputNumber}
-        options={{
-          headerShown: true,
-          headerTitle: (
-            <View style={{flexDirection: 'row', alignItems: 'center'}}>
-              <IconAnt name="arrowleft" size={25} style={{top: 1}} />
-              <Text
-                style={{
-                  fontFamily: Platform.OS==='android'?'Allrounder-Grotesk-Regular':'Allrounder Grotesk',
-                  fontSize: 18,
-                  marginLeft: 5,
-                }}>
-                Transfer funds
-              </Text>
-            </View>
-          ),
-        }}
-      />
-      <Stack.Screen
-        name="EntryScreen"
-        component={WalletTopUpEntry}
-        options={{
-          headerShown: true,
-          headerTitle: (
-            <View style={{flexDirection: 'row', alignItems: 'center'}}>
-              <IconAnt name="arrowleft" size={25} style={{top: 1}} />
-              <Text
-                style={{
-                  fontFamily: Platform.OS==='android'?'Allrounder-Grotesk-Regular':'Allrounder Grotesk',
-                  fontSize: 18,
-                  marginLeft: 5,
-                }}>
-                Payment settings
-              </Text>
+              <Text style={styles.genericHeader}>Transactions history</Text>
             </View>
           ),
         }}
       />
     </Stack.Navigator>
   );
-}*/
+}
 
 //c. Support
 function Support_drawer() {
@@ -249,11 +191,12 @@ function MainDrawer_navigator() {
       initialRouteName="Home_drawer"
       drawerContent={(props) => <MainDrawerContent {...props} />}>
       <Drawer.Screen name="Home_drawer" component={Home} />
-      {/*<Drawer.Screen
+      <Drawer.Screen
         name="YourRidesEntry_drawer"
         component={YourRidesEntry_drawer}
+        options={{headerShown: false, headerMode: 'none'}}
       />
-      <Drawer.Screen name="Wallet_drawer" component={Wallet_drawer} />*/}
+      <Drawer.Screen name="Wallet_drawer" component={Wallet_drawer} />
       <Drawer.Screen
         name="SettingsEntryScreen"
         component={SettingsDrawer_navigator}

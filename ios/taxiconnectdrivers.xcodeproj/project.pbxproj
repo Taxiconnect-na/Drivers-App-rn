@@ -11,14 +11,19 @@
 		13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
+		1652678567F6DF875322DF6B /* libPods-OneSignalNotificationServiceExtension.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B60FB743025F57D5D7F25F92 /* libPods-OneSignalNotificationServiceExtension.a */; };
 		2D02E4BC1E0B4A80006451C7 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		2D02E4BD1E0B4A84006451C7 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		2D02E4BF1E0B4AB3006451C7 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		2DCD954D1E0B4F2C00145EB5 /* taxiconnectdriversTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* taxiconnectdriversTests.m */; };
 		39F2BAFA24776A889FAE80C0 /* libPods-taxiconnectdrivers-taxiconnectdriversTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 90DBE3397ED9C0B467C39A4D /* libPods-taxiconnectdrivers-taxiconnectdriversTests.a */; };
 		41E81C09F7CBF3B90327073C /* libPods-taxiconnectdrivers-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5881F3E44BA0F2B606A2E445 /* libPods-taxiconnectdrivers-tvOS.a */; };
+		4F59B2709BCA4F59A69226B7 /* UberMoveTextBold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 50D4CB90894141889BBE415E /* UberMoveTextBold.otf */; };
 		7110589B6D973D2C220CF999 /* libPods-taxiconnectdrivers.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2A27CC7CD5C5005FEE53733C /* libPods-taxiconnectdrivers.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
+		85F24BBB7DB44683B6FF5061 /* UberMoveTextMedium.otf in Resources */ = {isa = PBXBuildFile; fileRef = ABACC60DA9F64D5ABF63D88C /* UberMoveTextMedium.otf */; };
+		968D1FD325DAB92900320474 /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 968D1FD225DAB92900320474 /* NotificationService.swift */; };
+		968D1FD725DAB92900320474 /* OneSignalNotificationServiceExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 968D1FD025DAB92900320474 /* OneSignalNotificationServiceExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		96C7F18C25C801AC002906CF /* Allrounder-Grotesk-Book.otf in Resources */ = {isa = PBXBuildFile; fileRef = AB4E07369BA749F78E583301 /* Allrounder-Grotesk-Book.otf */; };
 		96C7F18D25C801AC002906CF /* Allrounder-Grotesk-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = F143F72B329E46D0868B16A2 /* Allrounder-Grotesk-Medium.otf */; };
 		96C7F18E25C801AC002906CF /* Allrounder-Grotesk-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 71E106ED242547028F8A9818 /* Allrounder-Grotesk-Regular.otf */; };
@@ -30,9 +35,7 @@
 		96C7F19425C801AC002906CF /* MoveMedium.otf in Resources */ = {isa = PBXBuildFile; fileRef = 1B74BBC4000F4E2B8B0F2DEC /* MoveMedium.otf */; };
 		96C7F19525C801AC002906CF /* MoveRegular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E88BDA0F9AA64AD59B14178E /* MoveRegular.ttf */; };
 		B3B27FCD1A635E021B91B8E5 /* libPods-taxiconnectdrivers-tvOSTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 61A4C99B2B1671774090B8A0 /* libPods-taxiconnectdrivers-tvOSTests.a */; };
-		4F59B2709BCA4F59A69226B7 /* UberMoveTextBold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 50D4CB90894141889BBE415E /* UberMoveTextBold.otf */; };
 		E3BA9119718243FEBBBE9179 /* UberMoveTextLight.otf in Resources */ = {isa = PBXBuildFile; fileRef = AC92B3623AA04BDB9EDD5044 /* UberMoveTextLight.otf */; };
-		85F24BBB7DB44683B6FF5061 /* UberMoveTextMedium.otf in Resources */ = {isa = PBXBuildFile; fileRef = ABACC60DA9F64D5ABF63D88C /* UberMoveTextMedium.otf */; };
 		E4AAD2B913E846E4AA787D25 /* UberMoveTextRegular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 5202D6875AE6453B9C8B4AA4 /* UberMoveTextRegular.otf */; };
 /* End PBXBuildFile section */
 
@@ -51,7 +54,28 @@
 			remoteGlobalIDString = 2D02E47A1E0B4A5D006451C7;
 			remoteInfo = "taxiconnectdrivers-tvOS";
 		};
+		968D1FD525DAB92900320474 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 83CBB9F71A601CBA00E9B192 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 968D1FCF25DAB92900320474;
+			remoteInfo = OneSignalNotificationServiceExtension;
+		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		968D1FDB25DAB92900320474 /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				968D1FD725DAB92900320474 /* OneSignalNotificationServiceExtension.appex in Embed App Extensions */,
+			);
+			name = "Embed App Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		008F07F21AC5B25A0029DE68 /* main.jsbundle */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = main.jsbundle; sourceTree = "<group>"; };
@@ -80,23 +104,34 @@
 		4855BEA36022CA49B7FDBDD2 /* Pods-taxiconnectdrivers-tvOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-taxiconnectdrivers-tvOS.release.xcconfig"; path = "Target Support Files/Pods-taxiconnectdrivers-tvOS/Pods-taxiconnectdrivers-tvOS.release.xcconfig"; sourceTree = "<group>"; };
 		48C1892EBE734A8CA14DAD7E /* Octicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Octicons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Octicons.ttf"; sourceTree = "<group>"; };
 		4F10AE65FB6048D78855A7AB /* Fontisto.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Fontisto.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Fontisto.ttf"; sourceTree = "<group>"; };
+		50D4CB90894141889BBE415E /* UberMoveTextBold.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = UberMoveTextBold.otf; path = ../Media_assets/fonts/UberMoveTextBold.otf; sourceTree = "<group>"; };
+		5202D6875AE6453B9C8B4AA4 /* UberMoveTextRegular.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = UberMoveTextRegular.otf; path = ../Media_assets/fonts/UberMoveTextRegular.otf; sourceTree = "<group>"; };
 		5881F3E44BA0F2B606A2E445 /* libPods-taxiconnectdrivers-tvOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-taxiconnectdrivers-tvOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		61A4C99B2B1671774090B8A0 /* libPods-taxiconnectdrivers-tvOSTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-taxiconnectdrivers-tvOSTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		63A35E616F0B4A2F97427015 /* EvilIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = EvilIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/EvilIcons.ttf"; sourceTree = "<group>"; };
 		66A6110F613542C3A5E129B5 /* Zocial.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Zocial.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Zocial.ttf"; sourceTree = "<group>"; };
 		6F95AE52B68230198F47B88A /* Pods-taxiconnectdrivers-taxiconnectdriversTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-taxiconnectdrivers-taxiconnectdriversTests.release.xcconfig"; path = "Target Support Files/Pods-taxiconnectdrivers-taxiconnectdriversTests/Pods-taxiconnectdrivers-taxiconnectdriversTests.release.xcconfig"; sourceTree = "<group>"; };
 		71E106ED242547028F8A9818 /* Allrounder-Grotesk-Regular.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Allrounder-Grotesk-Regular.otf"; path = "../Media_assets/fonts/Allrounder-Grotesk-Regular.otf"; sourceTree = "<group>"; };
+		74E072AAAC0825535A7FC045 /* Pods-OneSignalNotificationServiceExtension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OneSignalNotificationServiceExtension.debug.xcconfig"; path = "Target Support Files/Pods-OneSignalNotificationServiceExtension/Pods-OneSignalNotificationServiceExtension.debug.xcconfig"; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = taxiconnectdrivers/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		834241C43AD04CFCA72F8DEF /* MoveLight.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MoveLight.ttf; path = ../Media_assets/fonts/MoveLight.ttf; sourceTree = "<group>"; };
 		8534C5F5522343E3B2EC8FBF /* Allrounder-Monument-Regular.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Allrounder-Monument-Regular.otf"; path = "../Media_assets/fonts/Allrounder-Monument-Regular.otf"; sourceTree = "<group>"; };
 		857AAD9A8460599A97C68161 /* Pods-taxiconnectdrivers.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-taxiconnectdrivers.debug.xcconfig"; path = "Target Support Files/Pods-taxiconnectdrivers/Pods-taxiconnectdrivers.debug.xcconfig"; sourceTree = "<group>"; };
 		90DBE3397ED9C0B467C39A4D /* libPods-taxiconnectdrivers-taxiconnectdriversTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-taxiconnectdrivers-taxiconnectdriversTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		968D1FCB25DAB3CD00320474 /* taxiconnectdrivers.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = taxiconnectdrivers.entitlements; path = taxiconnectdrivers/taxiconnectdrivers.entitlements; sourceTree = "<group>"; };
+		968D1FD025DAB92900320474 /* OneSignalNotificationServiceExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = OneSignalNotificationServiceExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		968D1FD225DAB92900320474 /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
+		968D1FD425DAB92900320474 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		968D1FE625DABB1C00320474 /* OneSignalNotificationServiceExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = OneSignalNotificationServiceExtension.entitlements; sourceTree = "<group>"; };
 		96A3B300A5424385B643E06D /* Allrounder-Monument-Book.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Allrounder-Monument-Book.otf"; path = "../Media_assets/fonts/Allrounder-Monument-Book.otf"; sourceTree = "<group>"; };
 		972674686F3D4676AC7F4175 /* Foundation.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Foundation.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Foundation.ttf"; sourceTree = "<group>"; };
 		9D539552B5D9462EB742531B /* FontAwesome5_Solid.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Solid.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Solid.ttf"; sourceTree = "<group>"; };
 		A47E1C9DC8274A33B0B65BB0 /* Feather.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Feather.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Feather.ttf"; sourceTree = "<group>"; };
 		A538D9DDF76B4E1D9AC53B43 /* Entypo.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Entypo.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Entypo.ttf"; sourceTree = "<group>"; };
 		AB4E07369BA749F78E583301 /* Allrounder-Grotesk-Book.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Allrounder-Grotesk-Book.otf"; path = "../Media_assets/fonts/Allrounder-Grotesk-Book.otf"; sourceTree = "<group>"; };
+		ABACC60DA9F64D5ABF63D88C /* UberMoveTextMedium.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = UberMoveTextMedium.otf; path = ../Media_assets/fonts/UberMoveTextMedium.otf; sourceTree = "<group>"; };
+		AC92B3623AA04BDB9EDD5044 /* UberMoveTextLight.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = UberMoveTextLight.otf; path = ../Media_assets/fonts/UberMoveTextLight.otf; sourceTree = "<group>"; };
+		B60FB743025F57D5D7F25F92 /* libPods-OneSignalNotificationServiceExtension.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-OneSignalNotificationServiceExtension.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B9BF5D1EB6F1467EB3EDD840 /* SimpleLineIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = SimpleLineIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/SimpleLineIcons.ttf"; sourceTree = "<group>"; };
 		BADB22E1682A4C66ACF5FFA5 /* MaterialIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MaterialIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/MaterialIcons.ttf"; sourceTree = "<group>"; };
 		BF14907EC806429495E94991 /* MoveBold.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MoveBold.otf; path = ../Media_assets/fonts/MoveBold.otf; sourceTree = "<group>"; };
@@ -107,10 +142,7 @@
 		ED2971642150620600B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS12.0.sdk/System/Library/Frameworks/JavaScriptCore.framework; sourceTree = DEVELOPER_DIR; };
 		F143F72B329E46D0868B16A2 /* Allrounder-Grotesk-Medium.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Allrounder-Grotesk-Medium.otf"; path = "../Media_assets/fonts/Allrounder-Grotesk-Medium.otf"; sourceTree = "<group>"; };
 		F97D7FDB878D4B36B4E5896D /* FontAwesome5_Brands.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Brands.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Brands.ttf"; sourceTree = "<group>"; };
-		50D4CB90894141889BBE415E /* UberMoveTextBold.otf */ = {isa = PBXFileReference; name = "UberMoveTextBold.otf"; path = "../Media_assets/fonts/UberMoveTextBold.otf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		AC92B3623AA04BDB9EDD5044 /* UberMoveTextLight.otf */ = {isa = PBXFileReference; name = "UberMoveTextLight.otf"; path = "../Media_assets/fonts/UberMoveTextLight.otf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		ABACC60DA9F64D5ABF63D88C /* UberMoveTextMedium.otf */ = {isa = PBXFileReference; name = "UberMoveTextMedium.otf"; path = "../Media_assets/fonts/UberMoveTextMedium.otf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		5202D6875AE6453B9C8B4AA4 /* UberMoveTextRegular.otf */ = {isa = PBXFileReference; name = "UberMoveTextRegular.otf"; path = "../Media_assets/fonts/UberMoveTextRegular.otf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		FC9EB425E6E8B65843DE37DD /* Pods-OneSignalNotificationServiceExtension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OneSignalNotificationServiceExtension.release.xcconfig"; path = "Target Support Files/Pods-OneSignalNotificationServiceExtension/Pods-OneSignalNotificationServiceExtension.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -146,6 +178,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		968D1FCD25DAB92900320474 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1652678567F6DF875322DF6B /* libPods-OneSignalNotificationServiceExtension.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -169,6 +209,7 @@
 		13B07FAE1A68108700A75B9A /* taxiconnectdrivers */ = {
 			isa = PBXGroup;
 			children = (
+				968D1FCB25DAB3CD00320474 /* taxiconnectdrivers.entitlements */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
@@ -226,6 +267,7 @@
 				90DBE3397ED9C0B467C39A4D /* libPods-taxiconnectdrivers-taxiconnectdriversTests.a */,
 				5881F3E44BA0F2B606A2E445 /* libPods-taxiconnectdrivers-tvOS.a */,
 				61A4C99B2B1671774090B8A0 /* libPods-taxiconnectdrivers-tvOSTests.a */,
+				B60FB743025F57D5D7F25F92 /* libPods-OneSignalNotificationServiceExtension.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -241,6 +283,8 @@
 				4855BEA36022CA49B7FDBDD2 /* Pods-taxiconnectdrivers-tvOS.release.xcconfig */,
 				294C8201C00351A45CB78BD1 /* Pods-taxiconnectdrivers-tvOSTests.debug.xcconfig */,
 				35812E42D44BCCCC8E151C4C /* Pods-taxiconnectdrivers-tvOSTests.release.xcconfig */,
+				74E072AAAC0825535A7FC045 /* Pods-OneSignalNotificationServiceExtension.debug.xcconfig */,
+				FC9EB425E6E8B65843DE37DD /* Pods-OneSignalNotificationServiceExtension.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -258,6 +302,7 @@
 				13B07FAE1A68108700A75B9A /* taxiconnectdrivers */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* taxiconnectdriversTests */,
+				968D1FD125DAB92900320474 /* OneSignalNotificationServiceExtension */,
 				83CBBA001A601CBA00E9B192 /* Products */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
 				13F6C5D6A0314AE5BF8C6502 /* Resources */,
@@ -275,8 +320,19 @@
 				00E356EE1AD99517003FC87E /* taxiconnectdriversTests.xctest */,
 				2D02E47B1E0B4A5D006451C7 /* taxiconnectdrivers-tvOS.app */,
 				2D02E4901E0B4A5D006451C7 /* taxiconnectdrivers-tvOSTests.xctest */,
+				968D1FD025DAB92900320474 /* OneSignalNotificationServiceExtension.appex */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		968D1FD125DAB92900320474 /* OneSignalNotificationServiceExtension */ = {
+			isa = PBXGroup;
+			children = (
+				968D1FE625DABB1C00320474 /* OneSignalNotificationServiceExtension.entitlements */,
+				968D1FD225DAB92900320474 /* NotificationService.swift */,
+				968D1FD425DAB92900320474 /* Info.plist */,
+			);
+			path = OneSignalNotificationServiceExtension;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -315,10 +371,12 @@
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
 				41D66B7A4AE3BB0C0F667D43 /* [CP] Embed Pods Frameworks */,
 				7B960EF5DD9BC9823C2D03B9 /* [CP] Copy Pods Resources */,
+				968D1FDB25DAB92900320474 /* Embed App Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				968D1FD625DAB92900320474 /* PBXTargetDependency */,
 			);
 			name = taxiconnectdrivers;
 			productName = taxiconnectdrivers;
@@ -364,12 +422,31 @@
 			productReference = 2D02E4901E0B4A5D006451C7 /* taxiconnectdrivers-tvOSTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
+		968D1FCF25DAB92900320474 /* OneSignalNotificationServiceExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 968D1FD825DAB92900320474 /* Build configuration list for PBXNativeTarget "OneSignalNotificationServiceExtension" */;
+			buildPhases = (
+				A7B5300BB67B44DE757B49AE /* [CP] Check Pods Manifest.lock */,
+				968D1FCC25DAB92900320474 /* Sources */,
+				968D1FCD25DAB92900320474 /* Frameworks */,
+				968D1FCE25DAB92900320474 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = OneSignalNotificationServiceExtension;
+			productName = OneSignalNotificationServiceExtension;
+			productReference = 968D1FD025DAB92900320474 /* OneSignalNotificationServiceExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
 		83CBB9F71A601CBA00E9B192 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				LastSwiftUpdateCheck = 1240;
 				LastUpgradeCheck = 1130;
 				TargetAttributes = {
 					00E356ED1AD99517003FC87E = {
@@ -390,6 +467,11 @@
 						ProvisioningStyle = Automatic;
 						TestTargetID = 2D02E47A1E0B4A5D006451C7;
 					};
+					968D1FCF25DAB92900320474 = {
+						CreatedOnToolsVersion = 12.4;
+						DevelopmentTeam = Y8CV2D8N5A;
+						ProvisioningStyle = Manual;
+					};
 				};
 			};
 			buildConfigurationList = 83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "taxiconnectdrivers" */;
@@ -409,6 +491,7 @@
 				00E356ED1AD99517003FC87E /* taxiconnectdriversTests */,
 				2D02E47A1E0B4A5D006451C7 /* taxiconnectdrivers-tvOS */,
 				2D02E48F1E0B4A5D006451C7 /* taxiconnectdrivers-tvOSTests */,
+				968D1FCF25DAB92900320474 /* OneSignalNotificationServiceExtension */,
 			);
 		};
 /* End PBXProject section */
@@ -453,6 +536,13 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		2D02E48E1E0B4A5D006451C7 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		968D1FCE25DAB92900320474 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -710,6 +800,28 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
+		A7B5300BB67B44DE757B49AE /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-OneSignalNotificationServiceExtension-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
 		CE46E6CA57F7B875583F7F47 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -829,6 +941,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		968D1FCC25DAB92900320474 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				968D1FD325DAB92900320474 /* NotificationService.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -841,6 +961,11 @@
 			isa = PBXTargetDependency;
 			target = 2D02E47A1E0B4A5D006451C7 /* taxiconnectdrivers-tvOS */;
 			targetProxy = 2D02E4911E0B4A5D006451C7 /* PBXContainerItemProxy */;
+		};
+		968D1FD625DAB92900320474 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 968D1FCF25DAB92900320474 /* OneSignalNotificationServiceExtension */;
+			targetProxy = 968D1FD525DAB92900320474 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -892,15 +1017,18 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 857AAD9A8460599A97C68161 /* Pods-taxiconnectdrivers.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = taxiconnectdrivers/taxiconnectdrivers.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 40;
 				DEVELOPMENT_TEAM = Y8CV2D8N5A;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = taxiconnectdrivers/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				MARKETING_VERSION = 2.0.107;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -908,7 +1036,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = org.reactjs.native.taxiconnectdrivers;
 				PRODUCT_NAME = taxiconnectdrivers;
-				PROVISIONING_PROFILE_SPECIFIER = TaxiConnect;
+				PROVISIONING_PROFILE_SPECIFIER = "TaxiConnect Drivers";
 				SKIP_INSTALL = NO;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
@@ -920,14 +1048,17 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 2E7D70344512981AEF5E4B9E /* Pods-taxiconnectdrivers.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = taxiconnectdrivers/taxiconnectdrivers.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 40;
 				DEVELOPMENT_TEAM = Y8CV2D8N5A;
 				INFOPLIST_FILE = taxiconnectdrivers/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				MARKETING_VERSION = 2.0.107;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -935,7 +1066,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = org.reactjs.native.taxiconnectdrivers;
 				PRODUCT_NAME = taxiconnectdrivers;
-				PROVISIONING_PROFILE_SPECIFIER = TaxiConnect;
+				PROVISIONING_PROFILE_SPECIFIER = "TaxiConnect Drivers";
 				SKIP_INSTALL = NO;
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -1167,6 +1298,77 @@
 			};
 			name = Release;
 		};
+		968D1FD925DAB92900320474 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 74E072AAAC0825535A7FC045 /* Pods-OneSignalNotificationServiceExtension.debug.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_ENTITLEMENTS = OneSignalNotificationServiceExtension/OneSignalNotificationServiceExtension.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				CODE_SIGN_STYLE = Manual;
+				CURRENT_PROJECT_VERSION = 40;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = Y8CV2D8N5A;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				INFOPLIST_FILE = OneSignalNotificationServiceExtension/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				MARKETING_VERSION = 2.0.107;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = org.reactjs.native.taxiconnectdrivers.OneSignalNotificationServiceExtension;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "OneSignal provisioning drivers";
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		968D1FDA25DAB92900320474 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = FC9EB425E6E8B65843DE37DD /* Pods-OneSignalNotificationServiceExtension.release.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_ENTITLEMENTS = OneSignalNotificationServiceExtension/OneSignalNotificationServiceExtension.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				CODE_SIGN_STYLE = Manual;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 40;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = Y8CV2D8N5A;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				INFOPLIST_FILE = OneSignalNotificationServiceExtension/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				MARKETING_VERSION = 2.0.107;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = org.reactjs.native.taxiconnectdrivers.OneSignalNotificationServiceExtension;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "OneSignal provisioning drivers";
+				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -1211,6 +1413,15 @@
 			buildConfigurations = (
 				83CBBA201A601CBA00E9B192 /* Debug */,
 				83CBBA211A601CBA00E9B192 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		968D1FD825DAB92900320474 /* Build configuration list for PBXNativeTarget "OneSignalNotificationServiceExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				968D1FD925DAB92900320474 /* Debug */,
+				968D1FDA25DAB92900320474 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

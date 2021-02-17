@@ -13,6 +13,9 @@ const arrowStraight = require('../../../Media_assets/Images/right-arrow.png');
 const arrowNavigationTracking = require('../../../Media_assets/Images/compass.png');
 
 const STATE = {
+  //? CRUCIAL FUNCTIONS
+  fetchRequestedRequests_history: null, //From Your rides - responsible for updating the ride history list.
+  //? ---------------
   _TOP_STACK_NAVIGATION: false, //TOP STACK NAVIGATION of the all, save on the entry screen
   //PERSISTANT INTERVAL VARIABLES
   //Interval persister for updating requests data
@@ -22,7 +25,7 @@ const STATE = {
   _TMP_NAVIATION_DATA_INTERVAL_PERSISTER: null, //The interval for updating the focused navigation data
   _TMP_NAVIATION_DATA_INTERVAL_PERSISTER_TIME: 1000, //THe frequency of repetition - default:3s
 
-  _TMP_TIMEOUT_AFTER_REQUEST_RESPONSE: 3000, //The timeout after the response to show updated content - default: 4s
+  _TMP_TIMEOUT_AFTER_REQUEST_RESPONSE: 2000, //The timeout after the response to show updated content - default: 4s
 
   //ASSETS
   windowWidth: windowWidth,
@@ -102,6 +105,25 @@ const STATE = {
   requests_data_main_vars: {
     fetchedRequests_data_store: false, //To store all the fetched targeted requests list from the server - default: false
     moreDetailsFocused_request: false, //To hold the details about the interested request clicked by the driver for more details. - default: false
+  },
+
+  //RIDES tab
+  //1.Your rides screen
+  shownRides_types_tab: 'Past', //To govern which ride to show :past, scheduled or business - default: false
+  //Will contain all the rides details history for "Past", "Scheduled" and "Business" rides/deliveries
+  rides_history_details_data: {
+    rides_history_data: [],
+    targetedRequestSelected: {
+      request_fp: false,
+    }, //After the user select one already happened ride for more details - default: false
+  },
+
+  //WALLET VARS
+  wallet_state_vars: {
+    totalWallet_amount: 0, //Current wallet balance - default: 0
+    transactions_data: null, //Contains the detailed wallet transactions made from trips or normal wallet transfers. - default: nll
+    selectedPayment_method: 'cash', //Default selected payment method - default: cash - auto select wallet after selecting a car type based on the fare amount.
+    transactions_details: null, //Will contain all the transactions made by the user using his wallet - or by cash.
   },
 };
 
