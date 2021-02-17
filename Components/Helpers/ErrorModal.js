@@ -30,6 +30,7 @@ import {
 } from '../Redux/HomeActionsCreators';
 import call from 'react-native-phone-call';
 import {RFValue} from 'react-native-responsive-fontsize';
+import {FlatList} from 'react-native-gesture-handler';
 
 class ErrorModal extends React.PureComponent {
   constructor(props) {
@@ -2334,6 +2335,153 @@ class ErrorModal extends React.PureComponent {
             </TouchableOpacity>
           </View>
         </View>
+      );
+    } else if (/show_weeksEarningsAlternatives/i.test(error_status)) {
+      //Show delivery input modal
+      let data = [
+        {week_number: 1, year_number: 2021},
+        {week_number: 2, year_number: 2021},
+      ];
+      return (
+        <SafeAreaView
+          style={{
+            backgroundColor: '#fff',
+            flex: 1,
+          }}>
+          <View
+            style={
+              Platform.OS === 'android'
+                ? {
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    padding: 20,
+                    paddingTop: 15,
+                    paddingBottom: 15,
+                    borderBottomWidth: 0.7,
+                    borderBottomColor: '#d0d0d0',
+                    backgroundColor: '#fff',
+                    shadowColor: '#000',
+                    shadowOffset: {
+                      width: 0,
+                      height: 1,
+                    },
+                    shadowOpacity: 0.22,
+                    shadowRadius: 2.22,
+
+                    elevation: 3,
+                  }
+                : {
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    padding: 20,
+                    paddingTop: 15,
+                    paddingBottom: 15,
+                    borderBottomWidth: 0.7,
+                    borderBottomColor: '#d0d0d0',
+                    backgroundColor: '#fff',
+                  }
+            }>
+            <TouchableOpacity
+              onPress={() =>
+                this.props.UpdateErrorModalLog(false, false, 'any')
+              }
+              style={{flexDirection: 'row'}}>
+              <View>
+                <IconAnt name="arrowleft" size={23} />
+              </View>
+              <Text
+                style={[
+                  {
+                    fontSize: RFValue(18),
+                    fontFamily:
+                      Platform.OS === 'android'
+                        ? 'UberMoveTextMedium'
+                        : 'Uber Move Text Medium',
+                    marginLeft: 5,
+                  },
+                ]}>
+                Choose the week
+              </Text>
+            </TouchableOpacity>
+          </View>
+          {/**Weeks list */}
+          {this.props.App.wallet_state_vars.deepWalletInsights !== undefined &&
+          this.props.App.wallet_state_vars.deepWalletInsights !== null &&
+          this.props.App.wallet_state_vars.deepWalletInsights.weeks_view !==
+            undefined &&
+          this.props.App.wallet_state_vars.deepWalletInsights.weeks_view !==
+            null ? (
+            <FlatList
+              data={data}
+              initialNumToRender={15}
+              keyboardShouldPersistTaps={'always'}
+              maxToRenderPerBatch={35}
+              windowSize={61}
+              updateCellsBatchingPeriod={10}
+              keyExtractor={(_, index) => String(index)}
+              renderItem={(item) => (
+                <TouchableOpacity
+                  style={{
+                    borderBottomWidth: 1,
+                    borderColor: '#EEEEEE',
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    padding: 20,
+                    paddingBottom: 15,
+                  }}>
+                  <Text
+                    style={{
+                      fontFamily:
+                        Platform.OS === 'android'
+                          ? 'UberMoveTextRegular'
+                          : 'Uber Move Text',
+                      fontSize: RFValue(16.5),
+                      flex: 1,
+                    }}>
+                    {item.item.year_number}
+                  </Text>
+                  <Text
+                    style={{
+                      fontFamily:
+                        Platform.OS === 'android'
+                          ? 'UberMoveTextMedium'
+                          : 'Uber Move Text Medium',
+                      fontSize: RFValue(16.5),
+                      color: '#096ED4',
+                    }}>
+                    {`Week ${item.item.week_number}`}
+                  </Text>
+                  <IconMaterialIcons
+                    name="keyboard-arrow-right"
+                    size={20}
+                    style={{marginLeft: 10, color: '#757575'}}
+                  />
+                </TouchableOpacity>
+              )}
+            />
+          ) : (
+            <View
+              style={{
+                flex: 1,
+                alignItems: 'center',
+                paddingTop: '25%',
+                paddingLeft: 20,
+                paddingRight: 20,
+              }}>
+              <Text
+                style={{
+                  fontFamily:
+                    Platform.OS === 'android'
+                      ? 'UberMoveTextRegular'
+                      : 'Uber Move Text',
+                  fontSize: RFValue(15),
+                  color: '#757575',
+                }}>
+                Looks like your wallet history is empty.
+              </Text>
+            </View>
+          )}
+        </SafeAreaView>
       );
     } else {
       return <></>;

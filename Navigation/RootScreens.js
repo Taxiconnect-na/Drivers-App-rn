@@ -9,6 +9,7 @@ import NewDriverDetected from '../Components/Login/NewDriverDetected';
 import AccountProblemDetected from '../Components/Login/AccountProblemDetected';
 import WalletEntry from '../Components/Wallet/WalletEntry';
 import ShowAllTransactionsEntry from '../Components/Wallet/ShowAllTransactionsEntry';
+import EarningsScreenEntry from '../Components/Wallet/EarningsScreenEntry';
 import Home from '../Components/Home/Home';
 import YourRidesEntry from '../Components/Rides/YourRidesEntry';
 import HeaderRideTypesSelector from '../Components/Rides/HeaderRideTypesSelector';
@@ -82,7 +83,7 @@ function YourRidesEntry_drawer() {
 function Wallet_drawer() {
   return (
     <Stack.Navigator
-      initialRouteName="WalletEntry"
+      initialRouteName="EarningsScreenEntry"
       screenOptions={{...TransitionPresets.ScaleFromCenterAndroid}}>
       <Stack.Screen
         name="WalletEntry"
@@ -126,6 +127,21 @@ function Wallet_drawer() {
           headerTitle: (
             <View style={{flexDirection: 'row', alignItems: 'center'}}>
               <Text style={styles.genericHeader}>Transactions history</Text>
+            </View>
+          ),
+        }}
+      />
+      <Stack.Screen
+        name="EarningsScreenEntry"
+        component={EarningsScreenEntry}
+        options={{
+          headerShown: true,
+          headerStyle: {backgroundColor: '#000'},
+          headerTintColor: '#fff',
+          headerBackTitle: 'Back',
+          headerTitle: (
+            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+              <Text style={styles.genericHeader}>Earnings</Text>
             </View>
           ),
         }}
@@ -188,7 +204,7 @@ function SettingsDrawer_navigator() {
 function MainDrawer_navigator() {
   return (
     <Drawer.Navigator
-      initialRouteName="Home_drawer"
+      initialRouteName="Wallet_drawer"
       drawerContent={(props) => <MainDrawerContent {...props} />}>
       <Drawer.Screen name="Home_drawer" component={Home} />
       <Drawer.Screen

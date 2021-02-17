@@ -124,6 +124,7 @@ const STATE = {
     transactions_data: null, //Contains the detailed wallet transactions made from trips or normal wallet transfers. - default: nll
     selectedPayment_method: 'cash', //Default selected payment method - default: cash - auto select wallet after selecting a car type based on the fare amount.
     transactions_details: null, //Will contain all the transactions made by the user using his wallet - or by cash.
+    deepWalletInsights: null, //Will contain the detailed wallet transactions
   },
 };
 
