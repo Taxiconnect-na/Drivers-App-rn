@@ -83,7 +83,7 @@ function YourRidesEntry_drawer() {
 function Wallet_drawer() {
   return (
     <Stack.Navigator
-      initialRouteName="EarningsScreenEntry"
+      initialRouteName="WalletEntry"
       screenOptions={{...TransitionPresets.ScaleFromCenterAndroid}}>
       <Stack.Screen
         name="WalletEntry"
@@ -204,7 +204,7 @@ function SettingsDrawer_navigator() {
 function MainDrawer_navigator() {
   return (
     <Drawer.Navigator
-      initialRouteName="Wallet_drawer"
+      initialRouteName="Home_drawer"
       drawerContent={(props) => <MainDrawerContent {...props} />}>
       <Drawer.Screen name="Home_drawer" component={Home} />
       <Drawer.Screen

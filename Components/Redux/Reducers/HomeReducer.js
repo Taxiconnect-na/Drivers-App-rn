@@ -374,6 +374,52 @@ const HomeReducer = (state = INIT_STATE, action) => {
       else {
         return state;
       }
+
+    case 'UPDATE_DEEPWALLET_INSIGHTS':
+      newState.wallet_state_vars.deepWalletInsights = action.payload;
+
+      //...
+      return {...state, ...newState};
+
+    case 'UPDATE_FOCUSED_WEEK_DEEPWALLET_INSIGHTS':
+      if (
+        newState.wallet_state_vars.deepWalletInsights !== null &&
+        newState.wallet_state_vars.deepWalletInsights !== undefined &&
+        newState.wallet_state_vars.deepWalletInsights.weeks_view !== null &&
+        newState.wallet_state_vars.deepWalletInsights.weeks_view !== undefined
+      ) {
+        //The payload should be the index number of the array element in the weeks_view
+        newState.wallet_state_vars.focusedWeekWalletInsights =
+          newState.wallet_state_vars.deepWalletInsights.weeks_view[
+            action.payload
+          ];
+        //? Save the week index
+        newState.wallet_state_vars.focusedWeek_arrayIndex = action.payload;
+        //Generate the graph array
+        newState.wallet_state_vars.focusedWeek_graphData = [
+          newState.wallet_state_vars.focusedWeekWalletInsights.daily_earning
+            .monday.earning,
+          newState.wallet_state_vars.focusedWeekWalletInsights.daily_earning
+            .tuesday.earning,
+          newState.wallet_state_vars.focusedWeekWalletInsights.daily_earning
+            .wednesday.earning,
+          newState.wallet_state_vars.focusedWeekWalletInsights.daily_earning
+            .thursday.earning,
+          newState.wallet_state_vars.focusedWeekWalletInsights.daily_earning
+            .friday.earning,
+          newState.wallet_state_vars.focusedWeekWalletInsights.daily_earning
+            .saturday.earning,
+          newState.wallet_state_vars.focusedWeekWalletInsights.daily_earning
+            .sunday.earning,
+        ];
+
+        //...
+        return {...state, ...newState};
+      } //No change
+      else {
+        return state;
+      }
+
     default:
       return state;
   }

@@ -121,10 +121,13 @@ const STATE = {
   //WALLET VARS
   wallet_state_vars: {
     totalWallet_amount: 0, //Current wallet balance - default: 0
-    transactions_data: null, //Contains the detailed wallet transactions made from trips or normal wallet transfers. - default: nll
-    selectedPayment_method: 'cash', //Default selected payment method - default: cash - auto select wallet after selecting a car type based on the fare amount.
-    transactions_details: null, //Will contain all the transactions made by the user using his wallet - or by cash.
-    deepWalletInsights: null, //Will contain the detailed wallet transactions
+    transactions_data: null, //Contains the detailed wallet transactions made from trips or normal wallet transfers. - default: null
+    selectedPayment_method: 'cash', //Default selected payment method - default: cash - auto select wallet after selecting a car type based on the fare amount. - default:cash
+    transactions_details: null, //Will contain all the transactions made by the user using his wallet - or by cash. - default:null
+    deepWalletInsights: null, //Will contain the detailed wallet transactions - default:null
+    focusedWeekWalletInsights: null, //Will contain the details of the specific week selected by the driver for more insights. - default:null
+    focusedWeek_graphData: null, //Will contain the graph ddata to be displayed. - default: null
+    focusedWeek_arrayIndex: 0, //Will hold the index of the selected week - default: 0 (current week)
   },
 };
 

@@ -205,3 +205,25 @@ export const UpdateTotalWalletAmount = (totalWalletAmount) => ({
   type: 'UPDATE_TOTAL_WALLET_AMOUNT',
   payload: totalWalletAmount,
 });
+
+/**
+ * 45. Update the deep wallet insights from the drivers app
+ * Responsible for receiving, updating the global vars for the deep wallet insights, and if needed shallow processing it.
+ * @param deepWalletInsights: the data received
+ */
+export const UpdateDeepWalletInsights = (deepWalletInsights) => ({
+  type: 'UPDATE_DEEPWALLET_INSIGHTS',
+  payload: deepWalletInsights,
+});
+
+/**
+ * 45. Update the deep wallet insights from the drivers app FOCUSED
+ * Responsible for setting the week details for the wallet insights selectedd by the driver.
+ * @param deepWalletInsightsFocused: the data received
+ */
+export const UpdateFocusedWeekDeepWalletInsights = (
+  deepWalletInsightsFocused,
+) => ({
+  type: 'UPDATE_FOCUSED_WEEK_DEEPWALLET_INSIGHTS',
+  payload: deepWalletInsightsFocused,
+});

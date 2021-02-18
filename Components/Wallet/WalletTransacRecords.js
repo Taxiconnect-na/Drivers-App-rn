@@ -28,16 +28,18 @@ class WalletTransacRecords extends React.PureComponent {
                   : 'Uber Move Text Medium',
               fontSize: RFValue(17),
             }}>
-            {/sentToFriend/i.test(
+            {/weeklyPaidDriverAutomatic/i.test(
               this.props.transactionDetails.transaction_nature,
             )
-              ? `Sent to ${this.props.transactionDetails.recipient_name}`
-              : /topup/i.test(this.props.transactionDetails.transaction_nature)
-              ? 'Top-up'
+              ? 'Weekly payout'
               : /(paidDriver|sentToDriver)/i.test(
                   this.props.transactionDetails.transaction_nature,
                 )
-              ? `Paid ${this.props.transactionDetails.recipient_name}`
+              ? `Received ${this.props.transactionDetails.recipient_name}`
+              : /commissionTCSubtracted/i.test(
+                  this.props.transactionDetails.transaction_nature,
+                )
+              ? 'Commission'
               : /(ride|delivery)/i.test(
                   this.props.transactionDetails.transaction_nature,
                 )

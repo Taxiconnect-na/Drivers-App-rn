@@ -26,6 +26,7 @@ import {
   UpdateType_rideShown_YourRides_screen,
   UpdateErrorModalLog,
   SwitchToNavigation_modeOrBack,
+  UpdateFocusedWeekDeepWalletInsights,
   UpdateRequestType_focused,
 } from '../Redux/HomeActionsCreators';
 import call from 'react-native-phone-call';
@@ -2337,11 +2338,30 @@ class ErrorModal extends React.PureComponent {
         </View>
       );
     } else if (/show_weeksEarningsAlternatives/i.test(error_status)) {
+      //Avoid opening when there's no data
+      if (
+        this.props.App.wallet_state_vars.deepWalletInsights === undefined ||
+        this.props.App.wallet_state_vars.deepWalletInsights === null ||
+        this.props.App.wallet_state_vars.deepWalletInsights.weeks_view ===
+          undefined ||
+        this.props.App.wallet_state_vars.deepWalletInsights.weeks_view ===
+          null ||
+        this.props.App.wallet_state_vars.deepWalletInsights.weeks_view.length <=
+          0
+      ) {
+        this.props.UpdateErrorModalLog(false, false, 'any'); //Close modal
+      }
       //Show delivery input modal
-      let data = [
-        {week_number: 1, year_number: 2021},
-        {week_number: 2, year_number: 2021},
-      ];
+      //? Generate the weeks data
+      let weeksData = this.props.App.wallet_state_vars.deepWalletInsights.weeks_view.map(
+        (weekInfo, index) => {
+          return {
+            index: index,
+            week_number: weekInfo.week_number,
+            year_number: weekInfo.year_number,
+          };
+        },
+      );
       return (
         <SafeAreaView
           style={{
@@ -2412,15 +2432,21 @@ class ErrorModal extends React.PureComponent {
           this.props.App.wallet_state_vars.deepWalletInsights.weeks_view !==
             null ? (
             <FlatList
-              data={data}
+              data={weeksData}
               initialNumToRender={15}
               keyboardShouldPersistTaps={'always'}
               maxToRenderPerBatch={35}
               windowSize={61}
               updateCellsBatchingPeriod={10}
               keyExtractor={(_, index) => String(index)}
-              renderItem={(item) => (
+              renderItem={(item, index) => (
                 <TouchableOpacity
+                  onPress={() => {
+                    this.props.UpdateFocusedWeekDeepWalletInsights(
+                      item.item.index,
+                    );
+                    this.props.UpdateErrorModalLog(false, false, 'any'); //Close modal
+                  }}
                   style={{
                     borderBottomWidth: 1,
                     borderColor: '#EEEEEE',
@@ -2438,7 +2464,9 @@ class ErrorModal extends React.PureComponent {
                       fontSize: RFValue(16.5),
                       flex: 1,
                     }}>
-                    {item.item.year_number}
+                    {item.item.index === 0
+                      ? 'This Week'
+                      : item.item.year_number}
                   </Text>
                   <Text
                     style={{
@@ -2468,17 +2496,20 @@ class ErrorModal extends React.PureComponent {
                 paddingLeft: 20,
                 paddingRight: 20,
               }}>
-              <Text
-                style={{
-                  fontFamily:
-                    Platform.OS === 'android'
-                      ? 'UberMoveTextRegular'
-                      : 'Uber Move Text',
-                  fontSize: RFValue(15),
-                  color: '#757575',
-                }}>
-                Looks like your wallet history is empty.
-              </Text>
+              <View style={{alignItems: 'center', justifyContent: 'center'}}>
+                <IconEntypo name="box" color={'#757575'} size={40} />
+                <Text
+                  style={{
+                    fontFamily:
+                      Platform.OS === 'android'
+                        ? 'UberMoveTextRegular'
+                        : 'Uber Move Text',
+                    fontSize: RFValue(15),
+                    color: '#757575',
+                  }}>
+                  Looks like your wallet history is empty.
+                </Text>
+              </View>
             </View>
           )}
         </SafeAreaView>
@@ -2564,6 +2595,7 @@ const mapDispatchToProps = (dispatch) =>
       UpdateType_rideShown_YourRides_screen,
       UpdateErrorModalLog,
       SwitchToNavigation_modeOrBack,
+      UpdateFocusedWeekDeepWalletInsights,
       UpdateRequestType_focused,
     },
     dispatch,

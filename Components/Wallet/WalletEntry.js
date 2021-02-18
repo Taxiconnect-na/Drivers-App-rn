@@ -12,15 +12,19 @@ import {
   BackHandler,
   Platform,
 } from 'react-native';
-import {UpdateTotalWalletAmount} from '../Redux/HomeActionsCreators';
+import {
+  UpdateTotalWalletAmount,
+  UpdateDeepWalletInsights,
+  UpdateFocusedWeekDeepWalletInsights,
+} from '../Redux/HomeActionsCreators';
 import IconMaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import IconFoundation from 'react-native-vector-icons/Foundation';
 import IconCommunity from 'react-native-vector-icons/MaterialCommunityIcons';
 import WalletTransacRecords from './WalletTransacRecords';
 import DismissKeyboard from '../Helpers/DismissKeyboard';
 import {RFValue} from 'react-native-responsive-fontsize';
-import FastImage from 'react-native-fast-image';
-import {FlatList} from 'react-native-gesture-handler';
+import GenericLoader from '../Modules/GenericLoader/GenericLoader';
+import {FlatList, ScrollView} from 'react-native-gesture-handler';
 
 class WalletEntry extends React.PureComponent {
   constructor(props) {
@@ -31,6 +35,10 @@ class WalletEntry extends React.PureComponent {
     //Handlers
     this.backHander = null;
     this._navigatorEvent = null;
+
+    this.state = {
+      loaderState: true,
+    };
   }
 
   componentWillUnmount() {
@@ -74,21 +82,49 @@ class WalletEntry extends React.PureComponent {
       },
     );
 
-    /**
-     * @socket getRiders_walletInfos_io-response
-     * Get total wallet balance
-     * Responsible for only getting the total current balance of the rider and update the global state if different.
-     */
+    //1. Handles the deep insights for the driver's wallet
     this.props.App.socket.on(
-      'getRiders_walletInfos_io-response',
+      'getDrivers_walletInfosDeep_io-response',
       function (response) {
         if (
-          response !== null &&
           response !== undefined &&
-          response.total !== undefined
+          response !== null &&
+          response.weeks_view !== undefined
         ) {
-          //...
-          globalObject.props.UpdateTotalWalletAmount(response);
+          globalObject.setState({
+            loaderState: false,
+          });
+          if (
+            response.weeks_view !== null &&
+            response.weeks_view !== undefined &&
+            response.weeks_view.length > 0
+          ) {
+            if (
+              response.header !== undefined &&
+              response.header !== null &&
+              response.header.remaining_due_to_driver !== undefined &&
+              response.header.remaining_due_to_driver !== -5
+            ) {
+              //Has some data
+              //Update the global state vars
+              //! Update  the global date and autofocus to the current week
+              globalObject.props.UpdateDeepWalletInsights(response);
+              //! Auto focus to this week - default: Choose the current week
+              globalObject.props.UpdateFocusedWeekDeepWalletInsights(0);
+            } //Reload
+            else {
+              globalObject.refreshWalletValues();
+            }
+          } //No data found
+          else {
+            //DO NOTHING
+          }
+          //? Update the global var
+        } //Error
+        else {
+          globalObject.setState({
+            loaderState: false,
+          });
         }
       },
     );
@@ -99,15 +135,33 @@ class WalletEntry extends React.PureComponent {
    * Responsible for updating the wallet informations.
    */
   refreshWalletValues() {
-    //2. Request for the total wallet balance
-    this.props.App.socket.emit('getRiders_walletInfos_io', {
+    this.setState({loaderState: true});
+    this.props.App.socket.emit('getDrivers_walletInfosDeep_io', {
       user_fingerprint: this.props.App.user_fingerprint,
-      mode: 'detailed',
-      userType: 'driver',
     });
   }
 
   render() {
+    //? Format the payment date schedule
+    let nextPaymentDate = '...';
+    if (
+      this.props.App.wallet_state_vars.deepWalletInsights !== null &&
+      this.props.App.wallet_state_vars.deepWalletInsights !== undefined &&
+      this.props.App.wallet_state_vars.deepWalletInsights.header !== null &&
+      this.props.App.wallet_state_vars.deepWalletInsights.header !==
+        undefined &&
+      this.props.App.wallet_state_vars.deepWalletInsights.header
+        .scheduled_payment_date !== undefined &&
+      this.props.App.wallet_state_vars.deepWalletInsights.header
+        .scheduled_payment_date !== null
+    ) {
+      let tmpDate = new Date(
+        this.props.App.wallet_state_vars.deepWalletInsights.header.scheduled_payment_date,
+      );
+      //...
+      nextPaymentDate = tmpDate.toDateString();
+    }
+
     return (
       <>
         {this._isMounted ? (
@@ -115,6 +169,12 @@ class WalletEntry extends React.PureComponent {
             <View style={styles.mainWindow}>
               <StatusBar backgroundColor="#000" />
               <View style={styles.presentationWindow}>
+                <GenericLoader
+                  active={this.state.loaderState}
+                  thickness={4}
+                  color={this.state.loaderState ? '#fff' : '#0e8491'}
+                  backgroundColor={this.state.loaderState ? '#fff' : '#0e8491'}
+                />
                 <View
                   style={{
                     padding: 20,
@@ -158,11 +218,20 @@ class WalletEntry extends React.PureComponent {
                         },
                       ]}>
                       {`N$${
-                        this.props.App.wallet_state_vars.totalWallet_amount !==
+                        this.props.App.wallet_state_vars.deepWalletInsights !==
+                          null &&
+                        this.props.App.wallet_state_vars.deepWalletInsights !==
                           undefined &&
-                        this.props.App.wallet_state_vars.totalWallet_amount !==
-                          null
-                          ? this.props.App.wallet_state_vars.totalWallet_amount
+                        this.props.App.wallet_state_vars.deepWalletInsights
+                          .header !== null &&
+                        this.props.App.wallet_state_vars.deepWalletInsights
+                          .header !== undefined &&
+                        this.props.App.wallet_state_vars.deepWalletInsights
+                          .header.remaining_due_to_driver !== undefined &&
+                        this.props.App.wallet_state_vars.deepWalletInsights
+                          .header.remaining_due_to_driver !== null
+                          ? this.props.App.wallet_state_vars.deepWalletInsights
+                              .header.remaining_due_to_driver
                           : 0
                       }`}
                     </Text>
@@ -179,7 +248,7 @@ class WalletEntry extends React.PureComponent {
                     </Text>
                   </View>
                 </View>
-                <View
+                <ScrollView
                   style={{
                     flex: 1,
                     borderTopLeftRadius: 30,
@@ -229,7 +298,7 @@ class WalletEntry extends React.PureComponent {
                             fontSize: RFValue(16),
                             marginTop: 7,
                           }}>
-                          12-05-2021
+                          {nextPaymentDate}
                         </Text>
                       </View>
                     </View>
@@ -237,6 +306,9 @@ class WalletEntry extends React.PureComponent {
                   <View style={{padding: 20, flex: 1, marginTop: 10}}>
                     {/**Earnings */}
                     <TouchableOpacity
+                      onPress={() =>
+                        this.props.navigation.navigate('EarningsScreenEntry')
+                      }
                       style={{
                         flexDirection: 'row',
                         marginBottom: 20,
@@ -270,6 +342,11 @@ class WalletEntry extends React.PureComponent {
                     </TouchableOpacity>
                     {/** Payments history */}
                     <TouchableOpacity
+                      onPress={() =>
+                        this.props.navigation.navigate(
+                          'ShowAllTransactionsEntry',
+                        )
+                      }
                       style={{
                         borderTopWidth: 1,
                         borderColor: '#EEEEEE',
@@ -357,7 +434,7 @@ class WalletEntry extends React.PureComponent {
                       </View>
                     </TouchableOpacity>
                   </View>
-                </View>
+                </ScrollView>
               </View>
             </View>
           </DismissKeyboard>
@@ -411,6 +488,8 @@ const mapDispatchToProps = (dispatch) =>
   bindActionCreators(
     {
       UpdateTotalWalletAmount,
+      UpdateDeepWalletInsights,
+      UpdateFocusedWeekDeepWalletInsights,
     },
     dispatch,
   );
