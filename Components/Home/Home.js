@@ -934,11 +934,7 @@ class Home extends React.PureComponent {
               top: 0,
               zIndex: 900000000,
             }}>
-            <StatusBar
-              barStyle={
-                Platform.OS === 'ios' ? 'dark-content' : 'light-content'
-              }
-            />
+            <StatusBar barStyle={'dark-content'} />
             <SafeAreaView style={{flexDirection: 'row', alignItems: 'center'}}>
               <TouchableOpacity
                 onPress={() =>
@@ -1411,9 +1407,7 @@ class Home extends React.PureComponent {
 
             elevation: 10,
           }}>
-          <StatusBar
-            barStyle={Platform.OS === 'ios' ? 'dark-content' : 'light-content'}
-          />
+          <StatusBar barStyle={'dark-content'} />
           <SafeAreaView style={{flexDirection: 'row', alignItems: 'center'}}>
             <TouchableOpacity
               onPress={() =>

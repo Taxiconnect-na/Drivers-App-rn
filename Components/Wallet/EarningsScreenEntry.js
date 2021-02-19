@@ -490,16 +490,16 @@ class EarningsScreenEntry extends React.PureComponent {
                             fontSize: RFValue(17),
                             color: '#fff',
                           }}>
-                          {`N$${Math.ceil(
+                          {`N$${
                             this.props.App.wallet_state_vars
                               .focusedWeekWalletInsights.total_earning -
-                              this.props.App.wallet_state_vars
-                                .focusedWeekWalletInsights
-                                .total_earning_due_to_driver -
-                              this.props.App.wallet_state_vars
-                                .focusedWeekWalletInsights
-                                .total_earning_due_to_driver_cash,
-                          )}`}
+                            this.props.App.wallet_state_vars
+                              .focusedWeekWalletInsights
+                              .total_earning_due_to_driver -
+                            this.props.App.wallet_state_vars
+                              .focusedWeekWalletInsights
+                              .total_earning_due_to_driver_cash
+                          }`}
                         </Text>
                       </View>
                     </View>
