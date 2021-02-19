@@ -61,13 +61,13 @@ class SettingsEntryScreen extends React.Component {
   componentWillUnmount() {
     this._isMounted = false; //! MARK AS UNMOUNTED
     //...
-    if (this.backHander !== null) {
+    /*if (this.backHander !== null) {
       this.backHander.remove();
     }
     //...
     if (this.backListener !== null) {
       this.backListener = null;
-    }
+    }*/
   }
 
   render() {
