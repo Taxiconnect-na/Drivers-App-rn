@@ -126,7 +126,7 @@ function Wallet_drawer() {
           headerBackTitle: 'Back',
           headerTitle: (
             <View style={{flexDirection: 'row', alignItems: 'center'}}>
-              <Text style={styles.genericHeader}>Transactions history</Text>
+              <Text style={styles.genericHeader}>Wallet payout</Text>
             </View>
           ),
         }}

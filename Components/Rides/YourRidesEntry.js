@@ -236,7 +236,7 @@ class YourRidesEntry extends React.PureComponent {
       <>
         {this._isMounted ? (
           <View style={styles.mainWindow}>
-            <StatusBar backgroundColor="#000" />
+            <StatusBar backgroundColor="#000" barStyle={'light-content'} />
             <GenericLoader active={this.state.loaderState} thickness={4} />
 
             {this.state.fetchingRides_Data === false ? (

@@ -167,7 +167,7 @@ class WalletEntry extends React.PureComponent {
         {this._isMounted ? (
           <DismissKeyboard>
             <View style={styles.mainWindow}>
-              <StatusBar backgroundColor="#000" />
+              <StatusBar backgroundColor="#000" barStyle={'light-content'} />
               <View style={styles.presentationWindow}>
                 <GenericLoader
                   active={this.state.loaderState}
@@ -372,7 +372,7 @@ class WalletEntry extends React.PureComponent {
                             fontSize: RFValue(18),
                             color: '#0e8491',
                           }}>
-                          Payments history
+                          Wallet payout
                         </Text>
                         <Text
                           style={{

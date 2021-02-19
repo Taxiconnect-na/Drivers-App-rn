@@ -399,7 +399,7 @@ class ErrorModal extends React.PureComponent {
           </View>
         </View>
       );
-    } else if (/show_select_ride_type_modal/i.test(error_status)) {
+    } else if (/show_select_ride_type_modal$/i.test(error_status)) {
       return (
         <View
           style={{
@@ -668,7 +668,9 @@ class ErrorModal extends React.PureComponent {
           </View>
         </View>
       );
-    } else if (/show_select_ride_type_modal/i.test(error_status)) {
+    } else if (
+      /show_select_ride_type_modal_ChooseFocusRideForWork$/i.test(error_status)
+    ) {
       return (
         <View
           style={{
@@ -1389,7 +1391,7 @@ class ErrorModal extends React.PureComponent {
                           style={{
                             flexDirection: 'row',
                           }}>
-                          <View style={{width: 35}}>
+                          <View style={{width: 45}}>
                             <Text
                               style={{
                                 fontFamily:
@@ -1459,7 +1461,7 @@ class ErrorModal extends React.PureComponent {
                             flexDirection: 'row',
                             marginTop: 25,
                           }}>
-                          <View style={{width: 35}}>
+                          <View style={{width: 45}}>
                             <Text
                               style={{
                                 fontFamily:
@@ -1557,6 +1559,49 @@ class ErrorModal extends React.PureComponent {
                   </View>
                 </View>
               </View>
+              {/**Pickup note if any */}
+              {this.props.App.requests_data_main_vars.moreDetailsFocused_request
+                .ride_basic_infos.pickup_note !== null &&
+              this.props.App.requests_data_main_vars.moreDetailsFocused_request
+                .ride_basic_infos.pickup_note !== undefined &&
+              this.props.App.requests_data_main_vars.moreDetailsFocused_request
+                .ride_basic_infos.pickup_note !== false ? (
+                <View style={{marginBottom: 15}}>
+                  <Text
+                    style={{
+                      fontSize: RFValue(17),
+                      fontFamily:
+                        Platform.OS === 'android'
+                          ? 'UberMoveTextMedium'
+                          : 'Uber Move Text Medium',
+                      color: '#757575',
+                      padding: 20,
+                      paddingBottom: 0,
+                    }}>
+                    Note
+                  </Text>
+                  <View
+                    style={{
+                      padding: 20,
+                      backgroundColor: '#F6F6F6',
+                    }}>
+                    <Text
+                      style={{
+                        fontFamily:
+                          Platform.OS === 'android'
+                            ? 'UberMoveTextRegular'
+                            : 'Uber Move Text',
+                        fontSize: RFValue(17),
+                      }}>
+                      {
+                        this.props.App.requests_data_main_vars
+                          .moreDetailsFocused_request.ride_basic_infos
+                          .pickup_note
+                      }
+                    </Text>
+                  </View>
+                </View>
+              ) : null}
               {/**Payment method, amount and passenger number */}
               <View
                 style={{
@@ -2275,8 +2320,8 @@ class ErrorModal extends React.PureComponent {
                 marginTop: 10,
                 lineHeight: 23,
               }}>
-              By confirming the drop off you confirm that you've taken the
-              passenger up to final destination.
+              By confirming the drop off you confirm that you’ve taken the
+              passenger up till the final destination.
             </Text>
           </View>
           <View style={{flex: 1, justifyContent: 'center'}}>

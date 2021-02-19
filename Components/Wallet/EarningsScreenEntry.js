@@ -494,10 +494,15 @@ class EarningsScreenEntry extends React.PureComponent {
                           }}>
                           {`N$${
                             this.props.App.wallet_state_vars
-                              .focusedWeekWalletInsights.total_earning -
+                              .focusedWeekWalletInsights.total_earning +
+                            this.props.App.wallet_state_vars
+                              .focusedWeekWalletInsights.total_earning_wallet -
                             this.props.App.wallet_state_vars
                               .focusedWeekWalletInsights
-                              .total_earning_due_to_driver
+                              .total_earning_due_to_driver -
+                            this.props.App.wallet_state_vars
+                              .focusedWeekWalletInsights
+                              .total_earning_due_to_driver_cash
                           }`}
                         </Text>
                       </View>
@@ -626,6 +631,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
     paddingTop: 5,
+    paddingBottom: 50,
   },
   presentationWindow: {
     flex: 1,

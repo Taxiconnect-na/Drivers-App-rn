@@ -180,7 +180,7 @@ class GenericRequestTemplate extends React.PureComponent {
                   Platform.OS === 'android'
                     ? 'UberMoveTextRegular'
                     : 'Uber Move Text',
-                fontSize: RFValue(17),
+                fontSize: RFValue(18),
               }}>
               {Math.round(
                 this.props.requestLightData.eta_to_passenger_infos.distance,
@@ -192,7 +192,7 @@ class GenericRequestTemplate extends React.PureComponent {
                   'km'
                 : Math.round(
                     this.props.requestLightData.eta_to_passenger_infos.distance,
-                  ) + 'm'}
+                  ) + 'meters'}
             </Text>
           )}
         </View>
@@ -211,8 +211,8 @@ class GenericRequestTemplate extends React.PureComponent {
               style={{
                 fontFamily:
                   Platform.OS === 'android'
-                    ? 'UberMoveTextRegular'
-                    : 'Uber Move Text',
+                    ? 'UberMoveTextMedium'
+                    : 'Uber Move Text Medium',
                 fontSize: RFValue(17),
               }}>
               {/connectus/i.test(
@@ -304,7 +304,7 @@ class GenericRequestTemplate extends React.PureComponent {
                 style={{
                   flexDirection: 'row',
                 }}>
-                <View style={{width: 40}}>
+                <View style={{width: 45}}>
                   <Text
                     style={{
                       fontFamily:
@@ -368,7 +368,7 @@ class GenericRequestTemplate extends React.PureComponent {
                   flexDirection: 'row',
                   marginTop: 25,
                 }}>
-                <View style={{width: 35}}>
+                <View style={{width: 45}}>
                   <Text
                     style={{
                       fontFamily:

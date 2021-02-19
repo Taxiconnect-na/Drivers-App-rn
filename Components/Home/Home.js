@@ -934,7 +934,11 @@ class Home extends React.PureComponent {
               top: 0,
               zIndex: 900000000,
             }}>
-            <StatusBar barStyle={'dark-content'} />
+            <StatusBar
+              barStyle={
+                Platform.OS === 'ios' ? 'dark-content' : 'light-content'
+              }
+            />
             <SafeAreaView style={{flexDirection: 'row', alignItems: 'center'}}>
               <TouchableOpacity
                 onPress={() =>
@@ -1407,7 +1411,9 @@ class Home extends React.PureComponent {
 
             elevation: 10,
           }}>
-          <StatusBar barStyle={'dark-content'} />
+          <StatusBar
+            barStyle={Platform.OS === 'ios' ? 'dark-content' : 'light-content'}
+          />
           <SafeAreaView style={{flexDirection: 'row', alignItems: 'center'}}>
             <TouchableOpacity
               onPress={() =>
@@ -2203,7 +2209,7 @@ class Home extends React.PureComponent {
                 InteractionManager.runAfterInteractions(() => {
                   this.props.UpdateErrorModalLog(
                     true,
-                    'show_select_ride_type_modal',
+                    'show_select_ride_type_modal_ChooseFocusRideForWork',
                     'any',
                   );
                 })
