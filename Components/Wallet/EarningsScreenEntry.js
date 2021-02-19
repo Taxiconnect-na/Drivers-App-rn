@@ -362,10 +362,9 @@ class EarningsScreenEntry extends React.PureComponent {
                           style={{
                             fontFamily:
                               Platform.OS === 'android'
-                                ? 'UberMoveTextRegular'
-                                : 'Uber Move Text',
+                                ? 'UberMoveTextMedium'
+                                : 'Uber Move Text Medium',
                             fontSize: RFValue(16.5),
-                            color: '#096ED4',
                           }}>
                           {
                             this.props.App.wallet_state_vars
@@ -397,10 +396,9 @@ class EarningsScreenEntry extends React.PureComponent {
                           style={{
                             fontFamily:
                               Platform.OS === 'android'
-                                ? 'UberMoveTextRegular'
-                                : 'Uber Move Text',
+                                ? 'UberMoveTextMedium'
+                                : 'Uber Move Text Medium',
                             fontSize: RFValue(16.5),
-                            color: '#096ED4',
                           }}>
                           {
                             this.props.App.wallet_state_vars
@@ -492,18 +490,16 @@ class EarningsScreenEntry extends React.PureComponent {
                             fontSize: RFValue(17),
                             color: '#fff',
                           }}>
-                          {`N$${
+                          {`N$${Math.ceil(
                             this.props.App.wallet_state_vars
-                              .focusedWeekWalletInsights.total_earning +
-                            this.props.App.wallet_state_vars
-                              .focusedWeekWalletInsights.total_earning_wallet -
-                            this.props.App.wallet_state_vars
-                              .focusedWeekWalletInsights
-                              .total_earning_due_to_driver -
-                            this.props.App.wallet_state_vars
-                              .focusedWeekWalletInsights
-                              .total_earning_due_to_driver_cash
-                          }`}
+                              .focusedWeekWalletInsights.total_earning -
+                              this.props.App.wallet_state_vars
+                                .focusedWeekWalletInsights
+                                .total_earning_due_to_driver -
+                              this.props.App.wallet_state_vars
+                                .focusedWeekWalletInsights
+                                .total_earning_due_to_driver_cash,
+                          )}`}
                         </Text>
                       </View>
                     </View>
