@@ -19,6 +19,7 @@ target 'taxiconnectdrivers' do
   pod 'Permission-LocationAccuracy', :path => "#{permissions_path}/LocationAccuracy"
   pod 'Permission-LocationAlways', :path => "#{permissions_path}/LocationAlways"
   pod 'Permission-LocationWhenInUse', :path => "#{permissions_path}/LocationWhenInUse"
+  pod 'Firebase/Analytics', '7.3.0'
 
   target 'taxiconnectdriversTests' do
     inherit! :complete

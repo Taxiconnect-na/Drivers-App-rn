@@ -154,6 +154,17 @@ class EarningsScreenEntry extends React.PureComponent {
 
   render() {
     //this.props.App.generalErrorModal_vars.showErrorGeneralModal = true; //DEBUG
+    //? Precommpute comission due to US
+    let taxiconnectCommission =
+      this.props.App.wallet_state_vars.focusedWeekWalletInsights.total_earning -
+      this.props.App.wallet_state_vars.focusedWeekWalletInsights
+        .total_earning_due_to_driver -
+      this.props.App.wallet_state_vars.focusedWeekWalletInsights
+        .total_earning_due_to_driver_cash;
+    //...
+    taxiconnectCommission =
+      Math.round((taxiconnectCommission + Number.EPSILON) * 100) / 100;
+    //...
     return (
       <DismissKeyboard>
         {this.state.loaderState === false && this.state.foundError === false ? (
@@ -490,16 +501,7 @@ class EarningsScreenEntry extends React.PureComponent {
                             fontSize: RFValue(17),
                             color: '#fff',
                           }}>
-                          {`N$${
-                            this.props.App.wallet_state_vars
-                              .focusedWeekWalletInsights.total_earning -
-                            this.props.App.wallet_state_vars
-                              .focusedWeekWalletInsights
-                              .total_earning_due_to_driver -
-                            this.props.App.wallet_state_vars
-                              .focusedWeekWalletInsights
-                              .total_earning_due_to_driver_cash
-                          }`}
+                          {`N$${taxiconnectCommission}`}
                         </Text>
                       </View>
                     </View>
