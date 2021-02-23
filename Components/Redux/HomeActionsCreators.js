@@ -227,3 +227,13 @@ export const UpdateFocusedWeekDeepWalletInsights = (
   type: 'UPDATE_FOCUSED_WEEK_DEEPWALLET_INSIGHTS',
   payload: deepWalletInsightsFocused,
 });
+
+/**
+ * 46. Update the requests graphs
+ * Responsible for updating locally requests graphs coming from the server.
+ * @param requestsGraphs: the data received can also be nulll
+ */
+export const UpdateRequestsGraphs = (requestsGraphs) => ({
+  type: 'UPDATE_REQUESTS_GRAPHS',
+  payload: requestsGraphs,
+});

@@ -420,6 +420,35 @@ const HomeReducer = (state = INIT_STATE, action) => {
         return state;
       }
 
+    case 'UPDATE_REQUESTS_GRAPHS':
+      //Only update the requests graph ddata if different
+      if (action.payload !== null && action.payload.rides !== undefined) {
+        if (
+          newState._Requests_graphInfos === null ||
+          newState._Requests_graphInfos.rides !== action.payload.rides ||
+          newState._Requests_graphInfos.deliveries !==
+            action.payload.deliveries ||
+          newState._Requests_graphInfos.scheduled !== action.payload.scheduled
+        ) {
+          //New data received - updated
+          newState._Requests_graphInfos = action.payload;
+          return {...state, ...newState};
+        } //No new data received
+        else {
+          return state;
+        }
+      } //null payload received
+      else {
+        if (newState._Requests_graphInfos !== action.payload) {
+          //Set to null and update state
+          newState._Requests_graphInfos = action.payload;
+          return {...state, ...newState};
+        } //Same value
+        else {
+          return state;
+        }
+      }
+
     default:
       return state;
   }

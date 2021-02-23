@@ -37,6 +37,7 @@ import {
   UpdateRealtimeNavigationData,
   UpdateDailyAmount_madeSoFar,
   UpdateDriverOperational_status,
+  UpdateRequestsGraphs,
 } from '../Redux/HomeActionsCreators';
 import PulseCircleLayer from '../Modules/PulseCircleLayer';
 import IconAnt from 'react-native-vector-icons/AntDesign';
@@ -173,13 +174,37 @@ class Home extends React.PureComponent {
         driver_fingerprint: globalObject.props.App.user_fingerprint,
         action: 'get',
       });
+      //Get the requests graph
+      globalObject.props.App.socket.emit('update_requestsGraph', {
+        driver_fingerprint: globalObject.props.App.user_fingerprint,
+      });
     }, this.props.App._TMP_TRIP_INTERVAL_PERSISTER_TIME);
 
     /**
      * SOCKET.IO RESPONSES
      */
+
     /**
-     * GET/SET THE OPERATIONAL STATUS OF THE DRIVER
+     * ? Get the requests graphs
+     * Responsible for getting and updating the requests graphs to show the numbers of available requests
+     * to make the finding of requests easier.
+     */
+    this.props.App.socket.on(
+      'update_requestsGraph-response',
+      function (response) {
+        if (response !== undefined && response.rides !== undefined) {
+          //Received some graph data
+          globalObject.props.UpdateRequestsGraphs(response);
+        } //No graph data received
+        else {
+          //? Update the graph global to clear it
+          globalObject.props.UpdateRequestsGraphs(null);
+        }
+      },
+    );
+
+    /**
+     * ? GET/SET THE OPERATIONAL STATUS OF THE DRIVER
      * event: goOnline_offlineDrivers_io
      * Get the status of the driver : online/offline, can also handle the "Go online/offline" actions
      */
@@ -1714,6 +1739,7 @@ class Home extends React.PureComponent {
         <View style={{flex: 1}}>
           <GenericLoader
             active={this.state.loaderState}
+            opacity={this.state.loaderState ? 1 : 0}
             backgroundColor={'#f0f0f0'}
             thickness={4}
           />
@@ -2152,9 +2178,49 @@ class Home extends React.PureComponent {
                                 ? 'UberMoveTextMedium'
                                 : 'Uber Move Text Medium',
                             fontSize: RFValue(20),
+                            flex: 1,
                           }}>
                           {this.props.App.shownRides_types}
                         </Text>
+                        {/**Requests graph */}
+                        {this.props.App._Requests_graphInfos !== null &&
+                        this.props.App._Requests_graphInfos !== undefined &&
+                        this.props.App._Requests_graphInfos.rides !==
+                          undefined ? (
+                          <View
+                            style={{
+                              borderWidth: 1,
+                              borderColor: '#E11900',
+                              backgroundColor: '#E11900',
+                              width: 37,
+                              height: 37,
+                              alignItems: 'center',
+                              justifyContent: 'center',
+                              borderRadius: 200,
+                              marginRight: '5%',
+                            }}>
+                            <Text
+                              style={{
+                                color: '#fff',
+                                fontFamily:
+                                  Platform.OS === 'android'
+                                    ? 'UberMoveTextMedium'
+                                    : 'Uber Move Text Medium',
+                                fontSize: RFValue(18),
+                              }}>
+                              {parseInt(
+                                this.props.App._Requests_graphInfos.rides,
+                              ) +
+                                parseInt(
+                                  this.props.App._Requests_graphInfos
+                                    .deliveries,
+                                ) +
+                                parseInt(
+                                  this.props.App._Requests_graphInfos.scheduled,
+                                )}
+                            </Text>
+                          </View>
+                        ) : null}
                       </View>
                       <IconMaterialIcons
                         name="keyboard-arrow-down"
@@ -2234,9 +2300,46 @@ class Home extends React.PureComponent {
                           ? 'UberMoveTextMedium'
                           : 'Uber Move Text Medium',
                       fontSize: RFValue(20),
+                      flex: 1,
                     }}>
                     {this.props.App.shownRides_types}
                   </Text>
+
+                  {/**Requests graph */}
+                  {this.props.App._Requests_graphInfos !== null &&
+                  this.props.App._Requests_graphInfos !== undefined &&
+                  this.props.App._Requests_graphInfos.rides !== undefined ? (
+                    <View
+                      style={{
+                        borderWidth: 1,
+                        borderColor: '#E11900',
+                        backgroundColor: '#E11900',
+                        width: 37,
+                        height: 37,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        borderRadius: 200,
+                        marginRight: '5%',
+                      }}>
+                      <Text
+                        style={{
+                          color: '#fff',
+                          fontFamily:
+                            Platform.OS === 'android'
+                              ? 'UberMoveTextMedium'
+                              : 'Uber Move Text Medium',
+                          fontSize: RFValue(18),
+                        }}>
+                        {parseInt(this.props.App._Requests_graphInfos.rides) +
+                          parseInt(
+                            this.props.App._Requests_graphInfos.deliveries,
+                          ) +
+                          parseInt(
+                            this.props.App._Requests_graphInfos.scheduled,
+                          )}
+                      </Text>
+                    </View>
+                  ) : null}
                 </View>
                 <IconMaterialIcons
                   name="keyboard-arrow-down"
@@ -2517,6 +2620,7 @@ const mapDispatchToProps = (dispatch) =>
       UpdateRealtimeNavigationData,
       UpdateDailyAmount_madeSoFar,
       UpdateDriverOperational_status,
+      UpdateRequestsGraphs,
     },
     dispatch,
   );

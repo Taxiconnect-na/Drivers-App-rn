@@ -701,7 +701,7 @@ class ErrorModal extends React.PureComponent {
                   Platform.OS === 'android'
                     ? 'UberMoveTextMedium'
                     : 'Uber Move Text Medium',
-                fontSize: RFValue(20),
+                fontSize: RFValue(19),
               }}>
               What do you want to see?
             </Text>
@@ -749,6 +749,36 @@ class ErrorModal extends React.PureComponent {
                   }}>
                   Rides
                 </Text>
+                {/**Requests graph */}
+                {this.props.App._Requests_graphInfos !== null &&
+                this.props.App._Requests_graphInfos !== undefined &&
+                this.props.App._Requests_graphInfos.rides !== undefined &&
+                parseInt(this.props.App._Requests_graphInfos.rides) > 0 ? (
+                  <View
+                    style={{
+                      borderWidth: 1,
+                      borderColor: '#E11900',
+                      backgroundColor: '#E11900',
+                      width: 37,
+                      height: 37,
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      borderRadius: 200,
+                      marginRight: '5%',
+                    }}>
+                    <Text
+                      style={{
+                        color: '#fff',
+                        fontFamily:
+                          Platform.OS === 'android'
+                            ? 'UberMoveTextMedium'
+                            : 'Uber Move Text Medium',
+                        fontSize: RFValue(18),
+                      }}>
+                      {parseInt(this.props.App._Requests_graphInfos.rides)}
+                    </Text>
+                  </View>
+                ) : null}
                 {/Rides/i.test(this.props.App.shownRides_types) ? (
                   <IconFeather name="check" color="#0e8491" size={22} />
                 ) : null}
@@ -800,6 +830,36 @@ class ErrorModal extends React.PureComponent {
                   }}>
                   Deliveries
                 </Text>
+                {/**Requests graph */}
+                {this.props.App._Requests_graphInfos !== null &&
+                this.props.App._Requests_graphInfos !== undefined &&
+                this.props.App._Requests_graphInfos.deliveries !== undefined &&
+                parseInt(this.props.App._Requests_graphInfos.deliveries) > 0 ? (
+                  <View
+                    style={{
+                      borderWidth: 1,
+                      borderColor: '#E11900',
+                      backgroundColor: '#E11900',
+                      width: 37,
+                      height: 37,
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      borderRadius: 200,
+                      marginRight: '5%',
+                    }}>
+                    <Text
+                      style={{
+                        color: '#fff',
+                        fontFamily:
+                          Platform.OS === 'android'
+                            ? 'UberMoveTextMedium'
+                            : 'Uber Move Text Medium',
+                        fontSize: RFValue(18),
+                      }}>
+                      {parseInt(this.props.App._Requests_graphInfos.deliveries)}
+                    </Text>
+                  </View>
+                ) : null}
                 {/Delivery/i.test(this.props.App.shownRides_types) ? (
                   <IconFeather name="check" color="#0e8491" size={22} />
                 ) : null}
@@ -851,6 +911,36 @@ class ErrorModal extends React.PureComponent {
                   }}>
                   Scheduled
                 </Text>
+                {/**Requests graph */}
+                {this.props.App._Requests_graphInfos !== null &&
+                this.props.App._Requests_graphInfos !== undefined &&
+                this.props.App._Requests_graphInfos.scheduled !== undefined &&
+                parseInt(this.props.App._Requests_graphInfos.scheduled) > 0 ? (
+                  <View
+                    style={{
+                      borderWidth: 1,
+                      borderColor: '#E11900',
+                      backgroundColor: '#E11900',
+                      width: 37,
+                      height: 37,
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      borderRadius: 200,
+                      marginRight: '5%',
+                    }}>
+                    <Text
+                      style={{
+                        color: '#fff',
+                        fontFamily:
+                          Platform.OS === 'android'
+                            ? 'UberMoveTextMedium'
+                            : 'Uber Move Text Medium',
+                        fontSize: RFValue(18),
+                      }}>
+                      {parseInt(this.props.App._Requests_graphInfos.scheduled)}
+                    </Text>
+                  </View>
+                ) : null}
                 {/Scheduled/i.test(this.props.App.shownRides_types) ? (
                   <IconFeather name="check" color="#0e8491" size={22} />
                 ) : null}

@@ -27,6 +27,8 @@ const STATE = {
 
   _TMP_TIMEOUT_AFTER_REQUEST_RESPONSE: 2000, //The timeout after the response to show updated content - default: 4s
 
+  _Requests_graphInfos: null, //Will contain the requests graph data that will show badges of the number of general total requests and also specific requests if needed. - default: null
+
   //ASSETS
   windowWidth: windowWidth,
   windowHeight: windowHeight,
