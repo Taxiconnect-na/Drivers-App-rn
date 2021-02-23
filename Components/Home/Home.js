@@ -2308,7 +2308,11 @@ class Home extends React.PureComponent {
                   {/**Requests graph */}
                   {this.props.App._Requests_graphInfos !== null &&
                   this.props.App._Requests_graphInfos !== undefined &&
-                  this.props.App._Requests_graphInfos.rides !== undefined ? (
+                  this.props.App._Requests_graphInfos.rides !== undefined &&
+                  parseInt(this.props.App._Requests_graphInfos.rides) +
+                    parseInt(this.props.App._Requests_graphInfos.deliveries) +
+                    parseInt(this.props.App._Requests_graphInfos.scheduled) >
+                    0 ? (
                     <View
                       style={{
                         borderWidth: 1,
