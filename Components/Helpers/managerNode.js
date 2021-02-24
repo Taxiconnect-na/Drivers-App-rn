@@ -1,9 +1,8 @@
 /* eslint-disable prettier/prettier */
 import io from 'socket.io-client';
-
-const nodeURL = 'http://192.168.43.44:9097';
+import {_MAIN_URL_ENDPOINT} from '@env';
 //...
-const socket = io(nodeURL, {
+const socket = io(_MAIN_URL_ENDPOINT, {
   transports: ['websocket', 'polling'],
   reconnection: true,
   reconnectionAttempts: Infinity,

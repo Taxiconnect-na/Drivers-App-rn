@@ -31,6 +31,8 @@ import NetInfo from '@react-native-community/netinfo';
 import ErrorModal from '../Helpers/ErrorModal';
 import SyncStorage from 'sync-storage';
 import {RFValue} from 'react-native-responsive-fontsize';
+import {_MAIN_URL_ENDPOINT} from '@env';
+const io = require('socket.io-client');
 
 const App = ({valueM, parentNode, editable}) => {
   const [value, setValue] = useState('');
@@ -155,7 +157,13 @@ class OTPVerificationEntry extends React.PureComponent {
     //Socket error handling
     this.props.App.socket.on('error', () => {});
     this.props.App.socket.on('disconnect', () => {
-      globalObject.props.App.socket.connect();
+      const socket = io(_MAIN_URL_ENDPOINT, {
+        transports: ['websocket', 'polling'],
+        reconnection: true,
+        reconnectionAttempts: Infinity,
+        reconnectionDelay: 100,
+        reconnectionDelayMax: 200,
+      });
     });
     this.props.App.socket.on('connect_error', () => {
       //Ask for the OTP again
@@ -167,14 +175,26 @@ class OTPVerificationEntry extends React.PureComponent {
       globalObject.props.App.socket.connect();
     });
     this.props.App.socket.on('connect_timeout', () => {
-      globalObject.props.App.socket.connect();
+      const socket = io(_MAIN_URL_ENDPOINT, {
+        transports: ['websocket', 'polling'],
+        reconnection: true,
+        reconnectionAttempts: Infinity,
+        reconnectionDelay: 100,
+        reconnectionDelayMax: 200,
+      });
     });
     this.props.App.socket.on('reconnect', () => {});
     this.props.App.socket.on('reconnect_error', () => {
       globalObject.props.App.socket.connect();
     });
     this.props.App.socket.on('reconnect_failed', () => {
-      globalObject.props.App.socket.connect();
+      const socket = io(_MAIN_URL_ENDPOINT, {
+        transports: ['websocket', 'polling'],
+        reconnection: true,
+        reconnectionAttempts: Infinity,
+        reconnectionDelay: 100,
+        reconnectionDelayMax: 200,
+      });
     });
 
     /**
