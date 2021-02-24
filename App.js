@@ -17,6 +17,7 @@ import RootScreens from './Navigation/RootScreens';
 import config from './Components/Helpers/config';
 import OneSignal from 'react-native-onesignal';
 import SyncStorage from 'sync-storage';
+import SplashScreen from 'react-native-splash-screen';
 
 //Initiate the storage
 StorageManager('init');
@@ -38,6 +39,7 @@ class App extends React.PureComponent {
   }
 
   async componentDidMount() {
+    SplashScreen.hide();
     await SyncStorage.init();
 
     OneSignal.setNotificationWillShowInForegroundHandler(

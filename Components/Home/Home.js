@@ -423,8 +423,14 @@ class Home extends React.PureComponent {
     );
 
     let bundle = {
-      latitude: this.props.App.latitude,
-      longitude: this.props.App.longitude,
+      latitude:
+        Platform.OS === 'android'
+          ? this.props.App.latitude
+          : this.props.App.longitude,
+      longitude:
+        Platform.OS === 'android'
+          ? this.props.App.longitude
+          : this.props.App.latitude,
       user_fingerprint: this.props.App.user_fingerprint,
       pushnotif_token: this.props.App.pushnotif_token,
       user_nature: 'driver',
@@ -2142,7 +2148,7 @@ class Home extends React.PureComponent {
                       ? InteractionManager.runAfterInteractions(() => {
                           this.props.UpdateErrorModalLog(
                             true,
-                            'show_select_ride_type_modal',
+                            'show_select_ride_type_modal_ChooseFocusRideForWork',
                             'any',
                           );
                         })
@@ -2186,7 +2192,15 @@ class Home extends React.PureComponent {
                         {this.props.App._Requests_graphInfos !== null &&
                         this.props.App._Requests_graphInfos !== undefined &&
                         this.props.App._Requests_graphInfos.rides !==
-                          undefined ? (
+                          undefined &&
+                        parseInt(this.props.App._Requests_graphInfos.rides) +
+                          parseInt(
+                            this.props.App._Requests_graphInfos.deliveries,
+                          ) +
+                          parseInt(
+                            this.props.App._Requests_graphInfos.scheduled,
+                          ) >
+                          0 ? (
                           <View
                             style={{
                               borderWidth: 1,

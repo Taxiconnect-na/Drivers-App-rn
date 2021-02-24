@@ -21,6 +21,8 @@ target 'taxiconnectdrivers' do
   pod 'Permission-LocationWhenInUse', :path => "#{permissions_path}/LocationWhenInUse"
   pod 'Firebase/Analytics', '7.3.0'
 
+  pod 'react-native-splash-screen', :path => '../node_modules/react-native-splash-screen'
+
   target 'taxiconnectdriversTests' do
     inherit! :complete
     # Pods for testing

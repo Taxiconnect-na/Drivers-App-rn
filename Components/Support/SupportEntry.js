@@ -108,7 +108,7 @@ class SupportEntry extends React.PureComponent {
                 <Text
                   style={{
                     textAlign: 'left',
-                    fontSize: 17,
+                    fontSize: RFValue(17),
                     lineHeight: 23,
                     fontFamily:
                       Platform.OS === 'android'
@@ -167,7 +167,7 @@ class SupportEntry extends React.PureComponent {
               </TouchableOpacity>
               <TouchableOpacity
                 style={[styles.bttnGenericTc, {backgroundColor: '#CBCBCB'}]}
-                onPress={() => call({number: '061302302', prompt: true})}>
+                onPress={() => call({number: '+2646110111', prompt: true})}>
                 <IconCommunity
                   name="shield"
                   color={'#000'}
