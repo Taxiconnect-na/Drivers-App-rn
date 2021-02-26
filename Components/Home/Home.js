@@ -423,14 +423,8 @@ class Home extends React.PureComponent {
     );
 
     let bundle = {
-      latitude:
-        Platform.OS === 'android'
-          ? this.props.App.latitude
-          : this.props.App.longitude,
-      longitude:
-        Platform.OS === 'android'
-          ? this.props.App.longitude
-          : this.props.App.latitude,
+      latitude: this.props.App.latitude,
+      longitude: this.props.App.longitude,
       user_fingerprint: this.props.App.user_fingerprint,
       pushnotif_token: this.props.App.pushnotif_token,
       user_nature: 'driver',

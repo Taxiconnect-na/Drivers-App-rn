@@ -94,16 +94,12 @@ class WalletEntry extends React.PureComponent {
           globalObject.setState({
             loaderState: false,
           });
-          if (
-            response.weeks_view !== null &&
-            response.weeks_view !== undefined &&
-            response.weeks_view.length > 0
-          ) {
+          if (response.header !== undefined && response.header !== null) {
             if (
               response.header !== undefined &&
               response.header !== null &&
-              response.header.remaining_due_to_driver !== undefined &&
-              response.header.remaining_due_to_driver !== -5
+              response.header.scheduled_payment_date !== undefined &&
+              response.header.scheduled_payment_date !== null
             ) {
               //Has some data
               //Update the global state vars
@@ -178,6 +174,7 @@ class WalletEntry extends React.PureComponent {
                 <View
                   style={{
                     padding: 20,
+                    paddingTop: 0,
                     backgroundColor: '#0e8491',
                     height: 200,
                     marginBottom: 15,
@@ -303,7 +300,13 @@ class WalletEntry extends React.PureComponent {
                       </View>
                     </View>
                   </View>
-                  <View style={{padding: 20, flex: 1, marginTop: 10}}>
+                  <View
+                    style={{
+                      padding: 20,
+                      flex: 1,
+                      marginTop: 10,
+                      paddingBottom: 40,
+                    }}>
                     {/**Earnings */}
                     <TouchableOpacity
                       onPress={() =>

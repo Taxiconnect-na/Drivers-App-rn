@@ -156,11 +156,15 @@ class EarningsScreenEntry extends React.PureComponent {
     //this.props.App.generalErrorModal_vars.showErrorGeneralModal = true; //DEBUG
     //? Precommpute comission due to US
     let taxiconnectCommission =
-      this.props.App.wallet_state_vars.focusedWeekWalletInsights.total_earning -
-      this.props.App.wallet_state_vars.focusedWeekWalletInsights
-        .total_earning_due_to_driver -
-      this.props.App.wallet_state_vars.focusedWeekWalletInsights
-        .total_earning_due_to_driver_cash;
+      this.props.App.wallet_state_vars.focusedWeekWalletInsights !== null &&
+      this.props.App.wallet_state_vars.focusedWeekWalletInsights !== undefined
+        ? this.props.App.wallet_state_vars.focusedWeekWalletInsights
+            .total_earning -
+          this.props.App.wallet_state_vars.focusedWeekWalletInsights
+            .total_earning_due_to_driver -
+          this.props.App.wallet_state_vars.focusedWeekWalletInsights
+            .total_earning_due_to_driver_cash
+        : 0;
     //...
     taxiconnectCommission =
       Math.round((taxiconnectCommission + Number.EPSILON) * 100) / 100;
@@ -169,6 +173,9 @@ class EarningsScreenEntry extends React.PureComponent {
       <DismissKeyboard>
         {this.state.loaderState === false && this.state.foundError === false ? (
           this.props.App.wallet_state_vars.deepWalletInsights !== null &&
+          this.props.App.wallet_state_vars.focusedWeekWalletInsights !== null &&
+          this.props.App.wallet_state_vars.focusedWeekWalletInsights !==
+            undefined &&
           this.props.App.wallet_state_vars.deepWalletInsights.weeks_view !==
             null &&
           this.props.App.wallet_state_vars.deepWalletInsights.weeks_view !==

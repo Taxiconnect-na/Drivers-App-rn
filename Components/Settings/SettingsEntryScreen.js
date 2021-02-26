@@ -19,6 +19,7 @@ import IconCommunity from 'react-native-vector-icons/MaterialCommunityIcons';
 import IconMaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import IconEntypo from 'react-native-vector-icons/Entypo';
 import SyncStorage from 'sync-storage';
+import ErrorModal from '../Helpers/ErrorModal';
 import FastImage from 'react-native-fast-image';
 import {RFValue} from 'react-native-responsive-fontsize';
 
@@ -70,11 +71,30 @@ class SettingsEntryScreen extends React.Component {
     }*/
   }
 
+  /**
+   * @func renderError_modalView
+   * Responsible for rendering the modal view only once.
+   */
+  renderError_modalView() {
+    return (
+      <ErrorModal
+        active={this.props.App.generalErrorModal_vars.showErrorGeneralModal}
+        error_status={
+          this.props.App.generalErrorModal_vars.generalErrorModalType
+        }
+        parentNode={this}
+      />
+    );
+  }
+
   render() {
     return (
       <>
         {this._isMounted ? (
           <SafeAreaView style={styles.mainWindow}>
+            {this.props.App.generalErrorModal_vars.showErrorGeneralModal
+              ? this.renderError_modalView()
+              : null}
             <ScrollView style={styles.presentationWindow}>
               {/**Picture section/edit */}
               <View

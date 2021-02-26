@@ -157,7 +157,7 @@ class OTPVerificationEntry extends React.PureComponent {
     //Socket error handling
     this.props.App.socket.on('error', () => {});
     this.props.App.socket.on('disconnect', () => {
-      const socket = io(_MAIN_URL_ENDPOINT, {
+      const socket = io(String(_MAIN_URL_ENDPOINT), {
         transports: ['websocket', 'polling'],
         reconnection: true,
         reconnectionAttempts: Infinity,
@@ -175,7 +175,7 @@ class OTPVerificationEntry extends React.PureComponent {
       globalObject.props.App.socket.connect();
     });
     this.props.App.socket.on('connect_timeout', () => {
-      const socket = io(_MAIN_URL_ENDPOINT, {
+      const socket = io(String(_MAIN_URL_ENDPOINT), {
         transports: ['websocket', 'polling'],
         reconnection: true,
         reconnectionAttempts: Infinity,
@@ -188,7 +188,7 @@ class OTPVerificationEntry extends React.PureComponent {
       globalObject.props.App.socket.connect();
     });
     this.props.App.socket.on('reconnect_failed', () => {
-      const socket = io(_MAIN_URL_ENDPOINT, {
+      const socket = io(String(_MAIN_URL_ENDPOINT), {
         transports: ['websocket', 'polling'],
         reconnection: true,
         reconnectionAttempts: Infinity,
@@ -307,7 +307,7 @@ class OTPVerificationEntry extends React.PureComponent {
               /true/i.test(response.account_state) ||
               response.account_state
             ) {
-              globalObject.props.navigation.navigate('Home');
+              globalObject.props.navigation.push('Home');
             } //Minimal account - move to the additional details screen
             else if (
               /(suspended|blocked|deactivated)/i.test(response.account_state)
@@ -514,46 +514,15 @@ class OTPVerificationEntry extends React.PureComponent {
    * Responsible for rendering the modal view only once.
    */
   renderError_modalView() {
-    if (
-      this._shouldShow_errorModal &&
-      this.props.App.generalErrorModal_vars.showErrorGeneralModal
-    ) {
-      //Show once, and lock
-      this._shouldShow_errorModal = false; //!LOCK MODAL
-      return (
-        <ErrorModal
-          active={this.props.App.generalErrorModal_vars.showErrorGeneralModal}
-          error_status={
-            this.props.App.generalErrorModal_vars.generalErrorModalType
-          }
-          parentNode={this}
-        />
-      );
-    } else if (
-      this.props.App.generalErrorModal_vars.showErrorGeneralModal === false
-    ) {
-      //Disable modal lock when modal off
-      this._shouldShow_errorModal = true; //!UNLOCK MODAL
-      return (
-        <ErrorModal
-          active={this.props.App.generalErrorModal_vars.showErrorGeneralModal}
-          error_status={
-            this.props.App.generalErrorModal_vars.generalErrorModalType
-          }
-          parentNode={this}
-        />
-      );
-    } else {
-      return (
-        <ErrorModal
-          active={this.props.App.generalErrorModal_vars.showErrorGeneralModal}
-          error_status={
-            this.props.App.generalErrorModal_vars.generalErrorModalType
-          }
-          parentNode={this}
-        />
-      );
-    }
+    return (
+      <ErrorModal
+        active={this.props.App.generalErrorModal_vars.showErrorGeneralModal}
+        error_status={
+          this.props.App.generalErrorModal_vars.generalErrorModalType
+        }
+        parentNode={this}
+      />
+    );
   }
 
   render() {
