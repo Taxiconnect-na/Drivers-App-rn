@@ -1,6 +1,7 @@
 {
   "plugins": [
-    /*["transform-remove-console"]*/ [
+    ["transform-remove-console"],
+    [
       "module:react-native-dotenv",
       {
         "moduleName": "@env",
