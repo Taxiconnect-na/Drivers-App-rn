@@ -69,7 +69,9 @@ class WalletEntry extends React.PureComponent {
       (e) => {
         // Prevent default behavior of leaving the screen
         e.preventDefault();
-        globalObject.props.navigation.navigate('Home_drawer');
+        if (/POP/i.test(e.data.action.type)) {
+          globalObject.props.navigation.navigate('Home_drawer');
+        }
         return;
       },
     );
