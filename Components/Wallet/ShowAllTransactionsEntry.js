@@ -10,12 +10,15 @@ import {
   BackHandler,
   Platform,
   RefreshControl,
+  ScrollView,
 } from 'react-native';
 import {UpdateTotalWalletAmount} from '../Redux/HomeActionsCreators';
 import WalletTransacRecords from './WalletTransacRecords';
 import DismissKeyboard from '../Helpers/DismissKeyboard';
+import IconEntypo from 'react-native-vector-icons/Entypo';
 import {FlatList} from 'react-native-gesture-handler';
 import GenericLoader from '../Modules/GenericLoader/GenericLoader';
+import {RFValue} from 'react-native-responsive-fontsize';
 
 class ShowAllTransactionsEntry extends React.PureComponent {
   constructor(props) {
@@ -106,27 +109,65 @@ class ShowAllTransactionsEntry extends React.PureComponent {
       <>
         {this._isMounted ? (
           this.state.loaderState === false ? (
-            <DismissKeyboard>
-              <SafeAreaView style={styles.mainWindow}>
-                <StatusBar backgroundColor="#000" />
-                <View style={styles.presentationWindow}>
-                  <FlatList
-                    refreshControl={
-                      <RefreshControl
-                        onRefresh={() => this.refreshWalletValues()}
-                        refreshing={this.state.pullRefreshing}
-                      />
-                    }
-                    data={this.props.App.wallet_state_vars.transactions_details}
-                    keyboardShouldPersistTaps={'always'}
-                    keyExtractor={(item, index) => item + index}
-                    renderItem={({item}) => (
-                      <WalletTransacRecords transactionDetails={item} />
-                    )}
+            this.props.App.wallet_state_vars.transactions_details !== null &&
+            this.props.App.wallet_state_vars.transactions_details !==
+              undefined ? (
+              <DismissKeyboard>
+                <SafeAreaView style={styles.mainWindow}>
+                  <StatusBar backgroundColor="#000" />
+                  <View style={styles.presentationWindow}>
+                    <FlatList
+                      refreshControl={
+                        <RefreshControl
+                          onRefresh={() => this.refreshWalletValues()}
+                          refreshing={this.state.pullRefreshing}
+                        />
+                      }
+                      data={
+                        this.props.App.wallet_state_vars.transactions_details
+                      }
+                      keyboardShouldPersistTaps={'always'}
+                      keyExtractor={(item, index) => item + index}
+                      renderItem={({item}) => (
+                        <WalletTransacRecords transactionDetails={item} />
+                      )}
+                    />
+                  </View>
+                </SafeAreaView>
+              </DismissKeyboard>
+            ) : (
+              <ScrollView
+                refreshControl={
+                  <RefreshControl
+                    onRefresh={() => this.refreshWalletValues()}
+                    refreshing={this.state.pullRefreshing}
                   />
+                }
+                style={{
+                  flex: 1,
+                  padding: 20,
+                  paddingTop: '25%',
+                }}>
+                <View style={{alignItems: 'center', justifyContent: 'center'}}>
+                  <IconEntypo name="box" color={'#757575'} size={40} />
+                  <Text
+                    style={{
+                      fontFamily:
+                        Platform.OS === 'android'
+                          ? 'UberMoveTextRegular'
+                          : 'Uber Move Text',
+                      fontSize: RFValue(15),
+                      color: '#757575',
+                      color: '#757575',
+                      flex: 1,
+                      textAlign: 'center',
+                      marginTop: 20,
+                    }}>
+                    Looks like your wallet payout is empty.
+                  </Text>
                 </View>
-              </SafeAreaView>
-            </DismissKeyboard>
+              </ScrollView>
+            )
           ) : (
             <View style={{flex: 1}}>
               <GenericLoader active={this.state.loaderState} thickness={4} />

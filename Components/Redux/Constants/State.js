@@ -20,7 +20,7 @@ const STATE = {
   //PERSISTANT INTERVAL VARIABLES
   //Interval persister for updating requests data
   _TMP_TRIP_INTERVAL_PERSISTER: null, //The interval for updating rides related data
-  _TMP_TRIP_INTERVAL_PERSISTER_TIME: 2000, //THe frequency of repetition - default:3s
+  _TMP_TRIP_INTERVAL_PERSISTER_TIME: 1500, //THe frequency of repetition - default:3s
   //Interval persister for updating the focused navigation data
   _TMP_NAVIATION_DATA_INTERVAL_PERSISTER: null, //The interval for updating the focused navigation data
   _TMP_NAVIATION_DATA_INTERVAL_PERSISTER_TIME: 1000, //THe frequency of repetition - default:3s

@@ -1514,12 +1514,50 @@ class ErrorModal extends React.PureComponent {
                                   marginLeft: 5,
                                   flex: 1,
                                 }}>
-                                {
-                                  this.props.App.requests_data_main_vars
-                                    .moreDetailsFocused_request
-                                    .origin_destination_infos.pickup_infos
-                                    .suburb
-                                }
+                                {this.props.App.requests_data_main_vars
+                                  .moreDetailsFocused_request
+                                  .origin_destination_infos.pickup_infos
+                                  .suburb !== false &&
+                                this.props.App.requests_data_main_vars
+                                  .moreDetailsFocused_request
+                                  .origin_destination_infos.pickup_infos
+                                  .suburb !== 'false' &&
+                                this.props.App.requests_data_main_vars
+                                  .moreDetailsFocused_request
+                                  .origin_destination_infos.pickup_infos
+                                  .suburb !== undefined &&
+                                this.props.App.requests_data_main_vars
+                                  .moreDetailsFocused_request
+                                  .origin_destination_infos.pickup_infos
+                                  .suburb !== null
+                                  ? this.props.App.requests_data_main_vars
+                                      .moreDetailsFocused_request
+                                      .origin_destination_infos.pickup_infos
+                                      .suburb
+                                  : this.props.App.requests_data_main_vars
+                                      .moreDetailsFocused_request
+                                      .origin_destination_infos.pickup_infos
+                                      .location_name !== false &&
+                                    this.props.App.requests_data_main_vars
+                                      .moreDetailsFocused_request
+                                      .origin_destination_infos.pickup_infos
+                                      .location_name !== 'false' &&
+                                    this.props.App.requests_data_main_vars
+                                      .moreDetailsFocused_request
+                                      .origin_destination_infos.pickup_infos
+                                      .location_name !== undefined &&
+                                    this.props.App.requests_data_main_vars
+                                      .moreDetailsFocused_request
+                                      .origin_destination_infos.pickup_infos
+                                      .location_name !== null
+                                  ? this.props.App.requests_data_main_vars
+                                      .moreDetailsFocused_request
+                                      .origin_destination_infos.pickup_infos
+                                      .location_name
+                                  : this.props.App.requests_data_main_vars
+                                      .moreDetailsFocused_request
+                                      .origin_destination_infos.pickup_infos
+                                      .street_name}
                               </Text>
                               <Text
                                 style={{
@@ -1535,12 +1573,42 @@ class ErrorModal extends React.PureComponent {
                                 {this.props.App.requests_data_main_vars
                                   .moreDetailsFocused_request
                                   .origin_destination_infos.pickup_infos
-                                  .location_name +
-                                  ', ' +
-                                  this.props.App.requests_data_main_vars
-                                    .moreDetailsFocused_request
-                                    .origin_destination_infos.pickup_infos
-                                    .street_name}
+                                  .location_name !== false &&
+                                this.props.App.requests_data_main_vars
+                                  .moreDetailsFocused_request
+                                  .origin_destination_infos.pickup_infos
+                                  .location_name !== 'false' &&
+                                this.props.App.requests_data_main_vars
+                                  .moreDetailsFocused_request
+                                  .origin_destination_infos.pickup_infos
+                                  .location_name !== null &&
+                                this.props.App.requests_data_main_vars
+                                  .moreDetailsFocused_request
+                                  .origin_destination_infos.pickup_infos
+                                  .location_name !== undefined
+                                  ? this.props.App.requests_data_main_vars
+                                      .moreDetailsFocused_request
+                                      .origin_destination_infos.pickup_infos
+                                      .location_name
+                                  : null}
+                                {this.props.App.requests_data_main_vars
+                                  .moreDetailsFocused_request
+                                  .origin_destination_infos.pickup_infos
+                                  .street_name !== false &&
+                                this.props.App.requests_data_main_vars
+                                  .moreDetailsFocused_request
+                                  .origin_destination_infos.pickup_infos
+                                  .street_name !== 'false' &&
+                                this.props.App.requests_data_main_vars
+                                  .moreDetailsFocused_request
+                                  .origin_destination_infos.pickup_infos
+                                  .street_name !== undefined &&
+                                this.props.App.requests_data_main_vars
+                                  .moreDetailsFocused_request
+                                  .origin_destination_infos.pickup_infos
+                                  .street_name !== null
+                                  ? `, ${this.props.App.requests_data_main_vars.moreDetailsFocused_request.origin_destination_infos.pickup_infos.street_name}`
+                                  : null}
                               </Text>
                             </View>
                           </View>
@@ -1607,21 +1675,36 @@ class ErrorModal extends React.PureComponent {
                                           {index + 1 + '. '}
                                         </Text>
                                       ) : null}
-                                      {destination.suburb}
+                                      {destination.suburb !== false &&
+                                      destination.suburb !== 'false' &&
+                                      destination.suburb !== undefined &&
+                                      destination.suburb !== null
+                                        ? destination.suburb
+                                        : destination.location_name !== false &&
+                                          destination.location_name !==
+                                            'false' &&
+                                          destination.location_name !==
+                                            undefined &&
+                                          destination.location_name !== null
+                                        ? destination.location_name
+                                        : destination.street_name}
                                     </Text>
-                                    <Text
-                                      style={{
-                                        fontFamily:
-                                          Platform.OS === 'android'
-                                            ? 'UberMoveTextRegular'
-                                            : 'Uber Move Text',
-                                        fontSize: RFValue(15),
-                                        marginLeft: 5,
-                                        marginTop: 3,
-                                        flex: 1,
-                                      }}>
-                                      {destination.location_name}
-                                    </Text>
+                                    {destination.location_name !== 'false' &&
+                                    destination.location_name !== false ? (
+                                      <Text
+                                        style={{
+                                          fontFamily:
+                                            Platform.OS === 'android'
+                                              ? 'UberMoveTextRegular'
+                                              : 'Uber Move Text',
+                                          fontSize: RFValue(15),
+                                          marginLeft: 5,
+                                          marginTop: 3,
+                                          flex: 1,
+                                        }}>
+                                        {destination.location_name}
+                                      </Text>
+                                    ) : null}
                                     {destination.street_name !== 'false' &&
                                     destination.street_name !== false ? (
                                       <Text

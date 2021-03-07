@@ -39,7 +39,7 @@ function YourRidesEntry_drawer() {
   return (
     <Stack.Navigator
       initialRouteName="YourRidesEntry"
-      screenOptions={{...TransitionPresets.ScaleFromCenterAndroid}}>
+      screenOptions={{...TransitionPresets.SlideFromRightIOS}}>
       <Stack.Screen
         name="YourRidesEntry"
         component={YourRidesEntry}
@@ -85,7 +85,7 @@ function Wallet_drawer() {
   return (
     <Stack.Navigator
       initialRouteName="WalletEntry"
-      screenOptions={{...TransitionPresets.ScaleFromCenterAndroid}}>
+      screenOptions={{...TransitionPresets.SlideFromRightIOS}}>
       <Stack.Screen
         name="WalletEntry"
         component={WalletEntry}

@@ -262,7 +262,6 @@ class OTPVerificationEntry extends React.PureComponent {
      * CHECK OTP
      */
     this.props.App.socket.on('checkThisOTP_SMS-response', function (response) {
-      console.log(response);
       globalObject.setState({loaderState: false}); //Disable the loader
       //! Reset otp value - to avoid loop hell
       globalObject.setState({otpValue: ''});
@@ -275,6 +274,7 @@ class OTPVerificationEntry extends React.PureComponent {
           if (/new_user/i.test(globalObject.state.userStatus)) {
             console.log('new user');
             //Create new account
+            globalObject.props.navigation.navigate('NewDriverDetected'); //Go to new drivers information page
             globalObject.props.navigation.navigate('NewDriverDetected'); //Go to new drivers information page
           } //Home
           else {
@@ -308,11 +308,19 @@ class OTPVerificationEntry extends React.PureComponent {
               response.account_state
             ) {
               globalObject.props.navigation.navigate('Home');
+              globalObject.props.navigation.navigate('Home');
             } //Minimal account - move to the additional details screen
             else if (
               /(suspended|blocked|deactivated)/i.test(response.account_state)
             ) {
               //Account suspended
+              globalObject.props.navigation.navigate('AccountProblemDetected', {
+                suspension_message:
+                  response.suspension_message !== undefined &&
+                  response.suspension_message !== null
+                    ? response.suspension_message
+                    : null,
+              });
               globalObject.props.navigation.navigate('AccountProblemDetected', {
                 suspension_message:
                   response.suspension_message !== undefined &&

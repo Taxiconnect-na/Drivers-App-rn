@@ -337,10 +337,28 @@ class GenericRequestTemplate extends React.PureComponent {
                         marginLeft: 5,
                         flex: 1,
                       }}>
-                      {
-                        this.props.requestLightData.origin_destination_infos
-                          .pickup_infos.suburb
-                      }
+                      {this.props.requestLightData.origin_destination_infos
+                        .pickup_infos.suburb !== false &&
+                      this.props.requestLightData.origin_destination_infos
+                        .pickup_infos.suburb !== 'false' &&
+                      this.props.requestLightData.origin_destination_infos
+                        .pickup_infos.suburb !== undefined &&
+                      this.props.requestLightData.origin_destination_infos
+                        .pickup_infos.suburb !== null
+                        ? this.props.requestLightData.origin_destination_infos
+                            .pickup_infos.suburb
+                        : this.props.requestLightData.origin_destination_infos
+                            .pickup_infos.location_name !== false &&
+                          this.props.requestLightData.origin_destination_infos
+                            .pickup_infos.location_name !== 'false' &&
+                          this.props.requestLightData.origin_destination_infos
+                            .pickup_infos.location_name !== undefined &&
+                          this.props.requestLightData.origin_destination_infos
+                            .pickup_infos.location_name !== null
+                        ? this.props.requestLightData.origin_destination_infos
+                            .pickup_infos.location_name
+                        : this.props.requestLightData.origin_destination_infos
+                            .pickup_infos.street_name}
                     </Text>
                     <Text
                       style={{
@@ -354,10 +372,26 @@ class GenericRequestTemplate extends React.PureComponent {
                         color: '#333333',
                       }}>
                       {this.props.requestLightData.origin_destination_infos
-                        .pickup_infos.location_name +
-                        ', ' +
-                        this.props.requestLightData.origin_destination_infos
-                          .pickup_infos.street_name}
+                        .pickup_infos.location_name !== false &&
+                      this.props.requestLightData.origin_destination_infos
+                        .pickup_infos.location_name !== 'false' &&
+                      this.props.requestLightData.origin_destination_infos
+                        .pickup_infos.location_name !== null &&
+                      this.props.requestLightData.origin_destination_infos
+                        .pickup_infos.location_name !== undefined
+                        ? this.props.requestLightData.origin_destination_infos
+                            .pickup_infos.location_name
+                        : null}
+                      {this.props.requestLightData.origin_destination_infos
+                        .pickup_infos.street_name !== false &&
+                      this.props.requestLightData.origin_destination_infos
+                        .pickup_infos.street_name !== 'false' &&
+                      this.props.requestLightData.origin_destination_infos
+                        .pickup_infos.street_name !== undefined &&
+                      this.props.requestLightData.origin_destination_infos
+                        .pickup_infos.street_name !== null
+                        ? `, ${this.props.requestLightData.origin_destination_infos.pickup_infos.street_name}`
+                        : null}
                     </Text>
                   </View>
                 </View>
@@ -401,10 +435,28 @@ class GenericRequestTemplate extends React.PureComponent {
                         marginLeft: 5,
                         flex: 1,
                       }}>
-                      {
-                        this.props.requestLightData.origin_destination_infos
-                          .destination_infos[0].suburb
-                      }
+                      {this.props.requestLightData.origin_destination_infos
+                        .destination_infos[0].suburb !== false &&
+                      this.props.requestLightData.origin_destination_infos
+                        .destination_infos[0].suburb !== 'false' &&
+                      this.props.requestLightData.origin_destination_infos
+                        .destination_infos[0].suburb !== undefined &&
+                      this.props.requestLightData.origin_destination_infos
+                        .destination_infos[0].suburb !== null
+                        ? this.props.requestLightData.origin_destination_infos
+                            .destination_infos[0].suburb
+                        : this.props.requestLightData.origin_destination_infos
+                            .destination_infos[0].location_name !== false &&
+                          this.props.requestLightData.origin_destination_infos
+                            .destination_infos[0].location_name !== 'false' &&
+                          this.props.requestLightData.origin_destination_infos
+                            .destination_infos[0].location_name !== undefined &&
+                          this.props.requestLightData.origin_destination_infos
+                            .destination_infos[0].location_name !== null
+                        ? this.props.requestLightData.origin_destination_infos
+                            .destination_infos[0].location_name
+                        : this.props.requestLightData.origin_destination_infos
+                            .destination_infos[0].street_name}
                     </Text>
                     <Text
                       style={{
