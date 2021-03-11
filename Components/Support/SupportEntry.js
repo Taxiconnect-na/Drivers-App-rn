@@ -23,6 +23,7 @@ class SupportEntry extends React.PureComponent {
     //Handlers
     this.backHander = null;
     this.backListener = null; //Responsible to hold the listener for the go back overwritter.
+    this._navigatorEvent = null;
   }
 
   componentWillUnmount() {
@@ -34,6 +35,10 @@ class SupportEntry extends React.PureComponent {
     //...
     if (this.backListener !== null) {
       this.backListener = null;
+    }
+    //Remove navigation event listener
+    if (this._navigatorEvent !== false && this._navigatorEvent !== undefined) {
+      this._navigatorEvent();
     }
   }
 
@@ -49,12 +54,17 @@ class SupportEntry extends React.PureComponent {
       },
     );
     //Add home going back handler-----------------------------
-    this.props.navigation.addListener('beforeRemove', (e) => {
-      // Prevent default behavior of leaving the screen
-      e.preventDefault();
-      globalObject.props.navigation.navigate('Home_drawer');
-      return;
-    });
+    this._navigatorEvent = this.props.navigation.addListener(
+      'beforeRemove',
+      (e) => {
+        // Prevent default behavior of leaving the screen
+        e.preventDefault();
+        if (/POP/i.test(e.data.action.type)) {
+          globalObject.props.navigation.navigate('Home_drawer');
+        }
+        return;
+      },
+    );
     //--------------------------------------------------------
   }
 

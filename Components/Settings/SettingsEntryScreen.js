@@ -71,6 +71,10 @@ class SettingsEntryScreen extends React.Component {
     if (this.backListener !== null) {
       this.backListener = null;
     }*/
+    //Remove navigation event listener
+    if (this._navigatorEvent !== false && this._navigatorEvent !== undefined) {
+      this._navigatorEvent();
+    }
   }
 
   /**

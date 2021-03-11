@@ -48,9 +48,9 @@ class WalletEntry extends React.PureComponent {
       this.backHander.remove();
     }
     //...
-    if (this._navigatorEvent != null) {
+    //Remove navigation event listener
+    if (this._navigatorEvent !== false && this._navigatorEvent !== undefined) {
       this._navigatorEvent();
-      this._navigatorEvent = null;
     }
   }
 

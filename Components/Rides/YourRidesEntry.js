@@ -170,11 +170,11 @@ class YourRidesEntry extends React.PureComponent {
       this.state.networkStateChecker();
     }
     //Remove navigation event listener
-    /*if (this._navigatorEvent !== false && this._navigatorEvent !== undefined) {
+    if (this._navigatorEvent !== false && this._navigatorEvent !== undefined) {
       this._navigatorEvent();
     }
     //...
-    if (this.backHander !== null) {
+    /*if (this.backHander !== null) {
       this.backHander.remove();
     }*/
   }

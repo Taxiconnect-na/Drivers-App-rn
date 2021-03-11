@@ -304,14 +304,16 @@ class OTPVerificationEntry extends React.PureComponent {
 
             //Check the state of the account creation
             if (
-              /true/i.test(response.account_state) ||
+              /(true|valid)/i.test(response.account_state) ||
               response.account_state
             ) {
               globalObject.props.navigation.navigate('Home');
               globalObject.props.navigation.navigate('Home');
             } //Minimal account - move to the additional details screen
             else if (
-              /(suspended|blocked|deactivated)/i.test(response.account_state)
+              /(suspended|blocked|deactivated|expelled)/i.test(
+                response.account_state,
+              )
             ) {
               //Account suspended
               globalObject.props.navigation.navigate('AccountProblemDetected', {

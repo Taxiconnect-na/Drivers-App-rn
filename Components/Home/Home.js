@@ -1432,7 +1432,7 @@ class Home extends React.PureComponent {
 
             elevation: 10,
           }}>
-          <StatusBar barStyle={'dark-content'} />
+          <StatusBar backgroundColor="#fff" barStyle={'dark-content'} />
           <SafeAreaView style={{flexDirection: 'row', alignItems: 'center'}}>
             <TouchableOpacity
               onPress={() =>
