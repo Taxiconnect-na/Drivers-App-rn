@@ -28,6 +28,7 @@ import {
   SwitchToNavigation_modeOrBack,
   UpdateFocusedWeekDeepWalletInsights,
   UpdateRequestType_focused,
+  UpdateType_rideShown_YourRides_screen_HISTORY,
 } from '../Redux/HomeActionsCreators';
 import call from 'react-native-phone-call';
 import {RFValue} from 'react-native-responsive-fontsize';
@@ -196,7 +197,7 @@ class ErrorModal extends React.PureComponent {
    */
   updateYourRidesSHownOnesTab(type) {
     this.props.UpdateErrorModalLog(false, false, 'any'); //Close modal
-    this.props.UpdateType_rideShown_YourRides_screen(type);
+    this.props.UpdateType_rideShown_YourRides_screen_HISTORY(type);
     //Update the list of requests from the server
     this.props.App.fetchRequestedRequests_history(type);
     //Update the list of requests from the server
@@ -2815,6 +2816,7 @@ const mapDispatchToProps = (dispatch) =>
       SwitchToNavigation_modeOrBack,
       UpdateFocusedWeekDeepWalletInsights,
       UpdateRequestType_focused,
+      UpdateType_rideShown_YourRides_screen_HISTORY,
     },
     dispatch,
   );

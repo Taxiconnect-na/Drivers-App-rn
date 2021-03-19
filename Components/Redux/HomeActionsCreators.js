@@ -76,12 +76,22 @@ export const UpdateErrorModalLog = (
 });
 
 /**
- * 3. UPdate the type of ride shown in the "Your rides" screen
- * Responsible for updating the state variable of the type of ride shown in the "Your rides" screen
+ * 3. UPdate the type of ride shown in the "MAIN" screen
+ * Responsible for updating the state variable of the type of ride shown in the "MAIN" screen
  * @param type: Past, Scheduled or Business (coming soon)
  */
 export const UpdateType_rideShown_YourRides_screen = (type) => ({
   type: 'UPDATE_TYPE_RIDESHOWN_YOURRIDES_SCREEN',
+  payload: type,
+});
+
+/**
+ * 3.5. UPdate the type of ride shown in the "Your rides" screen
+ * Responsible for updating the state variable of the type of ride shown in the "Your rides" screen
+ * @param type: Past, Scheduled or Business (coming soon)
+ */
+export const UpdateType_rideShown_YourRides_screen_HISTORY = (type) => ({
+  type: 'UPDATE_TYPE_RIDESHOWN_YOURRIDES_SCREEN_HISTORY',
   payload: type,
 });
 

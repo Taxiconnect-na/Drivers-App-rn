@@ -166,13 +166,13 @@ class OTPVerificationEntry extends React.PureComponent {
       });
     });
     this.props.App.socket.on('connect_error', () => {
+      globalObject.props.App.socket.connect();
       //Ask for the OTP again
       globalObject.props.UpdateErrorModalLog(
         true,
         'service_unavailable',
         'any',
       );
-      globalObject.props.App.socket.connect();
     });
     this.props.App.socket.on('connect_timeout', () => {
       const socket = io(String(_MAIN_URL_ENDPOINT), {
@@ -185,7 +185,13 @@ class OTPVerificationEntry extends React.PureComponent {
     });
     this.props.App.socket.on('reconnect', () => {});
     this.props.App.socket.on('reconnect_error', () => {
-      globalObject.props.App.socket.connect();
+      const socket = io(String(_MAIN_URL_ENDPOINT), {
+        transports: ['websocket', 'polling'],
+        reconnection: true,
+        reconnectionAttempts: Infinity,
+        reconnectionDelay: 100,
+        reconnectionDelayMax: 200,
+      });
     });
     this.props.App.socket.on('reconnect_failed', () => {
       const socket = io(String(_MAIN_URL_ENDPOINT), {

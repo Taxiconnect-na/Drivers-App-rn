@@ -24,7 +24,7 @@ class RenderRequestsList extends React.PureComponent {
    * Responsible for filling the page with empty content based on the type of ride
    */
   fillForEmptyRequests() {
-    if (/past/i.test(this.props.App.shownRides_types)) {
+    if (/past/i.test(this.props.App.shownRides_types_tab)) {
       //Past rides
       return (
         <View
@@ -48,7 +48,7 @@ class RenderRequestsList extends React.PureComponent {
           </Text>
         </View>
       );
-    } else if (/scheduled/i.test(this.props.App.shownRides_types)) {
+    } else if (/scheduled/i.test(this.props.App.shownRides_types_tab)) {
       //Scheduled rides
       return (
         <View
@@ -72,7 +72,7 @@ class RenderRequestsList extends React.PureComponent {
           </Text>
         </View>
       );
-    } else if (/business/i.test(this.props.App.shownRides_types)) {
+    } else if (/business/i.test(this.props.App.shownRides_types_tab)) {
       //Business rides
       return (
         <View

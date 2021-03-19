@@ -193,6 +193,11 @@ const HomeReducer = (state = INIT_STATE, action) => {
       //...
       return {...state, ...newState};
 
+    case 'UPDATE_TYPE_RIDESHOWN_YOURRIDES_SCREEN_HISTORY':
+      newState.shownRides_types_tab = action.payload;
+
+      return {...state, ...newState};
+
     case 'UPDATE_TRACKING_MODE_STATE':
       newState.main_interfaceState_vars.isApp_inTrackingMode = action.payload;
 
