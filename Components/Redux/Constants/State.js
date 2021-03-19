@@ -28,6 +28,8 @@ const STATE = {
 
   _TMP_TIMEOUT_AFTER_REQUEST_RESPONSE: 2000, //The timeout after the response to show updated content - default: 4s
 
+  _TMP_TIMEOUT_AFTER_GOING_ONLINE_OR_OFFLINE: 7000, //The delay in the loader after pressing online/offlline - default: 0.7sec
+
   _Requests_graphInfos: null, //Will contain the requests graph data that will show badges of the number of general total requests and also specific requests if needed. - default: null
 
   //ASSETS

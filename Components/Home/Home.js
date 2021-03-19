@@ -225,9 +225,7 @@ class Home extends React.PureComponent {
           globalObject.props.UpdateErrorModalLog(false, false, 'any'); //Auto close connection unavailable
         }
         //....
-        if (globalObject.state.isGoingOnline) {
-          globalObject.setState({isGoingOnline: false, loaderState: false}); //close the loader
-        }
+
         if (
           response !== undefined &&
           response !== null &&
@@ -249,7 +247,16 @@ class Home extends React.PureComponent {
               //New state
               globalObject.props.UpdateDriverOperational_status(response.flag);
             }
+            if (globalObject.state.isGoingOnline) {
+              globalObject.setState({isGoingOnline: false, loaderState: false}); //close the loader
+            }
           } else if (/done/i.test(response.response)) {
+            if (globalObject.state.isGoingOnline) {
+              globalObject.setState({
+                isGoingOnline: false,
+                loaderState: false,
+              }); //close the loader
+            }
             //Make
             globalObject.state.wasAnimatedOfflineStateCalled = false;
             //Update driver status anyways
@@ -317,7 +324,11 @@ class Home extends React.PureComponent {
             globalObject.camera !== undefined &&
             globalObject.camera != null &&
             globalObject.props.App.main_interfaceState_vars
-              .isApp_inTrackingMode === false
+              .isApp_inTrackingMode === false &&
+            globalObject.props.App.main_interfaceState_vars.navigationRouteData
+              .destinationPoint !== undefined &&
+            globalObject.props.App.main_interfaceState_vars.navigationRouteData
+              .destinationPoint !== null
           ) {
             globalObject.camera.fitBounds(
               [
