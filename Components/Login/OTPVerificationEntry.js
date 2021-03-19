@@ -293,7 +293,12 @@ class OTPVerificationEntry extends React.PureComponent {
             globalObject.props.App.account_state = response.account_state;
             //! Save to storage as well.
             SyncStorage.set('@user_fp', response.user_fp);
-            SyncStorage.set('@gender_user', response.gender);
+            SyncStorage.set(
+              '@gender_user',
+              response.gender !== undefined && response.gender !== null
+                ? response.gender
+                : 'Unknown',
+            );
             SyncStorage.set('@username', response.name);
             SyncStorage.set('@surname_user', response.surname);
             SyncStorage.set('@user_email', response.email);

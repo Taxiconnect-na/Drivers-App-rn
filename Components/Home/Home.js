@@ -69,10 +69,14 @@ class Home extends React.PureComponent {
       offlineOnlineOpacity: new AnimatedNative.Value(0), //The opacity of the text 0 - default: 0
       wasAnimatedOfflineStateCalled: false, //TO know whether the animated state function was called to avoid calling it more than once - default: false
     };
+    //...
+    this.goOnlineOrOffline = this.goOnlineOrOffline.bind(this);
   }
 
   async componentDidMount() {
     let globalObject = this;
+    //? Save the online/offline function to the global state
+    this.props.App.goOnlineOrOffline = this.goOnlineOrOffline;
     //Get initial rides - set default: past (always)
     //Add home going back handler-----------------------------
     this.props.navigation.addListener('beforeRemove', (e) => {
@@ -2253,8 +2257,8 @@ class Home extends React.PureComponent {
                           style={{
                             fontFamily:
                               Platform.OS === 'android'
-                                ? 'Allrounder-Grotesk-Medium'
-                                : 'Allrounder Grotesk Medium',
+                                ? 'MoveMedium'
+                                : 'Uber Move Medium',
                             fontSize: 20,
                             color: '#fff',
                           }}>
@@ -2413,8 +2417,8 @@ class Home extends React.PureComponent {
                     style={{
                       fontFamily:
                         Platform.OS === 'android'
-                          ? 'Allrounder-Grotesk-Medium'
-                          : 'Allrounder Grotesk Medium',
+                          ? 'MoveMedium'
+                          : 'Uber Move Medium',
                       fontSize: this.props.App.main_interfaceState_vars
                         .isDriver_online
                         ? 20
@@ -2434,8 +2438,8 @@ class Home extends React.PureComponent {
                       style={{
                         fontFamily:
                           Platform.OS === 'android'
-                            ? 'Allrounder-Grotesk-Regular'
-                            : 'Allrounder Grotesk',
+                            ? 'MoveMedium'
+                            : 'Uber Move Medium',
                         fontSize: 20,
                         marginLeft: 5,
                         color: '#fff',

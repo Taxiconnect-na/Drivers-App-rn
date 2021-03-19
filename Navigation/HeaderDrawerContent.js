@@ -63,7 +63,7 @@ class HeaderDrawerContent extends React.PureComponent {
               fontFamily:
                 Platform.OS === 'android'
                   ? 'UberMoveTextRegular'
-                  : 'Uber Move Text',
+                  : 'Uber Move Text Medium',
               fontSize: RFValue(18),
               width: '100%',
               textAlign: 'left',

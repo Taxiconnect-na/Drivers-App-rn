@@ -948,7 +948,7 @@ class ErrorModal extends React.PureComponent {
             ) : null}
             {/**LOG OUT BUTTON */}
             <TouchableOpacity
-              onPress={() => this.props.parentNode.goOnlineOrOffline('offline')}
+              onPress={() => this.props.App.goOnlineOrOffline('offline')}
               style={[
                 styles.bttnGenericTc,
                 {

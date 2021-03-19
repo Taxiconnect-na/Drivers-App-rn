@@ -15,12 +15,13 @@ const arrowNavigationTracking = require('../../../Media_assets/Images/compass.pn
 const STATE = {
   //? CRUCIAL FUNCTIONS
   fetchRequestedRequests_history: null, //From Your rides - responsible for updating the ride history list.
+  goOnlineOrOffline: null, //Save the function to go online or offline.
   //? ---------------
   _TOP_STACK_NAVIGATION: false, //TOP STACK NAVIGATION of the all, save on the entry screen
   //PERSISTANT INTERVAL VARIABLES
   //Interval persister for updating requests data
   _TMP_TRIP_INTERVAL_PERSISTER: null, //The interval for updating rides related data
-  _TMP_TRIP_INTERVAL_PERSISTER_TIME: 1500, //THe frequency of repetition - default:3s
+  _TMP_TRIP_INTERVAL_PERSISTER_TIME: 1200, //THe frequency of repetition - default:3s
   //Interval persister for updating the focused navigation data
   _TMP_NAVIATION_DATA_INTERVAL_PERSISTER: null, //The interval for updating the focused navigation data
   _TMP_NAVIATION_DATA_INTERVAL_PERSISTER_TIME: 1000, //THe frequency of repetition - default:3s
