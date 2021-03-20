@@ -55,7 +55,7 @@ function YourRidesEntry_drawer() {
                 alignItems: 'center',
                 paddingRight: Platform.OS === 'android' ? 10 : 0,
               }}>
-              <Text style={styles.genericHeader}>Your requests</Text>
+              <Text style={styles.genericHeader}>Your rides</Text>
             </View>
           ),
           headerRight: () => <HeaderRideTypesSelector />,
