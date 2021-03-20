@@ -18,12 +18,24 @@ const HomeReducer = (state = INIT_STATE, action) => {
 
   switch (action.type) {
     case 'UPDATE_GRANTED_GPRS_VARS':
+      //? Optmized
       //Update the previous state
-      newState.gprsGlobals.hasGPRSPermissions =
-        action.payload.hasGPRSPermissions;
-      newState.gprsGlobals.didAskForGprs = action.payload.didAskForGprs;
+      if (
+        `${JSON.stringify(newState.gprsGlobals.hasGPRSPermissions)}` !==
+          `${JSON.stringify(action.payload.hasGPRSPermissions)}` ||
+        `${JSON.stringify(newState.gprsGlobals.didAskForGprs)}` !==
+          `${JSON.stringify(action.payload.didAskForGprs)}`
+      ) {
+        //New data
+        newState.gprsGlobals.hasGPRSPermissions =
+          action.payload.hasGPRSPermissions;
+        newState.gprsGlobals.didAskForGprs = action.payload.didAskForGprs;
 
-      return {...state, ...newState};
+        return {...state, ...newState};
+      } //Same data
+      else {
+        return state;
+      }
 
     case 'SHOW_COUNTRY_FILTER_HEADER':
       //receive header state : true (show) or false (hide)
@@ -97,10 +109,6 @@ const HomeReducer = (state = INIT_STATE, action) => {
 
     case 'VALIDATE_GENERIC_PHONE_NUMBER':
       //Check the phone number validity
-      console.log(
-        newState.countryPhoneCode +
-          newState.phoneNumberEntered.replace(/ /g, '').replace(/^0/, ''),
-      );
       phoneNumberModuleTmp = parsePhoneNumber(
         newState.countryPhoneCode +
           newState.phoneNumberEntered.replace(/ /g, '').replace(/^0/, ''),
@@ -206,33 +214,54 @@ const HomeReducer = (state = INIT_STATE, action) => {
 
     case 'UPDATE_CURRENT_LOCATION_METADATA':
       //Update the current location metadata
-      newState.userCurrentLocationMetaData = action.payload;
-      //...
-      return {...state, ...newState};
+      if (
+        `${JSON.stringify(newState.userCurrentLocationMetaData)}` !==
+        `${JSON.stringify(action.payload)}`
+      ) {
+        //New data
+        newState.userCurrentLocationMetaData = action.payload;
+        //...
+        return {...state, ...newState};
+      } //Same data
+      else {
+        return state;
+      }
 
     case 'UPDATED_FETCHED_REQUESTS_DATA_SERVER':
+      //? Optimized
       //Auto reset if expected array is false
-      newState.requests_data_main_vars.fetchedRequests_data_store =
-        action.payload;
-
-      //Update the focused data for more details
       if (
-        newState.requests_data_main_vars.moreDetailsFocused_request !== false &&
-        action.payload !== false
+        `${JSON.stringify(
+          newState.requests_data_main_vars.fetchedRequests_data_store,
+        )}` !== `${JSON.stringify(action.payload)}`
       ) {
-        action.payload.map((request) => {
-          if (
-            request.request_fp ===
-            newState.requests_data_main_vars.moreDetailsFocused_request
-              .request_fp
-          ) {
-            //Found - update
-            newState.requests_data_main_vars.moreDetailsFocused_request = request;
-          }
-        });
+        //New data
+        newState.requests_data_main_vars.fetchedRequests_data_store =
+          action.payload;
+
+        //Update the focused data for more details
+        if (
+          newState.requests_data_main_vars.moreDetailsFocused_request !==
+            false &&
+          action.payload !== false
+        ) {
+          action.payload.map((request) => {
+            if (
+              request.request_fp ===
+              newState.requests_data_main_vars.moreDetailsFocused_request
+                .request_fp
+            ) {
+              //Found - update
+              newState.requests_data_main_vars.moreDetailsFocused_request = request;
+            }
+          });
+        }
+        //...
+        return {...state, ...newState};
+      } //SAME data
+      else {
+        return state;
       }
-      //...
-      return {...state, ...newState};
 
     case 'SWITCH_TO_NAVIGATION_MODEORBACK':
       //Check the wanted navigation state
@@ -273,18 +302,41 @@ const HomeReducer = (state = INIT_STATE, action) => {
       return {...state, ...newState};
 
     case 'UPDATE_REALTIME_NAVIGATION_DATA':
-      newState.main_interfaceState_vars.navigationRouteData = action.payload;
-      //Update is computing route to falsee
-      newState.main_interfaceState_vars.isComputing_route = false; //Done computing route.
+      //? Optimized
+      if (
+        `${JSON.stringify(
+          newState.main_interfaceState_vars.navigationRouteData,
+        )}` !== `${JSON.stringify(action.payload)}`
+      ) {
+        //New data
+        newState.main_interfaceState_vars.navigationRouteData = action.payload;
+        //Update is computing route to falsee
+        newState.main_interfaceState_vars.isComputing_route = false; //Done computing route.
 
-      //...
-      return {...state, ...newState};
+        //...
+        return {...state, ...newState};
+      } //Same dataa
+      else {
+        return state;
+      }
 
     case 'UPDATE_DAILY_AMOUNT_MADESOFAR':
-      newState.main_interfaceState_vars.dailyAmount_madeSoFar = action.payload;
+      //? Optimized
+      if (
+        `${JSON.stringify(
+          newState.main_interfaceState_vars.dailyAmount_madeSoFar,
+        )}` !== `${JSON.stringify(action.payload)}`
+      ) {
+        //New data
+        newState.main_interfaceState_vars.dailyAmount_madeSoFar =
+          action.payload;
 
-      //...
-      return {...state, ...newState};
+        //...
+        return {...state, ...newState};
+      } //Same data
+      else {
+        return state;
+      }
 
     case 'UPDATE_DDRIVER_OPERATIONAL_STATUS':
       //Check status

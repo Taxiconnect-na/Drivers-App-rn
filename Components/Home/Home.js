@@ -52,6 +52,8 @@ import ErrorModal from '../Helpers/ErrorModal';
 import {check, PERMISSIONS, RESULTS} from 'react-native-permissions';
 import {RFValue} from 'react-native-responsive-fontsize';
 import SyncStorage from 'sync-storage';
+import {_MAIN_URL_ENDPOINT} from '@env';
+const io = require('socket.io-client');
 
 class Home extends React.PureComponent {
   constructor(props) {
@@ -139,7 +141,14 @@ class Home extends React.PureComponent {
     });
     this.props.App.socket.on('disconnect', () => {
       //console.log('something');
-      globalObject.props.App.socket.connect();
+      const socket = io(String(_MAIN_URL_ENDPOINT), {
+        transports: ['websocket', 'polling'],
+        withCredentials: true,
+        reconnection: true,
+        reconnectionAttempts: Infinity,
+        reconnectionDelay: 100,
+        reconnectionDelayMax: 200,
+      });
     });
     this.props.App.socket.on('connect_error', () => {
       console.log('connect_error');
@@ -147,18 +156,39 @@ class Home extends React.PureComponent {
     });
     this.props.App.socket.on('connect_timeout', () => {
       console.log('connect_timeout');
-      globalObject.props.App.socket.connect();
+      const socket = io(String(_MAIN_URL_ENDPOINT), {
+        transports: ['websocket', 'polling'],
+        withCredentials: true,
+        reconnection: true,
+        reconnectionAttempts: Infinity,
+        reconnectionDelay: 100,
+        reconnectionDelayMax: 200,
+      });
     });
     this.props.App.socket.on('reconnect', () => {
       ////console.log('something');
     });
     this.props.App.socket.on('reconnect_error', () => {
       console.log('reconnect_error');
-      globalObject.props.App.socket.connect();
+      const socket = io(String(_MAIN_URL_ENDPOINT), {
+        transports: ['websocket', 'polling'],
+        withCredentials: true,
+        reconnection: true,
+        reconnectionAttempts: Infinity,
+        reconnectionDelay: 100,
+        reconnectionDelayMax: 200,
+      });
     });
     this.props.App.socket.on('reconnect_failed', () => {
       console.log('reconnect_failed');
-      globalObject.props.App.socket.connect();
+      const socket = io(String(_MAIN_URL_ENDPOINT), {
+        transports: ['websocket', 'polling'],
+        withCredentials: true,
+        reconnection: true,
+        reconnectionAttempts: Infinity,
+        reconnectionDelay: 100,
+        reconnectionDelayMax: 200,
+      });
     });
 
     //Create interval updater persister

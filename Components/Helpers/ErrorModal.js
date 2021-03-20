@@ -464,7 +464,7 @@ class ErrorModal extends React.PureComponent {
                 }}>
                 Past requests
               </Text>
-              {/past/i.test(this.props.App.shownRides_types) ? (
+              {/past/i.test(this.props.App.shownRides_types_tab) ? (
                 <IconFeather name="check" color="#0e8491" size={23} />
               ) : null}
             </TouchableOpacity>
@@ -505,7 +505,7 @@ class ErrorModal extends React.PureComponent {
                 }}>
                 Scheduled requests
               </Text>
-              {/scheduled/i.test(this.props.App.shownRides_types) ? (
+              {/scheduled/i.test(this.props.App.shownRides_types_tab) ? (
                 <IconFeather name="check" color="#0e8491" size={23} />
               ) : null}
             </TouchableOpacity>
@@ -543,7 +543,7 @@ class ErrorModal extends React.PureComponent {
                 }}>
                 Business requests
               </Text>
-              {/business/i.test(this.props.App.shownRides_types) ? (
+              {/business/i.test(this.props.App.shownRides_types_tab) ? (
                 <IconFeather name="check" color="#0e8491" size={23} />
               ) : null}
             </TouchableOpacity>
@@ -2519,7 +2519,7 @@ class ErrorModal extends React.PureComponent {
                   color: '#fff',
                 }}>
                 {this.state.isLoading_something === false ? (
-                  'Confirm pickup'
+                  'Confirm drop off'
                 ) : (
                   <ActivityIndicator size="large" color="#fff" />
                 )}

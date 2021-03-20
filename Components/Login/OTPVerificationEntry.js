@@ -159,6 +159,7 @@ class OTPVerificationEntry extends React.PureComponent {
     this.props.App.socket.on('disconnect', () => {
       const socket = io(String(_MAIN_URL_ENDPOINT), {
         transports: ['websocket', 'polling'],
+        withCredentials: true,
         reconnection: true,
         reconnectionAttempts: Infinity,
         reconnectionDelay: 100,
@@ -177,6 +178,7 @@ class OTPVerificationEntry extends React.PureComponent {
     this.props.App.socket.on('connect_timeout', () => {
       const socket = io(String(_MAIN_URL_ENDPOINT), {
         transports: ['websocket', 'polling'],
+        withCredentials: true,
         reconnection: true,
         reconnectionAttempts: Infinity,
         reconnectionDelay: 100,
@@ -187,6 +189,7 @@ class OTPVerificationEntry extends React.PureComponent {
     this.props.App.socket.on('reconnect_error', () => {
       const socket = io(String(_MAIN_URL_ENDPOINT), {
         transports: ['websocket', 'polling'],
+        withCredentials: true,
         reconnection: true,
         reconnectionAttempts: Infinity,
         reconnectionDelay: 100,
@@ -196,6 +199,7 @@ class OTPVerificationEntry extends React.PureComponent {
     this.props.App.socket.on('reconnect_failed', () => {
       const socket = io(String(_MAIN_URL_ENDPOINT), {
         transports: ['websocket', 'polling'],
+        withCredentials: true,
         reconnection: true,
         reconnectionAttempts: Infinity,
         reconnectionDelay: 100,
