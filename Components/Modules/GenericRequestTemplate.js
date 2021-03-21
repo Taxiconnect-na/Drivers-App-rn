@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   ActivityIndicator,
   InteractionManager,
+  Platform,
 } from 'react-native';
 import IconAnt from 'react-native-vector-icons/AntDesign';
 import {RFValue} from 'react-native-responsive-fontsize';
@@ -222,7 +223,12 @@ class GenericRequestTemplate extends React.PureComponent {
                 : 'ConnectMe'}
             </Text>
           </View>
-          <View style={{padding: 5}}>
+          <View
+            style={{
+              padding: 5,
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}>
             <Text
               style={[
                 {
@@ -233,6 +239,18 @@ class GenericRequestTemplate extends React.PureComponent {
                 },
               ]}>
               {'N$ ' + this.props.requestLightData.ride_basic_infos.fare_amount}
+            </Text>
+            {console.log(this.props.requestLightData)}
+            <Text
+              style={{
+                fontFamily:
+                  Platform.OS === 'android'
+                    ? 'MoveTextRegular'
+                    : 'Uber Move Text',
+                fontSize: RFValue(14),
+                color: '#09864A',
+              }}>
+              {this.props.requestLightData.ride_basic_infos.payment_method}
             </Text>
           </View>
           <View
