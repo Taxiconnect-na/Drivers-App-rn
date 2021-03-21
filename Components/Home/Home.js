@@ -1113,6 +1113,19 @@ class Home extends React.PureComponent {
         );
       } //A ride is in progress actively in navigation mode
       else {
+        if (
+          this.props.App.requests_data_main_vars.moreDetailsFocused_request ===
+            false ||
+          this.props.App.requests_data_main_vars.fetchedRequests_data_store ===
+            false ||
+          this.props.App.requests_data_main_vars.moreDetailsFocused_request ===
+            undefined
+        ) {
+          //Invalid setup - close modal
+          this.props.App.main_interfaceState_vars.isApp_inNavigation_mode = false;
+          this.props.UpdateErrorModalLog(false, true, 'anyo'); //Update the global state
+          return null;
+        }
         return (
           <SafeAreaView
             style={{

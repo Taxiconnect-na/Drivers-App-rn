@@ -15,6 +15,7 @@ const HomeReducer = (state = INIT_STATE, action) => {
   //Predefined variables
   let newState = state;
   let phoneNumberModuleTmp = null; //Multipurpose phone number input variable
+  let checkTempoData = null; //Used as tempo variable for various kind of testing
 
   switch (action.type) {
     case 'UPDATE_GRANTED_GPRS_VARS':
@@ -229,6 +230,7 @@ const HomeReducer = (state = INIT_STATE, action) => {
 
     case 'UPDATED_FETCHED_REQUESTS_DATA_SERVER':
       //? Optimized
+      checkTempoData = false; //No focused data by default
       //Auto reset if expected array is false
       if (
         `${JSON.stringify(
@@ -253,8 +255,14 @@ const HomeReducer = (state = INIT_STATE, action) => {
             ) {
               //Found - update
               newState.requests_data_main_vars.moreDetailsFocused_request = request;
+              //? Update the focused data controller
+              checkTempoData = true;
             }
           });
+        }
+        //! Change focus data content to default: false (if no focused data is found, very useful on rider's cancellation before trip completion)
+        if (checkTempoData === false) {
+          newState.requests_data_main_vars.moreDetailsFocused_request = false;
         }
         //...
         return {...state, ...newState};

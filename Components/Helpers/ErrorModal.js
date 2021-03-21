@@ -1086,11 +1086,13 @@ class ErrorModal extends React.PureComponent {
         this.props.App.requests_data_main_vars.moreDetailsFocused_request ===
           false ||
         this.props.App.requests_data_main_vars.fetchedRequests_data_store ===
-          false
+          false ||
+        this.props.App.requests_data_main_vars.moreDetailsFocused_request ===
+          undefined
       ) {
         //Invalid setup - close modal
-        //this.props.UpdateErrorModalLog(false, false, 'any'); //Close modal - enable after
-        /*return (
+        this.props.UpdateErrorModalLog(false, false, 'any'); //Close modal - enable after
+        return (
           <View
             style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
             <GenericLoader
@@ -1100,7 +1102,7 @@ class ErrorModal extends React.PureComponent {
               thickness={4}
             />
           </View>
-        );*/
+        );
       }
       return (
         <SafeAreaView
