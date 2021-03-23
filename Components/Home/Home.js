@@ -25,6 +25,7 @@ import {
   InteractionManager,
   BackHandler,
   StatusBar,
+  Button,
 } from 'react-native';
 import GeolocationP from 'react-native-geolocation-service';
 import {
@@ -1574,6 +1575,10 @@ class Home extends React.PureComponent {
       );
     }
   }
+
+  /*componentDidUpdate() {
+    this.forceUpdate(); //!Simulate ccrash
+  }*/
 
   /**
    * @func renderRouteElements
