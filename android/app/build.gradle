@@ -150,8 +150,8 @@ android {
         applicationId "com.taxiconnectdrivers"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 89
-        versionName "2.0.139"
+        versionCode 93
+        versionName "2.0.141"
         multiDexEnabled true
     }
     splits {

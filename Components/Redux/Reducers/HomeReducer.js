@@ -330,6 +330,16 @@ const HomeReducer = (state = INIT_STATE, action) => {
 
     case 'UPDATE_DAILY_AMOUNT_MADESOFAR':
       //? Optimized
+      //! Change default select shown ride type to Delivery if in 'Rides'
+      if (
+        /Delivery/i.test(action.payload.supported_requests_types) &&
+        /Rides/i.test(newState.shownRides_types)
+      ) {
+        //Wrong type detected - change to Delivery as default selected
+        newState.shownRides_types = action.payload.supported_requests_types;
+        newState.requestType = action.payload.supported_requests_types;
+      }
+      //...
       if (
         `${JSON.stringify(
           newState.main_interfaceState_vars.dailyAmount_madeSoFar,

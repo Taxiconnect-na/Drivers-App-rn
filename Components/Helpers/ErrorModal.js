@@ -33,6 +33,7 @@ import {
 import call from 'react-native-phone-call';
 import {RFValue} from 'react-native-responsive-fontsize';
 import {FlatList} from 'react-native-gesture-handler';
+import IconIonic from 'react-native-vector-icons/Ionicons';
 
 class ErrorModal extends React.PureComponent {
   constructor(props) {
@@ -1172,6 +1173,78 @@ class ErrorModal extends React.PureComponent {
                 </Text>
               </TouchableOpacity>
             </View>
+            {/scheduled/i.test(
+              this.props.App.requests_data_main_vars.moreDetailsFocused_request
+                .ride_basic_infos.request_type,
+            ) ? (
+              <View
+                style={{
+                  borderWidth: 1,
+                  padding: 10,
+                  backgroundColor: '#01101F',
+                  borderColor: '#01101F',
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                }}>
+                <IconIonic
+                  name="timer-outline"
+                  size={20}
+                  style={{color: '#fff', marginRight: 5}}
+                />
+                <Text
+                  style={{
+                    color: '#fff',
+                    fontFamily:
+                      Platform.OS === 'android'
+                        ? 'MoveTextRegular'
+                        : 'Uber Move Text',
+                    fontSize: RFValue(16),
+                  }}>
+                  {`${
+                    new Date(
+                      this.props.App.requests_data_main_vars.moreDetailsFocused_request.ride_basic_infos.wished_pickup_time,
+                    )
+                      .toLocaleString()
+                      .split(', ')[0]
+                      .split('/')[1]
+                  }-${
+                    new Date(
+                      this.props.App.requests_data_main_vars.moreDetailsFocused_request.ride_basic_infos.wished_pickup_time,
+                    )
+                      .toLocaleString()
+                      .split(', ')[0]
+                      .split('/')[0].length > 1
+                      ? new Date(
+                          this.props.App.requests_data_main_vars.moreDetailsFocused_request.ride_basic_infos.wished_pickup_time,
+                        )
+                          .toLocaleString()
+                          .split(', ')[0]
+                          .split('/')[0]
+                      : `0${
+                          new Date(
+                            this.props.App.requests_data_main_vars.moreDetailsFocused_request.ride_basic_infos.wished_pickup_time,
+                          )
+                            .toLocaleString()
+                            .split(', ')[0]
+                            .split('/')[0]
+                        }`
+                  }-${
+                    new Date(
+                      this.props.App.requests_data_main_vars.moreDetailsFocused_request.ride_basic_infos.wished_pickup_time,
+                    )
+                      .toLocaleString()
+                      .split(', ')[0]
+                      .split('/')[2]
+                  }, ${
+                    new Date(
+                      this.props.App.requests_data_main_vars.moreDetailsFocused_request.ride_basic_infos.wished_pickup_time,
+                    )
+                      .toLocaleString()
+                      .split(', ')[1]
+                  }`}
+                </Text>
+              </View>
+            ) : null}
             <ScrollView style={{flex: 1}}>
               {/**Passengers details */}
               <View
@@ -1733,6 +1806,65 @@ class ErrorModal extends React.PureComponent {
                       </View>
                     </View>
                   </View>
+                </View>
+              </View>
+              {/**Receiver's infos */}
+              <View style={{marginBottom: 15}}>
+                <Text
+                  style={{
+                    fontSize: RFValue(17),
+                    fontFamily:
+                      Platform.OS === 'android'
+                        ? 'UberMoveTextMedium'
+                        : 'Uber Move Text Medium',
+                    color: '#757575',
+                    padding: 20,
+                    paddingBottom: 10,
+                  }}>
+                  Receiver's information
+                </Text>
+                <View
+                  style={{
+                    padding: 20,
+                    backgroundColor: '#F6F6F6',
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    paddingTop: 0,
+                    paddingBottom: 0,
+                  }}>
+                  <Text
+                    style={{
+                      fontFamily:
+                        Platform.OS === 'android'
+                          ? 'UberMoveTextRegular'
+                          : 'Uber Move Text',
+                      fontSize: RFValue(17),
+                      flex: 1,
+                    }}>
+                    {
+                      this.props.App.requests_data_main_vars
+                        .moreDetailsFocused_request.ride_basic_infos
+                        .receiver_infos.receiverName_delivery
+                    }
+                  </Text>
+                  <TouchableOpacity
+                    onPress={() =>
+                      call({
+                        number: this.props.App.requests_data_main_vars
+                          .moreDetailsFocused_request.ride_basic_infos
+                          .receiver_infos.receiverPhone_delivery,
+                        prompt: true,
+                      })
+                    }
+                    style={{
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      marginRight: 5,
+                      flexDirection: 'row',
+                      padding: 15,
+                    }}>
+                    <IconMaterialIcons name="phone" color="#096ED4" size={30} />
+                  </TouchableOpacity>
                 </View>
               </View>
               {/**Pickup note if any */}

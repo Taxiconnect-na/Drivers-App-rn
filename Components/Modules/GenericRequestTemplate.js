@@ -11,6 +11,7 @@ import {
   Platform,
 } from 'react-native';
 import IconAnt from 'react-native-vector-icons/AntDesign';
+import IconIonic from 'react-native-vector-icons/Ionicons';
 import {RFValue} from 'react-native-responsive-fontsize';
 
 class GenericRequestTemplate extends React.PureComponent {
@@ -116,6 +117,80 @@ class GenericRequestTemplate extends React.PureComponent {
           elevation: 3,
           marginBottom: 15,
         }}>
+        {/scheduled/i.test(
+          this.props.requestLightData.ride_basic_infos.request_type,
+        ) ? (
+          <View
+            style={{
+              borderWidth: 1,
+              padding: 10,
+              backgroundColor: '#01101F',
+              borderColor: '#01101F',
+              borderTopRightRadius: 3,
+              borderTopLeftRadius: 3,
+              flexDirection: 'row',
+              alignItems: 'center',
+            }}>
+            <IconIonic
+              name="timer-outline"
+              size={20}
+              style={{color: '#fff', marginRight: 5}}
+            />
+            <Text
+              style={{
+                color: '#fff',
+                fontFamily:
+                  Platform.OS === 'android'
+                    ? 'MoveTextRegular'
+                    : 'Uber Move Text',
+                fontSize: RFValue(16),
+              }}>
+              {`${
+                new Date(
+                  this.props.requestLightData.ride_basic_infos.wished_pickup_time,
+                )
+                  .toLocaleString()
+                  .split(', ')[0]
+                  .split('/')[1]
+              }-${
+                new Date(
+                  this.props.requestLightData.ride_basic_infos.wished_pickup_time,
+                )
+                  .toLocaleString()
+                  .split(', ')[0]
+                  .split('/')[0].length > 1
+                  ? new Date(
+                      this.props.requestLightData.ride_basic_infos.wished_pickup_time,
+                    )
+                      .toLocaleString()
+                      .split(', ')[0]
+                      .split('/')[0]
+                  : `0${
+                      new Date(
+                        this.props.requestLightData.ride_basic_infos.wished_pickup_time,
+                      )
+                        .toLocaleString()
+                        .split(', ')[0]
+                        .split('/')[0]
+                    }`
+              }-${
+                new Date(
+                  this.props.requestLightData.ride_basic_infos.wished_pickup_time,
+                )
+                  .toLocaleString()
+                  .split(', ')[0]
+                  .split('/')[2]
+              }, ${
+                new Date(
+                  this.props.requestLightData.ride_basic_infos.wished_pickup_time,
+                )
+                  .toLocaleString()
+                  .split(', ')[1]
+              }`}
+            </Text>
+          </View>
+        ) : null}
+
         <View
           style={{
             flexDirection: 'row',
@@ -443,71 +518,43 @@ class GenericRequestTemplate extends React.PureComponent {
                       flex: 1,
                       alignItems: 'flex-start',
                     }}>
-                    <Text
-                      style={{
-                        fontFamily:
-                          Platform.OS === 'android'
-                            ? 'UberMoveTextMedium'
-                            : 'Uber Move Text Medium',
-                        fontSize: 18,
-                        marginLeft: 5,
-                        flex: 1,
-                      }}>
-                      {this.props.requestLightData.origin_destination_infos
-                        .destination_infos[0].suburb !== false &&
-                      this.props.requestLightData.origin_destination_infos
-                        .destination_infos[0].suburb !== 'false' &&
-                      this.props.requestLightData.origin_destination_infos
-                        .destination_infos[0].suburb !== undefined &&
-                      this.props.requestLightData.origin_destination_infos
-                        .destination_infos[0].suburb !== null
-                        ? this.props.requestLightData.origin_destination_infos
-                            .destination_infos[0].suburb
-                        : this.props.requestLightData.origin_destination_infos
-                            .destination_infos[0].location_name !== false &&
-                          this.props.requestLightData.origin_destination_infos
-                            .destination_infos[0].location_name !== 'false' &&
-                          this.props.requestLightData.origin_destination_infos
-                            .destination_infos[0].location_name !== undefined &&
-                          this.props.requestLightData.origin_destination_infos
-                            .destination_infos[0].location_name !== null
-                        ? this.props.requestLightData.origin_destination_infos
-                            .destination_infos[0].location_name
-                        : this.props.requestLightData.origin_destination_infos
-                            .destination_infos[0].street_name}
-                    </Text>
-                    <Text
-                      style={{
-                        fontFamily:
-                          Platform.OS === 'android'
-                            ? 'UberMoveTextRegular'
-                            : 'Uber Move Text',
-                        fontSize:
-                          this.props.requestLightData.origin_destination_infos
-                            .destination_infos.length > 1
-                            ? 15
-                            : 15,
-                        marginLeft: 5,
-                        flex: 1,
-                        color:
-                          this.props.requestLightData.origin_destination_infos
-                            .destination_infos.length > 1
-                            ? '#096ED4'
-                            : '#333333',
-                      }}>
-                      {this.props.requestLightData.origin_destination_infos
-                        .destination_infos.length > 1
-                        ? '+' +
-                          (this.props.requestLightData.origin_destination_infos
-                            .destination_infos.length -
-                            1) +
-                          ' more destinations'
-                        : this.props.requestLightData.origin_destination_infos
-                            .destination_infos[0].location_name +
-                          ', ' +
-                          this.props.requestLightData.origin_destination_infos
-                            .destination_infos[0].street_name}
-                    </Text>
+                    {this.props.requestLightData.origin_destination_infos.destination_infos.map(
+                      (destination, index) => {
+                        return (
+                          <Text
+                            style={{
+                              fontFamily:
+                                Platform.OS === 'android'
+                                  ? 'UberMoveTextMedium'
+                                  : 'Uber Move Text Medium',
+                              fontSize: 18,
+                              marginLeft: 5,
+                              flex: 1,
+                            }}>
+                            <Text
+                              style={{
+                                fontFamily:
+                                  Platform.OS === 'android'
+                                    ? 'UberMoveTextRegular'
+                                    : 'Uber Move Text',
+                              }}>
+                              {`${index + 1}. `}
+                            </Text>
+                            {destination.suburb !== false &&
+                            destination.suburb !== 'false' &&
+                            destination.suburb !== undefined &&
+                            destination.suburb !== null
+                              ? destination.suburb
+                              : destination.location_name !== false &&
+                                destination.location_name !== 'false' &&
+                                destination.location_name !== undefined &&
+                                destination.location_name !== null
+                              ? destination.location_name
+                              : destination.street_name}
+                          </Text>
+                        );
+                      },
+                    )}
                   </View>
                 </View>
               </View>
