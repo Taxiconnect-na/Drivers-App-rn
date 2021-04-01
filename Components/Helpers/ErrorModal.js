@@ -138,7 +138,7 @@ class ErrorModal extends React.PureComponent {
               'any',
             ); //Close modal
           }
-        }, globalObject.props.App._TMP_TIMEOUT_AFTER_REQUEST_RESPONSE);
+        }, globalObject.props.App._TMP_TIMEOUT_AFTER_REQUEST_RESPONSE + 1500);
       },
     );
 
@@ -174,7 +174,7 @@ class ErrorModal extends React.PureComponent {
               'any',
             ); //Close modal
           }
-        }, globalObject.props.App._TMP_TIMEOUT_AFTER_REQUEST_RESPONSE);
+        }, globalObject.props.App._TMP_TIMEOUT_AFTER_REQUEST_RESPONSE + 1500);
       },
     );
   }
@@ -1809,64 +1809,73 @@ class ErrorModal extends React.PureComponent {
                 </View>
               </View>
               {/**Receiver's infos */}
-              <View style={{marginBottom: 15}}>
-                <Text
-                  style={{
-                    fontSize: RFValue(17),
-                    fontFamily:
-                      Platform.OS === 'android'
-                        ? 'UberMoveTextMedium'
-                        : 'Uber Move Text Medium',
-                    color: '#757575',
-                    padding: 20,
-                    paddingBottom: 10,
-                  }}>
-                  Receiver's information
-                </Text>
-                <View
-                  style={{
-                    padding: 20,
-                    backgroundColor: '#F6F6F6',
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                    paddingTop: 0,
-                    paddingBottom: 0,
-                  }}>
+              {/Delivery/i.test(
+                this.props.App.requests_data_main_vars
+                  .moreDetailsFocused_request.ride_basic_infos.ride_mode,
+              ) ? (
+                <View style={{marginBottom: 15}}>
                   <Text
                     style={{
+                      fontSize: RFValue(17),
                       fontFamily:
                         Platform.OS === 'android'
-                          ? 'UberMoveTextRegular'
-                          : 'Uber Move Text',
-                      fontSize: RFValue(17),
-                      flex: 1,
+                          ? 'UberMoveTextMedium'
+                          : 'Uber Move Text Medium',
+                      color: '#757575',
+                      padding: 20,
+                      paddingBottom: 10,
                     }}>
-                    {
-                      this.props.App.requests_data_main_vars
-                        .moreDetailsFocused_request.ride_basic_infos
-                        .receiver_infos.receiverName_delivery
-                    }
+                    Receiver's information
                   </Text>
-                  <TouchableOpacity
-                    onPress={() =>
-                      call({
-                        number: this.props.App.requests_data_main_vars
-                          .moreDetailsFocused_request.ride_basic_infos
-                          .receiver_infos.receiverPhone_delivery,
-                        prompt: true,
-                      })
-                    }
+                  <View
                     style={{
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      marginRight: 5,
+                      padding: 20,
+                      backgroundColor: '#F6F6F6',
                       flexDirection: 'row',
-                      padding: 15,
+                      alignItems: 'center',
+                      paddingTop: 0,
+                      paddingBottom: 0,
                     }}>
-                    <IconMaterialIcons name="phone" color="#096ED4" size={30} />
-                  </TouchableOpacity>
+                    <Text
+                      style={{
+                        fontFamily:
+                          Platform.OS === 'android'
+                            ? 'UberMoveTextRegular'
+                            : 'Uber Move Text',
+                        fontSize: RFValue(17),
+                        flex: 1,
+                      }}>
+                      {
+                        this.props.App.requests_data_main_vars
+                          .moreDetailsFocused_request.ride_basic_infos
+                          .receiver_infos.receiverName_delivery
+                      }
+                    </Text>
+                    <TouchableOpacity
+                      onPress={() =>
+                        call({
+                          number: this.props.App.requests_data_main_vars
+                            .moreDetailsFocused_request.ride_basic_infos
+                            .receiver_infos.receiverPhone_delivery,
+                          prompt: true,
+                        })
+                      }
+                      style={{
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        marginRight: 5,
+                        flexDirection: 'row',
+                        padding: 15,
+                      }}>
+                      <IconMaterialIcons
+                        name="phone"
+                        color="#096ED4"
+                        size={30}
+                      />
+                    </TouchableOpacity>
+                  </View>
                 </View>
-              </View>
+              ) : null}
               {/**Pickup note if any */}
               {this.props.App.requests_data_main_vars.moreDetailsFocused_request
                 .ride_basic_infos.pickup_note !== null &&

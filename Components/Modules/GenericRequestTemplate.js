@@ -145,48 +145,9 @@ class GenericRequestTemplate extends React.PureComponent {
                     : 'Uber Move Text',
                 fontSize: RFValue(16),
               }}>
-              {`${
-                new Date(
-                  this.props.requestLightData.ride_basic_infos.wished_pickup_time,
-                )
-                  .toLocaleString()
-                  .split(', ')[0]
-                  .split('/')[1]
-              }-${
-                new Date(
-                  this.props.requestLightData.ride_basic_infos.wished_pickup_time,
-                )
-                  .toLocaleString()
-                  .split(', ')[0]
-                  .split('/')[0].length > 1
-                  ? new Date(
-                      this.props.requestLightData.ride_basic_infos.wished_pickup_time,
-                    )
-                      .toLocaleString()
-                      .split(', ')[0]
-                      .split('/')[0]
-                  : `0${
-                      new Date(
-                        this.props.requestLightData.ride_basic_infos.wished_pickup_time,
-                      )
-                        .toLocaleString()
-                        .split(', ')[0]
-                        .split('/')[0]
-                    }`
-              }-${
-                new Date(
-                  this.props.requestLightData.ride_basic_infos.wished_pickup_time,
-                )
-                  .toLocaleString()
-                  .split(', ')[0]
-                  .split('/')[2]
-              }, ${
-                new Date(
-                  this.props.requestLightData.ride_basic_infos.wished_pickup_time,
-                )
-                  .toLocaleString()
-                  .split(', ')[1]
-              }`}
+              {`${new Date(
+                this.props.requestLightData.ride_basic_infos.wished_pickup_time,
+              ).toLocaleString()}`}
             </Text>
           </View>
         ) : null}
@@ -522,6 +483,7 @@ class GenericRequestTemplate extends React.PureComponent {
                       (destination, index) => {
                         return (
                           <Text
+                            key={`${index}`}
                             style={{
                               fontFamily:
                                 Platform.OS === 'android'

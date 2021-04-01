@@ -165,7 +165,11 @@ class WalletEntry extends React.PureComponent {
         {this._isMounted ? (
           <DismissKeyboard>
             <View style={styles.mainWindow}>
-              <StatusBar backgroundColor="#000" barStyle={'light-content'} />
+              {Platform.OS === 'android' ? (
+                <StatusBar backgroundColor="#000" barStyle={'light-content'} />
+              ) : (
+                <StatusBar barStyle={'dark-content'} />
+              )}
               <View style={styles.presentationWindow}>
                 <GenericLoader
                   active={this.state.loaderState}
@@ -420,9 +424,9 @@ class WalletEntry extends React.PureComponent {
                             Automatic payments
                           </Text>
                           <IconCommunity
-                            name="check"
+                            name="close"
                             size={20}
-                            color={'#0e8491'}
+                            color={'#b22222'}
                           />
                         </View>
                         <Text

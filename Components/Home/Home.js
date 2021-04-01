@@ -590,37 +590,45 @@ class Home extends React.PureComponent {
                   this.state.locationWatcher = GeolocationP.watchPosition();
                 }
 
-                GeolocationP.getCurrentPosition(
-                  (position) => {
-                    globalObject.props.App.latitude = position.coords.latitude;
-                    globalObject.props.App.longitude =
-                      position.coords.longitude;
-                    //Get user location
-                    globalObject.props.App.socket.emit('geocode-this-point', {
-                      latitude: globalObject.props.App.latitude,
-                      longitude: globalObject.props.App.longitude,
-                      user_fingerprint: globalObject.props.App.user_fingerprint,
-                    });
-                    //Update GPRS permission global var
-                    let newStateVars = {};
-                    newStateVars.hasGPRSPermissions = true;
-                    newStateVars.didAskForGprs = true;
-                    globalObject.props.UpdateGrantedGRPS(newStateVars);
-                  },
-                  () => {
-                    // See error code charts below.
-                    //Launch recalibration
-                    InteractionManager.runAfterInteractions(() => {
-                      //globalObject.recalibrateMap();
-                    });
-                  },
-                  {
-                    enableHighAccuracy: true,
-                    timeout: 200000,
-                    maximumAge: 10000,
-                    distanceFilter: 3,
-                  },
-                );
+                if (globalObject.props.App._MAX_NUMBER_OF_CALLBACKS_MAP > 0) {
+                  //! Decrement promise controller
+                  globalObject.props.App._MAX_NUMBER_OF_CALLBACKS_MAP -= 1;
+                  GeolocationP.getCurrentPosition(
+                    (position) => {
+                      globalObject.props.App._MAX_NUMBER_OF_CALLBACKS_MAP += 1;
+                      globalObject.props.App.latitude =
+                        position.coords.latitude;
+                      globalObject.props.App.longitude =
+                        position.coords.longitude;
+                      //Get user location
+                      globalObject.props.App.socket.emit('geocode-this-point', {
+                        latitude: globalObject.props.App.latitude,
+                        longitude: globalObject.props.App.longitude,
+                        user_fingerprint:
+                          globalObject.props.App.user_fingerprint,
+                      });
+                      //Update GPRS permission global var
+                      let newStateVars = {};
+                      newStateVars.hasGPRSPermissions = true;
+                      newStateVars.didAskForGprs = true;
+                      globalObject.props.UpdateGrantedGRPS(newStateVars);
+                    },
+                    () => {
+                      globalObject.props.App._MAX_NUMBER_OF_CALLBACKS_MAP += 1;
+                      // See error code charts below.
+                      //Launch recalibration
+                      InteractionManager.runAfterInteractions(() => {
+                        //globalObject.recalibrateMap();
+                      });
+                    },
+                    {
+                      enableHighAccuracy: true,
+                      timeout: 200000,
+                      maximumAge: 10000,
+                      distanceFilter: 3,
+                    },
+                  );
+                }
                 //Check the zoom level
                 if (this._map !== undefined && this._map != null) {
                   if (
@@ -796,39 +804,48 @@ class Home extends React.PureComponent {
                   );
                   this.props.App.isMapPermitted = true;
                 } else {
-                  GeolocationP.getCurrentPosition(
-                    (position) => {
-                      globalObject.props.App.latitude =
-                        position.coords.latitude;
-                      globalObject.props.App.longitude =
-                        position.coords.longitude;
-                      //Get user location
-                      globalObject.props.App.socket.emit('geocode-this-point', {
-                        latitude: globalObject.props.App.latitude,
-                        longitude: globalObject.props.App.longitude,
-                        user_fingerprint:
-                          globalObject.props.App.user_fingerprint,
-                      });
-                      //Update GPRS permission global var
-                      let newStateVars = {};
-                      newStateVars.hasGPRSPermissions = true;
-                      newStateVars.didAskForGprs = true;
-                      globalObject.props.UpdateGrantedGRPS(newStateVars);
-                    },
-                    () => {
-                      // See error code charts below.
-                      //Launch recalibration
-                      InteractionManager.runAfterInteractions(() => {
-                        //globalObject.recalibrateMap();
-                      });
-                    },
-                    {
-                      enableHighAccuracy: true,
-                      timeout: 200000,
-                      maximumAge: 10000,
-                      distanceFilter: 3,
-                    },
-                  );
+                  if (globalObject.props.App._MAX_NUMBER_OF_CALLBACKS_MAP > 0) {
+                    //! Decrement promise controller
+                    globalObject.props.App._MAX_NUMBER_OF_CALLBACKS_MAP -= 1;
+                    GeolocationP.getCurrentPosition(
+                      (position) => {
+                        globalObject.props.App._MAX_NUMBER_OF_CALLBACKS_MAP += 1;
+                        globalObject.props.App.latitude =
+                          position.coords.latitude;
+                        globalObject.props.App.longitude =
+                          position.coords.longitude;
+                        //Get user location
+                        globalObject.props.App.socket.emit(
+                          'geocode-this-point',
+                          {
+                            latitude: globalObject.props.App.latitude,
+                            longitude: globalObject.props.App.longitude,
+                            user_fingerprint:
+                              globalObject.props.App.user_fingerprint,
+                          },
+                        );
+                        //Update GPRS permission global var
+                        let newStateVars = {};
+                        newStateVars.hasGPRSPermissions = true;
+                        newStateVars.didAskForGprs = true;
+                        globalObject.props.UpdateGrantedGRPS(newStateVars);
+                      },
+                      () => {
+                        globalObject.props.App._MAX_NUMBER_OF_CALLBACKS_MAP += 1;
+                        // See error code charts below.
+                        //Launch recalibration
+                        InteractionManager.runAfterInteractions(() => {
+                          //globalObject.recalibrateMap();
+                        });
+                      },
+                      {
+                        enableHighAccuracy: true,
+                        timeout: 200000,
+                        maximumAge: 10000,
+                        distanceFilter: 3,
+                      },
+                    );
+                  }
                   //Check the zoom level
                   if (this._map !== undefined && this._map != null) {
                     if (
@@ -910,39 +927,48 @@ class Home extends React.PureComponent {
                   );
                   this.props.App.isMapPermitted = true;
                 } else {
-                  GeolocationP.getCurrentPosition(
-                    (position) => {
-                      globalObject.props.App.latitude =
-                        position.coords.longitude;
-                      globalObject.props.App.longitude =
-                        position.coords.latitude;
-                      //Get user location
-                      globalObject.props.App.socket.emit('geocode-this-point', {
-                        latitude: globalObject.props.App.latitude,
-                        longitude: globalObject.props.App.longitude,
-                        user_fingerprint:
-                          globalObject.props.App.user_fingerprint,
-                      });
-                      //Update GPRS permission global var
-                      let newStateVars = {};
-                      newStateVars.hasGPRSPermissions = true;
-                      newStateVars.didAskForGprs = true;
-                      globalObject.props.UpdateGrantedGRPS(newStateVars);
-                    },
-                    () => {
-                      // See error code charts below.
-                      //Launch recalibration
-                      InteractionManager.runAfterInteractions(() => {
-                        //globalObject.recalibrateMap();
-                      });
-                    },
-                    {
-                      enableHighAccuracy: true,
-                      timeout: 200000,
-                      maximumAge: 10000,
-                      distanceFilter: 3,
-                    },
-                  );
+                  if (globalObject.props.App._MAX_NUMBER_OF_CALLBACKS_MAP > 0) {
+                    //! Decrement promise controller
+                    globalObject.props.App._MAX_NUMBER_OF_CALLBACKS_MAP -= 1;
+                    GeolocationP.getCurrentPosition(
+                      (position) => {
+                        globalObject.props.App._MAX_NUMBER_OF_CALLBACKS_MAP += 1;
+                        globalObject.props.App.latitude =
+                          position.coords.longitude;
+                        globalObject.props.App.longitude =
+                          position.coords.latitude;
+                        //Get user location
+                        globalObject.props.App.socket.emit(
+                          'geocode-this-point',
+                          {
+                            latitude: globalObject.props.App.latitude,
+                            longitude: globalObject.props.App.longitude,
+                            user_fingerprint:
+                              globalObject.props.App.user_fingerprint,
+                          },
+                        );
+                        //Update GPRS permission global var
+                        let newStateVars = {};
+                        newStateVars.hasGPRSPermissions = true;
+                        newStateVars.didAskForGprs = true;
+                        globalObject.props.UpdateGrantedGRPS(newStateVars);
+                      },
+                      () => {
+                        globalObject.props.App._MAX_NUMBER_OF_CALLBACKS_MAP += 1;
+                        // See error code charts below.
+                        //Launch recalibration
+                        InteractionManager.runAfterInteractions(() => {
+                          //globalObject.recalibrateMap();
+                        });
+                      },
+                      {
+                        enableHighAccuracy: true,
+                        timeout: 200000,
+                        maximumAge: 10000,
+                        distanceFilter: 3,
+                      },
+                    );
+                  }
                   //Check the zoom level
                   if (this._map !== undefined && this._map != null) {
                     if (
@@ -1576,10 +1602,6 @@ class Home extends React.PureComponent {
     }
   }
 
-  /*componentDidUpdate() {
-    this.forceUpdate(); //!Simulate ccrash
-  }*/
-
   /**
    * @func renderRouteElements
    * Responsible for rendering any kind of polyline and navigation elements in the map component.
@@ -1767,10 +1789,14 @@ class Home extends React.PureComponent {
             pitch={
               this.props.App.main_interfaceState_vars.isApp_inTrackingMode
                 ? 50
-                : 0.0
+                : 0
             }
             //followUserLocation={true}
-            followUserMode="compass"
+            followUserMode={
+              this.props.App.main_interfaceState_vars.isRideInProgress
+                ? 'normal'
+                : 'compass'
+            }
             centerCoordinate={[
               this.props.App.longitude,
               this.props.App.latitude,

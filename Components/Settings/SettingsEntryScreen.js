@@ -13,6 +13,7 @@ import {
   Linking,
   BackHandler,
   Platform,
+  StatusBar,
 } from 'react-native';
 import {UpdateErrorModalLog} from '../Redux/HomeActionsCreators';
 import IconCommunity from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -101,6 +102,7 @@ class SettingsEntryScreen extends React.Component {
             {this.props.App.generalErrorModal_vars.showErrorGeneralModal
               ? this.renderError_modalView()
               : null}
+            <StatusBar backgroundColor="#000" barStyle={'light-content'} />
             <ScrollView style={styles.presentationWindow}>
               {/**Picture section/edit */}
               <View
