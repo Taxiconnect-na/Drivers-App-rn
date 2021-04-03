@@ -1202,27 +1202,39 @@ class ErrorModal extends React.PureComponent {
                   }}>
                   {`${
                     new Date(
-                      this.props.App.requests_data_main_vars.moreDetailsFocused_request.ride_basic_infos.wished_pickup_time,
+                      new Date(
+                        this.props.App.requests_data_main_vars.moreDetailsFocused_request.ride_basic_infos.wished_pickup_time,
+                      ).getTime() -
+                        2 * 3600 * 1000,
                     )
                       .toLocaleString()
                       .split(', ')[0]
                       .split('/')[1]
                   }-${
                     new Date(
-                      this.props.App.requests_data_main_vars.moreDetailsFocused_request.ride_basic_infos.wished_pickup_time,
+                      new Date(
+                        this.props.App.requests_data_main_vars.moreDetailsFocused_request.ride_basic_infos.wished_pickup_time,
+                      ).getTime() -
+                        2 * 3600 * 1000,
                     )
                       .toLocaleString()
                       .split(', ')[0]
                       .split('/')[0].length > 1
                       ? new Date(
-                          this.props.App.requests_data_main_vars.moreDetailsFocused_request.ride_basic_infos.wished_pickup_time,
+                          new Date(
+                            this.props.App.requests_data_main_vars.moreDetailsFocused_request.ride_basic_infos.wished_pickup_time,
+                          ).getTime() -
+                            2 * 3600 * 1000,
                         )
                           .toLocaleString()
                           .split(', ')[0]
                           .split('/')[0]
                       : `0${
                           new Date(
-                            this.props.App.requests_data_main_vars.moreDetailsFocused_request.ride_basic_infos.wished_pickup_time,
+                            new Date(
+                              this.props.App.requests_data_main_vars.moreDetailsFocused_request.ride_basic_infos.wished_pickup_time,
+                            ).getTime() -
+                              2 * 3600 * 1000,
                           )
                             .toLocaleString()
                             .split(', ')[0]
@@ -1230,14 +1242,20 @@ class ErrorModal extends React.PureComponent {
                         }`
                   }-${
                     new Date(
-                      this.props.App.requests_data_main_vars.moreDetailsFocused_request.ride_basic_infos.wished_pickup_time,
+                      new Date(
+                        this.props.App.requests_data_main_vars.moreDetailsFocused_request.ride_basic_infos.wished_pickup_time,
+                      ).getTime() -
+                        2 * 3600 * 1000,
                     )
                       .toLocaleString()
                       .split(', ')[0]
                       .split('/')[2]
                   }, ${
                     new Date(
-                      this.props.App.requests_data_main_vars.moreDetailsFocused_request.ride_basic_infos.wished_pickup_time,
+                      new Date(
+                        this.props.App.requests_data_main_vars.moreDetailsFocused_request.ride_basic_infos.wished_pickup_time,
+                      ).getTime() -
+                        2 * 3600 * 1000,
                     )
                       .toLocaleString()
                       .split(', ')[1]

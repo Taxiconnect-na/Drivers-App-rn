@@ -1770,38 +1770,56 @@ class Home extends React.PureComponent {
           ref={(c) => (this._map = c)}
           style={styles.map}
           /*onDidFinishLoadingMap={() => this.recalibrateMap()}
-        onUserLocationUpdate={() => this.recalibrateMap()}
-        onDidFailLoadingMap={() => this.recalibrateMap()}
-        onDidFinishRenderingMapFully={() => this.recalibrateMap()}*/
+          onUserLocationUpdate={() => this.recalibrateMap()}
+          onDidFailLoadingMap={() => this.recalibrateMap()}
+          onDidFinishRenderingMapFully={() => this.recalibrateMap()}*/
           attributionEnabled={false}
           compassEnabled={false}
           id={'mainMapViewElement'}
           styleURL={'mapbox://styles/dominiquektt/ckax4kse10a791iofjbx59jzm'}>
-          <Camera
-            ref={(c) => (this.camera = c)}
-            zoomLevel={
-              this.props.App.main_interfaceState_vars.isApp_inTrackingMode
-                ? Platform.OS === 'android'
-                  ? 15
-                  : 16.8
-                : 14
-            }
-            pitch={
-              this.props.App.main_interfaceState_vars.isApp_inTrackingMode
-                ? 50
-                : 0
-            }
-            //followUserLocation={true}
-            followUserMode={
-              this.props.App.main_interfaceState_vars.isRideInProgress
-                ? 'normal'
-                : 'compass'
-            }
-            centerCoordinate={[
-              this.props.App.longitude,
-              this.props.App.latitude,
-            ]}
-          />
+          {this.props.App.main_interfaceState_vars.isRideInProgress ? (
+            <Camera
+              ref={(c) => (this.camera = c)}
+              zoomLevel={
+                this.props.App.main_interfaceState_vars.isApp_inTrackingMode
+                  ? Platform.OS === 'android'
+                    ? 15
+                    : 17.8
+                  : 14
+              }
+              pitch={
+                this.props.App.main_interfaceState_vars.isApp_inTrackingMode
+                  ? 50
+                  : 0
+              }
+              centerCoordinate={[
+                this.props.App.longitude,
+                this.props.App.latitude,
+              ]}
+            />
+          ) : (
+            <Camera
+              ref={(c) => (this.camera = c)}
+              zoomLevel={
+                this.props.App.main_interfaceState_vars.isApp_inTrackingMode
+                  ? Platform.OS === 'android'
+                    ? 15
+                    : 17.8
+                  : 14
+              }
+              pitch={
+                this.props.App.main_interfaceState_vars.isApp_inTrackingMode
+                  ? 50
+                  : 0
+              }
+              //followUserLocation={true}
+              followUserMode={'compass'}
+              centerCoordinate={[
+                this.props.App.longitude,
+                this.props.App.latitude,
+              ]}
+            />
+          )}
           <ShapeSource
             id="symbolCarIcon"
             shape={{

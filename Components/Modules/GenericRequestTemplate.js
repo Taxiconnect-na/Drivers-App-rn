@@ -145,9 +145,66 @@ class GenericRequestTemplate extends React.PureComponent {
                     : 'Uber Move Text',
                 fontSize: RFValue(16),
               }}>
-              {`${new Date(
-                this.props.requestLightData.ride_basic_infos.wished_pickup_time,
-              ).toLocaleString()}`}
+              {`${
+                new Date(
+                  new Date(
+                    this.props.requestLightData.ride_basic_infos.wished_pickup_time,
+                  ).getTime() -
+                    2 * 3600 * 1000,
+                )
+                  .toLocaleString()
+                  .split(', ')[0]
+                  .split('/')[1]
+              }-${
+                new Date(
+                  new Date(
+                    this.props.requestLightData.ride_basic_infos.wished_pickup_time,
+                  ).getTime() -
+                    2 * 3600 * 1000,
+                )
+                  .toLocaleString()
+                  .split(', ')[0]
+                  .split('/')[0].length > 1
+                  ? new Date(
+                      new Date(
+                        this.props.requestLightData.ride_basic_infos.wished_pickup_time,
+                      ).getTime() -
+                        2 * 3600 * 1000,
+                    )
+                      .toLocaleString()
+                      .split(', ')[0]
+                      .split('/')[0]
+                  : `0${
+                      new Date(
+                        new Date(
+                          this.props.requestLightData.ride_basic_infos.wished_pickup_time,
+                        ).getTime() -
+                          2 * 3600 * 1000,
+                      )
+                        .toLocaleString()
+                        .split(', ')[0]
+                        .split('/')[0]
+                    }`
+              }-${
+                new Date(
+                  new Date(
+                    this.props.requestLightData.ride_basic_infos.wished_pickup_time,
+                  ).getTime() -
+                    2 * 3600 * 1000,
+                )
+                  .toLocaleString()
+                  .split(', ')[0]
+                  .split('/')[2]
+              }, ${
+                new Date(
+                  new Date(
+                    this.props.requestLightData.ride_basic_infos.wished_pickup_time,
+                  ).getTime() -
+                    2 * 3600 * 1000,
+                )
+                  .toLocaleString()
+                  .split(', ')[1]
+              }`}
             </Text>
           </View>
         ) : null}
@@ -276,7 +333,6 @@ class GenericRequestTemplate extends React.PureComponent {
               ]}>
               {'N$ ' + this.props.requestLightData.ride_basic_infos.fare_amount}
             </Text>
-            {console.log(this.props.requestLightData)}
             <Text
               style={{
                 fontFamily:
