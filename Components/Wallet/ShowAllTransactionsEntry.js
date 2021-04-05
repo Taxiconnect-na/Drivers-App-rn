@@ -106,35 +106,35 @@ class ShowAllTransactionsEntry extends React.PureComponent {
 
   render() {
     return (
-      <>
-        {this._isMounted ? (
-          this.state.loaderState === false ? (
+      <View style={{flex: 1}}>
+        <DismissKeyboard>
+          {this.state.loaderState === false ? (
             this.props.App.wallet_state_vars.transactions_details !== null &&
             this.props.App.wallet_state_vars.transactions_details !==
               undefined ? (
-              <DismissKeyboard>
-                <SafeAreaView style={styles.mainWindow}>
-                  <StatusBar backgroundColor="#000" />
-                  <View style={styles.presentationWindow}>
-                    <FlatList
-                      refreshControl={
-                        <RefreshControl
-                          onRefresh={() => this.refreshWalletValues()}
-                          refreshing={this.state.pullRefreshing}
-                        />
-                      }
-                      data={
-                        this.props.App.wallet_state_vars.transactions_details
-                      }
-                      keyboardShouldPersistTaps={'always'}
-                      keyExtractor={(item, index) => item + index}
-                      renderItem={({item}) => (
-                        <WalletTransacRecords transactionDetails={item} />
-                      )}
-                    />
-                  </View>
-                </SafeAreaView>
-              </DismissKeyboard>
+              <SafeAreaView style={styles.mainWindow}>
+                <StatusBar backgroundColor="#000" />
+                <View style={styles.presentationWindow}>
+                  <FlatList
+                    refreshControl={
+                      <RefreshControl
+                        onRefresh={() => this.refreshWalletValues()}
+                        refreshing={this.state.pullRefreshing}
+                      />
+                    }
+                    data={this.props.App.wallet_state_vars.transactions_details}
+                    initialNumToRender={15}
+                    keyboardShouldPersistTaps={'always'}
+                    maxToRenderPerBatch={35}
+                    windowSize={61}
+                    updateCellsBatchingPeriod={10}
+                    keyExtractor={(item, index) => String(index)}
+                    renderItem={({item}) => (
+                      <WalletTransacRecords transactionDetails={item} />
+                    )}
+                  />
+                </View>
+              </SafeAreaView>
             ) : (
               <ScrollView
                 refreshControl={
@@ -172,9 +172,9 @@ class ShowAllTransactionsEntry extends React.PureComponent {
             <View style={{flex: 1}}>
               <GenericLoader active={this.state.loaderState} thickness={4} />
             </View>
-          )
-        ) : null}
-      </>
+          )}
+        </DismissKeyboard>
+      </View>
     );
   }
 }

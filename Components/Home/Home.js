@@ -1761,6 +1761,7 @@ class Home extends React.PureComponent {
         this.props.App.longitude = latitudeTmp;
       }
     }
+    console.log([this.props.App.longitude, this.props.App.latitude]);
     //!--------- Ocean bug fix
     if (this.props.App.main_interfaceState_vars.isApp_inNavigation_mode) {
       //alert([this.props.App.longitude, this.props.App.latitude]);
@@ -1813,7 +1814,8 @@ class Home extends React.PureComponent {
                   : 0
               }
               //followUserLocation={true}
-              followUserMode={'compass'}
+              //followUserMode={'compass'}
+              //followUserMode={'normal'}
               centerCoordinate={[
                 this.props.App.longitude,
                 this.props.App.latitude,

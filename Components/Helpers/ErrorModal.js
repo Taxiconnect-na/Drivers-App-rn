@@ -1105,6 +1105,8 @@ class ErrorModal extends React.PureComponent {
           </View>
         );
       }
+      let wished_pickup_time = this.props.App.requests_data_main_vars
+        .moreDetailsFocused_request.ride_basic_infos.wished_pickup_time;
       return (
         <SafeAreaView
           style={{
@@ -1196,69 +1198,52 @@ class ErrorModal extends React.PureComponent {
                     color: '#fff',
                     fontFamily:
                       Platform.OS === 'android'
-                        ? 'MoveTextRegular'
-                        : 'Uber Move Text',
-                    fontSize: RFValue(16),
+                        ? 'MoveTextMedium'
+                        : 'Uber Move Text Medium',
+                    fontSize: RFValue(17),
                   }}>
-                  {`${
-                    new Date(
+                  {`${new Date(
+                    new Date(wished_pickup_time).getTime() - 2 * 3600 * 1000,
+                  ).getDay()}-${
+                    String(
                       new Date(
-                        this.props.App.requests_data_main_vars.moreDetailsFocused_request.ride_basic_infos.wished_pickup_time,
-                      ).getTime() -
-                        2 * 3600 * 1000,
-                    )
-                      .toLocaleString()
-                      .split(', ')[0]
-                      .split('/')[1]
-                  }-${
-                    new Date(
-                      new Date(
-                        this.props.App.requests_data_main_vars.moreDetailsFocused_request.ride_basic_infos.wished_pickup_time,
-                      ).getTime() -
-                        2 * 3600 * 1000,
-                    )
-                      .toLocaleString()
-                      .split(', ')[0]
-                      .split('/')[0].length > 1
+                        new Date(wished_pickup_time).getTime() -
+                          2 * 3600 * 1000,
+                      ).getMinutes(),
+                    ).length > 1
                       ? new Date(
-                          new Date(
-                            this.props.App.requests_data_main_vars.moreDetailsFocused_request.ride_basic_infos.wished_pickup_time,
-                          ).getTime() -
+                          new Date(wished_pickup_time).getTime() -
                             2 * 3600 * 1000,
-                        )
-                          .toLocaleString()
-                          .split(', ')[0]
-                          .split('/')[0]
-                      : `0${
+                        ).getMonth() + 1
+                      : '0' +
+                        String(
                           new Date(
-                            new Date(
-                              this.props.App.requests_data_main_vars.moreDetailsFocused_request.ride_basic_infos.wished_pickup_time,
-                            ).getTime() -
+                            new Date(wished_pickup_time).getTime() -
                               2 * 3600 * 1000,
-                          )
-                            .toLocaleString()
-                            .split(', ')[0]
-                            .split('/')[0]
-                        }`
-                  }-${
-                    new Date(
+                          ).getMonth() + 1,
+                        )
+                  }-${new Date(
+                    new Date(wished_pickup_time).getTime() - 2 * 3600 * 1000,
+                  ).getFullYear()} at ${new Date(
+                    new Date(wished_pickup_time).getTime() - 2 * 3600 * 1000,
+                  ).getHours()}:${
+                    String(
                       new Date(
-                        this.props.App.requests_data_main_vars.moreDetailsFocused_request.ride_basic_infos.wished_pickup_time,
-                      ).getTime() -
-                        2 * 3600 * 1000,
-                    )
-                      .toLocaleString()
-                      .split(', ')[0]
-                      .split('/')[2]
-                  }, ${
-                    new Date(
-                      new Date(
-                        this.props.App.requests_data_main_vars.moreDetailsFocused_request.ride_basic_infos.wished_pickup_time,
-                      ).getTime() -
-                        2 * 3600 * 1000,
-                    )
-                      .toLocaleString()
-                      .split(', ')[1]
+                        new Date(wished_pickup_time).getTime() -
+                          2 * 3600 * 1000,
+                      ).getMinutes(),
+                    ).length > 1
+                      ? new Date(
+                          new Date(wished_pickup_time).getTime() -
+                            2 * 3600 * 1000,
+                        ).getMinutes()
+                      : '0' +
+                        String(
+                          new Date(
+                            new Date(wished_pickup_time).getTime() -
+                              2 * 3600 * 1000,
+                          ).getMinutes(),
+                        )
                   }`}
                 </Text>
               </View>
