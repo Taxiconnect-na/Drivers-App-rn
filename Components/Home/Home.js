@@ -361,17 +361,52 @@ class Home extends React.PureComponent {
             globalObject.props.App.main_interfaceState_vars.navigationRouteData
               .destinationPoint !== null
           ) {
-            globalObject.camera.fitBounds(
-              [
-                globalObject.props.App.longitude,
-                globalObject.props.App.latitude,
-              ],
-              globalObject.props.App.main_interfaceState_vars.navigationRouteData.destinationPoint.map(
-                parseFloat,
-              ),
-              80,
-              800,
+            //? 1. POINT 1 -Get temporary vars
+            let point1 = [
+              globalObject.props.App.longitude,
+              globalObject.props.App.latitude,
+            ];
+            let pickLatitude1 = point1[1];
+            let pickLongitude1 = point1[0];
+            //! Coordinates order fix - major bug fix for ocean bug
+            if (
+              pickLatitude1 !== undefined &&
+              pickLatitude1 !== null &&
+              pickLatitude1 !== 0 &&
+              pickLongitude1 !== undefined &&
+              pickLongitude1 !== null &&
+              pickLongitude1 !== 0
+            ) {
+              //? Switch latitude and longitude - check the negative sign
+              if (parseFloat(pickLongitude1) < 0) {
+                //Negative - switch
+                point1 = [point1[1], point1[0]];
+              }
+            }
+            //!--------- Ocean bug fix - POINT 1
+            //? 2. POINT 2 -Get temporary vars
+            let point2 = globalObject.props.App.main_interfaceState_vars.navigationRouteData.destinationPoint.map(
+              parseFloat,
             );
+            let pickLatitude2 = point2[1];
+            let pickLongitude2 = point2[0];
+            //! Coordinates order fix - major bug fix for ocean bug
+            if (
+              pickLatitude2 !== undefined &&
+              pickLatitude2 !== null &&
+              pickLatitude2 !== 0 &&
+              pickLongitude2 !== undefined &&
+              pickLongitude2 !== null &&
+              pickLongitude2 !== 0
+            ) {
+              //? Switch latitude and longitude - check the negative sign
+              if (parseFloat(pickLongitude2) < 0) {
+                //Negative - switch
+                point2 = [point2[1], point2[0]];
+              }
+            }
+            //!--------- Ocean bug fix - POINT 1
+            globalObject.camera.fitBounds(point1, point2, 80, 800);
           }
         }
       } //No rides
@@ -1761,7 +1796,6 @@ class Home extends React.PureComponent {
         this.props.App.longitude = latitudeTmp;
       }
     }
-    console.log([this.props.App.longitude, this.props.App.latitude]);
     //!--------- Ocean bug fix
     if (this.props.App.main_interfaceState_vars.isApp_inNavigation_mode) {
       //alert([this.props.App.longitude, this.props.App.latitude]);
@@ -1778,50 +1812,28 @@ class Home extends React.PureComponent {
           compassEnabled={false}
           id={'mainMapViewElement'}
           styleURL={'mapbox://styles/dominiquektt/ckax4kse10a791iofjbx59jzm'}>
-          {this.props.App.main_interfaceState_vars.isRideInProgress ? (
-            <Camera
-              ref={(c) => (this.camera = c)}
-              zoomLevel={
-                this.props.App.main_interfaceState_vars.isApp_inTrackingMode
-                  ? Platform.OS === 'android'
-                    ? 15
-                    : 17.8
-                  : 14
-              }
-              pitch={
-                this.props.App.main_interfaceState_vars.isApp_inTrackingMode
-                  ? 50
-                  : 0
-              }
-              centerCoordinate={[
-                this.props.App.longitude,
-                this.props.App.latitude,
-              ]}
-            />
-          ) : (
-            <Camera
-              ref={(c) => (this.camera = c)}
-              zoomLevel={
-                this.props.App.main_interfaceState_vars.isApp_inTrackingMode
-                  ? Platform.OS === 'android'
-                    ? 15
-                    : 17.8
-                  : 14
-              }
-              pitch={
-                this.props.App.main_interfaceState_vars.isApp_inTrackingMode
-                  ? 50
-                  : 0
-              }
-              //followUserLocation={true}
-              //followUserMode={'compass'}
-              //followUserMode={'normal'}
-              centerCoordinate={[
-                this.props.App.longitude,
-                this.props.App.latitude,
-              ]}
-            />
-          )}
+          <Camera
+            ref={(c) => (this.camera = c)}
+            zoomLevel={
+              this.props.App.main_interfaceState_vars.isApp_inTrackingMode
+                ? Platform.OS === 'android'
+                  ? 15
+                  : 17.8
+                : 14
+            }
+            pitch={
+              this.props.App.main_interfaceState_vars.isApp_inTrackingMode
+                ? 50
+                : 0
+            }
+            //followUserLocation={true}
+            followUserMode={'compass'}
+            //followUserMode={'normal'}
+            centerCoordinate={[
+              this.props.App.longitude,
+              this.props.App.latitude,
+            ]}
+          />
           <ShapeSource
             id="symbolCarIcon"
             shape={{
