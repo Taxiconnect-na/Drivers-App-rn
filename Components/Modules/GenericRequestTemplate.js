@@ -126,8 +126,8 @@ class GenericRequestTemplate extends React.PureComponent {
             style={{
               borderWidth: 1,
               padding: 10,
-              backgroundColor: '#01101F',
-              borderColor: '#01101F',
+              backgroundColor: '#b22222',
+              borderColor: '#b22222',
               borderTopRightRadius: 3,
               borderTopLeftRadius: 3,
               flexDirection: 'row',
@@ -147,27 +147,10 @@ class GenericRequestTemplate extends React.PureComponent {
                     : 'Uber Move Text Medium',
                 fontSize: RFValue(17),
               }}>
-              {`${new Date(
-                new Date(wished_pickup_time).getTime() - 2 * 3600 * 1000,
-              ).getDay()}-${
-                String(
-                  new Date(
-                    new Date(wished_pickup_time).getTime() - 2 * 3600 * 1000,
-                  ).getMinutes(),
-                ).length > 1
-                  ? new Date(
-                      new Date(wished_pickup_time).getTime() - 2 * 3600 * 1000,
-                    ).getMonth() + 1
-                  : '0' +
-                    String(
-                      new Date(
-                        new Date(wished_pickup_time).getTime() -
-                          2 * 3600 * 1000,
-                      ).getMonth() + 1,
-                    )
-              }-${new Date(
-                new Date(wished_pickup_time).getTime() - 2 * 3600 * 1000,
-              ).getFullYear()} at ${new Date(
+              {`${
+                this.props.requestLightData.ride_basic_infos
+                  .date_state_wishedPickup_time
+              } at ${new Date(
                 new Date(wished_pickup_time).getTime() - 2 * 3600 * 1000,
               ).getHours()}:${
                 String(
