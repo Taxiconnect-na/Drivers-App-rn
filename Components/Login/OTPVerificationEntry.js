@@ -322,8 +322,12 @@ class OTPVerificationEntry extends React.PureComponent {
               /(true|valid)/i.test(response.account_state) ||
               response.account_state
             ) {
-              globalObject.props.navigation.navigate('Home');
-              globalObject.props.navigation.navigate('Home');
+              if (Platform.OS === 'android') {
+                globalObject.props.navigation.push('Home');
+              } else {
+                globalObject.props.navigation.navigate('Home');
+                globalObject.props.navigation.navigate('Home');
+              }
             } //Minimal account - move to the additional details screen
             else if (
               /(suspended|blocked|deactivated|expelled)/i.test(
