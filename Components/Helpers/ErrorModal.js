@@ -1902,7 +1902,19 @@ class ErrorModal extends React.PureComponent {
                               : 'Uber Move Text Medium',
                           fontSize: RFValue(17),
                         }}>
-                        Small box
+                        {/envelope/i.test(
+                          this.props.App.requests_data_main_vars
+                            .moreDetailsFocused_request.ride_basic_infos
+                            .receiver_infos.packageSize,
+                        )
+                          ? 'Small'
+                          : /small/i.test(
+                              this.props.App.requests_data_main_vars
+                                .moreDetailsFocused_request.ride_basic_infos
+                                .receiver_infos.packageSize,
+                            )
+                          ? 'Medium'
+                          : 'Large'}
                       </Text>
                       <Text
                         style={{

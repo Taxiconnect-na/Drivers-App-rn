@@ -306,7 +306,17 @@ class GenericRequestTemplate extends React.PureComponent {
                           : 'Uber Move Text Medium',
                       fontSize: RFValue(17),
                     }}>
-                    Small box
+                    {/envelope/i.test(
+                      this.props.requestLightData.ride_basic_infos
+                        .receiver_infos.packageSize,
+                    )
+                      ? 'Small'
+                      : /small/i.test(
+                          this.props.requestLightData.ride_basic_infos
+                            .receiver_infos.packageSize,
+                        )
+                      ? 'Medium'
+                      : 'Large'}
                   </Text>
                   <Text
                     style={{

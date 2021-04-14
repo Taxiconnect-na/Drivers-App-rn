@@ -2,7 +2,7 @@
 import io from 'socket.io-client';
 import {_MAIN_URL_ENDPOINT} from '@env';
 //...
-const socket = io('http://192.168.8.104:9097', {
+const socket = io('http://192.168.43.44:9097', {
   transports: ['websocket', 'polling'],
   withCredentials: true,
   reconnection: true,
