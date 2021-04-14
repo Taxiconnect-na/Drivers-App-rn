@@ -11,6 +11,7 @@ import {
   Platform,
 } from 'react-native';
 import IconAnt from 'react-native-vector-icons/AntDesign';
+import IconFeather from 'react-native-vector-icons/Feather';
 import IconIonic from 'react-native-vector-icons/Ionicons';
 import {RFValue} from 'react-native-responsive-fontsize';
 
@@ -104,6 +105,7 @@ class GenericRequestTemplate extends React.PureComponent {
   render() {
     let wished_pickup_time = this.props.requestLightData.ride_basic_infos
       .wished_pickup_time;
+    //this.props.requestLightData.ride_basic_infos.ride_mode
     return (
       <View
         style={{
@@ -264,22 +266,62 @@ class GenericRequestTemplate extends React.PureComponent {
             alignItems: 'center',
             justifyContent: 'center',
           }}>
-          <View style={{flex: 1, alignItems: 'center'}}>
-            <Text
+          {/ride/i.test(
+            this.props.requestLightData.ride_basic_infos.ride_mode,
+          ) ? (
+            <View style={{flex: 1, alignItems: 'center'}}>
+              <Text
+                style={{
+                  fontFamily:
+                    Platform.OS === 'android'
+                      ? 'UberMoveTextMedium'
+                      : 'Uber Move Text Medium',
+                  fontSize: RFValue(17),
+                }}>
+                {/connectus/i.test(
+                  this.props.requestLightData.ride_basic_infos.connect_type,
+                )
+                  ? 'ConnectUs'
+                  : 'ConnectMe'}
+              </Text>
+            </View>
+          ) : null}
+          {/**Add package type for deliveries only */}
+          {/delivery/i.test(
+            this.props.requestLightData.ride_basic_infos.ride_mode,
+          ) ? (
+            <View
               style={{
-                fontFamily:
-                  Platform.OS === 'android'
-                    ? 'UberMoveTextMedium'
-                    : 'Uber Move Text Medium',
-                fontSize: RFValue(17),
+                flex: 1,
+                justifyContent: 'center',
               }}>
-              {/connectus/i.test(
-                this.props.requestLightData.ride_basic_infos.connect_type,
-              )
-                ? 'ConnectUs'
-                : 'ConnectMe'}
-            </Text>
-          </View>
+              <View style={{flexDirection: 'row'}}>
+                <IconFeather name="package" color={'#000'} size={24} />
+                <View style={{marginLeft: 5}}>
+                  <Text
+                    style={{
+                      fontFamily:
+                        Platform.OS === 'android'
+                          ? 'UberMoveTextMedium'
+                          : 'Uber Move Text Medium',
+                      fontSize: RFValue(17),
+                    }}>
+                    Small box
+                  </Text>
+                  <Text
+                    style={{
+                      fontFamily:
+                        Platform.OS === 'android'
+                          ? 'UberMoveTextLight'
+                          : 'Uber Move Text Light',
+                      fontSize: RFValue(14),
+                    }}>
+                    Package type
+                  </Text>
+                </View>
+              </View>
+            </View>
+          ) : null}
           <View
             style={{
               padding: 5,
@@ -309,27 +351,31 @@ class GenericRequestTemplate extends React.PureComponent {
               {this.props.requestLightData.ride_basic_infos.payment_method}
             </Text>
           </View>
-          <View
-            style={{
-              flex: 1,
-              justifyContent: 'center',
-              flexDirection: 'row',
-              alignItems: 'center',
-            }}>
-            <IconAnt name="user" size={15} />
-            <Text
+          {/ride/i.test(
+            this.props.requestLightData.ride_basic_infos.ride_mode,
+          ) ? (
+            <View
               style={{
-                fontFamily:
-                  Platform.OS === 'android'
-                    ? 'UberMoveTextMedium'
-                    : 'Uber Move Text Medium',
-                fontSize: RFValue(19),
-                marginLeft: 3,
-                bottom: 1,
+                flex: 1,
+                justifyContent: 'center',
+                flexDirection: 'row',
+                alignItems: 'center',
               }}>
-              {this.props.requestLightData.ride_basic_infos.passengers_number}
-            </Text>
-          </View>
+              <IconAnt name="user" size={15} />
+              <Text
+                style={{
+                  fontFamily:
+                    Platform.OS === 'android'
+                      ? 'UberMoveTextMedium'
+                      : 'Uber Move Text Medium',
+                  fontSize: RFValue(19),
+                  marginLeft: 3,
+                  bottom: 1,
+                }}>
+                {this.props.requestLightData.ride_basic_infos.passengers_number}
+              </Text>
+            </View>
+          ) : null}
         </View>
 
         <View>

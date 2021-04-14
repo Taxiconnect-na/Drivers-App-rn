@@ -1879,6 +1879,45 @@ class ErrorModal extends React.PureComponent {
                   </View>
                 </View>
               ) : null}
+              {/**Add package type for deliveries only */}
+              {/delivery/i.test(
+                this.props.App.requests_data_main_vars
+                  .moreDetailsFocused_request.ride_basic_infos.ride_mode,
+              ) ? (
+                <View
+                  style={{
+                    flex: 1,
+                    justifyContent: 'center',
+                    padding: 20,
+                    paddingBottom: 30,
+                  }}>
+                  <View style={{flexDirection: 'row'}}>
+                    <IconFeather name="package" color={'#000'} size={24} />
+                    <View style={{marginLeft: 5}}>
+                      <Text
+                        style={{
+                          fontFamily:
+                            Platform.OS === 'android'
+                              ? 'UberMoveTextMedium'
+                              : 'Uber Move Text Medium',
+                          fontSize: RFValue(17),
+                        }}>
+                        Small box
+                      </Text>
+                      <Text
+                        style={{
+                          fontFamily:
+                            Platform.OS === 'android'
+                              ? 'UberMoveTextLight'
+                              : 'Uber Move Text Light',
+                          fontSize: RFValue(14),
+                        }}>
+                        Package type
+                      </Text>
+                    </View>
+                  </View>
+                </View>
+              ) : null}
               {/**Pickup note if any */}
               {this.props.App.requests_data_main_vars.moreDetailsFocused_request
                 .ride_basic_infos.pickup_note !== null &&

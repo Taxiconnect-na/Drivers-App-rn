@@ -339,6 +339,7 @@ class Home extends React.PureComponent {
       //...
       if (
         response !== null &&
+        response[0] !== undefined &&
         response !== undefined &&
         response !== false &&
         /no_rides/i.test(response.request_status) === false &&
