@@ -2582,20 +2582,40 @@ class ErrorModal extends React.PureComponent {
             </Text>
           </View>
           <View>
-            <Text
-              style={{
-                fontFamily:
-                  Platform.OS === 'android'
-                    ? 'UberMoveTextRegular'
-                    : 'Uber Move Text',
-                fontSize: RFValue(17),
-                marginTop: 10,
-                lineHeight: 23,
-              }}>
-              By <Text style={{color: '#0e8491'}}>confirming the pickup</Text>{' '}
-              you confirm that you've picked up the passenger and you're ready
-              to head to the destination.
-            </Text>
+            {/ride/i.test(
+              this.props.App.requests_data_main_vars.moreDetailsFocused_request
+                .ride_basic_infos.ride_mode,
+            ) ? (
+              <Text
+                style={{
+                  fontFamily:
+                    Platform.OS === 'android'
+                      ? 'UberMoveTextRegular'
+                      : 'Uber Move Text',
+                  fontSize: RFValue(17),
+                  marginTop: 10,
+                  lineHeight: 23,
+                }}>
+                By <Text style={{color: '#0e8491'}}>confirming the pickup</Text>{' '}
+                you confirm that you've picked up the passenger and you're ready
+                to head to the destination.
+              </Text>
+            ) : (
+              <Text
+                style={{
+                  fontFamily:
+                    Platform.OS === 'android'
+                      ? 'UberMoveTextRegular'
+                      : 'Uber Move Text',
+                  fontSize: RFValue(17),
+                  marginTop: 10,
+                  lineHeight: 23,
+                }}>
+                By <Text style={{color: '#0e8491'}}>confirming the pickup</Text>{' '}
+                you confirm that you've picked up the package and you're ready
+                to head to the dropoff destination.
+              </Text>
+            )}
           </View>
           <View style={{flex: 1, justifyContent: 'center'}}>
             <TouchableOpacity
@@ -2681,19 +2701,38 @@ class ErrorModal extends React.PureComponent {
             </Text>
           </View>
           <View>
-            <Text
-              style={{
-                fontFamily:
-                  Platform.OS === 'android'
-                    ? 'UberMoveTextRegular'
-                    : 'Uber Move Text',
-                fontSize: RFValue(17),
-                marginTop: 10,
-                lineHeight: 23,
-              }}>
-              By confirming the drop off you confirm that you’ve taken the
-              passenger up till the final destination.
-            </Text>
+            {/ride/i.test(
+              this.props.App.requests_data_main_vars.moreDetailsFocused_request
+                .ride_basic_infos.ride_mode,
+            ) ? (
+              <Text
+                style={{
+                  fontFamily:
+                    Platform.OS === 'android'
+                      ? 'UberMoveTextRegular'
+                      : 'Uber Move Text',
+                  fontSize: RFValue(17),
+                  marginTop: 10,
+                  lineHeight: 23,
+                }}>
+                By confirming the drop off you confirm that you’ve taken the
+                passenger up till the final destination.
+              </Text>
+            ) : (
+              <Text
+                style={{
+                  fontFamily:
+                    Platform.OS === 'android'
+                      ? 'UberMoveTextRegular'
+                      : 'Uber Move Text',
+                  fontSize: RFValue(17),
+                  marginTop: 10,
+                  lineHeight: 23,
+                }}>
+                By confirming the drop off you confirm that you’ve taken the
+                package up till the final destination.
+              </Text>
+            )}
           </View>
           <View style={{flex: 1, justifyContent: 'center'}}>
             <TouchableOpacity
