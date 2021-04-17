@@ -840,6 +840,10 @@ class Home extends React.PureComponent {
                   );
                   this.props.App.isMapPermitted = true;
                 } else {
+                  if (this.state.locationWatcher === null) {
+                    //Initializedd the location watcher
+                    this.state.locationWatcher = GeolocationP.watchPosition();
+                  }
                   if (globalObject.props.App._MAX_NUMBER_OF_CALLBACKS_MAP > 0) {
                     //! Decrement promise controller
                     globalObject.props.App._MAX_NUMBER_OF_CALLBACKS_MAP -= 1;
@@ -963,6 +967,10 @@ class Home extends React.PureComponent {
                   );
                   this.props.App.isMapPermitted = true;
                 } else {
+                  if (this.state.locationWatcher === null) {
+                    //Initializedd the location watcher
+                    this.state.locationWatcher = GeolocationP.watchPosition();
+                  }
                   if (globalObject.props.App._MAX_NUMBER_OF_CALLBACKS_MAP > 0) {
                     //! Decrement promise controller
                     globalObject.props.App._MAX_NUMBER_OF_CALLBACKS_MAP -= 1;
@@ -1214,7 +1222,7 @@ class Home extends React.PureComponent {
               style={{
                 flex: 1,
                 padding: 20,
-                paddingTop: 15,
+                paddingTop: Platform.OS === 'android' ? 15 : '10%',
                 paddingBottom: 15,
               }}>
               {this.props.App.main_interfaceState_vars.isComputing_route ===
