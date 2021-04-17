@@ -2556,7 +2556,16 @@ class ErrorModal extends React.PureComponent {
           </View>
         </View>
       );
-    } else if (/trip_pickupConfirmation_confirmation/i.test(error_status)) {
+    } else if (
+      /trip_pickupConfirmation_confirmation/i.test(error_status) &&
+      this.props.App.requests_data_main_vars !== undefined &&
+      this.props.App.requests_data_main_vars.moreDetailsFocused_request !==
+        undefined &&
+      this.props.App.requests_data_main_vars.moreDetailsFocused_request
+        .ride_basic_infos !== undefined &&
+      this.props.App.requests_data_main_vars.moreDetailsFocused_request
+        .ride_basic_infos.ride_mode !== undefined
+    ) {
       return (
         <View
           style={{
@@ -2675,7 +2684,17 @@ class ErrorModal extends React.PureComponent {
           </View>
         </View>
       );
-    } else if (/trip_dropoffConfirmation_confirmation/i.test(error_status)) {
+    } else if (
+      /trip_dropoffConfirmation_confirmation/i.test(error_status) &&
+      this.props.App.requests_data_main_vars !== undefined &&
+      this.props.App.requests_data_main_vars.moreDetailsFocused_request !==
+        undefined &&
+      this.props.App.requests_data_main_vars.moreDetailsFocused_request
+        .ride_basic_infos !== undefined &&
+      this.props.App.requests_data_main_vars.moreDetailsFocused_request
+        .ride_basic_infos.ride_mode !== undefined
+    ) {
+      //....
       return (
         <View
           style={{
@@ -2970,6 +2989,7 @@ class ErrorModal extends React.PureComponent {
         </SafeAreaView>
       );
     } else {
+      this.props.UpdateErrorModalLog(false, false, 'any'); //Close modal
       return <></>;
     }
   }
