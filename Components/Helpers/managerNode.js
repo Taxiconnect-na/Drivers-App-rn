@@ -2,7 +2,7 @@
 import io from 'socket.io-client';
 import {_MAIN_URL_ENDPOINT} from '@env';
 //...
-const socket = io('https://taxiconnectnanetwork.com:9999', {
+const socket = io('http://192.168.8.109:9097', {
   transports: ['websocket', 'polling'],
   withCredentials: true,
   reconnection: true,
