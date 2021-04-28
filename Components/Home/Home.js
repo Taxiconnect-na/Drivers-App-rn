@@ -9,6 +9,7 @@ import {
   SymbolLayer,
   ShapeSource,
 } from '@react-native-mapbox-gl/maps';
+import MapboxGL from '@react-native-mapbox-gl/maps';
 import {
   View,
   Text,
@@ -348,6 +349,8 @@ class Home extends React.PureComponent {
       ) {
         //Check that the request type is respected by the new incomming data
         let regChecker = new RegExp(globalObject.props.App.requestType, 'i');
+        //Filter based on the currently selected ride type
+
         if (regChecker.test(response[0].request_type)) {
           //Consistent with the choosed in app request type
           globalObject.props.UpdateFetchedRequests_dataServer(response);
@@ -1835,9 +1838,17 @@ class Home extends React.PureComponent {
                 ? 50
                 : 0
             }
-            //followUserLocation={true}
-            followUserMode={'compass'}
-            //followUserMode={'normal'}
+            followUserLocation={true}
+            //followUserMode={'course'}
+            followUserMode={MapboxGL.UserTrackingModes.FollowWithCourse}
+            followHeading={true}
+            centerCoordinate={[
+              this.props.App.longitude,
+              this.props.App.latitude,
+            ]}
+          />
+          <UserLocation
+            visible={true}
             centerCoordinate={[
               this.props.App.longitude,
               this.props.App.latitude,
