@@ -1812,14 +1812,11 @@ class Home extends React.PureComponent {
     if (this.props.App.main_interfaceState_vars.isApp_inNavigation_mode) {
       //alert([this.props.App.longitude, this.props.App.latitude]);
       //Navigation on - hide request list
-      return (
+      return <Text>MAP</Text>;
+      /*return (
         <MapView
           ref={(c) => (this._map = c)}
           style={styles.map}
-          /*onDidFinishLoadingMap={() => this.recalibrateMap()}
-          onUserLocationUpdate={() => this.recalibrateMap()}
-          onDidFailLoadingMap={() => this.recalibrateMap()}
-          onDidFinishRenderingMapFully={() => this.recalibrateMap()}*/
           attributionEnabled={false}
           compassEnabled={false}
           id={'mainMapViewElement'}
@@ -1873,7 +1870,7 @@ class Home extends React.PureComponent {
           </ShapeSource>
           {this.renderRouteElements()}
         </MapView>
-      );
+      );*/
     } //Navigation off - show requests list
     else {
       return (
