@@ -54,6 +54,7 @@ import ErrorModal from '../Helpers/ErrorModal';
 import {check, PERMISSIONS, RESULTS} from 'react-native-permissions';
 import {RFValue} from 'react-native-responsive-fontsize';
 import SyncStorage from 'sync-storage';
+import NavigationAssistant from '../Modules/NavigationAssistant/NavigationAssistant';
 import {_MAIN_URL_ENDPOINT} from '@env';
 const io = require('socket.io-client');
 
@@ -1066,7 +1067,8 @@ class Home extends React.PureComponent {
       //Navigation mode on
       if (this.props.App.main_interfaceState_vars.isRideInProgress === false) {
         //No ride in progress actively in navigation mode
-        return (
+        return null;
+        /*return (
           <View
             style={{
               flexDirection: 'row',
@@ -1184,7 +1186,7 @@ class Home extends React.PureComponent {
               </TouchableOpacity>
             </SafeAreaView>
           </View>
-        );
+        );*/
       } //A ride is in progress actively in navigation mode
       else {
         if (
@@ -1200,346 +1202,7 @@ class Home extends React.PureComponent {
           this.props.UpdateErrorModalLog(false, true, 'anyo'); //Update the global state
           return null;
         }
-        return (
-          <SafeAreaView
-            style={{
-              flexDirection: 'row',
-              alignItems: 'center',
-              position: 'relative', //Critical fix - relative
-              top: 0,
-              width: '100%',
-              zIndex: 900000000,
-              backgroundColor: '#01101F',
-              shadowColor: '#000',
-              shadowOffset: {
-                width: 0,
-                height: 5,
-              },
-              shadowOpacity: 0.34,
-              shadowRadius: 6.27,
-
-              elevation: 10,
-              height: Platform.OS === 'android' ? 160 : 200,
-            }}>
-            <View
-              style={{
-                flex: 1,
-                padding: 20,
-                paddingTop: Platform.OS === 'android' ? 15 : '10%',
-                paddingBottom: 15,
-              }}>
-              {this.props.App.main_interfaceState_vars.isComputing_route ===
-              false ? (
-                <View style={{flex: 1}}>
-                  <StatusBar barStyle={'light-content'} />
-                  <View
-                    style={{
-                      flexDirection: 'row',
-                      borderBottomWidth: 1,
-                      borderBottomColor: '#a5a5a5',
-                      paddingBottom: Platform.OS === 'android' ? 10 : 15,
-                    }}>
-                    <View
-                      style={{
-                        width: 50,
-                        height: 50,
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                      }}>
-                      <Image
-                        source={
-                          /Continue/.test(
-                            this.props.App.main_interfaceState_vars
-                              .navigationRouteData.instructions[0].text,
-                          )
-                            ? this.props.App.arrowStraight
-                            : /Turn left/i.test(
-                                this.props.App.main_interfaceState_vars
-                                  .navigationRouteData.instructions[0].text,
-                              )
-                            ? this.props.App.arrowTurnLeft
-                            : /Turn right/i.test(
-                                this.props.App.main_interfaceState_vars
-                                  .navigationRouteData.instructions[0].text,
-                              )
-                            ? this.props.App.arrowTurnRight
-                            : this.props.App.arrowStraight
-                        }
-                        style={{
-                          resizeMode: 'contain',
-                          width: '100%',
-                          height: '100%',
-                        }}
-                      />
-                    </View>
-                    <View
-                      style={{
-                        paddingLeft: 10,
-                        marginLeft: 5,
-                        flex: 1,
-                      }}>
-                      <View
-                        style={{
-                          flex: 1,
-                          minHeight: 30,
-                        }}>
-                        <Text
-                          style={[
-                            {
-                              fontFamily:
-                                Platform.OS === 'android'
-                                  ? 'MoveBold'
-                                  : 'Uber Move Bold',
-                              fontSize: RFValue(22),
-                              color: '#fff',
-                            },
-                          ]}>
-                          {this.props.App.main_interfaceState_vars
-                            .navigationRouteData.instructions[0].text.length >
-                          22
-                            ? this.props.App.main_interfaceState_vars.navigationRouteData.instructions[0].text.substring(
-                                0,
-                                18,
-                              ) + '...'
-                            : this.props.App.main_interfaceState_vars
-                                .navigationRouteData.instructions[0].text}
-                        </Text>
-                      </View>
-                      <View
-                        style={{
-                          flexDirection: 'row',
-                          paddingTop: 5,
-                        }}>
-                        <Text
-                          style={{
-                            fontFamily:
-                              Platform.OS === 'android'
-                                ? 'UberMoveTextMedium'
-                                : 'Uber Move Text Medium',
-                            fontSize: RFValue(18),
-                            flex: 1,
-                            color: '#fff',
-                          }}>
-                          {this.props.App.requests_data_main_vars
-                            .moreDetailsFocused_request.ride_basic_infos
-                            .inRideToDestination
-                            ? 'Picked up'
-                            : Math.round(
-                                this.props.App.main_interfaceState_vars
-                                  .navigationRouteData.distance,
-                              ) > 1000
-                            ? Math.round(
-                                this.props.App.main_interfaceState_vars
-                                  .navigationRouteData.distance,
-                              ) /
-                                1000 +
-                              'km'
-                            : Math.round(
-                                this.props.App.main_interfaceState_vars
-                                  .navigationRouteData.distance,
-                              ) + 'm'}
-                        </Text>
-                        <Text
-                          style={{
-                            fontFamily:
-                              Platform.OS === 'android'
-                                ? 'UberMoveTextMedium'
-                                : 'Uber Move Text Medium',
-                            fontSize: RFValue(18),
-                            flex: 1,
-                            textAlign: 'right',
-                            color: '#fff',
-                          }}>
-                          {parseInt(
-                            this.props.App.main_interfaceState_vars.navigationRouteData.eta.split(
-                              ' ',
-                            )[0],
-                          ) <= 35 &&
-                          parseInt(
-                            this.props.App.main_interfaceState_vars.navigationRouteData.eta.split(
-                              ' ',
-                            )[0],
-                          ) > 10 &&
-                          /sec/i.test(
-                            this.props.App.main_interfaceState_vars.navigationRouteData.eta.split(
-                              ' ',
-                            )[1],
-                          )
-                            ? 'Very close'
-                            : parseInt(
-                                this.props.App.main_interfaceState_vars.navigationRouteData.eta.split(
-                                  ' ',
-                                )[0],
-                              ) <= 10 &&
-                              /sec/i.test(
-                                this.props.App.main_interfaceState_vars.navigationRouteData.eta.split(
-                                  ' ',
-                                )[1],
-                              )
-                            ? 'Arrived'
-                            : this.props.App.main_interfaceState_vars
-                                .navigationRouteData.eta}
-                        </Text>
-                      </View>
-                    </View>
-                  </View>
-                  <View
-                    style={{
-                      flexDirection: 'row',
-                      marginTop: 10,
-                      minHeight: 48,
-                    }}>
-                    <View
-                      style={{
-                        width: 25,
-                        height: 25,
-                        marginRight: 5,
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                      }}>
-                      <IconMaterialIcons
-                        name="location-on"
-                        color="#fff"
-                        size={20}
-                      />
-                    </View>
-                    <View
-                      style={{
-                        flex: 1,
-                      }}>
-                      <Text
-                        style={{
-                          flex: 1,
-                          fontFamily:
-                            Platform.OS === 'android'
-                              ? 'UberMoveTextBold'
-                              : 'Uber Move Text Bold',
-                          fontSize: RFValue(17.5),
-                          color: '#fff',
-                        }}>
-                        {/**Check if the client was already picked up, if yes show the 1st destination location, if not show the pickup location */}
-                        {this.props.App.requests_data_main_vars
-                          .moreDetailsFocused_request.ride_basic_infos
-                          .inRideToDestination
-                          ? this.props.App.requests_data_main_vars
-                              .moreDetailsFocused_request
-                              .origin_destination_infos.destination_infos[0]
-                              .suburb
-                          : this.props.App.requests_data_main_vars
-                              .moreDetailsFocused_request
-                              .origin_destination_infos.pickup_infos.suburb}
-                      </Text>
-                      <Text
-                        style={{
-                          flex: 1,
-                          fontFamily:
-                            Platform.OS === 'android'
-                              ? 'UberMoveTextRegular'
-                              : 'Uber Move Text',
-                          fontSize: RFValue(16.5),
-                          color: '#fff',
-                        }}>
-                        {this.props.App.requests_data_main_vars
-                          .moreDetailsFocused_request.ride_basic_infos
-                          .inRideToDestination
-                          ? this.props.App.requests_data_main_vars
-                              .moreDetailsFocused_request
-                              .origin_destination_infos.destination_infos[0]
-                              .location_name
-                          : this.props.App.requests_data_main_vars
-                              .moreDetailsFocused_request
-                              .origin_destination_infos.pickup_infos
-                              .location_name}
-
-                        {this.props.App.requests_data_main_vars
-                          .moreDetailsFocused_request.ride_basic_infos
-                          .inRideToDestination ? (
-                          this.props.App.requests_data_main_vars
-                            .moreDetailsFocused_request.origin_destination_infos
-                            .destination_infos[0].street_name !== 'false' &&
-                          this.props.App.requests_data_main_vars
-                            .moreDetailsFocused_request.origin_destination_infos
-                            .destination_infos[0].street_name !== false ? (
-                            <Text
-                              style={{
-                                fontFamily:
-                                  Platform.OS === 'android'
-                                    ? 'UberMoveTextRegular'
-                                    : 'Uber Move Text',
-                                fontSize: RFValue(16.5),
-                                marginLeft: 5,
-                                marginTop: 3,
-                                flex: 1,
-                              }}>
-                              {', ' +
-                                this.props.App.requests_data_main_vars
-                                  .moreDetailsFocused_request
-                                  .origin_destination_infos.destination_infos[0]
-                                  .street_name}
-                            </Text>
-                          ) : null
-                        ) : this.props.App.requests_data_main_vars
-                            .moreDetailsFocused_request.origin_destination_infos
-                            .pickup_infos.street_name !== 'false' &&
-                          this.props.App.requests_data_main_vars
-                            .moreDetailsFocused_request.origin_destination_infos
-                            .pickup_infos.street_name !== false ? (
-                          <Text
-                            style={{
-                              fontFamily:
-                                Platform.OS === 'android'
-                                  ? 'UberMoveTextRegular'
-                                  : 'Uber Move Text',
-                              fontSize: RFValue(16.5),
-                              marginLeft: 5,
-                              marginTop: 3,
-                              flex: 1,
-                            }}>
-                            {', ' +
-                              this.props.App.requests_data_main_vars
-                                .moreDetailsFocused_request
-                                .origin_destination_infos.pickup_infos
-                                .street_name}
-                          </Text>
-                        ) : null}
-                      </Text>
-                    </View>
-                  </View>
-                </View>
-              ) : (
-                <View style={{flex: 1}}>
-                  <GenericLoader
-                    active={
-                      this.props.App.main_interfaceState_vars.isComputing_route
-                    }
-                    backgroundColor={'#01101F'}
-                    color={'#fff'}
-                    thickness={4}
-                  />
-
-                  <View
-                    style={{
-                      flex: 1,
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                    }}>
-                    <Text
-                      style={{
-                        fontFamily:
-                          Platform.OS === 'android'
-                            ? 'UberMoveTextMedium'
-                            : 'Uber Move Text Medium',
-                        fontSize: RFValue(23),
-                        color: '#fff',
-                      }}>
-                      Finding route...
-                    </Text>
-                  </View>
-                </View>
-              )}
-            </View>
-          </SafeAreaView>
-        );
+        return null;
       }
     } //In normal mode
     else {
@@ -1624,12 +1287,13 @@ class Home extends React.PureComponent {
               </View>
             </View>
             <TouchableOpacity
-              onPress={() =>
-                this.props.SwitchToNavigation_modeOrBack({
+              onPress={
+                () => {}
+                /*this.props.SwitchToNavigation_modeOrBack({
                   isApp_inNavigation_mode: true,
                   isRideInProgress: false,
                   requestData: false,
-                })
+                })*/
               }
               style={{
                 borderWidth: 1,
@@ -1640,6 +1304,7 @@ class Home extends React.PureComponent {
                 justifyContent: 'center',
                 borderRadius: 150,
                 backgroundColor: '#096ED4',
+                opacity: 0,
               }}>
               <IconFontAwesome name="location-arrow" color="#fff" size={22} />
             </TouchableOpacity>
@@ -1809,10 +1474,17 @@ class Home extends React.PureComponent {
       }
     }
     //!--------- Ocean bug fix
-    if (this.props.App.main_interfaceState_vars.isApp_inNavigation_mode) {
+    if (
+      this.props.App.main_interfaceState_vars.isApp_inNavigation_mode &&
+      this.props.App.main_interfaceState_vars.isRideInProgress
+    ) {
       //alert([this.props.App.longitude, this.props.App.latitude]);
       //Navigation on - hide request list
-      return <Text>MAP</Text>;
+      return (
+        <View style={{backgroundColor: '#d0d0d0', flex: 1}}>
+          <NavigationAssistant />
+        </View>
+      );
       /*return (
         <MapView
           ref={(c) => (this._map = c)}
@@ -2012,7 +1684,7 @@ class Home extends React.PureComponent {
         if (this.props.App.main_interfaceState_vars.isRideInProgress) {
           let globalObject = this;
           //START THE INTERVAL PERSISTER FOR THE NAVIGATION DATA
-          if (this.props.App._TMP_NAVIATION_DATA_INTERVAL_PERSISTER === null) {
+          /*if (this.props.App._TMP_NAVIATION_DATA_INTERVAL_PERSISTER === null) {
             console.log('Interval navigation started');
             //Initialize
             this.props.App._TMP_NAVIATION_DATA_INTERVAL_PERSISTER = setInterval(
@@ -2082,87 +1754,16 @@ class Home extends React.PureComponent {
               globalObject.props.App
                 ._TMP_NAVIATION_DATA_INTERVAL_PERSISTER_TIME,
             );
-          }
+          }*/
 
           //A ride is in progress actively in navigation mode
           return (
             <SafeAreaView
               style={{
-                shadowColor: '#000',
-                shadowOffset: {
-                  width: 0,
-                  height: 12,
-                },
-                shadowOpacity: 0.58,
-                shadowRadius: 16.0,
-
-                elevation: 24,
                 backgroundColor: '#fff',
+                borderTopWidth: 1,
+                borderTopColor: '#d0d0d0',
               }}>
-              <View
-                style={{
-                  position: 'absolute',
-                  top: -160,
-                  right: 15,
-                  zIndex: 900000000000,
-                  alignItems: 'center',
-                }}>
-                <TouchableOpacity
-                  onPress={() =>
-                    InteractionManager.runAfterInteractions(() => {
-                      this.props.UpdateErrorModalLog(
-                        true,
-                        'show_guardian_toolkit',
-                        'any',
-                      );
-                    })
-                  }
-                  style={{
-                    width: 57,
-                    height: 57,
-                    borderRadius: 160,
-                    backgroundColor: '#fff',
-                    shadowColor: '#000',
-                    shadowOffset: {
-                      width: 0,
-                      height: 5,
-                    },
-                    shadowOpacity: 0.36,
-                    shadowRadius: 6.68,
-                    elevation: 11,
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    marginBottom: 20,
-                    zIndex: 900000000,
-                  }}>
-                  <IconMaterialIcons name="shield" color={'#000'} size={32} />
-                </TouchableOpacity>
-                <TouchableOpacity
-                  onPress={() => this.updateMapTrackingState()}
-                  style={{
-                    width: 57,
-                    height: 57,
-                    borderRadius: 160,
-                    backgroundColor: '#fff',
-                    shadowColor: '#000',
-                    shadowOffset: {
-                      width: 0,
-                      height: 5,
-                    },
-                    shadowOpacity: 0.36,
-                    shadowRadius: 6.68,
-
-                    elevation: 11,
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                  }}>
-                  <IconCommunity
-                    name="map-marker-path"
-                    color={'#096ED4'}
-                    size={32}
-                  />
-                </TouchableOpacity>
-              </View>
               <View
                 style={{
                   height: 90,
@@ -2192,8 +1793,8 @@ class Home extends React.PureComponent {
                       flex: 1,
                       flexDirection: 'row',
                       alignItems: 'center',
-                      borderRightWidth: 0.7,
-                      borderRightColor: '#d0d0d0',
+                      //borderRightWidth: 0.7,
+                      //borderRightColor: '#d0d0d0',
                     }}>
                     <View style={{padding: 10, marginRight: 10}}>
                       <IconMaterialIcons
@@ -2239,18 +1840,28 @@ class Home extends React.PureComponent {
                     </View>
                   </TouchableOpacity>
                   <TouchableOpacity
-                    onPress={() => {
+                    onPress={() =>
                       InteractionManager.runAfterInteractions(() => {
-                        this.props.SwitchToNavigation_modeOrBack({
-                          isApp_inNavigation_mode: false,
-                        });
-                      });
-                    }}
-                    style={{padding: 10, marginLeft: 10}}>
-                    <IconCommunity
-                      name="format-list-bulleted-square"
-                      color="#000"
-                      size={28}
+                        this.props.UpdateErrorModalLog(
+                          true,
+                          'show_guardian_toolkit',
+                          'any',
+                        );
+                      })
+                    }
+                    style={{
+                      width: 57,
+                      height: 57,
+                      borderRadius: 160,
+                      backgroundColor: '#fff',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      zIndex: 900000000,
+                    }}>
+                    <IconMaterialIcons
+                      name="shield"
+                      color={'#096ED4'}
+                      size={32}
                     />
                   </TouchableOpacity>
                 </View>
@@ -2260,19 +1871,10 @@ class Home extends React.PureComponent {
         } //No active ride in navigation mode
         else {
           return (
-            <View>
+            <View style={{borderTopWidth: 1, borderTopColor: '#d0d0d0'}}>
               <SafeAreaView
                 style={{
                   backgroundColor: '#fff',
-                  shadowColor: '#000',
-                  shadowOffset: {
-                    width: 0,
-                    height: 12,
-                  },
-                  shadowOpacity: 0.58,
-                  shadowRadius: 16.0,
-
-                  elevation: 24,
                 }}>
                 <TouchableOpacity
                   onPress={() =>
@@ -2421,10 +2023,11 @@ class Home extends React.PureComponent {
                 })
               }
               style={{
-                height: 80,
+                minHeight: 80,
                 justifyContent: 'center',
                 backgroundColor: '#fff',
                 borderTopWidth: 2,
+                paddingBottom: '4%',
               }}>
               <View
                 style={{

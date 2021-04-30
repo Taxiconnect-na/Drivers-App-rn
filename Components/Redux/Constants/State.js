@@ -98,7 +98,7 @@ const STATE = {
   shownRides_types: 'Rides', //To govern which ride to show :Rides, Delivery or Scheduled - default: Rides
   //Responsible for defining the state of the interface at any time
   main_interfaceState_vars: {
-    isApp_inNavigation_mode: true, //To know if the app is in navigation mode or not. - default: true
+    isApp_inNavigation_mode: false, //To know if the app is in navigation mode or not. - default: true
     isRideInProgress: false, //TO know whether a ride is in progress or not - default: false
     isDriver_online: false, //To know whether the driver is online or offline - default: false - SERVER DEPENDENT
     isComputing_route: true, //To know whether the app is computing the optimal route to destination - default: true
