@@ -41,7 +41,7 @@ import {
   UpdateDriverOperational_status,
   UpdateRequestsGraphs,
 } from '../Redux/HomeActionsCreators';
-import PulseCircleLayer from '../Modules/PulseCircleLayer';
+//import PulseCircleLayer from '../Modules/PulseCircleLayer';
 import IconAnt from 'react-native-vector-icons/AntDesign';
 import IconCommunity from 'react-native-vector-icons/MaterialCommunityIcons';
 import IconMaterialIcons from 'react-native-vector-icons/MaterialIcons';

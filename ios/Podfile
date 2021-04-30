@@ -18,6 +18,7 @@ target 'taxiconnectdrivers' do
   use_react_native!(:path => config["reactNativePath"])
   
   pod 'React-RCTImage', :path => '../node_modules/react-native/Libraries/Image'
+  pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
   pod 'react-native-geolocation-service', path: '../node_modules/react-native-geolocation-service'
   pod 'Permission-LocationAccuracy', :path => "#{permissions_path}/LocationAccuracy"
   pod 'Permission-LocationAlways', :path => "#{permissions_path}/LocationAlways"
