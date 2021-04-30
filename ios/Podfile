@@ -4,7 +4,7 @@ require_relative '../node_modules/@react-native-community/cli-platform-ios/nativ
 platform :ios, '10.0'
 
 install! 'cocoapods', :disable_input_output_paths => true
-#use_frameworks!
+use_frameworks!
 
 target 'OneSignalNotificationServiceExtension' do
   pod 'OneSignal', '>= 3.0', '< 4.0'
@@ -30,7 +30,7 @@ target 'taxiconnectdrivers' do
   $static_framework = ['FlipperKit', 'Flipper', 'Flipper-Folly',
      'CocoaAsyncSocket', 'ComponentKit', 'DoubleConversion',
      'glog', 'Flipper-PeerTalk', 'Flipper-RSocket', 'Yoga', 'YogaKit',
-     'CocoaLibEvent', 'OpenSSL-Universal', 'boost-for-react-native']
+     'CocoaLibEvent', 'OpenSSL-Universal', 'boost-for-react-native', 'libevent', 'libwebp','MapboxMobileEvents']
 
   target 'taxiconnectdriversTests' do
     inherit! :complete
@@ -41,7 +41,7 @@ target 'taxiconnectdrivers' do
   #
   # Note that if you have use_frameworks! enabled, Flipper will not work and
   # you should disable these next few lines.
-  use_flipper!({ 'Flipper' => '0.74.0' })
+  #use_flipper!({ 'Flipper' => '0.74.0' })
   #pre_install do |installer|
   #   Pod::Installer::Xcode::TargetValidator.send(:define_method, :verify_no_static_framework_transitive_dependencies) {}
   #   installer.pod_targets.each do |pod|
@@ -52,8 +52,22 @@ target 'taxiconnectdrivers' do
   #       end
   #     end
   #end
-  post_install do |installer|
-    flipper_post_install(installer)
+  #post_install do |installer|
+  #  flipper_post_install(installer)
+  #end
+  # Make all the other frameworks into static frameworks by overriding the static_framework? function to return true
+  pre_install do |installer|
+    installer.pod_targets.each do |pod|
+      if !$static_framework.include?(pod.name)
+        puts "Overriding the static_framework? method for #{pod.name}"
+        def pod.static_framework?;
+          true
+        end
+        def pod.build_type;
+          Pod::BuildType.static_library
+        end
+      end
+    end
   end
 end
 

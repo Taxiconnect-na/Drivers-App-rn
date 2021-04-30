@@ -1,6 +1,5 @@
 /* eslint-disable prettier/prettier */
 import {combineReducers} from 'redux';
-import {Animated as AnimatedMapbox} from '@react-native-mapbox-gl/maps';
 import parsePhoneNumber from 'libphonenumber-js';
 import {Animated, Easing} from 'react-native';
 import STATE from '../Constants/State';

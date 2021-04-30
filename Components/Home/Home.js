@@ -1,15 +1,15 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
-import {
+/*import {
   Animated,
   MapView,
   Camera,
   UserLocation,
   SymbolLayer,
   ShapeSource,
-} from '@react-native-mapbox-gl/maps';
-import MapboxGL from '@react-native-mapbox-gl/maps';
+} from '@react-native-mapbox-gl/maps';*/
+//import MapboxGL from '@react-native-mapbox-gl/maps';
 import {
   View,
   Text,

@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		00E356F31AD99517003FC87E /* taxiconnectdriversTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* taxiconnectdriversTests.m */; };
+		094E55D8C0A59AEDB6CD472C /* Pods_taxiconnectdrivers_tvOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 18B63CB1CABDFA2F43D02827 /* Pods_taxiconnectdrivers_tvOS.framework */; };
 		13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
@@ -15,12 +16,10 @@
 		2D02E4BD1E0B4A84006451C7 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		2D02E4BF1E0B4AB3006451C7 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		2DCD954D1E0B4F2C00145EB5 /* taxiconnectdriversTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* taxiconnectdriversTests.m */; };
-		377A79E5BA5EF2726CAA33A4 /* libPods-OneSignalNotificationServiceExtension.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8CEB824E9992CF82326C8DC3 /* libPods-OneSignalNotificationServiceExtension.a */; };
-		4CA3E86DB1CAD6AD2AB150BD /* libPods-taxiconnectdrivers.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5223AB3C9F3646E4DDDD7384 /* libPods-taxiconnectdrivers.a */; };
 		4F59B2709BCA4F59A69226B7 /* UberMoveTextBold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 50D4CB90894141889BBE415E /* UberMoveTextBold.otf */; };
+		5C2DF844ED0011ADFAB2B7D9 /* Pods_taxiconnectdrivers_tvOSTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CC830A61D7FCED41F97CF3D8 /* Pods_taxiconnectdrivers_tvOSTests.framework */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		85F24BBB7DB44683B6FF5061 /* UberMoveTextMedium.otf in Resources */ = {isa = PBXBuildFile; fileRef = ABACC60DA9F64D5ABF63D88C /* UberMoveTextMedium.otf */; };
-		93C25106DA1EA3C8A2A4C29A /* libPods-taxiconnectdrivers-taxiconnectdriversTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 634D96AB1B86BF86BCBA79D5 /* libPods-taxiconnectdrivers-taxiconnectdriversTests.a */; };
 		96383E5F25E5306C007FD0D3 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 96383E5E25E5306C007FD0D3 /* GoogleService-Info.plist */; };
 		96708094263927C500625383 /* MapboxDirection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96708093263927C500625383 /* MapboxDirection.swift */; };
 		968D1FD325DAB92900320474 /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 968D1FD225DAB92900320474 /* NotificationService.swift */; };
@@ -35,8 +34,9 @@
 		96C7F19325C801AC002906CF /* MoveLight.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 834241C43AD04CFCA72F8DEF /* MoveLight.ttf */; };
 		96C7F19425C801AC002906CF /* MoveMedium.otf in Resources */ = {isa = PBXBuildFile; fileRef = 1B74BBC4000F4E2B8B0F2DEC /* MoveMedium.otf */; };
 		96C7F19525C801AC002906CF /* MoveRegular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E88BDA0F9AA64AD59B14178E /* MoveRegular.ttf */; };
-		D3D99F2302E92CD424022DEF /* libPods-taxiconnectdrivers-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FAC60CDEAE5E067933EBCD7D /* libPods-taxiconnectdrivers-tvOS.a */; };
-		D9F6BACCD991987671582033 /* libPods-taxiconnectdrivers-tvOSTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6C99E277E822C975E4CC4EDD /* libPods-taxiconnectdrivers-tvOSTests.a */; };
+		9ACDA8B6008D5F06D090A197 /* Pods_taxiconnectdrivers_taxiconnectdriversTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C5C78E9171DC773771DDC01 /* Pods_taxiconnectdrivers_taxiconnectdriversTests.framework */; };
+		BFEE5EBB5F54A9CB8D5B2266 /* Pods_taxiconnectdrivers.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 297BDF07F84B69624F688C34 /* Pods_taxiconnectdrivers.framework */; };
+		D3DCB25A7FB8EC2320BC6650 /* Pods_OneSignalNotificationServiceExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2E7E24630669813ADE7D6F14 /* Pods_OneSignalNotificationServiceExtension.framework */; };
 		E3BA9119718243FEBBBE9179 /* UberMoveTextLight.otf in Resources */ = {isa = PBXBuildFile; fileRef = AC92B3623AA04BDB9EDD5044 /* UberMoveTextLight.otf */; };
 		E4AAD2B913E846E4AA787D25 /* UberMoveTextRegular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 5202D6875AE6453B9C8B4AA4 /* UberMoveTextRegular.otf */; };
 /* End PBXBuildFile section */
@@ -90,26 +90,25 @@
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = taxiconnectdrivers/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = taxiconnectdrivers/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = taxiconnectdrivers/main.m; sourceTree = "<group>"; };
+		18B63CB1CABDFA2F43D02827 /* Pods_taxiconnectdrivers_tvOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_taxiconnectdrivers_tvOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		1B74BBC4000F4E2B8B0F2DEC /* MoveMedium.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MoveMedium.otf; path = ../Media_assets/fonts/MoveMedium.otf; sourceTree = "<group>"; };
 		1DF7DB56F5E54561BE480055 /* Allrounder-Monument-Medium.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Allrounder-Monument-Medium.otf"; path = "../Media_assets/fonts/Allrounder-Monument-Medium.otf"; sourceTree = "<group>"; };
+		297BDF07F84B69624F688C34 /* Pods_taxiconnectdrivers.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_taxiconnectdrivers.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D02E47B1E0B4A5D006451C7 /* taxiconnectdrivers-tvOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "taxiconnectdrivers-tvOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D02E4901E0B4A5D006451C7 /* taxiconnectdrivers-tvOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "taxiconnectdrivers-tvOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		2E7E24630669813ADE7D6F14 /* Pods_OneSignalNotificationServiceExtension.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_OneSignalNotificationServiceExtension.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		2F771B08934D1E50FCDC806D /* Pods-taxiconnectdrivers-tvOSTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-taxiconnectdrivers-tvOSTests.release.xcconfig"; path = "Target Support Files/Pods-taxiconnectdrivers-tvOSTests/Pods-taxiconnectdrivers-tvOSTests.release.xcconfig"; sourceTree = "<group>"; };
 		38A33738A4246B518FA44BE8 /* Pods-taxiconnectdrivers.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-taxiconnectdrivers.release.xcconfig"; path = "Target Support Files/Pods-taxiconnectdrivers/Pods-taxiconnectdrivers.release.xcconfig"; sourceTree = "<group>"; };
 		441B0DB365DC73C20D89940F /* Pods-taxiconnectdrivers-taxiconnectdriversTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-taxiconnectdrivers-taxiconnectdriversTests.debug.xcconfig"; path = "Target Support Files/Pods-taxiconnectdrivers-taxiconnectdriversTests/Pods-taxiconnectdrivers-taxiconnectdriversTests.debug.xcconfig"; sourceTree = "<group>"; };
 		50D4CB90894141889BBE415E /* UberMoveTextBold.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = UberMoveTextBold.otf; path = ../Media_assets/fonts/UberMoveTextBold.otf; sourceTree = "<group>"; };
 		5202D6875AE6453B9C8B4AA4 /* UberMoveTextRegular.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = UberMoveTextRegular.otf; path = ../Media_assets/fonts/UberMoveTextRegular.otf; sourceTree = "<group>"; };
-		5223AB3C9F3646E4DDDD7384 /* libPods-taxiconnectdrivers.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-taxiconnectdrivers.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		5540C211C4F020B40BE85478 /* Pods-taxiconnectdrivers-taxiconnectdriversTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-taxiconnectdrivers-taxiconnectdriversTests.release.xcconfig"; path = "Target Support Files/Pods-taxiconnectdrivers-taxiconnectdriversTests/Pods-taxiconnectdrivers-taxiconnectdriversTests.release.xcconfig"; sourceTree = "<group>"; };
-		634D96AB1B86BF86BCBA79D5 /* libPods-taxiconnectdrivers-taxiconnectdriversTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-taxiconnectdrivers-taxiconnectdriversTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		66D46B99C2D57D1930842CB0 /* Pods-taxiconnectdrivers-tvOSTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-taxiconnectdrivers-tvOSTests.debug.xcconfig"; path = "Target Support Files/Pods-taxiconnectdrivers-tvOSTests/Pods-taxiconnectdrivers-tvOSTests.debug.xcconfig"; sourceTree = "<group>"; };
-		6C99E277E822C975E4CC4EDD /* libPods-taxiconnectdrivers-tvOSTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-taxiconnectdrivers-tvOSTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		71E106ED242547028F8A9818 /* Allrounder-Grotesk-Regular.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Allrounder-Grotesk-Regular.otf"; path = "../Media_assets/fonts/Allrounder-Grotesk-Regular.otf"; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = taxiconnectdrivers/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		834241C43AD04CFCA72F8DEF /* MoveLight.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MoveLight.ttf; path = ../Media_assets/fonts/MoveLight.ttf; sourceTree = "<group>"; };
 		84FA20A565F7105CD08BDE7F /* Pods-taxiconnectdrivers.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-taxiconnectdrivers.debug.xcconfig"; path = "Target Support Files/Pods-taxiconnectdrivers/Pods-taxiconnectdrivers.debug.xcconfig"; sourceTree = "<group>"; };
 		8534C5F5522343E3B2EC8FBF /* Allrounder-Monument-Regular.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Allrounder-Monument-Regular.otf"; path = "../Media_assets/fonts/Allrounder-Monument-Regular.otf"; sourceTree = "<group>"; };
-		8CEB824E9992CF82326C8DC3 /* libPods-OneSignalNotificationServiceExtension.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-OneSignalNotificationServiceExtension.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		96383E5E25E5306C007FD0D3 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		9652FA99263979EF00728063 /* React.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = React.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9652FCB726397EA700728063 /* react_native_splash_screen.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = react_native_splash_screen.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -121,6 +120,7 @@
 		968D1FD425DAB92900320474 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		968D1FE625DABB1C00320474 /* OneSignalNotificationServiceExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = OneSignalNotificationServiceExtension.entitlements; sourceTree = "<group>"; };
 		96A3B300A5424385B643E06D /* Allrounder-Monument-Book.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Allrounder-Monument-Book.otf"; path = "../Media_assets/fonts/Allrounder-Monument-Book.otf"; sourceTree = "<group>"; };
+		9C5C78E9171DC773771DDC01 /* Pods_taxiconnectdrivers_taxiconnectdriversTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_taxiconnectdrivers_taxiconnectdriversTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A2F6E255F5510FCC4D3BE536 /* Pods-taxiconnectdrivers-tvOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-taxiconnectdrivers-tvOS.debug.xcconfig"; path = "Target Support Files/Pods-taxiconnectdrivers-tvOS/Pods-taxiconnectdrivers-tvOS.debug.xcconfig"; sourceTree = "<group>"; };
 		A3E6A1983110114D79346474 /* Pods-OneSignalNotificationServiceExtension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OneSignalNotificationServiceExtension.debug.xcconfig"; path = "Target Support Files/Pods-OneSignalNotificationServiceExtension/Pods-OneSignalNotificationServiceExtension.debug.xcconfig"; sourceTree = "<group>"; };
 		A4D7BB5879B880FE51940A17 /* Pods-taxiconnectdrivers-tvOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-taxiconnectdrivers-tvOS.release.xcconfig"; path = "Target Support Files/Pods-taxiconnectdrivers-tvOS/Pods-taxiconnectdrivers-tvOS.release.xcconfig"; sourceTree = "<group>"; };
@@ -128,12 +128,12 @@
 		ABACC60DA9F64D5ABF63D88C /* UberMoveTextMedium.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = UberMoveTextMedium.otf; path = ../Media_assets/fonts/UberMoveTextMedium.otf; sourceTree = "<group>"; };
 		AC92B3623AA04BDB9EDD5044 /* UberMoveTextLight.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = UberMoveTextLight.otf; path = ../Media_assets/fonts/UberMoveTextLight.otf; sourceTree = "<group>"; };
 		BF14907EC806429495E94991 /* MoveBold.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MoveBold.otf; path = ../Media_assets/fonts/MoveBold.otf; sourceTree = "<group>"; };
+		CC830A61D7FCED41F97CF3D8 /* Pods_taxiconnectdrivers_tvOSTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_taxiconnectdrivers_tvOSTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E88BDA0F9AA64AD59B14178E /* MoveRegular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MoveRegular.ttf; path = ../Media_assets/fonts/MoveRegular.ttf; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		ED2971642150620600B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS12.0.sdk/System/Library/Frameworks/JavaScriptCore.framework; sourceTree = DEVELOPER_DIR; };
 		F143F72B329E46D0868B16A2 /* Allrounder-Grotesk-Medium.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Allrounder-Grotesk-Medium.otf"; path = "../Media_assets/fonts/Allrounder-Grotesk-Medium.otf"; sourceTree = "<group>"; };
 		F252898D564D6C5C55D910CA /* Pods-OneSignalNotificationServiceExtension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OneSignalNotificationServiceExtension.release.xcconfig"; path = "Target Support Files/Pods-OneSignalNotificationServiceExtension/Pods-OneSignalNotificationServiceExtension.release.xcconfig"; sourceTree = "<group>"; };
-		FAC60CDEAE5E067933EBCD7D /* libPods-taxiconnectdrivers-tvOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-taxiconnectdrivers-tvOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -141,7 +141,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				93C25106DA1EA3C8A2A4C29A /* libPods-taxiconnectdrivers-taxiconnectdriversTests.a in Frameworks */,
+				9ACDA8B6008D5F06D090A197 /* Pods_taxiconnectdrivers_taxiconnectdriversTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -149,7 +149,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4CA3E86DB1CAD6AD2AB150BD /* libPods-taxiconnectdrivers.a in Frameworks */,
+				BFEE5EBB5F54A9CB8D5B2266 /* Pods_taxiconnectdrivers.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -157,7 +157,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D3D99F2302E92CD424022DEF /* libPods-taxiconnectdrivers-tvOS.a in Frameworks */,
+				094E55D8C0A59AEDB6CD472C /* Pods_taxiconnectdrivers_tvOS.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -165,7 +165,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D9F6BACCD991987671582033 /* libPods-taxiconnectdrivers-tvOSTests.a in Frameworks */,
+				5C2DF844ED0011ADFAB2B7D9 /* Pods_taxiconnectdrivers_tvOSTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -173,7 +173,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				377A79E5BA5EF2726CAA33A4 /* libPods-OneSignalNotificationServiceExtension.a in Frameworks */,
+				D3DCB25A7FB8EC2320BC6650 /* Pods_OneSignalNotificationServiceExtension.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -243,11 +243,11 @@
 				9652FA99263979EF00728063 /* React.framework */,
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
 				ED2971642150620600B7C4FE /* JavaScriptCore.framework */,
-				8CEB824E9992CF82326C8DC3 /* libPods-OneSignalNotificationServiceExtension.a */,
-				5223AB3C9F3646E4DDDD7384 /* libPods-taxiconnectdrivers.a */,
-				634D96AB1B86BF86BCBA79D5 /* libPods-taxiconnectdrivers-taxiconnectdriversTests.a */,
-				FAC60CDEAE5E067933EBCD7D /* libPods-taxiconnectdrivers-tvOS.a */,
-				6C99E277E822C975E4CC4EDD /* libPods-taxiconnectdrivers-tvOSTests.a */,
+				2E7E24630669813ADE7D6F14 /* Pods_OneSignalNotificationServiceExtension.framework */,
+				297BDF07F84B69624F688C34 /* Pods_taxiconnectdrivers.framework */,
+				9C5C78E9171DC773771DDC01 /* Pods_taxiconnectdrivers_taxiconnectdriversTests.framework */,
+				18B63CB1CABDFA2F43D02827 /* Pods_taxiconnectdrivers_tvOS.framework */,
+				CC830A61D7FCED41F97CF3D8 /* Pods_taxiconnectdrivers_tvOSTests.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -327,7 +327,7 @@
 				00E356EB1AD99517003FC87E /* Frameworks */,
 				00E356EC1AD99517003FC87E /* Resources */,
 				98DF5704B05F0A7998518B40 /* [CP] Embed Pods Frameworks */,
-				77F931AF803AA80EA03616B0 /* [CP] Copy Pods Resources */,
+				B3DE55C3F9F967614BAFB4A5 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -354,7 +354,7 @@
 				D3DEE0774F069F57F025FD95 /* [CP] Embed Pods Frameworks */,
 				C6E1432586E645BBA211AEC9 /* [CP-User] [RNFB] Core Configuration */,
 				E9D59CEAB9D3B237DBE0E96D /* [CP-User] [RNFB] Crashlytics Configuration */,
-				19A452A85E21EA181B073353 /* [CP] Copy Pods Resources */,
+				C4AE949113915E0C33E5036E /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -594,21 +594,6 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		19A452A85E21EA181B073353 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-taxiconnectdrivers/Pods-taxiconnectdrivers-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 		2D02E4CB1E0B4B27006451C7 /* Bundle React Native Code And Images */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -643,21 +628,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		77F931AF803AA80EA03616B0 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-taxiconnectdrivers-taxiconnectdriversTests/Pods-taxiconnectdrivers-taxiconnectdriversTests-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		90B48CA80369CC0F95A11CF7 /* [CP] Check Pods Manifest.lock */ = {
@@ -736,6 +706,36 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		B3DE55C3F9F967614BAFB4A5 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-taxiconnectdrivers-taxiconnectdriversTests/Pods-taxiconnectdrivers-taxiconnectdriversTests-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		C4AE949113915E0C33E5036E /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-taxiconnectdrivers/Pods-taxiconnectdrivers-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		C6E1432586E645BBA211AEC9 /* [CP-User] [RNFB] Core Configuration */ = {

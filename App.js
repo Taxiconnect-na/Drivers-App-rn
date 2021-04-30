@@ -5,7 +5,7 @@
  * @flow strict-local
  */
 import React from 'react';
-import MapboxGL from '@react-native-mapbox-gl/maps';
+//import MapboxGL from '@react-native-mapbox-gl/maps';
 import 'react-native-gesture-handler';
 import {Platform} from 'react-native';
 import {Provider} from 'react-redux';
@@ -17,16 +17,16 @@ import RootScreens from './Navigation/RootScreens';
 import config from './Components/Helpers/config';
 import OneSignal from 'react-native-onesignal';
 import SyncStorage from 'sync-storage';
-import SplashScreen from 'react-native-splash-screen';
-import {enableScreens} from 'react-native-screens';
+//import SplashScreen from 'react-native-splash-screen';
+//import {enableScreens} from 'react-native-screens';
 
-enableScreens();
+//enableScreens();
 
 //Initiate the storage
 StorageManager('init');
 
-MapboxGL.setAccessToken(config.get('accessToken'));
-MapboxGL.removeCustomHeader('Authorization');
+//MapboxGL.setAccessToken(config.get('accessToken'));
+//MapboxGL.removeCustomHeader('Authorization');
 
 const store = createStore(HomeReducer);
 
@@ -42,7 +42,7 @@ class App extends React.PureComponent {
   }
 
   async componentDidMount() {
-    SplashScreen.hide();
+    //SplashScreen.hide();
     await SyncStorage.init();
 
     OneSignal.setNotificationWillShowInForegroundHandler(
