@@ -150,8 +150,8 @@ android {
         applicationId "com.taxiconnectdrivers"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 121
-        versionName "2.0.158"
+        versionCode 140
+        versionName "2.0.165"
         multiDexEnabled true
     }
     splits {
@@ -217,11 +217,11 @@ dependencies {
     // When using the BoM, you don't specify versions in Firebase library dependencies
     implementation 'com.google.firebase:firebase-crashlytics'
     implementation 'com.google.firebase:firebase-analytics'
-    implementation 'com.facebook.soloader:soloader:0.9.0+'
+    //implementation 'com.facebook.soloader:soloader:0.9.0+'
 
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.0.0"
     def multidex_version = "2.0.1"
-    implementation 'androidx.multidex:multidex:$multidex_version'
+    implementation 'com.android.support:multidex:2.0.1'
 
     debugImplementation("com.facebook.flipper:flipper:${FLIPPER_VERSION}") {
       exclude group:'com.facebook.fbjni'

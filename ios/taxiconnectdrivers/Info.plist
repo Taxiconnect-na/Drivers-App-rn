@@ -2,12 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>UIBackgroundModes</key>
-	<array>
-		<string>audio</string>
-	</array>
-	<key>MGLMapboxAccessToken</key>
-	<string>sk.eyJ1IjoiZG9taW5pcXVla3R0IiwiYSI6ImNrbnpnZXFiZzA0ajcybnA5cGN5dnpnYzIifQ.v3D5G2ezDi95egDmdCp7pg</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
@@ -37,6 +31,8 @@
 	</array>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>MGLMapboxAccessToken</key>
+	<string>sk.eyJ1IjoiZG9taW5pcXVla3R0IiwiYSI6ImNrbnpnZXFiZzA0ajcybnA5cGN5dnpnYzIifQ.v3D5G2ezDi95egDmdCp7pg</string>
 	<key>MGLMapboxMetricsEnabledSettingShownInApp</key>
 	<string>YES</string>
 	<key>NSAppTransportSecurity</key>
@@ -96,6 +92,10 @@
 		<string>Octicons.ttf</string>
 		<string>SimpleLineIcons.ttf</string>
 		<string>Zocial.ttf</string>
+	</array>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>audio</string>
 	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>

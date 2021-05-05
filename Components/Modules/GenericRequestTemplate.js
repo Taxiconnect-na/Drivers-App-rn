@@ -188,7 +188,7 @@ class GenericRequestTemplate extends React.PureComponent {
               style={{
                 fontFamily:
                   Platform.OS === 'android' ? 'MoveMedium' : 'Uber Move Medium',
-                fontSize: RFValue(18),
+                fontSize: RFValue(16),
                 flex: 1,
               }}>
               Picked up
@@ -197,8 +197,8 @@ class GenericRequestTemplate extends React.PureComponent {
             <Text
               style={{
                 fontFamily:
-                  Platform.OS === 'android' ? 'MoveMedium' : 'Uber Move Medium',
-                fontSize: RFValue(18),
+                  Platform.OS === 'android' ? 'MoveRegular' : 'Uber Move',
+                fontSize: RFValue(16),
                 flex: 1,
               }}>
               {parseInt(
@@ -228,11 +228,16 @@ class GenericRequestTemplate extends React.PureComponent {
                     )[1],
                   )
                 ? 'Arrived'
-                : this.props.requestLightData.eta_to_passenger_infos.eta}
+                : `• Sent ${new Date(
+                    this.props.requestLightData.ride_basic_infos.wished_pickup_time,
+                  ).getUTCHours()}:${new Date(
+                    this.props.requestLightData.ride_basic_infos.wished_pickup_time,
+                  ).getUTCMinutes()}`}
             </Text>
           )}
+
           {/**Distance - show only when not in ride */}
-          {this.props.requestLightData.ride_basic_infos
+          {/*this.props.requestLightData.ride_basic_infos
             .inRideToDestination ? null : (
             <Text
               style={{
@@ -254,7 +259,7 @@ class GenericRequestTemplate extends React.PureComponent {
                     this.props.requestLightData.eta_to_passenger_infos.distance,
                   ) + 'meters'}
             </Text>
-          )}
+          )*/}
         </View>
 
         <View
@@ -558,38 +563,66 @@ class GenericRequestTemplate extends React.PureComponent {
                     {this.props.requestLightData.origin_destination_infos.destination_infos.map(
                       (destination, index) => {
                         return (
-                          <Text
-                            key={`${index}`}
-                            style={{
-                              fontFamily:
-                                Platform.OS === 'android'
-                                  ? 'UberMoveTextMedium'
-                                  : 'Uber Move Text Medium',
-                              fontSize: 18,
-                              marginLeft: 5,
-                              flex: 1,
-                            }}>
+                          <>
                             <Text
+                              key={`${index}`}
+                              style={{
+                                fontFamily:
+                                  Platform.OS === 'android'
+                                    ? 'UberMoveTextMedium'
+                                    : 'Uber Move Text Medium',
+                                fontSize: RFValue(17),
+                                marginLeft: 5,
+                                flex: 1,
+                              }}>
+                              <Text
+                                key={`${index + 1}`}
+                                style={{
+                                  fontFamily:
+                                    Platform.OS === 'android'
+                                      ? 'UberMoveTextRegular'
+                                      : 'Uber Move Text',
+                                }}>
+                                {`${index + 1}. `}
+                              </Text>
+                              {destination.suburb !== false &&
+                              destination.suburb !== 'false' &&
+                              destination.suburb !== undefined &&
+                              destination.suburb !== null
+                                ? destination.suburb
+                                : destination.location_name !== false &&
+                                  destination.location_name !== 'false' &&
+                                  destination.location_name !== undefined &&
+                                  destination.location_name !== null
+                                ? destination.location_name
+                                : destination.street_name}
+                            </Text>
+                            <Text
+                              key={`${index + 2}`}
                               style={{
                                 fontFamily:
                                   Platform.OS === 'android'
                                     ? 'UberMoveTextRegular'
                                     : 'Uber Move Text',
+                                fontSize: RFValue(15),
+                                marginLeft: 5,
+                                flex: 1,
+                                color: '#333333',
                               }}>
-                              {`${index + 1}. `}
+                              {destination.location_name !== false &&
+                              destination.location_name !== 'false' &&
+                              destination.location_name !== null &&
+                              destination.location_name !== undefined
+                                ? destination.location_name
+                                : null}
+                              {destination.street_name !== false &&
+                              destination.street_name !== 'false' &&
+                              destination.street_name !== undefined &&
+                              destination.street_name !== null
+                                ? `, ${destination.street_name}`
+                                : null}
                             </Text>
-                            {destination.suburb !== false &&
-                            destination.suburb !== 'false' &&
-                            destination.suburb !== undefined &&
-                            destination.suburb !== null
-                              ? destination.suburb
-                              : destination.location_name !== false &&
-                                destination.location_name !== 'false' &&
-                                destination.location_name !== undefined &&
-                                destination.location_name !== null
-                              ? destination.location_name
-                              : destination.street_name}
-                          </Text>
+                          </>
                         );
                       },
                     )}

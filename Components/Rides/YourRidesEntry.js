@@ -239,6 +239,9 @@ class YourRidesEntry extends React.PureComponent {
         {this._isMounted ? (
           <View style={styles.mainWindow}>
             <StatusBar backgroundColor="#000" barStyle={'light-content'} />
+            {this.props.App.generalErrorModal_vars.showErrorGeneralModal
+              ? this.renderError_modalView()
+              : null}
             <GenericLoader active={this.state.loaderState} thickness={4} />
 
             {this.state.fetchingRides_Data === false ? (

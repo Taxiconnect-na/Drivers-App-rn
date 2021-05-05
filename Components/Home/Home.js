@@ -466,10 +466,6 @@ class Home extends React.PureComponent {
     }
   }
 
-  componentDidUpdate() {
-    //this.getCurrentPositionCusto();
-  }
-
   /**
    * @func computeDaily_amountriver
    * Responsible for making the request to compute the daily driver profit so far.
@@ -1247,7 +1243,7 @@ class Home extends React.PureComponent {
               <View
                 style={{
                   padding: 10,
-                  width: 100,
+                  minWidth: 100,
                   alignItems: 'center',
                   justifyContent: 'center',
                   borderRadius: 50,
@@ -1315,103 +1311,6 @@ class Home extends React.PureComponent {
   }
 
   /**
-   * @func renderRouteElements
-   * Responsible for rendering any kind of polyline and navigation elements in the map component.
-   * Scenarios:
-   * 1. If there's a ride in progress.
-   */
-  renderRouteElements() {
-    if (
-      this.props.App.main_interfaceState_vars.isApp_inNavigation_mode &&
-      this.props.App.main_interfaceState_vars.isRideInProgress &&
-      this.props.App.main_interfaceState_vars.navigationRouteData !== false &&
-      this.props.App.main_interfaceState_vars.navigationRouteData
-        .routePoints !== undefined
-    ) {
-      //Fit bounds
-      /*if (this.camera !== undefined && this.camera != null) {
-        this.camera.fitBounds(
-          [this.props.App.longitude, this.props.App.latitude],
-          this.props.App.main_interfaceState_vars.navigationRouteData.destinationPoint.map(
-            parseFloat,
-          ),
-          80,
-          2000,
-        );
-      }*/
-      //Render polyline to destination/passenger
-      return (
-        <>
-          <Animated.ShapeSource
-            id={'shape'}
-            aboveLayerID={'driver-location'}
-            shape={
-              new Animated.Shape({
-                type: 'LineString',
-                coordinates: this.props.App.main_interfaceState_vars
-                  .navigationRouteData.routePoints,
-              })
-            }>
-            <Animated.LineLayer
-              id={'lineRoutePickup'}
-              style={{
-                lineCap: 'round',
-                lineWidth: this.props.App.main_interfaceState_vars
-                  .isApp_inTrackingMode
-                  ? 10
-                  : 6,
-                lineOpacity: 1,
-                lineColor: '#096ED4',
-              }}
-            />
-          </Animated.ShapeSource>
-          {/**Destination / passenger's location */}
-          <Animated.ShapeSource
-            id={'shape'}
-            aboveLayerID={'lineRoutePickup'}
-            shape={
-              new Animated.Shape({
-                type: 'LineString',
-                coordinates: [
-                  [0, 0],
-                  [1, 1],
-                ],
-              })
-            }>
-            <Animated.LineLayer id={'lineRoutePickup'} />
-          </Animated.ShapeSource>
-          <PulseCircleLayer
-            radius={10}
-            aboveLayerID={'lineRoutePickup'}
-            pulseRadius={25}
-            innerCircleStyle={{
-              circleColor: '#fff',
-              circleStrokeColor: this.props.App.requests_data_main_vars
-                .moreDetailsFocused_request.ride_basic_infos.inRideToDestination
-                ? '#b22222'
-                : '#007fff',
-              circleStrokeWidth: 0.5,
-            }}
-            outerCircleStyle={{
-              circleOpacity: 0.4,
-              circleColor: this.props.App.requests_data_main_vars
-                .moreDetailsFocused_request.ride_basic_infos.inRideToDestination
-                ? '#b22222'
-                : '#007fff',
-            }}
-            shape={{
-              type: 'Point',
-              coordinates: this.props.App.main_interfaceState_vars.navigationRouteData.destinationPoint.map(
-                parseFloat,
-              ),
-            }}
-          />
-        </>
-      );
-    }
-  }
-
-  /**
    * @func generateBasic_ridesDeliveriesList
    * Responsible for organizing and creating the list of rides received from the server.
    */
@@ -1474,6 +1373,7 @@ class Home extends React.PureComponent {
       }
     }
     //!--------- Ocean bug fix
+
     if (
       this.props.App.main_interfaceState_vars.isApp_inNavigation_mode &&
       this.props.App.main_interfaceState_vars.isRideInProgress
@@ -1481,9 +1381,25 @@ class Home extends React.PureComponent {
       //alert([this.props.App.longitude, this.props.App.latitude]);
       //Navigation on - hide request list
       return (
-        <View style={{backgroundColor: '#d0d0d0', flex: 1}}>
-          <NavigationAssistant />
-        </View>
+        <>
+          {Platform.OS === 'ios' ? (
+            <View style={{backgroundColor: '#d0d0d0', flex: 1}}>
+              <View
+                style={{
+                  position: 'absolute',
+                  left: 0,
+                  top: 0,
+                  width: '100%',
+                  height: '100%',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}>
+                <ActivityIndicator size="large" color="#000" />
+              </View>
+              <NavigationAssistant />
+            </View>
+          ) : null}
+        </>
       );
       /*return (
         <MapView
@@ -1553,6 +1469,7 @@ class Home extends React.PureComponent {
             backgroundColor={'#f0f0f0'}
             thickness={4}
           />
+          {/*<NavigationAssistant initialize={true} />*/}
           {/*Request template*/}
           {this.props.App.requests_data_main_vars.fetchedRequests_data_store !==
             undefined &&
@@ -2303,11 +2220,47 @@ class Home extends React.PureComponent {
               : '#f0f0f0',
           },
         ]}>
+        {/*? Add android driver assistant bug fix*/}
+        {Platform.OS === 'android' ? (
+          <View
+            style={{
+              backgroundColor:
+                this.props.App.main_interfaceState_vars
+                  .isApp_inNavigation_mode &&
+                this.props.App.main_interfaceState_vars.isRideInProgress
+                  ? '#d0d0d0'
+                  : 'red',
+              flex:
+                this.props.App.main_interfaceState_vars
+                  .isApp_inNavigation_mode &&
+                this.props.App.main_interfaceState_vars.isRideInProgress
+                  ? 1
+                  : 0,
+              height:
+                this.props.App.main_interfaceState_vars
+                  .isApp_inNavigation_mode &&
+                this.props.App.main_interfaceState_vars.isRideInProgress
+                  ? '100%'
+                  : 1,
+            }}>
+            <View
+              style={{
+                position: 'absolute',
+                left: 0,
+                top: 0,
+                width: '100%',
+                height: '100%',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}>
+              <ActivityIndicator size="large" color="#000" />
+            </View>
+            <NavigationAssistant />
+          </View>
+        ) : null}
         {this.renderHeaderMainHome()}
-
         {/**Show the request list ONLY in NORMAL MODDE */}
         {this.renderCenterMainHome()}
-
         {/**Footer part */}
         {this.renderFooterMainHome()}
       </View>

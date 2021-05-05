@@ -22,23 +22,40 @@ class NavigationAssistant extends React.PureComponent {
   }
 
   render() {
-    let pickupCoords = this.props.App.requests_data_main_vars
-      .moreDetailsFocused_request.origin_destination_infos.pickup_infos
-      .coordinates;
-    pickupCoords = [pickupCoords.longitude, pickupCoords.latitude].map(
-      parseFloat,
-    ); //?Pack pickup point
+    let pickupCoords =
+      this.props.App.requests_data_main_vars.moreDetailsFocused_request
+        .origin_destination_infos !== undefined
+        ? this.props.App.requests_data_main_vars.moreDetailsFocused_request
+            .origin_destination_infos.pickup_infos.coordinates
+        : null;
+    pickupCoords =
+      this.props.App.requests_data_main_vars.moreDetailsFocused_request
+        .origin_destination_infos !== undefined
+        ? [pickupCoords.longitude, pickupCoords.latitude].map(parseFloat)
+        : [this.props.App.longitude, this.props.App.latitude]; //?Pack pickup point
 
-    let destinationCoords = this.props.App.requests_data_main_vars
-      .moreDetailsFocused_request.origin_destination_infos.destination_infos[0]
-      .coordinates;
-    destinationCoords = [
-      destinationCoords.latitude,
-      destinationCoords.longitude,
-    ].map(parseFloat); //? Pack first destination point
+    let destinationCoords =
+      this.props.App.requests_data_main_vars.moreDetailsFocused_request
+        .origin_destination_infos !== undefined
+        ? this.props.App.requests_data_main_vars.moreDetailsFocused_request
+            .origin_destination_infos.destination_infos[0].coordinates
+        : null;
+    destinationCoords =
+      this.props.App.requests_data_main_vars.moreDetailsFocused_request
+        .origin_destination_infos !== undefined
+        ? [destinationCoords.latitude, destinationCoords.longitude].map(
+            parseFloat,
+          )
+        : [this.props.App.longitude, this.props.App.latitude]; //? Pack first destination point
 
-    let inRideToDestination = this.props.App.requests_data_main_vars
-      .moreDetailsFocused_request.ride_basic_infos.inRideToDestination; //in route to pickup or destinaation?
+    let inRideToDestination =
+      this.props.App.requests_data_main_vars.moreDetailsFocused_request
+        .ride_basic_infos !== undefined
+        ? this.props.App.requests_data_main_vars.moreDetailsFocused_request
+            .ride_basic_infos.inRideToDestination
+        : null; //in route to pickup or destinaation?
+
+    console.log(pickupCoords, destinationCoords);
 
     return (
       <View style={styles.container}>
@@ -57,12 +74,12 @@ class NavigationAssistant extends React.PureComponent {
               const {latitude, longitude} = event.nativeEvent;
             }}
             onRouteProgressChange={(event) => {
-              /*const {
-              distanceTraveled,
-              durationRemaining,
-              fractionTraveled,
-              distanceRemaining,
-            } = event.nativeEvent;*/
+              const {
+                distanceTraveled,
+                durationRemaining,
+                fractionTraveled,
+                distanceRemaining,
+              } = event.nativeEvent;
             }}
             onError={(event) => {
               //const {message} = event.nativeEvent;
