@@ -2228,8 +2228,8 @@ class Home extends React.PureComponent {
                 this.props.App.main_interfaceState_vars
                   .isApp_inNavigation_mode &&
                 this.props.App.main_interfaceState_vars.isRideInProgress
-                  ? '#d0d0d0'
-                  : 'red',
+                  ? '#fff'
+                  : '#000',
               flex:
                 this.props.App.main_interfaceState_vars
                   .isApp_inNavigation_mode &&
@@ -2242,6 +2242,12 @@ class Home extends React.PureComponent {
                 this.props.App.main_interfaceState_vars.isRideInProgress
                   ? '100%'
                   : 1,
+              opacity:
+                this.props.App.main_interfaceState_vars
+                  .isApp_inNavigation_mode &&
+                this.props.App.main_interfaceState_vars.isRideInProgress
+                  ? 1
+                  : 0,
             }}>
             <View
               style={{

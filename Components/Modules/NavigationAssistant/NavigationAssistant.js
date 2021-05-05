@@ -55,8 +55,6 @@ class NavigationAssistant extends React.PureComponent {
             .ride_basic_infos.inRideToDestination
         : null; //in route to pickup or destinaation?
 
-    console.log(pickupCoords, destinationCoords);
-
     return (
       <View style={styles.container}>
         {/(show_modalMore_tripDetails|trip_pickupConfirmation_confirmation)/i.test(
