@@ -60,7 +60,9 @@ class NavigationAssistant extends React.PureComponent {
         {/(show_modalMore_tripDetails|trip_pickupConfirmation_confirmation)/i.test(
           this.props.App.generalErrorModal_vars.generalErrorModalType,
         ) &&
-        this.props.App.generalErrorModal_vars.showErrorGeneralModal ? null : (
+        this.props.App.generalErrorModal_vars
+          .showErrorGeneralModal ? null : this.props.App
+            .main_interfaceState_vars.isApp_inNavigation_mode ? (
           <MapboxNavigation
             origin={[this.props.App.longitude, this.props.App.latitude]}
             destination={
@@ -94,7 +96,7 @@ class NavigationAssistant extends React.PureComponent {
               // Called when you arrive at the destination.
             }}
           />
-        )}
+        ) : null}
       </View>
     );
   }

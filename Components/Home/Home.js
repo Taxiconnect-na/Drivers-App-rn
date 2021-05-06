@@ -20,13 +20,11 @@ import {
   Platform,
   Easing,
   PermissionsAndroid,
-  Image,
   FlatList,
   ActivityIndicator,
   InteractionManager,
   BackHandler,
   StatusBar,
-  Button,
 } from 'react-native';
 import GeolocationP from 'react-native-geolocation-service';
 import {
@@ -623,7 +621,31 @@ class Home extends React.PureComponent {
               } else {
                 if (this.state.locationWatcher === null) {
                   //Initializedd the location watcher
-                  this.state.locationWatcher = GeolocationP.watchPosition();
+                  this.state.locationWatcher = GeolocationP.watchPosition(
+                    (position) => {
+                      globalObject.props.App.latitude =
+                        position.coords.latitude;
+                      globalObject.props.App.longitude =
+                        position.coords.longitude;
+                      //---
+                      //Get user location
+                      globalObject.props.App.socket.emit('geocode-this-point', {
+                        latitude: globalObject.props.App.latitude,
+                        longitude: globalObject.props.App.longitude,
+                        user_fingerprint:
+                          globalObject.props.App.user_fingerprint,
+                      });
+                    },
+                    (error) => {
+                      //...
+                    },
+                    {
+                      enableHighAccuracy: true,
+                      timeout: 5000,
+                      maximumAge: 1000,
+                      distanceFilter: 3,
+                    },
+                  );
                 }
 
                 if (globalObject.props.App._MAX_NUMBER_OF_CALLBACKS_MAP > 0) {
@@ -842,7 +864,34 @@ class Home extends React.PureComponent {
                 } else {
                   if (this.state.locationWatcher === null) {
                     //Initializedd the location watcher
-                    this.state.locationWatcher = GeolocationP.watchPosition();
+                    this.state.locationWatcher = GeolocationP.watchPosition(
+                      (position) => {
+                        globalObject.props.App.latitude =
+                          position.coords.latitude;
+                        globalObject.props.App.longitude =
+                          position.coords.longitude;
+                        //---
+                        //Get user location
+                        globalObject.props.App.socket.emit(
+                          'geocode-this-point',
+                          {
+                            latitude: globalObject.props.App.latitude,
+                            longitude: globalObject.props.App.longitude,
+                            user_fingerprint:
+                              globalObject.props.App.user_fingerprint,
+                          },
+                        );
+                      },
+                      (error) => {
+                        //...
+                      },
+                      {
+                        enableHighAccuracy: true,
+                        timeout: 5000,
+                        maximumAge: 1000,
+                        distanceFilter: 3,
+                      },
+                    );
                   }
                   if (globalObject.props.App._MAX_NUMBER_OF_CALLBACKS_MAP > 0) {
                     //! Decrement promise controller
@@ -969,7 +1018,34 @@ class Home extends React.PureComponent {
                 } else {
                   if (this.state.locationWatcher === null) {
                     //Initializedd the location watcher
-                    this.state.locationWatcher = GeolocationP.watchPosition();
+                    this.state.locationWatcher = GeolocationP.watchPosition(
+                      (position) => {
+                        globalObject.props.App.latitude =
+                          position.coords.latitude;
+                        globalObject.props.App.longitude =
+                          position.coords.longitude;
+                        //---
+                        //Get user location
+                        globalObject.props.App.socket.emit(
+                          'geocode-this-point',
+                          {
+                            latitude: globalObject.props.App.latitude,
+                            longitude: globalObject.props.App.longitude,
+                            user_fingerprint:
+                              globalObject.props.App.user_fingerprint,
+                          },
+                        );
+                      },
+                      (error) => {
+                        //...
+                      },
+                      {
+                        enableHighAccuracy: true,
+                        timeout: 5000,
+                        maximumAge: 1000,
+                        distanceFilter: 3,
+                      },
+                    );
                   }
                   if (globalObject.props.App._MAX_NUMBER_OF_CALLBACKS_MAP > 0) {
                     //! Decrement promise controller
@@ -1469,7 +1545,6 @@ class Home extends React.PureComponent {
             backgroundColor={'#f0f0f0'}
             thickness={4}
           />
-          {/*<NavigationAssistant initialize={true} />*/}
           {/*Request template*/}
           {this.props.App.requests_data_main_vars.fetchedRequests_data_store !==
             undefined &&

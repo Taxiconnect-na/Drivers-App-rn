@@ -682,7 +682,8 @@ class GenericRequestTemplate extends React.PureComponent {
                       ? this.acceptThisRequest(
                           this.props.requestLightData.request_fp,
                         )
-                      : InteractionManager.runAfterInteractions(() => {
+                      : Platform.OS === 'ios'
+                      ? InteractionManager.runAfterInteractions(() => {
                           this.props.UpdateErrorModalLog(
                             true,
                             'show_modalMore_tripDetails',
@@ -690,6 +691,12 @@ class GenericRequestTemplate extends React.PureComponent {
                             this.props.requestLightData,
                           );
                         })
+                      : this.props.UpdateErrorModalLog(
+                          true,
+                          'show_modalMore_tripDetails',
+                          'any',
+                          this.props.requestLightData,
+                        )
                     : {}
                 }
                 style={{
