@@ -1174,6 +1174,22 @@ class ErrorModal extends React.PureComponent {
                     : 'Trip details'}
                 </Text>
               </TouchableOpacity>
+              {/**Cancel */}
+              <TouchableOpacity
+                onPress={() =>
+                  this.props.SwitchToNavigation_modeOrBack({
+                    isApp_inNavigation_mode: false,
+                  })
+                }
+                style={{flexDirection: 'row', position: 'absolute', right: 20}}>
+                <View>
+                  <IconCommunity
+                    name="format-list-bulleted-square"
+                    color="#b22222"
+                    size={34}
+                  />
+                </View>
+              </TouchableOpacity>
             </View>
             {/scheduled/i.test(
               this.props.App.requests_data_main_vars.moreDetailsFocused_request

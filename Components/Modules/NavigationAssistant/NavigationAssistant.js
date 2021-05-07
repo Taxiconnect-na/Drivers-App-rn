@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
-import {StyleSheet, View} from 'react-native';
+import {Platform, StyleSheet, View} from 'react-native';
 import MapboxNavigation from '@homee/react-native-mapbox-navigation';
 import {
   UpdateErrorModalLog,
@@ -40,10 +40,40 @@ class NavigationAssistant extends React.PureComponent {
         ? this.props.App.requests_data_main_vars.moreDetailsFocused_request
             .origin_destination_infos.destination_infos[0].coordinates
         : null;
+    //!--------------
+    let pickLatitude1 =
+      this.props.App.requests_data_main_vars.moreDetailsFocused_request
+        .origin_destination_infos !== undefined
+        ? parseFloat(destinationCoords.latitude)
+        : this.props.App.latitude;
+    let pickLongitude1 =
+      this.props.App.requests_data_main_vars.moreDetailsFocused_request
+        .origin_destination_infos !== undefined
+        ? parseFloat(destinationCoords.longitude)
+        : this.props.App.longitude;
+    //! Coordinates order fix - major bug fix for ocean bug
+    if (
+      pickLatitude1 !== undefined &&
+      pickLatitude1 !== null &&
+      pickLatitude1 !== 0 &&
+      pickLongitude1 !== undefined &&
+      pickLongitude1 !== null &&
+      pickLongitude1 !== 0
+    ) {
+      //? Switch latitude and longitude - check the negative sign
+      if (parseFloat(pickLongitude1) < 0) {
+        //Negative - switch
+        destinationCoords = {
+          latitude: destinationCoords.longitude,
+          longitude: destinationCoords.latitude,
+        };
+      }
+    }
+    //!-----------------
     destinationCoords =
       this.props.App.requests_data_main_vars.moreDetailsFocused_request
         .origin_destination_infos !== undefined
-        ? [destinationCoords.latitude, destinationCoords.longitude].map(
+        ? [destinationCoords.longitude, destinationCoords.latitude].map(
             parseFloat,
           )
         : [this.props.App.longitude, this.props.App.latitude]; //? Pack first destination point
@@ -53,7 +83,7 @@ class NavigationAssistant extends React.PureComponent {
         .ride_basic_infos !== undefined
         ? this.props.App.requests_data_main_vars.moreDetailsFocused_request
             .ride_basic_infos.inRideToDestination
-        : null; //in route to pickup or destinaation?
+        : null; //in route to pickup or destination?
 
     return (
       <View style={styles.container}>
