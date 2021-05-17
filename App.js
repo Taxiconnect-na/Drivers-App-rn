@@ -18,9 +18,9 @@ import config from './Components/Helpers/config';
 import OneSignal from 'react-native-onesignal';
 import SyncStorage from 'sync-storage';
 import SplashScreen from 'react-native-splash-screen';
-//import {enableScreens} from 'react-native-screens';
+import {enableScreens} from 'react-native-screens';
 
-//enableScreens();
+enableScreens();
 
 //Initiate the storage
 StorageManager('init');
