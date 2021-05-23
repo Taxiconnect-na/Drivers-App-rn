@@ -523,6 +523,21 @@ const HomeReducer = (state = INIT_STATE, action) => {
         }
       }
 
+    case 'UPDATE_SUSPENSION_INFOS':
+      //Only update the data only if actually new
+      if (
+        action.payload !== undefined &&
+        action.payload !== false &&
+        `${action.payload}` !== `${newState.suspension_infos}`
+      ) {
+        //New data
+        newState.suspension_infos = action.payload;
+        return {...state, ...newState};
+      } //Same data - leave
+      else {
+        return state;
+      }
+
     default:
       return state;
   }

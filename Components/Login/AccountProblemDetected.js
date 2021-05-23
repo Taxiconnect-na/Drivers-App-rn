@@ -18,6 +18,8 @@ import {
 } from '../Redux/HomeActionsCreators';
 import GenericLoader from '../Modules/GenericLoader/GenericLoader';
 import call from 'react-native-phone-call';
+import IconMaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import {RFValue} from 'react-native-responsive-fontsize';
 
 class AccountProblemDetected extends React.PureComponent {
   constructor(props) {
@@ -82,25 +84,12 @@ class AccountProblemDetected extends React.PureComponent {
       <SafeAreaView style={styles.mainWindow}>
         <GenericLoader active={this.state.loaderState} thickness={4} />
         <View style={styles.presentationWindow}>
-          <TouchableOpacity
-            style={{opacity: this.state.creatingAccount === false ? 1 : 0}}
-            onPress={() =>
-              this.state.creatingAccount === false
-                ? this.gobackFromAdditionalDetails()
-                : {}
-            }>
-            <IconAnt name="arrowleft" size={29} />
-          </TouchableOpacity>
           <Text
             style={[
               {
-                fontSize: 21,
+                fontSize: RFValue(23),
                 fontFamily:
-                  Platform.OS === 'android'
-                    ? Platform.OS === 'android'
-                      ? 'Allrounder-Grotesk-Medium'
-                      : 'Allrounder Grotesk'
-                    : 'Allrounder Grotesk',
+                  Platform.OS === 'android' ? 'UberMoveBold' : 'Uber Move Bold',
                 marginTop: 15,
                 marginBottom: 35,
                 width: '100%',
@@ -116,26 +105,45 @@ class AccountProblemDetected extends React.PureComponent {
             }}>
             <IconEntypo name="block" color={'#b22222'} size={50} />
           </View>
-          <Text
-            style={[
-              {
-                flex: 1,
-                fontFamily:
-                  Platform.OS === 'android'
-                    ? 'Allrounder-Grotesk-Regular'
-                    : 'Allrounder Grotesk',
-                color: '#000',
-                fontSize: 18,
-                marginTop: '10%',
-                textAlign: 'left',
-                width: '100%',
-              },
-            ]}>
-            {this.props.suspension_message !== undefined &&
-            this.props.suspension_message !== null
-              ? this.props.suspension_message
-              : `Your account has been suspended to a malicious usage detected. Contact Us for more information.`}
-          </Text>
+          <View style={{flex: 1}}>
+            <Text
+              style={[
+                {
+                  fontFamily:
+                    Platform.OS === 'android'
+                      ? 'UberMoveTextRegular'
+                      : 'Uber Move Text',
+                  color: '#000',
+                  fontSize: RFValue(16),
+                  marginTop: '10%',
+                  textAlign: 'left',
+                  width: '100%',
+                  lineHeight: 28,
+                },
+              ]}>
+              {alert(JSON.stringify(this.props.App.suspension_infos))}
+              {this.props.App.suspension_infos.message !== undefined &&
+              this.props.App.suspension_infos.message !== null
+                ? this.props.App.suspension_infos.message
+                : `Your account has been suspended to a malicious usage detected.`}
+            </Text>
+            <Text
+              style={[
+                {
+                  fontFamily:
+                    Platform.OS === 'android'
+                      ? 'UberMoveTextRegular'
+                      : 'Uber Move Text',
+                  color: '#000',
+                  fontSize: RFValue(16),
+                  marginTop: 10,
+                  textAlign: 'left',
+                  width: '100%',
+                },
+              ]}>
+              Contact Us for more information.
+            </Text>
+          </View>
           {this.state.creatingAccount === false ? (
             <View>
               <View
@@ -152,17 +160,17 @@ class AccountProblemDetected extends React.PureComponent {
                     width: '100%',
                   }}>
                   <View style={[styles.bttnGenericTc]}>
+                    <IconMaterialIcons name="phone" color="#fff" size={25} />
                     <Text
                       style={[
                         {
                           fontFamily:
                             Platform.OS === 'android'
-                              ? Platform.OS === 'android'
-                                ? 'Allrounder-Grotesk-Medium'
-                                : 'Allrounder Grotesk'
-                              : 'Allrounder Grotesk',
-                          fontSize: 23,
+                              ? 'UberMoveTextBold'
+                              : 'Uber Move Text Bold',
+                          fontSize: RFValue(19),
                           color: '#fff',
+                          marginLeft: 10,
                         },
                       ]}>
                       Call TaxiConnect

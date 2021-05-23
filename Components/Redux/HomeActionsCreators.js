@@ -247,3 +247,13 @@ export const UpdateRequestsGraphs = (requestsGraphs) => ({
   type: 'UPDATE_REQUESTS_GRAPHS',
   payload: requestsGraphs,
 });
+
+/**
+ * 47. Update the suspension infos
+ * Responsible for updating the suspensin infos.
+ * @param suspensionInfos: the suspension infos coming from the server.
+ */
+export const UpdateSuspensionInfos = (suspensionInfos) => ({
+  type: 'UPDATE_SUSPENSION_INFOS',
+  payload: suspensionInfos,
+});

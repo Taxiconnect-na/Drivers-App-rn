@@ -10,6 +10,7 @@ import {
   StatusBar,
   BackHandler,
   Platform,
+  RefreshControl,
 } from 'react-native';
 import {
   UpdateTotalWalletAmount,
@@ -38,6 +39,7 @@ class WalletEntry extends React.PureComponent {
 
     this.state = {
       loaderState: true,
+      pullRefreshing: false, //To know whether the refresh control is active or not - default: falsee
     };
   }
 
@@ -95,6 +97,7 @@ class WalletEntry extends React.PureComponent {
         ) {
           globalObject.setState({
             loaderState: false,
+            pullRefreshing: false,
           });
           if (response.header !== undefined && response.header !== null) {
             if (
@@ -139,6 +142,17 @@ class WalletEntry extends React.PureComponent {
     });
   }
 
+  /**
+   * @func doRefreshWalletValues
+   * Responsible for updating the wallet informations.
+   */
+  doRefreshWalletValues() {
+    this.setState({loaderState: true, pullRefreshing: true});
+    this.props.App.socket.emit('getDrivers_walletInfosDeep_io', {
+      user_fingerprint: this.props.App.user_fingerprint,
+    });
+  }
+
   render() {
     //? Format the payment date schedule
     let nextPaymentDate = '...';
@@ -164,7 +178,14 @@ class WalletEntry extends React.PureComponent {
       <>
         {this._isMounted ? (
           <DismissKeyboard>
-            <ScrollView style={styles.mainWindow}>
+            <ScrollView
+              style={styles.mainWindow}
+              refreshControl={
+                <RefreshControl
+                  onRefresh={() => this.doRefreshWalletValues()}
+                  refreshing={this.state.pullRefreshing}
+                />
+              }>
               {Platform.OS === 'android' ? (
                 <StatusBar backgroundColor="#000" barStyle={'light-content'} />
               ) : (

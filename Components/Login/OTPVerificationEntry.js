@@ -26,6 +26,7 @@ import GenericLoader from '../Modules/GenericLoader/GenericLoader';
 import {
   ResetGenericPhoneNumberInput,
   UpdateErrorModalLog,
+  UpdateSuspensionInfos,
 } from '../Redux/HomeActionsCreators';
 import NetInfo from '@react-native-community/netinfo';
 import ErrorModal from '../Helpers/ErrorModal';
@@ -222,6 +223,51 @@ class OTPVerificationEntry extends React.PureComponent {
           response.response !== undefined &&
           response.response !== null
         ) {
+          //! Check for the suspension infos
+          if (response.suspension_infos !== undefined) {
+            globalObject.props.UpdateSuspensionInfos(response.suspension_infos);
+            //? IF SUSPENDED - LOG OUT AND SHOW SUSPENSION SCREEN
+            if (
+              response.suspension_infos.is_suspended !== false &&
+              response.suspension_infos.is_suspended !== 'false'
+            ) {
+              //1. LOG OUT
+              //a. Clear all the intervals
+              if (
+                globalObject.props.App._TMP_TRIP_INTERVAL_PERSISTER !== null
+              ) {
+                clearInterval(
+                  globalObject.props.App._TMP_TRIP_INTERVAL_PERSISTER,
+                );
+                globalObject.props.App._TMP_TRIP_INTERVAL_PERSISTER = null;
+              }
+
+              //b. Clear all the storages
+              SyncStorage.remove('@user_fp');
+              SyncStorage.remove('@userLocationPoint');
+              SyncStorage.remove('@gender_user');
+              SyncStorage.remove('@username');
+              SyncStorage.remove('@surname_user');
+              SyncStorage.remove('@user_email');
+              SyncStorage.remove('@phone_user');
+              SyncStorage.remove('@user_profile_pic');
+              SyncStorage.remove('@accountCreation_state');
+
+              //Reinitiate values
+              globalObject.props.App.user_fingerprint = null;
+              globalObject.props.App.gender_user = 'male';
+              globalObject.props.App.username = false;
+              globalObject.props.App.surname_user = false;
+              globalObject.props.App.user_email = false;
+              globalObject.props.App.user_profile_pic = null;
+              globalObject.props.App.last_dataPersoUpdated = null;
+              globalObject.props.App.userCurrentLocationMetaData = {};
+              globalObject.props.App.accountCreation_state = null;
+              //2. Head to suspension screen
+              globalObject.props.navigation.navigate('AccountProblemDetected');
+            }
+          }
+          //! -----------------------------
           if (!/error/i.test(response.response)) {
             globalObject.setState({loaderState: false});
             //Registered or not yet registered
@@ -720,6 +766,7 @@ const mapDispatchToProps = (dispatch) =>
     {
       ResetGenericPhoneNumberInput,
       UpdateErrorModalLog,
+      UpdateSuspensionInfos,
     },
     dispatch,
   );

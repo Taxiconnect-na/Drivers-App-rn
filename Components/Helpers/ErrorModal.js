@@ -10,7 +10,6 @@ import {
   SafeAreaView,
   ScrollView,
   Platform,
-  TextInput,
 } from 'react-native';
 import Modal from 'react-native-modal';
 import IconCommunity from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -20,7 +19,6 @@ import IconEntypo from 'react-native-vector-icons/Entypo';
 import GenericLoader from '../Modules/GenericLoader/GenericLoader';
 import IconFeather from 'react-native-vector-icons/Feather';
 import IconAnt from 'react-native-vector-icons/AntDesign';
-import {systemWeights} from 'react-native-typography';
 import {
   ResetGenericPhoneNumberInput,
   UpdateType_rideShown_YourRides_screen,
@@ -34,6 +32,7 @@ import call from 'react-native-phone-call';
 import {RFValue} from 'react-native-responsive-fontsize';
 import {FlatList} from 'react-native-gesture-handler';
 import IconIonic from 'react-native-vector-icons/Ionicons';
+import SyncStorage from 'sync-storage';
 
 class ErrorModal extends React.PureComponent {
   constructor(props) {
@@ -202,6 +201,45 @@ class ErrorModal extends React.PureComponent {
     //Update the list of requests from the server
     this.props.App.fetchRequestedRequests_history(type);
     //Update the list of requests from the server
+  }
+
+  /**
+   * @func signOff_theApp
+   * Responsible for signing the user off the app, clear all the storages and reset everything before.
+   */
+  signOff_theApp() {
+    let globalObject = this;
+    //...
+    //2. Clear all the intervals
+    if (globalObject.props.App._TMP_TRIP_INTERVAL_PERSISTER !== null) {
+      clearInterval(globalObject.props.App._TMP_TRIP_INTERVAL_PERSISTER);
+      globalObject.props.App._TMP_TRIP_INTERVAL_PERSISTER = null;
+    }
+
+    //3. Clear all the storages
+    SyncStorage.remove('@user_fp');
+    SyncStorage.remove('@userLocationPoint');
+    SyncStorage.remove('@gender_user');
+    SyncStorage.remove('@username');
+    SyncStorage.remove('@surname_user');
+    SyncStorage.remove('@user_email');
+    SyncStorage.remove('@phone_user');
+    SyncStorage.remove('@user_profile_pic');
+    SyncStorage.remove('@accountCreation_state');
+
+    //Reinitiate values
+    globalObject.props.App.user_fingerprint = null;
+    globalObject.props.App.gender_user = 'male';
+    globalObject.props.App.username = false;
+    globalObject.props.App.surname_user = false;
+    globalObject.props.App.user_email = false;
+    globalObject.props.App.user_profile_pic = null;
+    globalObject.props.App.last_dataPersoUpdated = null;
+    globalObject.props.App.userCurrentLocationMetaData = {};
+    globalObject.props.App.accountCreation_state = null;
+    //Log out
+    globalObject.props.UpdateErrorModalLog(false, false, 'any');
+    globalObject.props.parentNode.props.navigation.navigate('EntryScreen');
   }
 
   /**

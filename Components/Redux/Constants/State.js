@@ -136,6 +136,9 @@ const STATE = {
     focusedWeek_graphData: null, //Will contain the graph ddata to be displayed. - default: null
     focusedWeek_arrayIndex: 0, //Will hold the index of the selected week - default: 0 (current week)
   },
+
+  //SUSPENSION INFOS
+  suspension_infos: false, //Will hold all the suspension related data
 };
 
 export default STATE;
