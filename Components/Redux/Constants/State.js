@@ -26,7 +26,7 @@ const STATE = {
   _TMP_NAVIATION_DATA_INTERVAL_PERSISTER: null, //The interval for updating the focused navigation data
   _TMP_NAVIATION_DATA_INTERVAL_PERSISTER_TIME: 1000, //THe frequency of repetition - default:3s
 
-  _TMP_TIMEOUT_AFTER_REQUEST_RESPONSE: 2000, //The timeout after the response to show updated content - default: 4s
+  _TMP_TIMEOUT_AFTER_REQUEST_RESPONSE: 500, //The timeout after the response to show updated content - default: 4s
 
   _TMP_TIMEOUT_AFTER_GOING_ONLINE_OR_OFFLINE: 7000, //The delay in the loader after pressing online/offlline - default: 0.7sec
 

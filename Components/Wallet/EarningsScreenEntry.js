@@ -105,7 +105,16 @@ class EarningsScreenEntry extends React.PureComponent {
             //! Update  the global date and autofocus to the current week
             globalObject.props.UpdateDeepWalletInsights(response);
             //! Auto focus to this week - default: Choose the current week
-            globalObject.props.UpdateFocusedWeekDeepWalletInsights(0);
+            globalObject.props.UpdateFocusedWeekDeepWalletInsights(
+              response.weeks_view !== undefined &&
+                response.weeks_view !== null &&
+                response.weeks_view !== 'null' &&
+                response.weeks_view !== false &&
+                response.weeks_view !== 'false' &&
+                response.weeks_view !== 'undefined'
+                ? response.weeks_view.length - 1
+                : 0,
+            );
           } //No data found
           else {
             //DO NOTHING

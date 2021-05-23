@@ -88,7 +88,7 @@ export function MainDrawerContent(props) {
               color: '#AFAFAF',
               textAlign: 'right',
             }}>
-            v2.0.173
+            v2.0.175
           </Text>
         </View>
       </SafeAreaView>

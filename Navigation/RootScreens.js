@@ -9,6 +9,7 @@ import NewDriverDetected from '../Components/Login/NewDriverDetected';
 import AccountProblemDetected from '../Components/Login/AccountProblemDetected';
 import WalletEntry from '../Components/Wallet/WalletEntry';
 import ShowAllTransactionsEntry from '../Components/Wallet/ShowAllTransactionsEntry';
+import Summary from '../Components/Wallet/Summary';
 import EarningsScreenEntry from '../Components/Wallet/EarningsScreenEntry';
 import Home from '../Components/Home/Home';
 import YourRidesEntry from '../Components/Rides/YourRidesEntry';
@@ -143,6 +144,21 @@ function Wallet_drawer() {
           headerTitle: (
             <View style={{flexDirection: 'row', alignItems: 'center'}}>
               <Text style={styles.genericHeader}>Earnings</Text>
+            </View>
+          ),
+        }}
+      />
+      <Stack.Screen
+        name="SummaryWallet"
+        component={Summary}
+        options={{
+          headerShown: true,
+          headerStyle: {backgroundColor: '#000'},
+          headerTintColor: '#fff',
+          headerBackTitle: 'Back',
+          headerTitle: (
+            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+              <Text style={styles.genericHeader}>Summary</Text>
             </View>
           ),
         }}

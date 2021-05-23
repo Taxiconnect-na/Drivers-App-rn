@@ -54,6 +54,7 @@ import {RFValue} from 'react-native-responsive-fontsize';
 import SyncStorage from 'sync-storage';
 import NavigationAssistant from '../Modules/NavigationAssistant/NavigationAssistant';
 import {_MAIN_URL_ENDPOINT} from '@env';
+import OneSignal from 'react-native-onesignal';
 const io = require('socket.io-client');
 
 class Home extends React.PureComponent {
@@ -74,6 +75,32 @@ class Home extends React.PureComponent {
     };
     //...
     this.goOnlineOrOffline = this.goOnlineOrOffline.bind(this);
+  }
+
+  /**
+   * @func getNotifications_vars
+   * Responsible for updadting the notifications vars to the local storage.
+   */
+  async getNotifications_vars() {
+    OneSignal.setNotificationWillShowInForegroundHandler(
+      (notifReceivedEvent) => {},
+    );
+    OneSignal.setNotificationWillShowInForegroundHandler(
+      (notifReceivedEvent) => {},
+    );
+    OneSignal.setNotificationOpenedHandler((notification) => {});
+    OneSignal.addSubscriptionObserver((event) => {});
+    OneSignal.addPermissionObserver((event) => {});
+    if (OneSignal !== null && OneSignal !== undefined) {
+      const deviceState = await OneSignal.getDeviceState();
+      //Save the push notif object
+      try {
+        if (deviceState.userId !== undefined && deviceState.userId !== null) {
+          //SyncStorage.set('@pushnotif_token_global_obj', deviceState);
+          this.props.App.pushnotif_token = deviceState;
+        }
+      } catch (error) {}
+    }
   }
 
   async componentDidMount() {
@@ -194,25 +221,27 @@ class Home extends React.PureComponent {
 
     //Create interval updater persister
     this.props.App._TMP_TRIP_INTERVAL_PERSISTER = setInterval(function () {
-      //Geocode the location
+      //1. Geocode the location
       globalObject.GPRS_resolver();
       //globalObject.getCurrentPositionCusto();
-      //Get requests
+      //2. Get requests
       if (globalObject.props.App.main_interfaceState_vars.isDriver_online) {
         //Only if driver online
         globalObject.updateRemoteLocationsData();
       }
-      //Get the daily amount made so far
+      //3. Get the daily amount made so far
       globalObject.computeDaily_amountriver();
-      //Get the operational status
+      //4. Get the operational status
       globalObject.props.App.socket.emit('goOnline_offlineDrivers_io', {
         driver_fingerprint: globalObject.props.App.user_fingerprint,
         action: 'get',
       });
-      //Get the requests graph
+      //5. Get the requests graph
       globalObject.props.App.socket.emit('update_requestsGraph', {
         driver_fingerprint: globalObject.props.App.user_fingerprint,
       });
+      //6. NOTIFICATIONS
+      globalObject.getNotifications_vars();
     }, this.props.App._TMP_TRIP_INTERVAL_PERSISTER_TIME);
 
     /**
@@ -509,6 +538,7 @@ class Home extends React.PureComponent {
       pushnotif_token: this.props.App.pushnotif_token,
       user_nature: 'driver',
       requestType: this.props.App.requestType,
+      app_version: '2.0.175', //! APP VERSION
     };
 
     this.props.App.socket.emit('update-passenger-location', bundle);

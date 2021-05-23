@@ -2843,15 +2843,15 @@ class ErrorModal extends React.PureComponent {
       }
       //Show delivery input modal
       //? Generate the weeks data
-      let weeksData = this.props.App.wallet_state_vars.deepWalletInsights.weeks_view.map(
-        (weekInfo, index) => {
+      let weeksData = this.props.App.wallet_state_vars.deepWalletInsights.weeks_view
+        .map((weekInfo, index) => {
           return {
             index: index,
             week_number: weekInfo.week_number,
             year_number: weekInfo.year_number,
           };
-        },
-      );
+        })
+        .reverse();
       return (
         <SafeAreaView
           style={{
@@ -2954,7 +2954,7 @@ class ErrorModal extends React.PureComponent {
                       fontSize: RFValue(16.5),
                       flex: 1,
                     }}>
-                    {item.item.index === 0
+                    {item.item.index === weeksData.length - 1
                       ? 'This Week'
                       : item.item.year_number}
                   </Text>

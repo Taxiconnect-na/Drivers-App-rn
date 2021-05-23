@@ -7,7 +7,6 @@ import {
   Text,
   TouchableOpacity,
   StyleSheet,
-  Image,
   StatusBar,
   BackHandler,
   Platform,
@@ -19,6 +18,7 @@ import {
 } from '../Redux/HomeActionsCreators';
 import IconMaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import IconFoundation from 'react-native-vector-icons/Foundation';
+import IconIonic from 'react-native-vector-icons/Ionicons';
 import IconCommunity from 'react-native-vector-icons/MaterialCommunityIcons';
 import WalletTransacRecords from './WalletTransacRecords';
 import DismissKeyboard from '../Helpers/DismissKeyboard';
@@ -164,7 +164,7 @@ class WalletEntry extends React.PureComponent {
       <>
         {this._isMounted ? (
           <DismissKeyboard>
-            <View style={styles.mainWindow}>
+            <ScrollView style={styles.mainWindow}>
               {Platform.OS === 'android' ? (
                 <StatusBar backgroundColor="#000" barStyle={'light-content'} />
               ) : (
@@ -174,14 +174,14 @@ class WalletEntry extends React.PureComponent {
                 <GenericLoader
                   active={this.state.loaderState}
                   thickness={4}
-                  color={this.state.loaderState ? '#fff' : '#0e8491'}
-                  backgroundColor={this.state.loaderState ? '#fff' : '#0e8491'}
+                  color={this.state.loaderState ? '#0e8491' : '#fff'}
+                  backgroundColor={this.state.loaderState ? '#0e8491' : '#fff'}
                 />
                 <View
                   style={{
                     padding: 20,
                     paddingTop: 0,
-                    backgroundColor: '#0e8491',
+                    backgroundColor: '#fff',
                     height: 200,
                     marginBottom: 15,
                   }}>
@@ -199,7 +199,7 @@ class WalletEntry extends React.PureComponent {
                             ? 'UberMoveTextRegular'
                             : 'Uber Move Text',
                         fontSize: RFValue(17),
-                        color: '#fff',
+                        color: '#000',
                       }}>
                       Hey, {this.props.App.username}
                     </Text>
@@ -216,8 +216,8 @@ class WalletEntry extends React.PureComponent {
                             Platform.OS === 'android'
                               ? 'MoveBold'
                               : 'Uber Move Bold',
-                          fontSize: RFValue(37),
-                          color: '#fff',
+                          fontSize: RFValue(43),
+                          color: '#000',
                         },
                       ]}>
                       {`N$${
@@ -233,8 +233,11 @@ class WalletEntry extends React.PureComponent {
                           .header.remaining_due_to_driver !== undefined &&
                         this.props.App.wallet_state_vars.deepWalletInsights
                           .header.remaining_due_to_driver !== null
-                          ? this.props.App.wallet_state_vars.deepWalletInsights
-                              .header.remaining_due_to_driver
+                          ? Math.floor(
+                              this.props.App.wallet_state_vars
+                                .deepWalletInsights.header
+                                .remaining_due_to_driver,
+                            )
                           : 0
                       }`}
                     </Text>
@@ -242,29 +245,24 @@ class WalletEntry extends React.PureComponent {
                       style={{
                         fontFamily:
                           Platform.OS === 'android'
-                            ? 'UberMoveTextRegular'
-                            : 'Uber Move Text',
-                        color: '#d0d0d0',
+                            ? 'UberMoveTextLight'
+                            : 'Uber Move Text Light',
+                        color: '#000',
                         fontSize: RFValue(16),
                       }}>
                       Your balance
                     </Text>
                   </View>
                 </View>
-                <ScrollView
+                <View
                   style={{
                     flex: 1,
                     borderTopLeftRadius: 30,
                     borderTopRightRadius: 30,
-                    shadowColor: '#000',
-                    shadowOffset: {
-                      width: 0,
-                      height: 2,
-                    },
-                    shadowOpacity: 0.25,
-                    shadowRadius: 3.84,
-                    elevation: 5,
                     backgroundColor: '#fff',
+                    borderWidth: 1,
+                    borderColor: '#d0d0d0',
+                    borderBottomColor: '#fff',
                   }}>
                   <View
                     style={{
@@ -296,8 +294,8 @@ class WalletEntry extends React.PureComponent {
                           style={{
                             fontFamily:
                               Platform.OS === 'android'
-                                ? 'UberMoveTextBold'
-                                : 'Uber Move Text Bold',
+                                ? 'UberMoveBold'
+                                : 'Uber Move Bold',
                             fontSize: RFValue(16),
                             marginTop: 7,
                           }}>
@@ -313,14 +311,55 @@ class WalletEntry extends React.PureComponent {
                       marginTop: 10,
                       paddingBottom: 40,
                     }}>
+                    {/**Comission */}
+                    <TouchableOpacity
+                      onPress={() =>
+                        this.props.navigation.navigate('SummaryWallet')
+                      }
+                      style={{
+                        flexDirection: 'row',
+                        marginBottom: 20,
+                      }}>
+                      <View style={{marginRight: 5}}>
+                        <IconIonic name="square" size={24} />
+                      </View>
+                      <View style={{flex: 1}}>
+                        <Text
+                          style={{
+                            fontFamily:
+                              Platform.OS === 'android'
+                                ? 'UberMoveTextMedium'
+                                : 'Uber Move Text Medium',
+                            fontSize: RFValue(18),
+                            color: '#0e8491',
+                          }}>
+                          Summary
+                        </Text>
+                        <Text
+                          style={{
+                            fontFamily:
+                              Platform.OS === 'android'
+                                ? 'UberMoveTextLight'
+                                : 'Uber Move Text Light',
+                            fontSize: RFValue(15),
+                          }}>
+                          Quick overview of your wallet.
+                        </Text>
+                      </View>
+                    </TouchableOpacity>
                     {/**Earnings */}
                     <TouchableOpacity
                       onPress={() =>
                         this.props.navigation.navigate('EarningsScreenEntry')
                       }
                       style={{
+                        borderTopWidth: 1,
+                        borderColor: '#EEEEEE',
+                        borderBottomWidth: 1,
+                        borderColor: '#EEEEEE',
                         flexDirection: 'row',
-                        marginBottom: 20,
+                        paddingTop: 15,
+                        paddingBottom: 20,
                       }}>
                       <View style={{marginRight: 5}}>
                         <IconFoundation name="graph-bar" size={24} />
@@ -345,7 +384,7 @@ class WalletEntry extends React.PureComponent {
                                 : 'Uber Move Text Light',
                             fontSize: RFValue(15),
                           }}>
-                          View more details about your weekly earnings
+                          View more details about your weekly earnings.
                         </Text>
                       </View>
                     </TouchableOpacity>
@@ -443,9 +482,9 @@ class WalletEntry extends React.PureComponent {
                       </View>
                     </TouchableOpacity>
                   </View>
-                </ScrollView>
+                </View>
               </View>
-            </View>
+            </ScrollView>
           </DismissKeyboard>
         ) : null}
       </>
@@ -456,7 +495,7 @@ class WalletEntry extends React.PureComponent {
 const styles = StyleSheet.create({
   mainWindow: {
     flex: 1,
-    backgroundColor: '#0e8491',
+    backgroundColor: '#fff',
   },
   presentationWindow: {
     flex: 1,
