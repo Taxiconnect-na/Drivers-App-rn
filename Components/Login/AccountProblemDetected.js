@@ -121,7 +121,6 @@ class AccountProblemDetected extends React.PureComponent {
                   lineHeight: 28,
                 },
               ]}>
-              {alert(JSON.stringify(this.props.App.suspension_infos))}
               {this.props.App.suspension_infos.message !== undefined &&
               this.props.App.suspension_infos.message !== null
                 ? this.props.App.suspension_infos.message
