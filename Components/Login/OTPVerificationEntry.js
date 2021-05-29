@@ -215,6 +215,7 @@ class OTPVerificationEntry extends React.PureComponent {
     this.props.App.socket.on(
       'sendOtpAndCheckerUserStatusTc-response',
       function (response) {
+        alert(JSON.stringify(response));
         //Stop the loader
         globalObject.setState({loaderState: false});
         //...

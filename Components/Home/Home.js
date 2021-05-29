@@ -2226,8 +2226,8 @@ class Home extends React.PureComponent {
                           : 'Uber Move Medium',
                       fontSize: this.props.App.main_interfaceState_vars
                         .isDriver_online
-                        ? 20
-                        : 22,
+                        ? RFValue(20)
+                        : RFValue(22),
                       color: /Hold on/i.test(this.state.offlineOnlineText)
                         ? '#000'
                         : /Offline/i.test(this.state.offlineOnlineText)
@@ -2245,7 +2245,7 @@ class Home extends React.PureComponent {
                           Platform.OS === 'android'
                             ? 'MoveMedium'
                             : 'Uber Move Medium',
-                        fontSize: 20,
+                        fontSize: RFValue(20),
                         marginLeft: 5,
                         color: '#fff',
                       }}>

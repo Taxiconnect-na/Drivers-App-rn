@@ -139,6 +139,8 @@ const STATE = {
 
   //SUSPENSION INFOS
   suspension_infos: false, //Will hold all the suspension related data
+  //ABUSIVE BEHAVIOURS
+  abusive_behavior_infos: false, //Will hold all the abusive behavior data
 };
 
 export default STATE;

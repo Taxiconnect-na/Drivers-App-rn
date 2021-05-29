@@ -3042,6 +3042,77 @@ class ErrorModal extends React.PureComponent {
           )}
         </SafeAreaView>
       );
+    } else if (/warning_due_to_abuse/i.test(error_status)) {
+      return (
+        <SafeAreaView
+          style={{
+            backgroundColor: '#fff',
+            flex: 1,
+          }}>
+          <View style={{padding: 20, marginTop: '5%', flex: 1}}>
+            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+              <IconEntypo
+                name="block"
+                color={'#b22222'}
+                size={20}
+                style={{marginRight: 5}}
+              />
+              <Text
+                style={{
+                  fontFamily:
+                    Platform.OS === 'android' ? 'MoveBold' : 'Uber Move Bold',
+                  fontSize: RFValue(20),
+                }}>
+                Abusive behaviour detected
+              </Text>
+            </View>
+            <View style={{marginTop: 20}}>
+              <Text
+                style={{
+                  fontFamily:
+                    Platform.OS === 'android'
+                      ? 'MoveTextRegular'
+                      : 'Uber Move Text',
+                  fontSize: RFValue(16),
+                  lineHeight: 25,
+                }}>
+                {this.props.App.abusive_behavior_infos !== false &&
+                this.props.App.abusive_behavior_infos !== undefined &&
+                this.props.App.abusive_behavior_infos.message !== undefined &&
+                this.props.App.abusive_behavior_infos.message !== null
+                  ? this.props.App.abusive_behavior_infos.message
+                  : `We've detected a suspiscious behaviour linked to the usage of your TaxiConnect drivers account, please visit the "Support" tab for more.`}
+              </Text>
+            </View>
+            <View
+              style={{
+                flex: 1,
+                justifyContent: 'flex-end',
+              }}>
+              <TouchableOpacity
+                onPress={() =>
+                  this.props.UpdateErrorModalLog(false, false, 'any')
+                }
+                style={[
+                  styles.bttnGenericTc,
+                  {borderRadius: 2, marginBottom: 20},
+                ]}>
+                <Text
+                  style={{
+                    fontFamily:
+                      Platform.OS === 'android'
+                        ? 'UberMoveTextMedium'
+                        : 'Uber Move Text Medium',
+                    fontSize: RFValue(21),
+                    color: '#fff',
+                  }}>
+                  Close
+                </Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </SafeAreaView>
+      );
     } else {
       this.props.UpdateErrorModalLog(false, false, 'any'); //Close modal
       return <></>;
