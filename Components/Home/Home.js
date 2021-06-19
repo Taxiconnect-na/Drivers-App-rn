@@ -286,7 +286,7 @@ class Home extends React.PureComponent {
           globalObject.props.UpdateErrorModalLog(false, false, 'any'); //Auto close connection unavailable
         }
         //....
-
+        //! FOR COMMISSION OVERDUE
         if (
           response !== undefined &&
           response !== null &&
@@ -296,47 +296,36 @@ class Home extends React.PureComponent {
           response.flag !== null
         ) {
           //! Check for the suspension infos
-          if (response.suspension_infos !== undefined) {
+          if (
+            response.suspension_infos !== undefined &&
+            response.suspension_infos !== null
+          ) {
             globalObject.props.UpdateSuspensionInfos(response.suspension_infos);
             //? IF SUSPENDED - LOG OUT AND SHOW SUSPENSION SCREEN
             if (
               response.suspension_infos.is_suspended !== false &&
               response.suspension_infos.is_suspended !== 'false'
             ) {
-              //1. LOG OUT
-              //a. Clear all the intervals
+              //2. Head to suspension screen modal
+              globalObject.props.UpdateErrorModalLog(
+                true,
+                'account_suspended_due_to_abuse',
+                'any',
+              );
+            } else if (
+              response.suspension_infos.is_suspended === false ||
+              response.suspension_infos.is_suspended === 'false'
+            ) {
+              //Not suspended
               if (
-                globalObject.props.App._TMP_TRIP_INTERVAL_PERSISTER !== null
+                /(account_suspended_due_to_abuse)/i.test(
+                  globalObject.props.App.generalErrorModal_vars
+                    .generalErrorModalType,
+                )
               ) {
-                clearInterval(
-                  globalObject.props.App._TMP_TRIP_INTERVAL_PERSISTER,
-                );
-                globalObject.props.App._TMP_TRIP_INTERVAL_PERSISTER = null;
+                //Do not interrupt the select gender process
+                globalObject.props.UpdateErrorModalLog(false, false, 'any'); //Auto close connection unavailable
               }
-
-              //b. Clear all the storages
-              SyncStorage.remove('@user_fp');
-              SyncStorage.remove('@userLocationPoint');
-              SyncStorage.remove('@gender_user');
-              SyncStorage.remove('@username');
-              SyncStorage.remove('@surname_user');
-              SyncStorage.remove('@user_email');
-              SyncStorage.remove('@phone_user');
-              SyncStorage.remove('@user_profile_pic');
-              SyncStorage.remove('@accountCreation_state');
-
-              //Reinitiate values
-              globalObject.props.App.user_fingerprint = null;
-              globalObject.props.App.gender_user = 'male';
-              globalObject.props.App.username = false;
-              globalObject.props.App.surname_user = false;
-              globalObject.props.App.user_email = false;
-              globalObject.props.App.user_profile_pic = null;
-              globalObject.props.App.last_dataPersoUpdated = null;
-              globalObject.props.App.userCurrentLocationMetaData = {};
-              globalObject.props.App.accountCreation_state = null;
-              //2. Head to suspension screen
-              globalObject.props.navigation.navigate('AccountProblemDetected');
             }
           }
           //! -----------------------------
@@ -380,6 +369,7 @@ class Home extends React.PureComponent {
     this.props.App.socket.on(
       'geocode-this-point-response',
       function (response) {
+        //alert(JSON.stringify(response));
         if (response !== undefined && response !== false) {
           let localData = globalObject.props.App.userCurrentLocationMetaData;
           //Only update if new metadata

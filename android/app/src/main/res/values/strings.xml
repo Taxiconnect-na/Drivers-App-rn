@@ -1,4 +1,4 @@
 <resources>
     <string name="app_name">TaxiConnect Drivers</string>
-    <string name="mapbox_access_token">pk.eyJ1IjoiZG9taW5pcXVla3R0IiwiYSI6ImNrYXg0M3gyNDAybDgyem81cjZuMXp4dzcifQ.PpW6VnORUHYSYqNCD9n6Yg</string>
+    <string name="mapbox_access_token">pk.eyJ1IjoibWFzdGVycm9vdCIsImEiOiJja3EzcmRpN3gwZzAxMm9vNjR6ZDd6b296In0.5s0exTc2Fch6A2X67mRxlQ</string>
 </resources>

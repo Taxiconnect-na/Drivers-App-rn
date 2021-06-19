@@ -73,14 +73,30 @@ class ErrorModal extends React.PureComponent {
             response.response !== null
           ) {
             //Received a response
-            if (/unable/i.test(response.response)) {
+            if (/unable_to_cancel_request_error$/i.test(response.response)) {
               //Error
               globalObject.props.UpdateErrorModalLog(
                 true,
                 'error_cancelling',
                 'any',
               ); //Close modal
-            } //Success
+            } else if (
+              /unable_to_cancel_request_error_daily_cancellation_limit_exceeded$/i.test(
+                response.response,
+              )
+            ) {
+              //Has exceeded the daily amount of cancellations
+              globalObject.props.App.abusive_behavior_infos = {};
+              globalObject.props.App.abusive_behavior_infos[
+                'message'
+              ] = `You've exceeded your daily amount of cancelled requests, please try from now on to only accept the requests that you will complete to avoid any potential suspension.`;
+              globalObject.props.UpdateErrorModalLog(
+                true,
+                'warning_due_to_abuse',
+                'any',
+              );
+            }
+            //Success
             else {
               globalObject.props.UpdateErrorModalLog(false, false, 'any'); //Close modal
             }
@@ -2426,7 +2442,7 @@ class ErrorModal extends React.PureComponent {
                     : 'Uber Move Text Medium',
                 fontSize: RFValue(20),
               }}>
-              Couldn't confirm pickup
+              Couldn't cancel the request
             </Text>
           </View>
           <View>
@@ -2441,8 +2457,7 @@ class ErrorModal extends React.PureComponent {
                 lineHeight: 23,
               }}>
               Sorry due to an unexpected error we were unable to move forward
-              with the pickup confirmation of the request. Maybe try again
-              later.
+              with the cancellation of the request. Maybe try again later.
             </Text>
           </View>
           <View style={{flex: 1, justifyContent: 'center'}}>
@@ -3073,7 +3088,7 @@ class ErrorModal extends React.PureComponent {
                     Platform.OS === 'android'
                       ? 'MoveTextRegular'
                       : 'Uber Move Text',
-                  fontSize: RFValue(16),
+                  fontSize: RFValue(17),
                   lineHeight: 25,
                 }}>
                 {this.props.App.abusive_behavior_infos !== false &&
@@ -3109,6 +3124,121 @@ class ErrorModal extends React.PureComponent {
                   Close
                 </Text>
               </TouchableOpacity>
+            </View>
+          </View>
+        </SafeAreaView>
+      );
+    } else if (/account_suspended_due_to_abuse/i.test(error_status)) {
+      return (
+        <SafeAreaView
+          style={{
+            backgroundColor: '#fff',
+            flex: 1,
+          }}>
+          <View
+            style={{
+              flex: 1,
+              padding: 20,
+              paddingRight: 30,
+            }}>
+            <Text
+              style={[
+                {
+                  fontSize: RFValue(23),
+                  fontFamily:
+                    Platform.OS === 'android'
+                      ? 'UberMoveBold'
+                      : 'Uber Move Bold',
+                  marginTop: 15,
+                  marginBottom: 35,
+                  width: '100%',
+                  textAlign: 'center',
+                },
+              ]}>
+              Account suspended
+            </Text>
+            <View
+              style={{
+                width: '100%',
+                alignItems: 'center',
+              }}>
+              <IconEntypo name="block" color={'#b22222'} size={50} />
+            </View>
+            <View style={{flex: 1}}>
+              <Text
+                style={[
+                  {
+                    fontFamily:
+                      Platform.OS === 'android'
+                        ? 'UberMoveTextRegular'
+                        : 'Uber Move Text',
+                    color: '#000',
+                    fontSize: RFValue(17),
+                    marginTop: '10%',
+                    textAlign: 'left',
+                    width: '100%',
+                    lineHeight: 28,
+                  },
+                ]}>
+                {this.props.App.suspension_infos.message !== undefined &&
+                this.props.App.suspension_infos.message !== null
+                  ? this.props.App.suspension_infos.message
+                  : `Your account has been suspended to a malicious usage detected.`}
+              </Text>
+              <Text
+                style={[
+                  {
+                    fontFamily:
+                      Platform.OS === 'android'
+                        ? 'UberMoveTextRegular'
+                        : 'Uber Move Text',
+                    color: '#000',
+                    fontSize: RFValue(16),
+                    marginTop: 10,
+                    textAlign: 'left',
+                    width: '100%',
+                  },
+                ]}>
+                Contact Us for more information.
+              </Text>
+            </View>
+            <View>
+              <View
+                style={{
+                  width: '100%',
+                  alignItems: 'center',
+                  height: 100,
+                }}>
+                <TouchableOpacity
+                  onPress={() => call({number: '+264814400089', prompt: true})}
+                  style={{
+                    borderWidth: 1,
+                    borderColor: 'transparent',
+                    width: '100%',
+                  }}>
+                  <View
+                    style={[
+                      styles.bttnGenericTc,
+                      {borderRadius: 2, marginBottom: 20},
+                    ]}>
+                    <IconMaterialIcons name="phone" color="#fff" size={25} />
+                    <Text
+                      style={[
+                        {
+                          fontFamily:
+                            Platform.OS === 'android'
+                              ? 'UberMoveTextBold'
+                              : 'Uber Move Text Bold',
+                          fontSize: RFValue(19),
+                          color: '#fff',
+                          marginLeft: 10,
+                        },
+                      ]}>
+                      Call TaxiConnect
+                    </Text>
+                  </View>
+                </TouchableOpacity>
+              </View>
             </View>
           </View>
         </SafeAreaView>

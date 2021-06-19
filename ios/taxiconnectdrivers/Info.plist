@@ -32,7 +32,7 @@
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>MGLMapboxAccessToken</key>
-	<string>sk.eyJ1IjoiZG9taW5pcXVla3R0IiwiYSI6ImNrbnpnZXFiZzA0ajcybnA5cGN5dnpnYzIifQ.v3D5G2ezDi95egDmdCp7pg</string>
+	<string>sk.eyJ1IjoibWFzdGVycm9vdCIsImEiOiJja3Ezcnc1djYxMTdjMnNxcjJ4cmFjNWxoIn0.qIM-0bNHKuQZ2dZsf1R0Rw</string>
 	<key>MGLMapboxMetricsEnabledSettingShownInApp</key>
 	<string>YES</string>
 	<key>NSAppTransportSecurity</key>

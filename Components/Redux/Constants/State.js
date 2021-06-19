@@ -21,14 +21,14 @@ const STATE = {
   //PERSISTANT INTERVAL VARIABLES
   //Interval persister for updating requests data
   _TMP_TRIP_INTERVAL_PERSISTER: null, //The interval for updating rides related data
-  _TMP_TRIP_INTERVAL_PERSISTER_TIME: 1200, //THe frequency of repetition - default:3s
+  _TMP_TRIP_INTERVAL_PERSISTER_TIME: 2000, //THe frequency of repetition - default:2s
   //Interval persister for updating the focused navigation data
   _TMP_NAVIATION_DATA_INTERVAL_PERSISTER: null, //The interval for updating the focused navigation data
   _TMP_NAVIATION_DATA_INTERVAL_PERSISTER_TIME: 1000, //THe frequency of repetition - default:3s
 
-  _TMP_TIMEOUT_AFTER_REQUEST_RESPONSE: 500, //The timeout after the response to show updated content - default: 4s
+  _TMP_TIMEOUT_AFTER_REQUEST_RESPONSE: 2000, //The timeout after the response to show updated content - default: 2s
 
-  _TMP_TIMEOUT_AFTER_GOING_ONLINE_OR_OFFLINE: 7000, //The delay in the loader after pressing online/offlline - default: 0.7sec
+  _TMP_TIMEOUT_AFTER_GOING_ONLINE_OR_OFFLINE: 2000, //The delay in the loader after pressing online/offlline - default: 2sec
 
   _Requests_graphInfos: null, //Will contain the requests graph data that will show badges of the number of general total requests and also specific requests if needed. - default: null
 
