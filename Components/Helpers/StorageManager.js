@@ -3,7 +3,7 @@ import SyncStorage from 'sync-storage';
 //Initialize the storage manager
 const storageInit = async () => {
   const data = await SyncStorage.init();
-  console.log(data);
+  //console.log(data);
 };
 
 const StorageManager = (options) => {
@@ -11,7 +11,7 @@ const StorageManager = (options) => {
     storageInit();
   } //No options passed
   else {
-    console.log('No options passedd');
+    //console.log('No options passedd');
   }
 };
 

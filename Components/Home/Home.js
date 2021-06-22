@@ -180,11 +180,11 @@ class Home extends React.PureComponent {
       });
     });
     this.props.App.socket.on('connect_error', () => {
-      console.log('connect_error');
+      //console.log('connect_error');
       globalObject.props.App.socket.connect();
     });
     this.props.App.socket.on('connect_timeout', () => {
-      console.log('connect_timeout');
+      //console.log('connect_timeout');
       const socket = io(String(_MAIN_URL_ENDPOINT), {
         transports: ['websocket', 'polling'],
         withCredentials: true,
@@ -198,7 +198,7 @@ class Home extends React.PureComponent {
       ////console.log('something');
     });
     this.props.App.socket.on('reconnect_error', () => {
-      console.log('reconnect_error');
+      //console.log('reconnect_error');
       const socket = io(String(_MAIN_URL_ENDPOINT), {
         transports: ['websocket', 'polling'],
         withCredentials: true,
@@ -209,7 +209,7 @@ class Home extends React.PureComponent {
       });
     });
     this.props.App.socket.on('reconnect_failed', () => {
-      console.log('reconnect_failed');
+      //console.log('reconnect_failed');
       const socket = io(String(_MAIN_URL_ENDPOINT), {
         transports: ['websocket', 'polling'],
         withCredentials: true,
@@ -602,7 +602,7 @@ class Home extends React.PureComponent {
       },
       (error) => {
         //...
-        console.log(error);
+        //console.log(error);
       },
       {
         timeout: 10,
@@ -1189,7 +1189,7 @@ class Home extends React.PureComponent {
           });
       } //Location permission explicitly requested
       else {
-        console.log('requested permission by click');
+        //console.log('requested permission by click');
         GeolocationP.requestAuthorization('whenInUse');
       }
     }

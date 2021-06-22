@@ -283,7 +283,6 @@ class OTPVerificationEntry extends React.PureComponent {
           //Correct
           //Check the net navigation
           if (/new_user/i.test(globalObject.state.userStatus)) {
-            console.log('new user');
             //Create new account
             globalObject.props.navigation.navigate('NewDriverDetected'); //Go to new drivers information page
             globalObject.props.navigation.navigate('NewDriverDetected'); //Go to new drivers information page
@@ -533,7 +532,6 @@ class OTPVerificationEntry extends React.PureComponent {
       this.state.otpValue.trim().length >= 5 &&
       this.state.didCheckOTP === false
     ) {
-      console.log('AUTOCHECK', 'color:red');
       //Autocheck
       this.moveForwardCheck();
     }

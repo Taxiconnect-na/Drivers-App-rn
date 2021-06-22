@@ -122,7 +122,6 @@ const HomeReducer = (state = INIT_STATE, action) => {
           //Most african countries
           //Valid
           newState.errorReceiverPhoneNumberShow = false; //Hide corresponding error text
-          console.log('VALID DETAILS');
           newState.isPhoneNumberValid = true; //MARK phone number as valid - try to reset it later
           newState.finalPhoneNumber =
             newState.countryPhoneCode +
@@ -133,7 +132,6 @@ const HomeReducer = (state = INIT_STATE, action) => {
         ) {
           //Valid
           newState.errorReceiverPhoneNumberShow = false; //Hide corresponding error text
-          console.log('VALID DETAILS');
           newState.isPhoneNumberValid = true; //MARK phone number as valid - try to reset it later
           newState.finalPhoneNumber =
             newState.countryPhoneCode +
