@@ -21,12 +21,12 @@ const STATE = {
   //PERSISTANT INTERVAL VARIABLES
   //Interval persister for updating requests data
   _TMP_TRIP_INTERVAL_PERSISTER: null, //The interval for updating rides related data
-  _TMP_TRIP_INTERVAL_PERSISTER_TIME: 2000, //THe frequency of repetition - default:2s
+  _TMP_TRIP_INTERVAL_PERSISTER_TIME: 1000, //THe frequency of repetition - default:2s
   //Interval persister for updating the focused navigation data
   _TMP_NAVIATION_DATA_INTERVAL_PERSISTER: null, //The interval for updating the focused navigation data
   _TMP_NAVIATION_DATA_INTERVAL_PERSISTER_TIME: 1000, //THe frequency of repetition - default:3s
 
-  _TMP_TIMEOUT_AFTER_REQUEST_RESPONSE: 2000, //The timeout after the response to show updated content - default: 2s
+  _TMP_TIMEOUT_AFTER_REQUEST_RESPONSE: 3000, //The timeout after the response to show updated content - default: 2s
 
   _TMP_TIMEOUT_AFTER_GOING_ONLINE_OR_OFFLINE: 2000, //The delay in the loader after pressing online/offlline - default: 2sec
 
@@ -48,6 +48,8 @@ const STATE = {
   socket: SOCKET_CORE, //MAIN SOCKET CONNECTOR
   user_fingerprint: null,
   pushnotif_token: false, //Notification push notification (the full object) - default: false
+
+  default_navigation_system: 'taxiconnect_navigation', //? The navigation system - default: taxiconnect_navigation (or google_maps, apple_maps)
 
   userCurrentLocationMetaData: {}, //Metadata of the user's current location - directly geocoded and shallowly processed
   requestType: 'ride', //THE TYPE OF REQUEST SELECTED BY THE DRIVER - ride, delivery or scheduled

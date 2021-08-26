@@ -2,10 +2,8 @@ import React from 'react';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import {
-  SafeAreaView,
   View,
   Text,
-  TouchableOpacity,
   StyleSheet,
   StatusBar,
   RefreshControl,
@@ -16,14 +14,10 @@ import {
   UpdateDeepWalletInsights,
   UpdateFocusedWeekDeepWalletInsights,
 } from '../Redux/HomeActionsCreators';
-import IconMaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import IconFoundation from 'react-native-vector-icons/Foundation';
-import IconIonic from 'react-native-vector-icons/Ionicons';
-import IconCommunity from 'react-native-vector-icons/MaterialCommunityIcons';
 import DismissKeyboard from '../Helpers/DismissKeyboard';
 import {RFValue} from 'react-native-responsive-fontsize';
 import GenericLoader from '../Modules/GenericLoader/GenericLoader';
-import {FlatList, ScrollView} from 'react-native-gesture-handler';
+import {ScrollView} from 'react-native-gesture-handler';
 
 class Summary extends React.PureComponent {
   constructor(props) {
@@ -262,7 +256,6 @@ class Summary extends React.PureComponent {
                             Platform.OS === 'android'
                               ? 'UberMoveBold'
                               : 'Uber Move Bold',
-                          color: '#000',
                           fontSize: RFValue(25),
                           color: '#0e8491',
                           flex: 1,
@@ -321,7 +314,6 @@ class Summary extends React.PureComponent {
                                   Platform.OS === 'android'
                                     ? 'UberMoveTextRegular'
                                     : 'Uber Move Text',
-                                color: '#000',
                                 fontSize: RFValue(15),
                                 lineHeight: 25,
                                 color: '#fff',
@@ -344,7 +336,6 @@ class Summary extends React.PureComponent {
                           Platform.OS === 'android'
                             ? 'UberMoveTextMedium'
                             : 'Uber Move Text Medium',
-                        color: '#000',
                         fontSize: RFValue(16),
                         lineHeight: 25,
                         color: '#858585',
@@ -363,7 +354,6 @@ class Summary extends React.PureComponent {
                             Platform.OS === 'android'
                               ? 'UberMoveBold'
                               : 'Uber Move Bold',
-                          color: '#000',
                           fontSize: RFValue(17),
                           color: '#000',
                           flex: 1,

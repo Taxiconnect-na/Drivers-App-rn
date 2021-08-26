@@ -17,6 +17,7 @@ import HeaderRideTypesSelector from '../Components/Rides/HeaderRideTypesSelector
 import DetailsRidesGenericScreen from '../Components/Rides/DetailsRidesGenericScreen';
 import SupportEntry from '../Components/Support/SupportEntry';
 import SettingsEntryScreen from '../Components/Settings/SettingsEntryScreen';
+import NavigationSettings from '../Components/Settings/NavigationSettings';
 import {MainDrawerContent} from './MainDrawerContent';
 import IconAnt from 'react-native-vector-icons/AntDesign';
 import Splash from '../Components/Login/Splash';
@@ -209,6 +210,21 @@ function SettingsDrawer_navigator() {
           headerTitle: (
             <View style={{flexDirection: 'row', alignItems: 'center'}}>
               <Text style={styles.genericHeader}>Settings</Text>
+            </View>
+          ),
+        }}
+      />
+      <Stack.Screen
+        name="NavigationSettings"
+        component={NavigationSettings}
+        options={{
+          headerShown: true,
+          headerStyle: {backgroundColor: '#000'},
+          headerTintColor: '#fff',
+          headerBackTitle: 'Back',
+          headerTitle: (
+            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+              <Text style={styles.genericHeader}>Navigation</Text>
             </View>
           ),
         }}

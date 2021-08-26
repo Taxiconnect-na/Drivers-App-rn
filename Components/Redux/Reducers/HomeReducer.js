@@ -536,6 +536,21 @@ const HomeReducer = (state = INIT_STATE, action) => {
         return state;
       }
 
+    case 'UPDATE_NAVIGATION_SYSTEM':
+      //Update only update when new
+      if (
+        action.payload !== undefined &&
+        action.payload !== null &&
+        `${action.payload}` !== `${newState.default_navigation_system}`
+      ) {
+        //New data
+        newState.default_navigation_system = action.payload;
+        return {...state, ...newState};
+      } //Same data - leave
+      else {
+        return state;
+      }
+
     default:
       return state;
   }

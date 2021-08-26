@@ -2,7 +2,6 @@ import React from 'react';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import {
-  SafeAreaView,
   View,
   Text,
   TouchableOpacity,
@@ -21,11 +20,10 @@ import IconMaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import IconFoundation from 'react-native-vector-icons/Foundation';
 import IconIonic from 'react-native-vector-icons/Ionicons';
 import IconCommunity from 'react-native-vector-icons/MaterialCommunityIcons';
-import WalletTransacRecords from './WalletTransacRecords';
 import DismissKeyboard from '../Helpers/DismissKeyboard';
 import {RFValue} from 'react-native-responsive-fontsize';
 import GenericLoader from '../Modules/GenericLoader/GenericLoader';
-import {FlatList, ScrollView} from 'react-native-gesture-handler';
+import {ScrollView} from 'react-native-gesture-handler';
 
 class WalletEntry extends React.PureComponent {
   constructor(props) {
@@ -375,7 +373,6 @@ class WalletEntry extends React.PureComponent {
                       }
                       style={{
                         borderTopWidth: 1,
-                        borderColor: '#EEEEEE',
                         borderBottomWidth: 1,
                         borderColor: '#EEEEEE',
                         flexDirection: 'row',
@@ -418,7 +415,6 @@ class WalletEntry extends React.PureComponent {
                       }
                       style={{
                         borderTopWidth: 1,
-                        borderColor: '#EEEEEE',
                         borderBottomWidth: 1,
                         borderColor: '#EEEEEE',
                         flexDirection: 'row',

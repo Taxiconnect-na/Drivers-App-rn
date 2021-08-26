@@ -2,11 +2,9 @@ import React from 'react';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import {
-  SafeAreaView,
   View,
   Text,
   StyleSheet,
-  StatusBar,
   BackHandler,
   Platform,
   ScrollView,
@@ -584,7 +582,6 @@ class EarningsScreenEntry extends React.PureComponent {
                         ? 'UberMoveTextRegular'
                         : 'Uber Move Text',
                     fontSize: RFValue(15),
-                    color: '#757575',
                     color: '#757575',
                     flex: 1,
                     textAlign: 'center',

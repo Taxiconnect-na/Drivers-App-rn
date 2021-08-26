@@ -179,6 +179,53 @@ class SettingsEntryScreen extends React.Component {
                 </View>
               </View>
 
+              {/**Navigation infos */}
+              <View
+                style={{
+                  padding: 20,
+                }}>
+                <View style={{marginBottom: 10}}>
+                  <Text
+                    style={{
+                      fontSize: RFValue(16),
+                      fontFamily:
+                        Platform.OS === 'android'
+                          ? 'UberMoveTextMedium'
+                          : 'Uber Move Text Medium',
+                      color: '#AFAFAF',
+                    }}>
+                    Navigation
+                  </Text>
+                </View>
+                <TouchableOpacity
+                  onPress={() =>
+                    this.props.navigation.navigate('NavigationSettings')
+                  }
+                  style={{
+                    flexDirection: 'row',
+                    paddingTop: 5,
+                    paddingBottom: 10,
+                    alignItems: 'center',
+                  }}>
+                  <Text
+                    style={{
+                      fontFamily:
+                        Platform.OS === 'android'
+                          ? 'UberMoveTextRegular'
+                          : 'Uber Move Text',
+                      fontSize: RFValue(17),
+                      flex: 1,
+                    }}>
+                    Navigation settings
+                  </Text>
+                  <IconMaterialIcons
+                    name="keyboard-arrow-right"
+                    color="#AFAFAF"
+                    size={25}
+                  />
+                </TouchableOpacity>
+              </View>
+
               {/**Privacy infos */}
               <View
                 style={{

@@ -392,6 +392,8 @@ PODS:
     - RNFBApp
   - RNGestureHandler (1.10.3):
     - React-Core
+  - RNLaunchNavigator (1.0.8):
+    - React
   - RNPermissions (3.0.3):
     - React-Core
   - RNReanimated (1.13.3):
@@ -458,6 +460,7 @@ DEPENDENCIES:
   - "RNFBApp (from `../node_modules/@react-native-firebase/app`)"
   - "RNFBCrashlytics (from `../node_modules/@react-native-firebase/crashlytics`)"
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
+  - RNLaunchNavigator (from `../node_modules/react-native-launch-navigator`)
   - RNPermissions (from `../node_modules/react-native-permissions`)
   - RNReanimated (from `../node_modules/react-native-reanimated`)
   - RNScreens (from `../node_modules/react-native-screens`)
@@ -579,6 +582,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@react-native-firebase/crashlytics"
   RNGestureHandler:
     :path: "../node_modules/react-native-gesture-handler"
+  RNLaunchNavigator:
+    :path: "../node_modules/react-native-launch-navigator"
   RNPermissions:
     :path: "../node_modules/react-native-permissions"
   RNReanimated:
@@ -658,6 +663,7 @@ SPEC CHECKSUMS:
   RNFBApp: 8b1b4308daa657b8ea87dbed517e31215f5f1456
   RNFBCrashlytics: c101babbfeb8bf12150b947e36665e19b96aace0
   RNGestureHandler: a479ebd5ed4221a810967000735517df0d2db211
+  RNLaunchNavigator: 058ccdb86a80a9424d5e37f6ec54379e3018c52b
   RNPermissions: 034db8a73d562766f990c89abbdeaa5d6e204c67
   RNReanimated: 514a11da3a2bcc6c3dfd9de32b38e2b9bf101926
   RNScreens: bd1523c3bde7069b8e958e5a16e1fc7722ad0bdd

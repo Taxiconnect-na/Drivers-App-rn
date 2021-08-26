@@ -33,6 +33,7 @@ import {RFValue} from 'react-native-responsive-fontsize';
 import {FlatList} from 'react-native-gesture-handler';
 import IconIonic from 'react-native-vector-icons/Ionicons';
 import SyncStorage from 'sync-storage';
+import LaunchNavigator from 'react-native-launch-navigator';
 
 class ErrorModal extends React.PureComponent {
   constructor(props) {
@@ -322,6 +323,133 @@ class ErrorModal extends React.PureComponent {
       showErrorUnmatchedOTP: false,
     }); //Hide send again and show after 30 sec
     parentNode.props.navigation.navigate('PhoneDetailsScreen');
+  }
+
+  /**
+   * @func launchTaxiConnectNavigator
+   * Responsible for launching the Taxiconnect default Navigation system
+   */
+  launchTaxiConnectNavigator() {
+    this.props.SwitchToNavigation_modeOrBack({
+      isApp_inNavigation_mode: true,
+      isRideInProgress: true,
+      requestData: this.props.App.requests_data_main_vars
+        .moreDetailsFocused_request,
+    });
+  }
+
+  /**
+   * @func lauch3rdPartyNavigator
+   * Responsible for launching a 3rd party navigation system.
+   */
+  lauch3rdPartyNavigator() {
+    let app = null;
+    let globalObject = this;
+    //Get the correct 3rd party map selected by the user.
+    let thirdPartyMapIdentifyer = /google_maps/i.test(
+      this.props.App.default_navigation_system,
+    )
+      ? LaunchNavigator.APP.GOOGLE_MAPS
+      : /apple_maps/i.test(this.props.App.default_navigation_system)
+      ? LaunchNavigator.APP.APPLE_MAPS
+      : /waze/i.test(this.props.App.default_navigation_system)
+      ? LaunchNavigator.APP.WAZE
+      : Platform.OS === 'android'
+      ? LaunchNavigator.APP.GOOGLE_MAPS
+      : LaunchNavigator.APP.APPLE_MAPS;
+
+    LaunchNavigator.isAppAvailable(thirdPartyMapIdentifyer).then(
+      (is3rdPAvailable) => {
+        if (is3rdPAvailable) {
+          app = thirdPartyMapIdentifyer;
+        } else {
+          //"3rd party map not available - falling back to default navigation app"
+          globalObject.launchTaxiConnectNavigator();
+        }
+
+        let pointTarget = globalObject.getPickupOrDestinationCoords();
+        pointTarget = [pointTarget[1], pointTarget[0]];
+
+        LaunchNavigator.navigate(pointTarget, {
+          app: app,
+        })
+          .then(() => {})
+          .catch((err) => globalObject.launchTaxiConnectNavigator());
+      },
+    );
+  }
+
+  /**
+   * @func getPickupOrDestinationCoords
+   * Responsible for getting the pickup or destination coord based on the state of the trip.
+   */
+  getPickupOrDestinationCoords() {
+    let pickupCoords =
+      this.props.App.requests_data_main_vars.moreDetailsFocused_request
+        .origin_destination_infos !== undefined
+        ? this.props.App.requests_data_main_vars.moreDetailsFocused_request
+            .origin_destination_infos.pickup_infos.coordinates
+        : null;
+    pickupCoords =
+      this.props.App.requests_data_main_vars.moreDetailsFocused_request
+        .origin_destination_infos !== undefined
+        ? [pickupCoords.longitude, pickupCoords.latitude].map(parseFloat)
+        : [this.props.App.longitude, this.props.App.latitude]; //?Pack pickup point
+
+    let destinationCoords =
+      this.props.App.requests_data_main_vars.moreDetailsFocused_request
+        .origin_destination_infos !== undefined
+        ? this.props.App.requests_data_main_vars.moreDetailsFocused_request
+            .origin_destination_infos.destination_infos[0].coordinates
+        : null;
+    //!--------------
+    let pickLatitude1 =
+      this.props.App.requests_data_main_vars.moreDetailsFocused_request
+        .origin_destination_infos !== undefined
+        ? parseFloat(destinationCoords.latitude)
+        : this.props.App.latitude;
+    let pickLongitude1 =
+      this.props.App.requests_data_main_vars.moreDetailsFocused_request
+        .origin_destination_infos !== undefined
+        ? parseFloat(destinationCoords.longitude)
+        : this.props.App.longitude;
+    //! Coordinates order fix - major bug fix for ocean bug
+    if (
+      pickLatitude1 !== undefined &&
+      pickLatitude1 !== null &&
+      pickLatitude1 !== 0 &&
+      pickLongitude1 !== undefined &&
+      pickLongitude1 !== null &&
+      pickLongitude1 !== 0
+    ) {
+      //? Switch latitude and longitude - check the negative sign
+      if (parseFloat(pickLongitude1) < 0) {
+        //Negative - switch
+        destinationCoords = {
+          latitude: destinationCoords.longitude,
+          longitude: destinationCoords.latitude,
+        };
+      }
+    }
+    //!-----------------
+    destinationCoords =
+      this.props.App.requests_data_main_vars.moreDetailsFocused_request
+        .origin_destination_infos !== undefined
+        ? [destinationCoords.longitude, destinationCoords.latitude].map(
+            parseFloat,
+          )
+        : [this.props.App.longitude, this.props.App.latitude]; //? Pack first destination point
+
+    ///DONE
+    let finalPoint =
+      this.props.App.requests_data_main_vars.moreDetailsFocused_request
+        .ride_basic_infos.isAccepted &&
+      this.props.App.requests_data_main_vars.moreDetailsFocused_request
+        .ride_basic_infos.inRideToDestination
+        ? destinationCoords //?To destination
+        : pickupCoords; //?To pickup
+
+    return finalPoint;
   }
 
   /**
@@ -1136,6 +1264,7 @@ class ErrorModal extends React.PureComponent {
         </View>
       );
     } else if (/show_modalMore_tripDetails/i.test(error_status)) {
+      let globalObject = this;
       //Auto close when no focused data found
       if (
         this.props.App.requests_data_main_vars.moreDetailsFocused_request ===
@@ -1454,12 +1583,20 @@ class ErrorModal extends React.PureComponent {
                 }}>
                 <TouchableOpacity
                   onPress={() => {
-                    this.props.SwitchToNavigation_modeOrBack({
-                      isApp_inNavigation_mode: true,
-                      isRideInProgress: true,
-                      requestData: this.props.App.requests_data_main_vars
-                        .moreDetailsFocused_request,
-                    });
+                    switch (this.props.App.default_navigation_system) {
+                      case 'taxiconnect_navigation':
+                        this.launchTaxiConnectNavigator();
+                        break;
+                      case 'google_maps':
+                        this.lauch3rdPartyNavigator();
+                        break;
+                      case 'apple_maps':
+                        this.lauch3rdPartyNavigator();
+                        break;
+                      default:
+                        this.launchTaxiConnectNavigator();
+                        break;
+                    }
                   }}
                   style={{
                     flexDirection: 'row',
@@ -1484,9 +1621,11 @@ class ErrorModal extends React.PureComponent {
                     shadowRadius: 2.62,
 
                     elevation: 4,
+                    flex: 1,
                   }}>
                   <IconCommunity name="navigation" color="#fff" size={20} />
                   <Text
+                    adjustsFontSizeToFit={true}
                     style={{
                       fontFamily:
                         Platform.OS === 'android'
@@ -1495,7 +1634,13 @@ class ErrorModal extends React.PureComponent {
                       fontSize: RFValue(16),
                       color: '#fff',
                     }}>
-                    Find client
+                    {this.props.App.requests_data_main_vars
+                      .moreDetailsFocused_request.ride_basic_infos.isAccepted &&
+                    this.props.App.requests_data_main_vars
+                      .moreDetailsFocused_request.ride_basic_infos
+                      .inRideToDestination
+                      ? 'Destination'
+                      : 'Find client'}
                   </Text>
                 </TouchableOpacity>
                 <TouchableOpacity
@@ -1518,7 +1663,6 @@ class ErrorModal extends React.PureComponent {
                   }
                   style={{
                     flexDirection: 'row',
-                    flex: 1,
                     alignItems: 'center',
                     justifyContent: 'center',
                     padding: 15,
@@ -1547,6 +1691,7 @@ class ErrorModal extends React.PureComponent {
                     elevation: 9,
                   }}>
                   <Text
+                    adjustsFontSizeToFit={true}
                     style={{
                       fontFamily:
                         Platform.OS === 'android'

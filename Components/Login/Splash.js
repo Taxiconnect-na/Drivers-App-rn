@@ -46,6 +46,7 @@ class Splash extends React.PureComponent {
     let user_email = SyncStorage.get('@user_email');
     let phone = SyncStorage.get('@phone_user');
     let user_profile_pic = SyncStorage.get('@user_profile_pic');
+    let defaultNavigationSystem = SyncStorage.get('@defaultNavigationSystem');
 
     //Update globals
     this.props.App.gender_user =
@@ -66,6 +67,10 @@ class Splash extends React.PureComponent {
         : null;
     this.props.App.user_fingerprint = user_fp;
     this.props.App.pushnotif_token = pushnotif_token;
+    this.props.App.default_navigation_system =
+      defaultNavigationSystem !== undefined && defaultNavigationSystem !== null
+        ? defaultNavigationSystem
+        : this.props.App.default_navigation_system; //?Restore the navigation system.
 
     try {
       userCurrentLocationMetaData = JSON.parse(userCurrentLocationMetaData);

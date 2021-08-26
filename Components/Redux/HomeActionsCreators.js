@@ -257,3 +257,13 @@ export const UpdateSuspensionInfos = (suspensionInfos) => ({
   type: 'UPDATE_SUSPENSION_INFOS',
   payload: suspensionInfos,
 });
+
+/**
+ * 47. Update the navigation system
+ * Responsible for updating navigation system to be used in find client or destination finder.
+ * @param navigationSysInfos: the navigation system selected
+ */
+export const UpdateNavigationSystem = (navigationSysInfos) => ({
+  type: 'UPDATE_NAVIGATION_SYSTEM',
+  payload: navigationSysInfos,
+});
