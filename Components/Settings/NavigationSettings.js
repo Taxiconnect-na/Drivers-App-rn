@@ -82,17 +82,19 @@ class SettingsEntryScreen extends React.Component {
               ? 'com.waze'
               : 'com.waze'; //?Defaults to Waze
             //Playstore
-            Linking.openURL(`market://details?id=${mapToDownload}`);
+            Linking.openURL(
+              `https://play.google.com/store/apps/details?id=${mapToDownload}`,
+            );
           } else {
             let mapToDownload = /google_maps/i.test(mapChoosed)
-              ? 'itms-apps://itunes.apple.com/us/app/id585027354'
+              ? 'id585027354'
               : /waze/i.test(mapChoosed)
-              ? 'itms-apps://itunes.apple.com/us/app/id323229106'
+              ? 'id323229106'
               : /apple_maps/i.test(mapChoosed)
-              ? 'itms-apps://itunes.apple.com/us/app/id915056765'
-              : 'itms-apps://itunes.apple.com/us/app/id323229106'; //?Defaults to Waze
+              ? 'id915056765'
+              : 'id323229106'; //?Defaults to Waze
             //App store
-            Linking.openURL(mapToDownload);
+            Linking.openURL(`https://apps.apple.com/us/app/${mapToDownload}`);
           }
         }
       },
