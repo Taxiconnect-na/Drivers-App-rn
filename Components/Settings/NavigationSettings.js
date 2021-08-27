@@ -249,7 +249,7 @@ class SettingsEntryScreen extends React.Component {
                 </TouchableOpacity>
 
                 {/* Apple Maps */}
-                {Platform.OS === 'ios' ? (
+                {/* {Platform.OS === 'ios' ? (
                   <TouchableOpacity
                     onPress={() => this.update3rdPartyNavigator('apple_maps')}
                     style={{
@@ -294,7 +294,7 @@ class SettingsEntryScreen extends React.Component {
                       />
                     ) : null}
                   </TouchableOpacity>
-                ) : null}
+                ) : null} */}
 
                 {/* Waze */}
                 <TouchableOpacity

@@ -1593,6 +1593,9 @@ class ErrorModal extends React.PureComponent {
                       case 'apple_maps':
                         this.lauch3rdPartyNavigator();
                         break;
+                      case 'waze':
+                        this.lauch3rdPartyNavigator();
+                        break;
                       default:
                         this.launchTaxiConnectNavigator();
                         break;
