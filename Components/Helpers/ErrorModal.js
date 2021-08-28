@@ -631,7 +631,6 @@ class ErrorModal extends React.PureComponent {
                   },
                   shadowOpacity: 0,
                   shadowRadius: 0,
-
                   elevation: 0,
                 },
               ]}>

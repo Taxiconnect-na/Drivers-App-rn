@@ -45,6 +45,8 @@ const STATE = {
   //...
   supportMainImage: supportMainImage,
 
+  generalOverviewNumbers: null, //The general numbers for this account (rides, deliveries, revenues, etc)
+
   socket: SOCKET_CORE, //MAIN SOCKET CONNECTOR
   user_fingerprint: null,
   pushnotif_token: false, //Notification push notification (the full object) - default: false

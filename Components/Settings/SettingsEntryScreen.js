@@ -12,10 +12,14 @@ import {
   ActivityIndicator,
   Linking,
   BackHandler,
+  RefreshControl,
   Platform,
   StatusBar,
 } from 'react-native';
-import {UpdateErrorModalLog} from '../Redux/HomeActionsCreators';
+import {
+  UpdateErrorModalLog,
+  UpdateAccountBigNumbers,
+} from '../Redux/HomeActionsCreators';
 import IconCommunity from 'react-native-vector-icons/MaterialCommunityIcons';
 import IconMaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import IconEntypo from 'react-native-vector-icons/Entypo';
@@ -34,11 +38,19 @@ class SettingsEntryScreen extends React.Component {
 
     //Handlers
     this.backHander = null;
+
+    this.state = {
+      pullRefreshing: false,
+    };
   }
 
   componentDidMount() {
     let globalObject = this;
     this._isMounted = true;
+    //? Add navigator listener - auto clean on focus
+    globalObject.props.navigation.addListener('focus', () => {
+      globalObject.getRemoteData();
+    });
 
     //Add home going back handler-----------------------------
     this.backListener = this.props.navigation.addListener(
@@ -60,18 +72,28 @@ class SettingsEntryScreen extends React.Component {
         return true;
       },
     );
+
+    //Handle socket responses
+    this.props.App.socket.on(
+      'driversOverallNumbers-response',
+      function (response) {
+        globalObject.setState({pullRefreshing: false});
+        if (
+          response !== false &&
+          response !== undefined &&
+          response !== null &&
+          /(error|invalid)/i.test(response) === false
+        ) {
+          //Has some values
+          globalObject.props.UpdateAccountBigNumbers(response);
+        }
+      },
+    );
   }
 
   componentWillUnmount() {
     this._isMounted = false; //! MARK AS UNMOUNTED
     //...
-    /*if (this.backHander !== null) {
-      this.backHander.remove();
-    }
-    //...
-    if (this.backListener !== null) {
-      this.backListener = null;
-    }*/
     //Remove navigation event listener
     if (this._navigatorEvent !== false && this._navigatorEvent !== undefined) {
       this._navigatorEvent();
@@ -94,6 +116,23 @@ class SettingsEntryScreen extends React.Component {
     );
   }
 
+  /**
+   * For getting any remote values
+   */
+  getRemoteData() {
+    this.props.App.socket.emit('driversOverallNumbers', {
+      user_fingerprint: this.props.App.user_fingerprint,
+    });
+  }
+
+  /**
+   * For refreshing the values
+   */
+  doRefreshValues() {
+    this.getRemoteData();
+    this.setState({pullRefreshing: true});
+  }
+
   render() {
     return (
       <>
@@ -103,7 +142,14 @@ class SettingsEntryScreen extends React.Component {
               ? this.renderError_modalView()
               : null}
             <StatusBar backgroundColor="#000" barStyle={'light-content'} />
-            <ScrollView style={styles.presentationWindow}>
+            <ScrollView
+              style={styles.presentationWindow}
+              refreshControl={
+                <RefreshControl
+                  onRefresh={() => this.doRefreshValues()}
+                  refreshing={this.state.pullRefreshing}
+                />
+              }>
               {/**Picture section/edit */}
               <View
                 style={{
@@ -165,17 +211,131 @@ class SettingsEntryScreen extends React.Component {
                     style={{
                       fontFamily:
                         Platform.OS === 'android'
-                          ? 'MoveMedium'
-                          : 'Uber Move Medium',
-                      fontSize: RFValue(19),
+                          ? 'MoveBold'
+                          : 'Uber Move Bold',
+                      fontSize: RFValue(17),
                     }}>
                     {`${this.props.App.username} ${
-                      this.props.App.surname !== undefined &&
-                      this.props.App.surname !== null
-                        ? this.props.surname
+                      this.props.App.surname_user !== undefined &&
+                      this.props.App.surname_user !== null &&
+                      this.props.App.surname_user
+                        ? this.props.App.surname_user
                         : ''
                     }`}
                   </Text>
+                </View>
+                <View
+                  style={{
+                    width: '100%',
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    marginTop: 35,
+                  }}>
+                  {/* Number of rides */}
+                  <View>
+                    <Text
+                      style={{
+                        height: 25,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        textAlign: 'center',
+                      }}>
+                      {this.props.App.generalOverviewNumbers !== null &&
+                      this.props.App.generalOverviewNumbers !== undefined ? (
+                        <Text
+                          style={{
+                            fontSize: RFValue(17),
+                            fontFamily:
+                              Platform.OS === 'android'
+                                ? 'UberMoveTextMedium'
+                                : 'Uber Move Text Medium',
+                          }}>
+                          {this.props.App.generalOverviewNumbers.trips}
+                        </Text>
+                      ) : (
+                        <IconCommunity name="circle-medium" />
+                      )}
+                    </Text>
+                    <Text
+                      style={{
+                        fontFamily:
+                          Platform.OS === 'android'
+                            ? 'UberMoveTextRegular'
+                            : 'Uber Move Text',
+                        fontSize: RFValue(12),
+                        textAlign: 'center',
+                        paddingTop: 3,
+                      }}>
+                      Trips
+                    </Text>
+                  </View>
+                  {/* Rating */}
+                  <View>
+                    <Text
+                      style={{
+                        height: 25,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        textAlign: 'center',
+                      }}>
+                      {this.props.App.generalOverviewNumbers !== null &&
+                      this.props.App.generalOverviewNumbers !== undefined ? (
+                        <Text
+                          style={{
+                            fontSize: RFValue(17),
+                            fontFamily:
+                              Platform.OS === 'android'
+                                ? 'UberMoveTextMedium'
+                                : 'Uber Move Text Medium',
+                          }}>
+                          {this.props.App.generalOverviewNumbers.rating}
+                        </Text>
+                      ) : (
+                        <IconCommunity name="circle-medium" />
+                      )}
+                    </Text>
+                    <Text style={{textAlign: 'center', paddingTop: 3}}>
+                      <IconCommunity name="star" size={18} color="#ffbf00" />
+                    </Text>
+                  </View>
+                  {/* Revenue */}
+                  <View>
+                    <Text
+                      style={{
+                        height: 25,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        textAlign: 'center',
+                      }}>
+                      {this.props.App.generalOverviewNumbers !== null &&
+                      this.props.App.generalOverviewNumbers !== undefined ? (
+                        <Text
+                          style={{
+                            fontSize: RFValue(17),
+                            fontFamily:
+                              Platform.OS === 'android'
+                                ? 'UberMoveTextMedium'
+                                : 'Uber Move Text Medium',
+                          }}>
+                          {this.props.App.generalOverviewNumbers.revenue}
+                        </Text>
+                      ) : (
+                        <IconCommunity name="circle-medium" />
+                      )}
+                    </Text>
+                    <Text
+                      style={{
+                        fontFamily:
+                          Platform.OS === 'android'
+                            ? 'UberMoveTextRegular'
+                            : 'Uber Move Text',
+                        fontSize: RFValue(12),
+                        textAlign: 'center',
+                        paddingTop: 3,
+                      }}>
+                      N$
+                    </Text>
+                  </View>
                 </View>
               </View>
 
@@ -378,6 +538,7 @@ const mapDispatchToProps = (dispatch) =>
   bindActionCreators(
     {
       UpdateErrorModalLog,
+      UpdateAccountBigNumbers,
     },
     dispatch,
   );

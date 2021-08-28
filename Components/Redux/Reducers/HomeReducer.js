@@ -551,6 +551,21 @@ const HomeReducer = (state = INIT_STATE, action) => {
         return state;
       }
 
+    case 'UPDATE_ACCOUNT_BIG_NUMBERS':
+      //Update only update when new
+      if (
+        action.payload !== undefined &&
+        action.payload !== null &&
+        `${action.payload}` !== `${newState.generalOverviewNumbers}`
+      ) {
+        //New data
+        newState.generalOverviewNumbers = action.payload;
+        return {...state, ...newState};
+      } //Same data - leave
+      else {
+        return state;
+      }
+
     default:
       return state;
   }

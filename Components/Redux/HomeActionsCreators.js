@@ -267,3 +267,13 @@ export const UpdateNavigationSystem = (navigationSysInfos) => ({
   type: 'UPDATE_NAVIGATION_SYSTEM',
   payload: navigationSysInfos,
 });
+
+/**
+ * 48. Update the account big numbers
+ * Responsible for updating the overview numbers for this account to the driver.
+ * @param overviewNumbers: the remotly computed numbers
+ */
+export const UpdateAccountBigNumbers = (overviewNumbers) => ({
+  type: 'UPDATE_ACCOUNT_BIG_NUMBERS',
+  payload: overviewNumbers,
+});
