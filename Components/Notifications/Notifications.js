@@ -74,7 +74,7 @@ class Notifications extends React.PureComponent {
                       backgroundColor: '#d0d0d0',
                       borderRadius: 50,
                       borderWidth: 2,
-                      opacity: props.currentMessage._id !== 1 ? 0.2 : 1,
+                      opacity: props.currentMessage._id !== 0 ? 0.1 : 1,
                     },
                   }}
                 />

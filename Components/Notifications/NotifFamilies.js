@@ -102,7 +102,9 @@ class NotifFamilies extends React.PureComponent {
           }}
           renderCustomView={() =>
             this.getBasicHeader(
-              'WELCOME!',
+              messageProps.currentMessage.isWelcome_message
+                ? 'WELCOME!'
+                : 'Notice',
               messageProps.currentMessage.isWelcome_message,
               '#000',
             )
