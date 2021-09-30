@@ -22,8 +22,20 @@ export function MainDrawerContent(props) {
       <SafeAreaView style={{flex: 1}}>
         <ScrollView style={styles.menuContent}>
           <TouchableOpacity
-            onPress={() => props.navigation.navigate('YourRidesEntry_drawer')}
+            onPress={() =>
+              props.navigation.navigate('NotificationsDrawer_navigator')
+            }
             style={[styles.menuItem, {paddingTop: 30}]}>
+            <Text style={styles.menuTitles}>Notifications</Text>
+            <IconMaterialIcons
+              name="keyboard-arrow-right"
+              color="#a5a5a5"
+              size={20}
+            />
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => props.navigation.navigate('YourRidesEntry_drawer')}
+            style={[styles.menuItem, {paddingTop: 10}]}>
             <Text style={styles.menuTitles}>Your rides</Text>
             <IconMaterialIcons
               name="keyboard-arrow-right"
@@ -88,7 +100,7 @@ export function MainDrawerContent(props) {
               color: '#AFAFAF',
               textAlign: 'right',
             }}>
-            v2.0.284
+            v2.0.284 - Test
           </Text>
         </View>
       </SafeAreaView>

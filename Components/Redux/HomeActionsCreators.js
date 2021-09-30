@@ -277,3 +277,13 @@ export const UpdateAccountBigNumbers = (overviewNumbers) => ({
   type: 'UPDATE_ACCOUNT_BIG_NUMBERS',
   payload: overviewNumbers,
 });
+
+/**
+ * 49. Update the notifications comm infos
+ * Responsible for updating the notifications comm data
+ * @param notifData: the remotly computed data
+ */
+export const UpdateNotificationsCommInfos = (notifData) => ({
+  type: 'UPDATE_NOTIFICATIONS_COMM_INFOS',
+  payload: notifData,
+});

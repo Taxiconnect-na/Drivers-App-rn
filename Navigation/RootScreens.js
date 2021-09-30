@@ -18,6 +18,7 @@ import DetailsRidesGenericScreen from '../Components/Rides/DetailsRidesGenericSc
 import SupportEntry from '../Components/Support/SupportEntry';
 import SettingsEntryScreen from '../Components/Settings/SettingsEntryScreen';
 import NavigationSettings from '../Components/Settings/NavigationSettings';
+import Notifications from '../Components/Notifications/Notifications';
 import {MainDrawerContent} from './MainDrawerContent';
 import IconAnt from 'react-native-vector-icons/AntDesign';
 import Splash from '../Components/Login/Splash';
@@ -233,6 +234,31 @@ function SettingsDrawer_navigator() {
   );
 }
 
+//e. Notifications
+function NotificationsDrawer_navigator() {
+  return (
+    <Stack.Navigator
+      initialRouteName="NotificationsEntryScreen"
+      screenOptions={{...TransitionPresets.ScaleFromCenterAndroid}}>
+      <Stack.Screen
+        name="NotificationsEntryScreen"
+        component={Notifications}
+        options={{
+          headerShown: true,
+          headerStyle: {backgroundColor: '#000'},
+          headerTintColor: '#fff',
+          headerBackTitle: 'Back',
+          headerTitle: (
+            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+              <Text style={styles.genericHeader}>Notifications</Text>
+            </View>
+          ),
+        }}
+      />
+    </Stack.Navigator>
+  );
+}
+
 //1. MAIN SCREEN DRAWER NAVIGATOR
 function MainDrawer_navigator() {
   return (
@@ -251,6 +277,10 @@ function MainDrawer_navigator() {
         component={SettingsDrawer_navigator}
       />
       <Drawer.Screen name="Support_drawer" component={Support_drawer} />
+      <Drawer.Screen
+        name="NotificationsDrawer_navigator"
+        component={NotificationsDrawer_navigator}
+      />
     </Drawer.Navigator>
   );
 }

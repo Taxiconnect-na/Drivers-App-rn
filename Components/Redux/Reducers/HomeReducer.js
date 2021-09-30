@@ -566,6 +566,20 @@ const HomeReducer = (state = INIT_STATE, action) => {
         return state;
       }
 
+    case 'UPDATE_NOTIFICATIONS_COMM_INFOS':
+      //? Optimize
+      if (
+        `${JSON.stringify(action.payload)}` !==
+        `${JSON.stringify(newState.notifications_comm_data)}`
+      ) {
+        //New data
+        newState.notifications_comm_data = action.payload;
+        return {...state, ...newState};
+      } //Same data -leave
+      else {
+        return state;
+      }
+
     default:
       return state;
   }

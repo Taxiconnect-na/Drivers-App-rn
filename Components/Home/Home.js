@@ -39,6 +39,7 @@ import {
   UpdateDriverOperational_status,
   UpdateRequestsGraphs,
   UpdateSuspensionInfos,
+  UpdateNotificationsCommInfos,
 } from '../Redux/HomeActionsCreators';
 //import PulseCircleLayer from '../Modules/PulseCircleLayer';
 import IconAnt from 'react-native-vector-icons/AntDesign';
@@ -243,6 +244,8 @@ class Home extends React.PureComponent {
       });
       //6. NOTIFICATIONS
       globalObject.getNotifications_vars();
+      //7. GET THE NOTFICATIONS MESSAGES
+      globalObject.getNotificationsData();
     }, this.props.App._TMP_TRIP_INTERVAL_PERSISTER_TIME);
 
     /**
@@ -519,6 +522,26 @@ class Home extends React.PureComponent {
         }
       },
     );
+
+    //6. Handler for the notifications communications response
+    this.props.App.socket.on(
+      'getNotifications_infos_io-response',
+      function (response) {
+        if (
+          response !== undefined &&
+          response !== null &&
+          response.response !== undefined &&
+          response.response !== null &&
+          /error/i.test(response.response) === false
+        ) {
+          globalObject.props.UpdateNotificationsCommInfos(
+            /no_notifications/i.test(response.response)
+              ? {}
+              : response.response,
+          );
+        }
+      },
+    );
   }
 
   componentWillUnmount() {
@@ -527,6 +550,16 @@ class Home extends React.PureComponent {
       clearInterval(this.props.App._TMP_TRIP_INTERVAL_PERSISTER);
       this.props.App._TMP_TRIP_INTERVAL_PERSISTER = null;
     }
+  }
+
+  /**
+   * @func
+   */
+  getNotificationsData() {
+    this.props.App.socket.emit('getNotifications_infos_io', {
+      user_fingerprint: this.props.App.user_fingerprint,
+      op: 'notifications',
+    });
   }
 
   /**
@@ -2475,6 +2508,7 @@ const mapDispatchToProps = (dispatch) =>
       UpdateDriverOperational_status,
       UpdateRequestsGraphs,
       UpdateSuspensionInfos,
+      UpdateNotificationsCommInfos,
     },
     dispatch,
   );
