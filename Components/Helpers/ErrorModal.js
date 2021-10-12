@@ -2053,46 +2053,184 @@ class ErrorModal extends React.PureComponent {
                       backgroundColor: '#F6F6F6',
                       flexDirection: 'row',
                       alignItems: 'center',
-                      paddingTop: 0,
-                      paddingBottom: 0,
                     }}>
-                    <Text
+                    <View
                       style={{
-                        fontFamily:
-                          Platform.OS === 'android'
-                            ? 'UberMoveTextRegular'
-                            : 'Uber Move Text',
-                        fontSize: RFValue(17),
                         flex: 1,
                       }}>
-                      {
-                        this.props.App.requests_data_main_vars
-                          .moreDetailsFocused_request.ride_basic_infos
-                          .receiver_infos.receiverName_delivery
-                      }
-                    </Text>
-                    <TouchableOpacity
-                      onPress={() =>
-                        call({
-                          number: this.props.App.requests_data_main_vars
-                            .moreDetailsFocused_request.ride_basic_infos
-                            .receiver_infos.receiverPhone_delivery,
-                          prompt: true,
-                        })
-                      }
-                      style={{
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        marginRight: 5,
-                        flexDirection: 'row',
-                        padding: 15,
-                      }}>
-                      <IconMaterialIcons
-                        name="phone"
-                        color="#096ED4"
-                        size={30}
-                      />
-                    </TouchableOpacity>
+                      {this.props.App.requests_data_main_vars
+                        .moreDetailsFocused_request.ride_basic_infos
+                        .receiver_infos.receiverName_delivery !== undefined &&
+                      this.props.App.requests_data_main_vars
+                        .moreDetailsFocused_request.ride_basic_infos
+                        .receiver_infos.receiverName_delivery !== null &&
+                      this.props.App.requests_data_main_vars
+                        .moreDetailsFocused_request.ride_basic_infos
+                        .receiver_infos.receiverName_delivery !== false &&
+                      this.props.App.requests_data_main_vars
+                        .moreDetailsFocused_request.ride_basic_infos
+                        .receiver_infos.receiverName_delivery !== 'false' ? (
+                        <>
+                          <Text
+                            style={{
+                              fontFamily:
+                                Platform.OS === 'android'
+                                  ? 'UberMoveTextRegular'
+                                  : 'Uber Move Text',
+                              fontSize: RFValue(17),
+                              flex: 1,
+                            }}>
+                            {
+                              this.props.App.requests_data_main_vars
+                                .moreDetailsFocused_request.ride_basic_infos
+                                .receiver_infos.receiverName_delivery
+                            }
+                          </Text>
+                          <TouchableOpacity
+                            onPress={() =>
+                              call({
+                                number: this.props.App.requests_data_main_vars
+                                  .moreDetailsFocused_request.ride_basic_infos
+                                  .receiver_infos.receiverPhone_delivery,
+                                prompt: true,
+                              })
+                            }
+                            style={{
+                              alignItems: 'center',
+                              justifyContent: 'center',
+                              marginRight: 5,
+                              flexDirection: 'row',
+                            }}>
+                            <IconMaterialIcons
+                              name="phone"
+                              color="#096ED4"
+                              size={30}
+                            />
+                          </TouchableOpacity>
+                        </>
+                      ) : this.props.App.requests_data_main_vars
+                          .moreDetailsFocused_request.origin_destination_infos
+                          .destination_infos[0].receiver_infos.receiver_name !==
+                        'false' ? (
+                        this.props.App.requests_data_main_vars.moreDetailsFocused_request.origin_destination_infos.destination_infos.map(
+                          (el, index) => {
+                            let classicLength = this.props.App
+                              .requests_data_main_vars
+                              .moreDetailsFocused_request
+                              .origin_destination_infos.destination_infos
+                              .length;
+
+                            return (
+                              <View
+                                style={{
+                                  flex: 1,
+                                  flexDirection: 'row',
+                                  alignItems: 'center',
+                                  marginBottom:
+                                    index + 1 != classicLength ? 20 : 0,
+                                  borderBottomWidth: 1,
+                                  paddingBottom:
+                                    index + 1 != classicLength ? 15 : 0,
+                                  borderBottomColor:
+                                    index + 1 !== classicLength
+                                      ? '#d0d0d0'
+                                      : '#F6F6F6',
+                                }}>
+                                {classicLength > 1 ? (
+                                  <Text
+                                    style={{
+                                      fontFamily:
+                                        Platform.OS === 'android'
+                                          ? 'UberMoveTextRegular'
+                                          : 'Uber Move Text',
+                                      fontSize: RFValue(17),
+                                      color: '#096ED4',
+                                    }}>
+                                    {index + 1}.{' '}
+                                  </Text>
+                                ) : null}
+                                <Text
+                                  style={{
+                                    fontFamily:
+                                      Platform.OS === 'android'
+                                        ? 'UberMoveTextRegular'
+                                        : 'Uber Move Text',
+                                    fontSize: RFValue(17),
+                                    flex: 1,
+                                  }}>
+                                  {el.receiver_infos.receiver_name}
+                                </Text>
+                                <TouchableOpacity
+                                  onPress={() =>
+                                    call({
+                                      number: el.receiver_infos.receiver_phone,
+                                      prompt: true,
+                                    })
+                                  }
+                                  style={{
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    marginRight: 5,
+                                    flexDirection: 'row',
+                                  }}>
+                                  <IconMaterialIcons
+                                    name="phone"
+                                    color="#096ED4"
+                                    size={30}
+                                  />
+                                </TouchableOpacity>
+                              </View>
+                            );
+                          },
+                        )
+                      ) : (
+                        <Text
+                          style={{
+                            fontFamily:
+                              Platform.OS === 'android'
+                                ? 'UberMoveTextRegular'
+                                : 'Uber Move Text',
+                            fontSize: RFValue(17),
+                            flex: 1,
+                          }}>
+                          No information provided
+                        </Text>
+                      )}
+                    </View>
+                    {/* {this.props.App.requests_data_main_vars
+                      .moreDetailsFocused_request.ride_basic_infos
+                      .receiver_infos.receiverName_delivery !== undefined &&
+                    this.props.App.requests_data_main_vars
+                      .moreDetailsFocused_request.ride_basic_infos
+                      .receiver_infos.receiverName_delivery !== null &&
+                    this.props.App.requests_data_main_vars
+                      .moreDetailsFocused_request.ride_basic_infos
+                      .receiver_infos.receiverName_delivery !== false &&
+                    this.props.App.requests_data_main_vars
+                      .moreDetailsFocused_request.ride_basic_infos
+                      .receiver_infos.receiverName_delivery !== 'false' ? (
+                      <TouchableOpacity
+                        onPress={() =>
+                          call({
+                            number: this.props.App.requests_data_main_vars
+                              .moreDetailsFocused_request.ride_basic_infos
+                              .receiver_infos.receiverPhone_delivery,
+                            prompt: true,
+                          })
+                        }
+                        style={{
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          marginRight: 5,
+                          flexDirection: 'row',
+                        }}>
+                        <IconMaterialIcons
+                          name="phone"
+                          color="#096ED4"
+                          size={30}
+                        />
+                      </TouchableOpacity>
+                    ) : null} */}
                   </View>
                 </View>
               ) : null}
