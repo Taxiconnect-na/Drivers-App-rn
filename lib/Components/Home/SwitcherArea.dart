@@ -34,6 +34,16 @@ class _SwictherAreaState extends State<SwictherArea> {
             top: false,
             child: Container(
               alignment: Alignment.centerLeft,
+              decoration: BoxDecoration(
+                  border: const Border(top: BorderSide(width: 2)),
+                  color: Colors.white,
+                  boxShadow: [
+                    BoxShadow(
+                        color: Colors.grey.withOpacity(0.2),
+                        spreadRadius: 0,
+                        blurRadius: 7,
+                        offset: Offset.fromDirection(-1.5, 13))
+                  ]),
               child: Padding(
                 padding: const EdgeInsets.only(top: 8.0, left: 15, right: 15),
                 child: Row(
@@ -98,7 +108,7 @@ class ModalForSelections extends StatelessWidget {
         Padding(
           padding: EdgeInsets.only(top: 30, bottom: 35),
           child: Text('What do you want to see?',
-              style: TextStyle(fontFamily: 'MoveTextBold', fontSize: 22)),
+              style: TextStyle(fontFamily: 'MoveTextMedium', fontSize: 22)),
         ),
         MenuOption(
           titleOption: 'Accepted trips',

@@ -14,7 +14,7 @@ class _HeaderGeneralState extends State<HeaderGeneral> {
   Widget build(BuildContext context) {
     return SafeArea(
       bottom: false,
-      minimum: const EdgeInsets.only(bottom: 10),
+      minimum: const EdgeInsets.only(bottom: 0),
       child: Container(
         decoration: BoxDecoration(color: Colors.white,
             // border: Border.all(color: Colors.red),
