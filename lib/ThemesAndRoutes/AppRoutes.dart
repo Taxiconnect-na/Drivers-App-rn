@@ -17,6 +17,6 @@ class _AppGeneralEntryState extends State<AppGeneralEntry> {
     return MaterialApp(
         theme: AppTheme.appTheme,
         initialRoute: '/Home',
-        routes: {'/Home': (context) => const Home()});
+        routes: {'/Home': (context) => Home()});
   }
 }

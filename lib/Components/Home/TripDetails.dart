@@ -85,7 +85,7 @@ class _TripDetailsState extends State<TripDetails> {
                   showIcon: false,
                   showTrailingArrow: true,
                   flex: 2,
-                  fontFamily: 'MoveTextBold',
+                  fontFamily: 'MoveTextMedium',
                   fontSize: 19,
                   backgroundColor: const Color.fromRGBO(9, 110, 212, 1),
                   textColor: Colors.white,

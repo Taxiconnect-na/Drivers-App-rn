@@ -2,7 +2,10 @@
 
 import 'package:flutter/material.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
+import 'package:taxiconnectdrivers/Components/Helpers/LocationOpsHandler.dart';
 import 'package:taxiconnectdrivers/Components/Home/TripDetails.dart';
+import 'package:taxiconnectdrivers/Components/Providers/HomeProvider.dart';
+import 'package:provider/provider.dart';
 
 class CenterArea extends StatefulWidget {
   const CenterArea({Key? key}) : super(key: key);
@@ -20,14 +23,123 @@ class _CenterAreaState extends State<CenterArea> {
         child: Container(
       color: mainBackgroundColor,
       child: Padding(
-          padding: const EdgeInsets.only(left: 7, right: 7, top: 7),
-          child: ListView.separated(
-              padding: const EdgeInsets.only(top: 20, bottom: 70),
-              itemBuilder: (context, index) => const RequestCard(),
-              separatorBuilder: (context, index) =>
-                  const Padding(padding: EdgeInsets.only(top: 20)),
-              itemCount: 20)),
+          padding: const EdgeInsets.only(top: 7),
+          child: context
+                      .watch<HomeProvider>()
+                      .locationServicesStatus['isLocationServiceEnabled'] &&
+                  context
+                      .watch<HomeProvider>()
+                      .locationServicesStatus['isLocationPermissionGranted'] &&
+                  context
+                          .watch<HomeProvider>()
+                          .locationServicesStatus['isLocationDeniedForever'] ==
+                      false
+              ? ListView.separated(
+                  padding: const EdgeInsets.only(top: 20, bottom: 70),
+                  itemBuilder: (context, index) => const RequestCard(),
+                  separatorBuilder: (context, index) =>
+                      const Padding(padding: EdgeInsets.only(top: 15)),
+                  itemCount: 20)
+              : const RequestLocationWindow()),
     ));
+  }
+}
+
+//Show request for location window
+class RequestLocationWindow extends StatelessWidget {
+  const RequestLocationWindow({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Expanded(
+            child: Padding(
+          padding: const EdgeInsets.only(left: 20, right: 20),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(bottom: 15),
+                child: Icon(Icons.sync_outlined,
+                    size: 50, color: Colors.grey.shade600),
+              ),
+              Text(
+                  'You will start seeing new requests after activating your location.',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(color: Colors.grey.shade600, fontSize: 15)),
+            ],
+          ),
+        )),
+        InkWell(
+          onTap: () {
+            //Update the auto ask state - free it
+            context.read<HomeProvider>().updateAutoAskGprsCoords(didAsk: false);
+            //...
+            LocationOpsHandler locationOpsHandler =
+                LocationOpsHandler(context: context);
+            locationOpsHandler.requestLocationPermission(isUserTriggered: true);
+          },
+          child: Container(
+              width: MediaQuery.of(context).size.width,
+              alignment: Alignment.centerLeft,
+              height: 200,
+              decoration:
+                  const BoxDecoration(color: Color.fromRGBO(9, 110, 212, 1)),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  ListTile(
+                      title: Row(
+                        children: const [
+                          Padding(
+                            padding: EdgeInsets.only(right: 4),
+                            child: Icon(Icons.location_disabled_sharp,
+                                color: Colors.white),
+                          ),
+                          Text('Your location is off.',
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontFamily: 'MoveBold',
+                                  fontSize: 23)),
+                        ],
+                      ),
+                      subtitle: Padding(
+                        padding: const EdgeInsets.only(left: 31, top: 10),
+                        child: Column(
+                          children: [
+                            Text(
+                                context
+                                            .watch<HomeProvider>()
+                                            .locationServicesStatus[
+                                        'isLocationDeniedForever']
+                                    ? 'Your locations services need to be on for an optimal experience. You need the activate it from your settings.'
+                                    : 'Your locations services need to be on for an optimal experience.',
+                                style: const TextStyle(color: Colors.white)),
+                            Padding(
+                              padding: const EdgeInsets.only(top: 12),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: const [
+                                  Text('Click here to activate it.',
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontFamily: 'MoveTextMedium',
+                                          fontSize: 16)),
+                                  Icon(Icons.arrow_forward, color: Colors.white)
+                                ],
+                              ),
+                            )
+                          ],
+                        ),
+                      )),
+                ],
+              )),
+        )
+      ],
+    );
   }
 }
 
@@ -37,130 +149,134 @@ class RequestCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-          border: Border.all(color: const Color.fromRGBO(208, 208, 208, 1)),
-          borderRadius: BorderRadius.circular(5),
-          boxShadow: [
-            BoxShadow(
-                color: Colors.grey.withOpacity(0.2),
-                spreadRadius: 2,
-                blurRadius: 7)
-          ],
-          color: Colors.white),
-      child: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(top: 8, left: 8, right: 8),
-            child: Row(
+    return Padding(
+      padding: const EdgeInsets.only(left: 7, right: 7),
+      child: Container(
+        decoration: BoxDecoration(
+            border: Border.all(color: const Color.fromRGBO(208, 208, 208, 1)),
+            borderRadius: BorderRadius.circular(5),
+            boxShadow: [
+              BoxShadow(
+                  color: Colors.grey.withOpacity(0.5),
+                  spreadRadius: 2,
+                  blurRadius: 7)
+            ],
+            color: Colors.white),
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(top: 8, left: 8, right: 8),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: const [
+                      Icon(Icons.timer, size: 15),
+                      Padding(padding: EdgeInsets.only(left: 2)),
+                      Text(
+                        '5 min away',
+                        style: TextStyle(
+                            fontSize: 16, fontFamily: 'MoveTextMedium'),
+                      ),
+                    ],
+                  ),
+                  const Text(
+                    'Sent 15:05',
+                    style: TextStyle(fontSize: 15),
+                  )
+                ],
+              ),
+            ),
+            const Divider(
+              thickness: 1,
+              height: 20,
+            ),
+            Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: const [
-                    Icon(Icons.timer, size: 15),
-                    Padding(padding: EdgeInsets.only(left: 2)),
-                    Text(
-                      '5 min away',
-                      style:
-                          TextStyle(fontSize: 16, fontFamily: 'MoveTextMedium'),
-                    ),
-                  ],
-                ),
-                const Text(
-                  'Sent 15:05',
-                  style: TextStyle(fontSize: 15),
-                )
-              ],
-            ),
-          ),
-          const Divider(
-            thickness: 1,
-            height: 20,
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Flexible(
-                child: Container(
-                    alignment: Alignment.centerRight,
-                    // color: Colors.red,
-                    child: Text('ConnectUS',
-                        style: TextStyle(
-                            fontFamily: 'MoveTextBold', fontSize: 16))),
-              ),
-              Flexible(
-                child: Column(
-                  children: const [
-                    Text(
-                      'N\$30',
-                      style: TextStyle(
-                          fontFamily: 'MoveBold',
-                          fontSize: 25,
-                          color: Color.fromRGBO(9, 134, 74, 1)),
-                    ),
-                    Text('CASH',
-                        style: TextStyle(color: Color.fromRGBO(9, 134, 74, 1)))
-                  ],
-                ),
-              ),
-              Flexible(
-                child: Container(
-                  alignment: Alignment.centerLeft,
-                  // color: Colors.red,
-                  width: 100,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: const [
-                      Icon(Icons.person, size: 20),
-                      Text('1',
+                Flexible(
+                  child: Container(
+                      alignment: Alignment.centerRight,
+                      // color: Colors.red,
+                      child: Text('ConnectUS',
                           style: TextStyle(
-                              fontSize: 20, fontFamily: 'MoveTextMedium'))
+                              fontFamily: 'MoveTextBold', fontSize: 16))),
+                ),
+                Flexible(
+                  child: Column(
+                    children: const [
+                      Text(
+                        'N\$30',
+                        style: TextStyle(
+                            fontFamily: 'MoveBold',
+                            fontSize: 25,
+                            color: Color.fromRGBO(9, 134, 74, 1)),
+                      ),
+                      Text('CASH',
+                          style:
+                              TextStyle(color: Color.fromRGBO(9, 134, 74, 1)))
                     ],
                   ),
                 ),
-              )
-            ],
-          ),
-          const Divider(
-            thickness: 1,
-            height: 25,
-          ),
-          const OriginDestinationPrest(),
-          const Divider(
-            thickness: 1,
-            height: 25,
-          ),
-          Padding(
-            padding:
-                const EdgeInsets.only(top: 10, bottom: 15, left: 15, right: 10),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                const Text(
-                  'Decline',
-                  style: TextStyle(
-                      fontSize: 18, color: Color.fromRGBO(178, 34, 34, 1)),
-                ),
-                ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                        primary: const Color.fromRGBO(9, 110, 212, 1),
-                        padding: const EdgeInsets.only(
-                            top: 17, bottom: 20, left: 40, right: 40),
-                        textStyle: const TextStyle(
-                            fontFamily: 'MoveBold', fontSize: 23)),
-                    onPressed: () => showMaterialModalBottomSheet(
-                        duration: const Duration(milliseconds: 350),
-                        context: context,
-                        builder: (context) {
-                          return const TripDetails();
-                        }),
-                    child: const Text('Accept'))
+                Flexible(
+                  child: Container(
+                    alignment: Alignment.centerLeft,
+                    // color: Colors.red,
+                    width: 100,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: const [
+                        Icon(Icons.person, size: 20),
+                        Text('1',
+                            style: TextStyle(
+                                fontSize: 20, fontFamily: 'MoveTextMedium'))
+                      ],
+                    ),
+                  ),
+                )
               ],
             ),
-          )
-        ],
+            const Divider(
+              thickness: 1,
+              height: 25,
+            ),
+            const OriginDestinationPrest(),
+            const Divider(
+              thickness: 1,
+              height: 25,
+            ),
+            Padding(
+              padding: const EdgeInsets.only(
+                  top: 10, bottom: 15, left: 15, right: 10),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  const Text(
+                    'Decline',
+                    style: TextStyle(
+                        fontSize: 18, color: Color.fromRGBO(178, 34, 34, 1)),
+                  ),
+                  ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                          primary: const Color.fromRGBO(9, 110, 212, 1),
+                          padding: const EdgeInsets.only(
+                              top: 17, bottom: 20, left: 40, right: 40),
+                          textStyle: const TextStyle(
+                              fontFamily: 'MoveBold', fontSize: 23)),
+                      onPressed: () => showMaterialModalBottomSheet(
+                          duration: const Duration(milliseconds: 350),
+                          context: context,
+                          builder: (context) {
+                            return const TripDetails();
+                          }),
+                      child: const Text('Accept'))
+                ],
+              ),
+            )
+          ],
+        ),
       ),
     );
   }
