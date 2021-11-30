@@ -1,9 +1,12 @@
 // ignore_for_file: file_names
 
 import 'dart:async';
+import 'dart:convert';
+import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:http/http.dart';
 import 'package:provider/provider.dart';
 import 'package:taxiconnectdrivers/Components/Providers/HomeProvider.dart';
 import 'package:taxiconnectdrivers/Components/Helpers/PositionConverter.dart';
@@ -11,7 +14,6 @@ import 'package:taxiconnectdrivers/Components/Helpers/PositionConverter.dart';
 class LocationOpsHandler with ChangeNotifier {
   //? Attributes - very important
   final BuildContext context;
-  final String hostname = 'http://192.168.8.109:9090';
   //...
   LocationOpsHandler({required this.context});
   //Location location = new Location();
@@ -74,7 +76,7 @@ class LocationOpsHandler with ChangeNotifier {
   void requestLocationPermission({bool isUserTriggered = false}) async {
     LocationPermission permission = await Geolocator.checkPermission();
 
-    // print(permission.toString());
+    log(permission.toString());
 
     if (permission.toString() ==
         'LocationPermission.deniedForever') //Denied forever - access settings
@@ -130,6 +132,46 @@ class LocationOpsHandler with ChangeNotifier {
                   isDeniedForever: false);
         }
       }
+    } else if (permission.toString() == 'LocationPermission.whileInUse' ||
+        permission.toString() == 'LocationPermission.always') {
+      //Activate the platform
+      context
+          .read<HomeProvider>()
+          .updateGPRSServiceStatusAndLocationPermissions(
+              gprsServiceStatus: true,
+              locationPermission: true,
+              isDeniedForever: false);
+    }
+  }
+
+  //? 5 . Geocode the current point
+  void geocodeThisPoint(
+      {required double latitude, required double longitude}) async {
+    String urlString =
+        '${context.read<HomeProvider>().bridge}/geocode_this_point';
+
+    Map<String, String> bundleData = {
+      'latitude': latitude.toString(),
+      'longitude': longitude.toString(),
+      'user_fingerprint': context.read<HomeProvider>().user_fingerprint
+    };
+
+    // log(urlString);
+    try {
+      Response response =
+          await post(Uri.parse(Uri.encodeFull(urlString)), body: bundleData);
+
+      if (response.statusCode == 200 &&
+          json.decode(response.body).runtimeType != bool) {
+        // log(response.body);
+        context.read<HomeProvider>().updateUsersCurrentLocation(
+            newCurrentLocation: json.decode(response.body));
+      } else //Some error
+      {
+        print(response.statusCode);
+      }
+    } catch (e) {
+      log(e.toString());
     }
   }
 
@@ -166,8 +208,8 @@ class LocationOpsHandler with ChangeNotifier {
                 latitude: value['latitude'], longitude: value['longitude']);
 
             //Geocode the point
-            // this.geocodeThisPoint(
-            //     latitude: value['latitude'], longitude: value['longitude']);
+            geocodeThisPoint(
+                latitude: value['latitude'], longitude: value['longitude']);
           }
         });
       } else //Is missing one Permission - get the last coordinates

@@ -34,14 +34,64 @@ class _CenterAreaState extends State<CenterArea> {
                           .watch<HomeProvider>()
                           .locationServicesStatus['isLocationDeniedForever'] ==
                       false
-              ? ListView.separated(
-                  padding: const EdgeInsets.only(top: 20, bottom: 70),
-                  itemBuilder: (context, index) => const RequestCard(),
-                  separatorBuilder: (context, index) =>
-                      const Padding(padding: EdgeInsets.only(top: 15)),
-                  itemCount: 20)
+              ? context.watch<HomeProvider>().tripRequestsData.isNotEmpty
+                  ? ListView.separated(
+                      padding: const EdgeInsets.only(top: 20, bottom: 70),
+                      itemBuilder: (context, index) => RequestCard(
+                          requestData: context
+                              .read<HomeProvider>()
+                              .tripRequestsData[index]),
+                      separatorBuilder: (context, index) =>
+                          const Padding(padding: EdgeInsets.only(top: 15)),
+                      itemCount:
+                          context.read<HomeProvider>().tripRequestsData.length)
+                  : const EmptyTripsWindow()
               : const RequestLocationWindow()),
     ));
+  }
+}
+
+//Show empty trips window
+class EmptyTripsWindow extends StatelessWidget {
+  const EmptyTripsWindow({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: MediaQuery.of(context).size.width,
+      child: Column(
+        children: [
+          Expanded(
+              child: Padding(
+            padding: const EdgeInsets.only(left: 20, right: 20),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 15),
+                  child: Icon(Icons.sync_outlined,
+                      size: 50, color: Colors.grey.shade600),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 8.0),
+                  child: Text('No rides to far',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          fontFamily: 'MoveTextMedium',
+                          color: Colors.grey.shade600,
+                          fontSize: 18)),
+                ),
+                Text('We\'ll notify you when new requests come.',
+                    textAlign: TextAlign.center,
+                    style:
+                        TextStyle(color: Colors.grey.shade600, fontSize: 16)),
+              ],
+            ),
+          ))
+        ],
+      ),
+    );
   }
 }
 
@@ -145,7 +195,9 @@ class RequestLocationWindow extends StatelessWidget {
 
 //The request card that showcase all the important requests infos.
 class RequestCard extends StatelessWidget {
-  const RequestCard({Key? key}) : super(key: key);
+  final Map requestData;
+
+  const RequestCard({Key? key, required this.requestData}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

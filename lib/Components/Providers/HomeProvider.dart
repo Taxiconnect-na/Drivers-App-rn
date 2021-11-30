@@ -1,21 +1,31 @@
-// ignore_for_file: file_names
+// ignore_for_file: file_names, non_constant_identifier_names
 
 import 'dart:developer';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 //? HOME PROVIDER
 // Will hold all the home related globals - only!
 
 class HomeProvider with ChangeNotifier {
+  final String bridge = 'http://localhost:9999';
+  String user_fingerprint =
+      '91ae265bca710a49756d90e382f9591dceba4b26cc03c01aaca3828145376321f9b8b401ae7e1efa41c99e7f210ecc191c62b2dc7bcda566e312378e1a1fdf1b';
+
   Map<dynamic, dynamic> locationServicesStatus = {
-    'isLocationServiceEnabled': false,
-    'isLocationPermissionGranted': false,
+    'isLocationServiceEnabled': true,
+    'isLocationPermissionGranted': true,
     'isLocationDeniedForever': false
   }; //Will hold the status of the GPRS service and the one of the location permission.
   late Map userLocationCoords = {}; //The user location coordinates: lat/long
   bool didAutomaticallyAskedForGprsPerm =
       false; //To know whether to ask for permission again or not.
+
+  Map<String, dynamic> userLocationDetails =
+      {}; //The details of the user location: city, location name
+
+  List<dynamic> tripRequestsData = []; //Will contain the trips metata
 
   //?4. Update the GPRS service status and the location permission
   void updateGPRSServiceStatusAndLocationPermissions(
@@ -61,6 +71,26 @@ class HomeProvider with ChangeNotifier {
     {
       print('UPDATING AUTO ASK FOR GPRS COORDS.');
       didAutomaticallyAskedForGprsPerm = didAsk;
+    }
+  }
+
+  //?9. Update user's current location
+  void updateUsersCurrentLocation(
+      {required Map<String, dynamic> newCurrentLocation}) {
+    //Replace name by location_name
+    newCurrentLocation['location_name'] = newCurrentLocation['street'];
+    if (!mapEquals(newCurrentLocation, userLocationDetails)) //New data received
+    {
+      userLocationDetails = newCurrentLocation;
+      notifyListeners();
+    }
+  }
+
+  //?10. Update the trips metadata
+  void updateTripRequestsMetadata({required List<dynamic> newTripList}) {
+    if (!listEquals(tripRequestsData, newTripList)) {
+      tripRequestsData = newTripList;
+      notifyListeners();
     }
   }
 }

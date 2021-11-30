@@ -1,6 +1,8 @@
 // ignore_for_file: file_names
 
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:taxiconnectdrivers/Components/Providers/HomeProvider.dart';
 
 class DrawerMenu extends StatefulWidget {
   const DrawerMenu({Key? key}) : super(key: key);
@@ -18,26 +20,35 @@ class _DrawerMenuState extends State<DrawerMenu> {
           Container(
             width: MediaQuery.of(context).size.width,
             alignment: Alignment.centerLeft,
-            child: const DrawerHeader(
-                padding: EdgeInsets.only(left: 0, top: 30),
-                decoration: BoxDecoration(color: Colors.black),
+            child: DrawerHeader(
+                padding: const EdgeInsets.only(left: 0, top: 30),
+                decoration: const BoxDecoration(color: Colors.black),
                 child: SafeArea(
                     child: ListTile(
                   horizontalTitleGap: 10,
-                  leading: CircleAvatar(
+                  leading: const CircleAvatar(
                     radius: 35,
                     backgroundColor: Colors.grey,
                     backgroundImage: AssetImage('Assets/Images/girl.jpg'),
                   ),
-                  title: Text(
+                  title: const Text(
                     'Alex',
                     style: TextStyle(
                         fontFamily: 'MoveTextMedium',
                         fontSize: 20,
                         color: Colors.white),
                   ),
-                  subtitle: Text('Windhoek',
-                      style: TextStyle(color: Colors.white, fontSize: 15)),
+                  subtitle: Text(
+                      context
+                                  .watch<HomeProvider>()
+                                  .userLocationDetails['osm_id'] !=
+                              null
+                          ? context
+                              .watch<HomeProvider>()
+                              .userLocationDetails['city']
+                          : 'Searching...',
+                      style:
+                          const TextStyle(color: Colors.white, fontSize: 15)),
                 ))),
           ),
           const MenuOption(
