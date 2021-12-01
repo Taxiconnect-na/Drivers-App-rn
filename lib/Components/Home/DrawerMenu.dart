@@ -85,7 +85,7 @@ class _DrawerMenuState extends State<DrawerMenu> {
                       padding: EdgeInsets.only(top: 10),
                       child: ListTile(
                         leading: Text('Legal', style: TextStyle(fontSize: 16)),
-                        trailing: Text('v3.0.2',
+                        trailing: Text('v3.0.4',
                             style: TextStyle(fontSize: 16, color: Colors.grey)),
                       ),
                     ))),

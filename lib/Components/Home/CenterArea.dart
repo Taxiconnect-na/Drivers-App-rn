@@ -2,7 +2,9 @@
 
 import 'package:flutter/material.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
+import 'package:taxiconnectdrivers/Components/Helpers/DateParser.dart';
 import 'package:taxiconnectdrivers/Components/Helpers/LocationOpsHandler.dart';
+import 'package:taxiconnectdrivers/Components/Helpers/RequestCardHelper.dart';
 import 'package:taxiconnectdrivers/Components/Home/TripDetails.dart';
 import 'package:taxiconnectdrivers/Components/Providers/HomeProvider.dart';
 import 'package:provider/provider.dart';
@@ -223,19 +225,21 @@ class RequestCard extends StatelessWidget {
                 children: [
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
-                    children: const [
-                      Icon(Icons.timer, size: 15),
-                      Padding(padding: EdgeInsets.only(left: 2)),
+                    children: [
+                      const Icon(Icons.timer, size: 15),
+                      const Padding(padding: EdgeInsets.only(left: 2)),
                       Text(
-                        '5 min away',
-                        style: TextStyle(
+                        requestData['ride_basic_infos']['inRideToDestination']
+                            ? 'Picked up'
+                            : requestData['eta_to_passenger_infos']['eta'],
+                        style: const TextStyle(
                             fontSize: 16, fontFamily: 'MoveTextMedium'),
                       ),
                     ],
                   ),
-                  const Text(
-                    'Sent 15:05',
-                    style: TextStyle(fontSize: 15),
+                  Text(
+                    'Sent ${DateParser(requestData['ride_basic_infos']['wished_pickup_time']).getReadableTime()}',
+                    style: const TextStyle(fontSize: 15),
                   )
                 ],
               ),
@@ -251,23 +255,27 @@ class RequestCard extends StatelessWidget {
                   child: Container(
                       alignment: Alignment.centerRight,
                       // color: Colors.red,
-                      child: Text('ConnectUS',
-                          style: TextStyle(
+                      child: Text(
+                          requestData['ride_basic_infos']['connect_type'],
+                          style: const TextStyle(
                               fontFamily: 'MoveTextBold', fontSize: 16))),
                 ),
                 Flexible(
                   child: Column(
-                    children: const [
+                    children: [
                       Text(
-                        'N\$30',
-                        style: TextStyle(
+                        'N\$${requestData['ride_basic_infos']['fare_amount']}',
+                        style: const TextStyle(
                             fontFamily: 'MoveBold',
                             fontSize: 25,
                             color: Color.fromRGBO(9, 134, 74, 1)),
                       ),
-                      Text('CASH',
-                          style:
-                              TextStyle(color: Color.fromRGBO(9, 134, 74, 1)))
+                      Text(
+                          requestData['ride_basic_infos']['payment_method']
+                              .toString()
+                              .toUpperCase(),
+                          style: const TextStyle(
+                              color: Color.fromRGBO(9, 134, 74, 1)))
                     ],
                   ),
                 ),
@@ -278,10 +286,12 @@ class RequestCard extends StatelessWidget {
                     width: 100,
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.start,
-                      children: const [
-                        Icon(Icons.person, size: 20),
-                        Text('1',
-                            style: TextStyle(
+                      children: [
+                        const Icon(Icons.person, size: 20),
+                        Text(
+                            requestData['ride_basic_infos']['passengers_number']
+                                .toString(),
+                            style: const TextStyle(
                                 fontSize: 20, fontFamily: 'MoveTextMedium'))
                       ],
                     ),
@@ -293,7 +303,9 @@ class RequestCard extends StatelessWidget {
               thickness: 1,
               height: 25,
             ),
-            const OriginDestinationPrest(),
+            OriginDestinationPrest(
+              requestData: requestData,
+            ),
             const Divider(
               thickness: 1,
               height: 25,
@@ -336,7 +348,11 @@ class RequestCard extends StatelessWidget {
 
 //Origin / destination drawing presentation
 class OriginDestinationPrest extends StatelessWidget {
-  const OriginDestinationPrest({Key? key}) : super(key: key);
+  final Map requestData;
+  final RequestCardHelper requestCardHelper = RequestCardHelper();
+
+  OriginDestinationPrest({Key? key, required this.requestData})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -345,128 +361,130 @@ class OriginDestinationPrest extends StatelessWidget {
       alignment: Alignment.topLeft,
       child: Padding(
         padding: const EdgeInsets.only(left: 8, right: 8),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Container(
-              // color: Colors.blue,
-              child: Column(
+        child: IntrinsicHeight(
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Column(
                 children: [
                   const Padding(
-                    padding: EdgeInsets.only(top: 7),
+                    padding: EdgeInsets.only(top: 6),
                     child: Icon(
                       Icons.circle,
                       size: 8,
                     ),
                   ),
-                  Container(
-                    width: 1,
-                    height: 48,
-                    decoration:
-                        BoxDecoration(border: Border.all(color: Colors.black)),
+                  Flexible(
+                    child: Container(
+                      width: 1,
+                      decoration: BoxDecoration(
+                          border: Border.all(color: Colors.black)),
+                    ),
                   ),
-                  const Icon(
-                    Icons.stop,
-                    size: 15,
-                    color: Color.fromRGBO(9, 110, 212, 1),
+                  const Padding(
+                    padding: EdgeInsets.only(bottom: 23),
+                    child: Icon(
+                      Icons.stop,
+                      size: 15,
+                      color: Color.fromRGBO(9, 110, 212, 1),
+                    ),
                   )
                 ],
               ),
-            ),
-            Expanded(
-              child: Column(
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          const SizedBox(
-                            // color: Colors.green,
-                            height: 33,
-                            child: SizedBox(
-                                width: 45,
-                                child: Text(
-                                  'From',
-                                  style: TextStyle(fontFamily: 'MoveTextLight'),
-                                )),
-                          ),
-                          Expanded(
-                            child: Container(
-                              alignment: Alignment.centerLeft,
-                              // color: Colors.amber,
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  SizedBox(
-                                    width: MediaQuery.of(context).size.width,
-                                    child: const Text('Academia',
+              Expanded(
+                child: Column(
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Container(
+                          // color: Colors.orange,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Container(
+                                // color: Colors.green,
+                                height: 33,
+                                child: const Padding(
+                                  padding: EdgeInsets.only(top: 2),
+                                  child: SizedBox(
+                                      width: 45,
+                                      child: Text(
+                                        'From',
                                         style: TextStyle(
-                                            fontFamily: 'MoveTextBold',
-                                            fontSize: 19)),
+                                            fontFamily: 'MoveTextLight'),
+                                      )),
+                                ),
+                              ),
+                              Expanded(
+                                child: Container(
+                                  alignment: Alignment.centerLeft,
+                                  // color: Colors.amber,
+                                  child: Column(
+                                    children: requestCardHelper
+                                        .fitLocationWidgetsToList(
+                                            context: context,
+                                            locationData: [
+                                          requestData[
+                                                  'origin_destination_infos']
+                                              ['pickup_infos']
+                                        ]),
                                   ),
-                                  SizedBox(
-                                      width: MediaQuery.of(context).size.width,
-                                      child: const Text('Voltaire street',
-                                          style: TextStyle(fontSize: 15)))
-                                ],
+                                ),
+                              )
+                            ],
+                          ),
+                        )
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    //Destination
+                    Column(
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Container(
+                              // color: Colors.green,
+                              height: 34,
+                              child: const Padding(
+                                padding: EdgeInsets.only(top: 3),
+                                child: SizedBox(
+                                    width: 45,
+                                    child: Text(
+                                      'To',
+                                      style: TextStyle(
+                                          fontFamily: 'MoveTextLight'),
+                                    )),
                               ),
                             ),
-                          )
-                        ],
-                      )
-                    ],
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  //Destination
-                  Column(
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Container(
-                            // color: Colors.green,
-                            height: 34,
-                            child: const SizedBox(
-                                width: 45,
-                                child: Text(
-                                  'To',
-                                  style: TextStyle(fontFamily: 'MoveTextLight'),
-                                )),
-                          ),
-                          Expanded(
-                            child: Container(
-                              alignment: Alignment.centerLeft,
-                              // color: Colors.amber,
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  SizedBox(
-                                    width: MediaQuery.of(context).size.width,
-                                    child: const Text('Katutura',
-                                        style: TextStyle(
-                                            fontFamily: 'MoveTextBold',
-                                            fontSize: 19)),
-                                  ),
-                                  SizedBox(
-                                      width: MediaQuery.of(context).size.width,
-                                      child: const Text('Mika street',
-                                          style: TextStyle(fontSize: 15)))
-                                ],
+                            Expanded(
+                              child: Container(
+                                alignment: Alignment.centerLeft,
+                                // color: Colors.amber,
+                                child: Column(
+                                  children: requestCardHelper
+                                      .fitLocationWidgetsToList(
+                                          context: context,
+                                          locationData: requestData[
+                                                  'origin_destination_infos']
+                                              ['destination_infos']),
+                                ),
                               ),
-                            ),
-                          )
-                        ],
-                      )
-                    ],
-                  ),
-                ],
-              ),
-            )
-          ],
+                            )
+                          ],
+                        )
+                      ],
+                    ),
+                  ],
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );

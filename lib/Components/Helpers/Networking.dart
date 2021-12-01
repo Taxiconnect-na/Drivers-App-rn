@@ -66,7 +66,7 @@ class GlobalDataFetcher with ChangeNotifier {
           }
         } else //Most likely got some rides - 100%
         {
-          log(response.body.toString());
+          // log(response.body.toString());
           context.read<HomeProvider>().updateTripRequestsMetadata(
               newTripList: json.decode(response.body));
         }
