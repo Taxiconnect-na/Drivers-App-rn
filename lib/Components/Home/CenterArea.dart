@@ -1,10 +1,15 @@
 // ignore_for_file: file_names
 
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:taxiconnectdrivers/Components/Helpers/DateParser.dart';
 import 'package:taxiconnectdrivers/Components/Helpers/LocationOpsHandler.dart';
+import 'package:taxiconnectdrivers/Components/Helpers/Modal.dart';
+import 'package:taxiconnectdrivers/Components/Helpers/Networking.dart';
 import 'package:taxiconnectdrivers/Components/Helpers/RequestCardHelper.dart';
+import 'package:taxiconnectdrivers/Components/Helpers/Sound.dart';
 import 'package:taxiconnectdrivers/Components/Home/TripDetails.dart';
 import 'package:taxiconnectdrivers/Components/Providers/HomeProvider.dart';
 import 'package:provider/provider.dart';
@@ -322,20 +327,9 @@ class RequestCard extends StatelessWidget {
                     style: TextStyle(
                         fontSize: 18, color: Color.fromRGBO(178, 34, 34, 1)),
                   ),
-                  ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                          primary: const Color.fromRGBO(9, 110, 212, 1),
-                          padding: const EdgeInsets.only(
-                              top: 17, bottom: 20, left: 40, right: 40),
-                          textStyle: const TextStyle(
-                              fontFamily: 'MoveBold', fontSize: 23)),
-                      onPressed: () => showMaterialModalBottomSheet(
-                          duration: const Duration(milliseconds: 350),
-                          context: context,
-                          builder: (context) {
-                            return const TripDetails();
-                          }),
-                      child: const Text('Accept'))
+                  AcceptOrDetailsBtn(
+                    tripData: requestData,
+                  )
                 ],
               ),
             )
@@ -343,6 +337,72 @@ class RequestCard extends StatelessWidget {
         ),
       ),
     );
+  }
+}
+
+//Accept or trip details buttons
+class AcceptOrDetailsBtn extends StatelessWidget {
+  final Map tripData;
+
+  const AcceptOrDetailsBtn({Key? key, required this.tripData})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return ElevatedButton(
+        style: ElevatedButton.styleFrom(
+            fixedSize: Size(190, 60),
+            primary: const Color.fromRGBO(9, 110, 212, 1),
+            padding: const EdgeInsets.only(left: 10, right: 10),
+            textStyle: TextStyle(
+                fontFamily: tripData['ride_basic_infos']['isAccepted'] == false
+                    ? 'MoveBold'
+                    : 'MoveTextMedium',
+                fontSize: tripData['ride_basic_infos']['isAccepted'] == false
+                    ? 23
+                    : 19)),
+        onPressed: context
+                    .watch<HomeProvider>()
+                    .targetRequestProcessor['isProcessingRequest'] &&
+                context.watch<HomeProvider>().targetRequestProcessor['request_fp'] ==
+                    tripData['request_fp']
+            ? () => log('Already accepting the request')
+            : tripData['ride_basic_infos']['isAccepted']
+                ? () {
+                    //Update the selected ride
+                    context
+                        .read<HomeProvider>()
+                        .updateTmpSelectedTripsData(data: tripData);
+                    //...
+                    showMaterialModalBottomSheet(
+                        duration: const Duration(milliseconds: 350),
+                        context: context,
+                        builder: (context) {
+                          return const TripDetails();
+                        });
+                  }
+                : () {
+                    // ? Update the temporary ride data
+                    context.read<HomeProvider>().updateTargetedRequestPro(
+                        isBeingProcessed: true,
+                        request_fp: tripData['request_fp']);
+                    //? Request for the accepting ride
+                    AcceptRequestNet acceptRequestNet = AcceptRequestNet();
+                    acceptRequestNet.exec(
+                        context: context, request_fp: tripData['request_fp']);
+                  },
+        child: context
+                    .watch<HomeProvider>()
+                    .targetRequestProcessor['isProcessingRequest'] &&
+                context
+                        .watch<HomeProvider>()
+                        .targetRequestProcessor['request_fp'] ==
+                    tripData['request_fp']
+            ? const SizedBox(
+                width: 30,
+                height: 30,
+                child: CircularProgressIndicator(color: Colors.white, strokeWidth: 3))
+            : Text(tripData['ride_basic_infos']['isAccepted'] == false ? 'Accept' : 'View details'));
   }
 }
 

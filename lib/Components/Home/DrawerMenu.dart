@@ -29,7 +29,7 @@ class _DrawerMenuState extends State<DrawerMenu> {
                   leading: const CircleAvatar(
                     radius: 35,
                     backgroundColor: Colors.grey,
-                    backgroundImage: AssetImage('Assets/Images/girl.jpg'),
+                    backgroundImage: AssetImage('assets/Images/girl.jpg'),
                   ),
                   title: const Text(
                     'Alex',
@@ -85,7 +85,7 @@ class _DrawerMenuState extends State<DrawerMenu> {
                       padding: EdgeInsets.only(top: 10),
                       child: ListTile(
                         leading: Text('Legal', style: TextStyle(fontSize: 16)),
-                        trailing: Text('v3.0.4',
+                        trailing: Text('v3.0.05',
                             style: TextStyle(fontSize: 16, color: Colors.grey)),
                       ),
                     ))),

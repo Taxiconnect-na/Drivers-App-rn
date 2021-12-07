@@ -1,7 +1,13 @@
 // ignore_for_file: file_names
 
+import 'dart:developer';
+
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/src/provider.dart';
+import 'package:taxiconnectdrivers/Components/Helpers/Modal.dart';
+import 'package:taxiconnectdrivers/Components/Helpers/RequestCardHelper.dart';
+import 'package:taxiconnectdrivers/Components/Providers/HomeProvider.dart';
 
 class TripDetails extends StatefulWidget {
   const TripDetails({Key? key}) : super(key: key);
@@ -13,6 +19,8 @@ class TripDetails extends StatefulWidget {
 class _TripDetailsState extends State<TripDetails> {
   @override
   Widget build(BuildContext context) {
+    Map tripData = context.watch<HomeProvider>().tmpSelectedTripData;
+
     return Container(
       color: Colors.white,
       height: MediaQuery.of(context).size.height,
@@ -48,15 +56,17 @@ class _TripDetailsState extends State<TripDetails> {
             decoration: BoxDecoration(
               color: Colors.grey.withOpacity(0.1),
             ),
-            child: const ListTile(
+            child: ListTile(
               leading: CircleAvatar(
-                backgroundColor: Colors.grey,
+                backgroundColor: Colors.grey.withOpacity(0.2),
                 radius: 30,
+                child: const Icon(Icons.person, color: Colors.black),
               ),
-              title: Text('Jessy',
-                  style: TextStyle(fontFamily: 'MoveTextBold', fontSize: 18)),
-              subtitle: Text('Arrived',
-                  style: TextStyle(
+              title: Text(tripData['passenger_infos']['name'],
+                  style: const TextStyle(
+                      fontFamily: 'MoveTextBold', fontSize: 18)),
+              subtitle: Text(tripData['eta_to_passenger_infos']['eta'],
+                  style: const TextStyle(
                       color: Color.fromRGBO(9, 110, 212, 1), fontSize: 15)),
               trailing: Icon(
                 Icons.phone,
@@ -100,9 +110,31 @@ class _TripDetailsState extends State<TripDetails> {
             topPadding: 45,
           ),
           //Pickup/destination details
-          const OriginDestinationPrest(),
+          OriginDestinationPrest(
+            requestData: tripData,
+          ),
           //Payment-passengers strip
-          const PaymentPassengersStrip(),
+          PaymentPassengersStrip(
+            tripData: tripData,
+          ),
+          // Cancel trips?
+          InkWell(
+            onTap: () => CancelRequest(context: context),
+            child: const Padding(
+              padding: EdgeInsets.only(top: 8.0),
+              child: ListTile(
+                horizontalTitleGap: 0,
+                leading: Icon(Icons.not_interested,
+                    color: Color.fromRGBO(178, 34, 34, 1)),
+                title: Text('Cancel the trip',
+                    style: TextStyle(
+                        fontFamily: 'MoveTextRegular',
+                        fontSize: 18,
+                        color: Color.fromRGBO(178, 34, 34, 1))),
+              ),
+            ),
+          ),
+          const Divider(),
           //Safety section
           const TitleIntros(
             title: 'Safety',
@@ -113,12 +145,37 @@ class _TripDetailsState extends State<TripDetails> {
             leading:
                 Icon(Icons.security, color: Color.fromRGBO(178, 34, 34, 1)),
             title: Text('Emergency call',
-                style: TextStyle(fontFamily: 'MoveTextMedium', fontSize: 17)),
+                style: TextStyle(fontFamily: 'MoveTextMedium', fontSize: 18)),
             subtitle: Text('Reach quickly the police.'),
           )
         ],
       )),
     );
+  }
+
+  //Cancel request
+  void CancelRequest({required BuildContext context}) {
+    context.read<HomeProvider>().updateBlurredBackgroundState(
+        shouldShow: true); //Show blurred background
+    showModalBottomSheet(
+            context: context,
+            builder: (context) {
+              //...
+              return Container(
+                color: Colors.white,
+                child: SafeArea(
+                    bottom: false,
+                    child: Container(
+                      width: MediaQuery.of(context).size.width,
+                      color: Colors.white,
+                      child: const Modal(
+                          scenario: 'trip_cancellation_confirmation'),
+                    )),
+              );
+            })
+        .whenComplete(() => context
+            .read<HomeProvider>()
+            .updateBlurredBackgroundState(shouldShow: false));
   }
 }
 
@@ -218,7 +275,11 @@ class ButtonGeneralPurpose extends StatelessWidget {
 
 //Origin / destination drawing presentation
 class OriginDestinationPrest extends StatelessWidget {
-  const OriginDestinationPrest({Key? key}) : super(key: key);
+  final Map requestData;
+  final RequestCardHelper requestCardHelper = RequestCardHelper();
+
+  OriginDestinationPrest({Key? key, required this.requestData})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -227,133 +288,136 @@ class OriginDestinationPrest extends StatelessWidget {
       alignment: Alignment.topLeft,
       child: Padding(
         padding: const EdgeInsets.only(left: 15, right: 15),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Container(
-              // color: Colors.blue,
-              child: Column(
+        child: IntrinsicHeight(
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Column(
                 children: [
                   const Padding(
-                    padding: EdgeInsets.only(top: 7),
+                    padding: EdgeInsets.only(top: 6),
                     child: Icon(
                       Icons.circle,
                       size: 8,
                     ),
                   ),
-                  DottedBorder(
-                    color: Colors.black,
-                    strokeWidth: 1,
-                    padding: EdgeInsets.all(0.5),
-                    borderType: BorderType.RRect,
-                    dashPattern: [4, 1],
-                    child: Container(
-                      // width: 1,
-                      height: 48,
+                  Flexible(
+                    child: DottedBorder(
+                      color: Colors.black,
+                      strokeWidth: 1,
+                      padding: EdgeInsets.all(0.5),
+                      borderType: BorderType.RRect,
+                      dashPattern: [4, 1],
+                      child: Container(
+                        // width: 1,
+                        height: 48,
+                      ),
                     ),
                   ),
-                  const Icon(
-                    Icons.stop,
-                    size: 15,
-                    color: Color.fromRGBO(9, 110, 212, 1),
+                  const Padding(
+                    padding: EdgeInsets.only(bottom: 23),
+                    child: Icon(
+                      Icons.stop,
+                      size: 15,
+                      color: Color.fromRGBO(9, 110, 212, 1),
+                    ),
                   )
                 ],
               ),
-            ),
-            Expanded(
-              child: Column(
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          const SizedBox(
-                            // color: Colors.green,
-                            height: 33,
-                            child: SizedBox(
-                                width: 45,
-                                child: Text(
-                                  'From',
-                                  style: TextStyle(fontFamily: 'MoveTextLight'),
-                                )),
-                          ),
-                          Expanded(
-                            child: Container(
-                              alignment: Alignment.centerLeft,
-                              // color: Colors.amber,
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  SizedBox(
-                                    width: MediaQuery.of(context).size.width,
-                                    child: const Text('Academia',
+              Expanded(
+                child: Column(
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Container(
+                          // color: Colors.orange,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Container(
+                                // color: Colors.green,
+                                height: 33,
+                                child: const Padding(
+                                  padding: EdgeInsets.only(top: 2),
+                                  child: SizedBox(
+                                      width: 45,
+                                      child: Text(
+                                        'From',
                                         style: TextStyle(
-                                            fontFamily: 'MoveTextBold',
-                                            fontSize: 19)),
+                                            fontFamily: 'MoveTextLight'),
+                                      )),
+                                ),
+                              ),
+                              Expanded(
+                                child: Container(
+                                  alignment: Alignment.centerLeft,
+                                  // color: Colors.amber,
+                                  child: Column(
+                                    children: requestCardHelper
+                                        .fitLocationWidgetsToList(
+                                            context: context,
+                                            locationData: [
+                                          requestData[
+                                                  'origin_destination_infos']
+                                              ['pickup_infos']
+                                        ]),
                                   ),
-                                  SizedBox(
-                                      width: MediaQuery.of(context).size.width,
-                                      child: const Text('Voltaire street',
-                                          style: TextStyle(fontSize: 15)))
-                                ],
+                                ),
+                              )
+                            ],
+                          ),
+                        )
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    //Destination
+                    Column(
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Container(
+                              // color: Colors.green,
+                              height: 34,
+                              child: const Padding(
+                                padding: EdgeInsets.only(top: 3),
+                                child: SizedBox(
+                                    width: 45,
+                                    child: Text(
+                                      'To',
+                                      style: TextStyle(
+                                          fontFamily: 'MoveTextLight'),
+                                    )),
                               ),
                             ),
-                          )
-                        ],
-                      )
-                    ],
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  //Destination
-                  Column(
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Container(
-                            // color: Colors.green,
-                            height: 34,
-                            child: const SizedBox(
-                                width: 45,
-                                child: Text(
-                                  'To',
-                                  style: TextStyle(fontFamily: 'MoveTextLight'),
-                                )),
-                          ),
-                          Expanded(
-                            child: Container(
-                              alignment: Alignment.centerLeft,
-                              // color: Colors.amber,
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  SizedBox(
-                                    width: MediaQuery.of(context).size.width,
-                                    child: const Text('Katutura',
-                                        style: TextStyle(
-                                            fontFamily: 'MoveTextBold',
-                                            fontSize: 19)),
-                                  ),
-                                  SizedBox(
-                                      width: MediaQuery.of(context).size.width,
-                                      child: const Text('Mika street',
-                                          style: TextStyle(fontSize: 15)))
-                                ],
+                            Expanded(
+                              child: Container(
+                                alignment: Alignment.centerLeft,
+                                // color: Colors.amber,
+                                child: Column(
+                                  children: requestCardHelper
+                                      .fitLocationWidgetsToList(
+                                          context: context,
+                                          locationData: requestData[
+                                                  'origin_destination_infos']
+                                              ['destination_infos']),
+                                ),
                               ),
-                            ),
-                          )
-                        ],
-                      )
-                    ],
-                  ),
-                ],
-              ),
-            )
-          ],
+                            )
+                          ],
+                        )
+                      ],
+                    ),
+                  ],
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );
@@ -362,7 +426,9 @@ class OriginDestinationPrest extends StatelessWidget {
 
 //Payment-passenger strip
 class PaymentPassengersStrip extends StatelessWidget {
-  const PaymentPassengersStrip({Key? key}) : super(key: key);
+  final Map tripData;
+  const PaymentPassengersStrip({Key? key, required this.tripData})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -382,15 +448,16 @@ class PaymentPassengersStrip extends StatelessWidget {
               SizedBox(
                 width: 80,
                 child: Row(
-                  children: const [
-                    Icon(Icons.credit_card, size: 20),
-                    Text('Cash', style: TextStyle(fontSize: 17)),
+                  children: [
+                    const Icon(Icons.credit_card, size: 20),
+                    Text(tripData['ride_basic_infos']['payment_method'],
+                        style: const TextStyle(fontSize: 17)),
                   ],
                 ),
               ),
               //Amount payment
-              const Text('N\$30',
-                  style: TextStyle(
+              Text('N\$${tripData['ride_basic_infos']['fare_amount']}',
+                  style: const TextStyle(
                       fontFamily: 'MoveBold',
                       fontSize: 25,
                       color: Color.fromRGBO(9, 134, 74, 1))),
@@ -400,11 +467,13 @@ class PaymentPassengersStrip extends StatelessWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   crossAxisAlignment: CrossAxisAlignment.center,
-                  children: const [
-                    Icon(Icons.person, size: 19),
-                    Text('1',
-                        style: TextStyle(
-                            fontSize: 18, fontFamily: 'MoveTextMedium'))
+                  children: [
+                    const Icon(Icons.person, size: 19),
+                    Text(
+                        tripData['ride_basic_infos']['passengers_number']
+                            .toString(),
+                        style: const TextStyle(
+                            fontSize: 20, fontFamily: 'MoveTextMedium'))
                   ],
                 ),
               )

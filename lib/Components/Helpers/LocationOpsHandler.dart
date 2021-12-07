@@ -197,7 +197,7 @@ class LocationOpsHandler with ChangeNotifier {
           status[
               'isLocationPermissionGranted']) //Has full permission - get the coordinates
       {
-        print('All permissions approved');
+        // print('All permissions approved');
         Future userPosition = getUserLocation();
         userPosition.then((value) {
           if (value != null) {

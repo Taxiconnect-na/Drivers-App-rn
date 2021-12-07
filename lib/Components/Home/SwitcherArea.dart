@@ -1,6 +1,8 @@
 // ignore_for_file: file_names
 import 'dart:developer';
 import 'package:flutter/material.dart';
+import 'package:provider/src/provider.dart';
+import 'package:taxiconnectdrivers/Components/Providers/HomeProvider.dart';
 
 class SwictherArea extends StatefulWidget {
   const SwictherArea({Key? key}) : super(key: key);
@@ -48,17 +50,22 @@ class _SwictherAreaState extends State<SwictherArea> {
                 padding: const EdgeInsets.only(top: 8.0, left: 15, right: 15),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Row(
-                      children: const [
-                        Icon(
+                      children: [
+                        const Icon(
                           Icons.stop,
-                          size: 15,
+                          size: 13,
                         ),
                         Text(
-                          'Rides',
-                          style: TextStyle(
-                              fontFamily: 'MoveTextBold', fontSize: 23),
+                          context
+                              .watch<HomeProvider>()
+                              .codesToOptions[
+                                  context.watch<HomeProvider>().selectedOption]
+                              .toString(),
+                          style: const TextStyle(
+                              fontFamily: 'MoveTextBold', fontSize: 20),
                         )
                       ],
                     ),
@@ -104,8 +111,8 @@ class ModalForSelections extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
-      children: const [
-        Padding(
+      children: [
+        const Padding(
           padding: EdgeInsets.only(top: 30, bottom: 35),
           child: Text('What do you want to see?',
               style: TextStyle(fontFamily: 'MoveTextMedium', fontSize: 22)),
@@ -114,18 +121,23 @@ class ModalForSelections extends StatelessWidget {
           titleOption: 'Accepted trips',
           showDivider: true,
           showIndicator: true,
+          showChecked:
+              context.watch<HomeProvider>().selectedOption == 'accepted',
         ),
         MenuOption(
-          titleOption: 'Rides',
-          showDivider: true,
-          showIndicator: true,
-        ),
+            titleOption: 'Rides',
+            showDivider: true,
+            showIndicator: true,
+            showChecked:
+                context.watch<HomeProvider>().selectedOption == 'ride'),
         MenuOption(
           titleOption: 'Scheduled',
           showDivider: true,
           showIndicator: false,
+          showChecked:
+              context.watch<HomeProvider>().selectedOption == 'scheduled',
         ),
-        OnlineOfflineBtns(titleOption: 'Go offline', showDivider: false)
+        const OnlineOfflineBtns(titleOption: 'Go offline', showDivider: false)
       ],
     );
   }
@@ -135,31 +147,70 @@ class MenuOption extends StatelessWidget {
   final String titleOption;
   final bool showDivider;
   final bool showIndicator;
+  final bool showChecked;
 
   const MenuOption(
       {Key? key,
       required this.titleOption,
       required this.showDivider,
-      required this.showIndicator})
+      required this.showIndicator,
+      required this.showChecked})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        ListTile(
-          title: Text(
-            titleOption,
-            style: const TextStyle(fontFamily: 'MoveTextRegular', fontSize: 19),
+    return InkWell(
+      onTap: () {
+        context.read<HomeProvider>().updateSelectedSwitchOption(
+            newOption: context
+                .read<HomeProvider>()
+                .mapOptionsToCodes[titleOption] as String);
+        //Clear the request array
+        context
+            .read<HomeProvider>()
+            .updateTripRequestsMetadata(newTripList: []);
+        //Activate the loader
+        context.read<HomeProvider>().updateMainLoaderVisibility(option: true);
+        //Close modal
+        Navigator.of(context).pop();
+      },
+      child: Column(
+        children: [
+          SizedBox(
+            height: 50,
+            child: Padding(
+              padding: const EdgeInsets.only(left: 15, right: 15),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    titleOption,
+                    style: const TextStyle(
+                        fontFamily: 'MoveTextRegular', fontSize: 19),
+                  ),
+                  Row(
+                    children: [
+                      showIndicator
+                          ? const NumberIndicator(
+                              number: 2,
+                            )
+                          : const Text(''),
+                      showChecked
+                          ? const Padding(
+                              padding: EdgeInsets.only(left: 5),
+                              child: Icon(Icons.check,
+                                  color: Color.fromRGBO(14, 132, 145, 1)),
+                            )
+                          : const Text(''),
+                    ],
+                  )
+                ],
+              ),
+            ),
           ),
-          trailing: showIndicator
-              ? const NumberIndicator(
-                  number: 2,
-                )
-              : const Text(''),
-        ),
-        showDivider ? const Divider() : const Text('')
-      ],
+          showDivider ? const Divider() : const Text('')
+        ],
+      ),
     );
   }
 }
