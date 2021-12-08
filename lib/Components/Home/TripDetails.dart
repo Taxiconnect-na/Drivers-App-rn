@@ -4,6 +4,7 @@ import 'dart:developer';
 import 'dart:ui';
 
 import 'package:dotted_border/dotted_border.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/src/provider.dart';
 import 'package:taxiconnectdrivers/Components/Helpers/Modal.dart';
@@ -27,182 +28,233 @@ class _TripDetailsState extends State<TripDetails> {
   Widget build(BuildContext context) {
     Map tripData = context.watch<HomeProvider>().tmpSelectedTripData;
 
-    return Container(
-      color: Colors.white,
-      height: MediaQuery.of(context).size.height,
-      child: SafeArea(
-          child: Stack(children: [
-        Column(
-          children: [
-            Container(
-              decoration: BoxDecoration(color: Colors.white, boxShadow: [
-                BoxShadow(
-                    color: Colors.grey.withOpacity(0.08),
-                    spreadRadius: 0,
-                    blurRadius: 7,
-                    offset: Offset.fromDirection(1.5, 13))
-              ]),
-              child: ListTile(
-                horizontalTitleGap: 0,
-                leading: InkWell(
-                    onTap: () => Navigator.pop(context),
-                    child: const Icon(Icons.arrow_back, color: Colors.black)),
-                title: InkWell(
-                  onTap: () => Navigator.pop(context),
-                  child: const Text('Trip details',
-                      style: TextStyle(
-                          fontFamily: 'MoveTextMedium', fontSize: 17)),
-                ),
-                trailing: Text('Other'),
-              ),
-            ),
-            // User details
-            Container(
-              height: 80,
-              alignment: Alignment.center,
-              decoration: BoxDecoration(
-                color: Colors.grey.withOpacity(0.1),
-              ),
-              child: ListTile(
-                leading: CircleAvatar(
-                  backgroundColor: Colors.grey.withOpacity(0.2),
-                  radius: 30,
-                  child: const Icon(Icons.person, color: Colors.black),
-                ),
-                title: Text(tripData['passenger_infos']['name'],
-                    style: const TextStyle(
-                        fontFamily: 'MoveTextBold', fontSize: 18)),
-                subtitle: Text(tripData['eta_to_passenger_infos']['eta'],
-                    style: const TextStyle(
-                        color: Color.fromRGBO(9, 110, 212, 1), fontSize: 15)),
-                trailing: InkWell(
-                  onTap: () => PhoneNumberCaller.callNumber(
-                      phoneNumber: tripData['passenger_infos']['phone_number']),
-                  child: const Icon(
-                    Icons.phone,
-                    color: Color.fromRGBO(9, 110, 212, 1),
-                    size: 30,
-                  ),
-                ),
-              ),
-            ),
-            // General buttons
-            Padding(
-              padding: const EdgeInsets.only(left: 15, right: 15, top: 15),
-              child: Row(
-                children: [
-                  ButtonGeneralPurpose(
-                    title: 'Find client',
-                    showIcon: true,
-                    flex: 1,
-                    alignment: Alignment.centerLeft,
-                    textColor: Colors.white,
-                    backgroundColor: Colors.black,
-                    showTrailingArrow: false,
-                    actuatorFunctionl: () =>
-                        navigationAssistant.startNavigation(origin: {
-                      'name': requestCardHelper.getRealisticPlacesNames(
-                          locationData: tripData['origin_destination_infos']
-                              ['pickup_infos'])['location_name'],
-                      'latitude': tripData['origin_destination_infos']
-                          ['pickup_infos']['coordinates']['latitude'],
-                      'longitude': tripData['origin_destination_infos']
-                          ['pickup_infos']['coordinates']['longitude']
-                    }, destination: {
-                      'name': requestCardHelper.getRealisticPlacesNames(
-                          locationData: tripData['origin_destination_infos']
-                              ['destination_infos'][0])['location_name'],
-                      'latitude': tripData['origin_destination_infos']
-                          ['destination_infos'][0]['coordinates']['latitude'],
-                      'longitude': tripData['origin_destination_infos']
-                          ['pickup_infos']['coordinates']['longitude']
-                    }, context: context),
-                  ),
-                  const Padding(padding: EdgeInsets.symmetric(horizontal: 4)),
-                  ButtonGeneralPurpose(
-                    title: tripData['ride_basic_infos']
-                                ['inRideToDestination'] ==
-                            false
-                        ? 'Confirm pickup'
-                        : 'Confirm dropoff',
-                    showIcon: false,
-                    showTrailingArrow: true,
-                    flex: 2,
-                    fontFamily: 'MoveTextMedium',
-                    fontSize: 19,
-                    backgroundColor: const Color.fromRGBO(9, 110, 212, 1),
-                    textColor: Colors.white,
-                    alignment: Alignment.center,
-                    actuatorFunctionl: () {
-                      ConfirmPickupRequest(context: context);
-                    },
-                  )
-                ],
-              ),
-            ),
-            //Trip trajectory details
-            const TitleIntros(
-              title: 'Trip',
-              topPadding: 45,
-            ),
-            //Pickup/destination details
-            OriginDestinationPrest(
-              requestData: tripData,
-            ),
-            //Payment-passengers strip
-            PaymentPassengersStrip(
-              tripData: tripData,
-            ),
-            // Cancel trips?
-            InkWell(
-              onTap: () => CancelRequest(context: context),
-              child: const Padding(
-                padding: EdgeInsets.only(top: 8.0),
+    try {
+      return Container(
+        color: Colors.white,
+        height: MediaQuery.of(context).size.height,
+        child: SafeArea(
+            child: Stack(children: [
+          Column(
+            children: [
+              Container(
+                decoration: BoxDecoration(color: Colors.white, boxShadow: [
+                  BoxShadow(
+                      color: Colors.grey.withOpacity(0.08),
+                      spreadRadius: 0,
+                      blurRadius: 7,
+                      offset: Offset.fromDirection(1.5, 13))
+                ]),
                 child: ListTile(
                   horizontalTitleGap: 0,
-                  leading: Icon(Icons.not_interested,
-                      color: Color.fromRGBO(178, 34, 34, 1)),
-                  title: Text('Cancel the trip',
-                      style: TextStyle(
-                          fontFamily: 'MoveTextRegular',
-                          fontSize: 18,
-                          color: Color.fromRGBO(178, 34, 34, 1))),
+                  leading: InkWell(
+                      onTap: () => Navigator.pop(context),
+                      child: const Icon(Icons.arrow_back, color: Colors.black)),
+                  title: InkWell(
+                    onTap: () => Navigator.pop(context),
+                    child: const Text('Trip details',
+                        style: TextStyle(
+                            fontFamily: 'MoveTextMedium', fontSize: 17)),
+                  ),
+                  trailing: Text('Other'),
                 ),
               ),
-            ),
-            const Divider(),
-            //Safety section
-            const TitleIntros(
-              title: 'Safety',
-              topPadding: 35,
-            ),
-            InkWell(
-              onTap: () =>
-                  PhoneNumberCaller.callNumber(phoneNumber: '061302302'),
-              child: const ListTile(
-                horizontalTitleGap: 0,
-                leading:
-                    Icon(Icons.security, color: Color.fromRGBO(178, 34, 34, 1)),
-                title: Text('Emergency call',
-                    style:
-                        TextStyle(fontFamily: 'MoveTextMedium', fontSize: 18)),
-                subtitle: Text('Reach quickly the police.'),
+              // User details
+              Container(
+                height: 80,
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                  color: Colors.grey.withOpacity(0.1),
+                ),
+                child: ListTile(
+                  leading: CircleAvatar(
+                    backgroundColor: Colors.grey.withOpacity(0.2),
+                    radius: 30,
+                    child: const Icon(Icons.person, color: Colors.black),
+                  ),
+                  title: Text(tripData['passenger_infos']['name'],
+                      style: const TextStyle(
+                          fontFamily: 'MoveTextBold', fontSize: 18)),
+                  subtitle: Text(tripData['eta_to_passenger_infos']['eta'],
+                      style: const TextStyle(
+                          color: Color.fromRGBO(9, 110, 212, 1), fontSize: 15)),
+                  trailing: InkWell(
+                    onTap: () => PhoneNumberCaller.callNumber(
+                        phoneNumber: tripData['passenger_infos']
+                            ['phone_number']),
+                    child: const Icon(
+                      Icons.phone,
+                      color: Color.fromRGBO(9, 110, 212, 1),
+                      size: 30,
+                    ),
+                  ),
+                ),
               ),
-            )
-          ],
-        ),
-        Visibility(
-          visible: context.watch<HomeProvider>().shouldShowBlurredBackground,
-          child: SizedBox(
-              // color: Colors.red,
-              height: 50,
-              child: BackdropFilter(
-                filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
-                child: const SizedBox(height: 20, width: 20),
-              )),
-        )
-      ])),
-    );
+              // General buttons
+              Padding(
+                padding: const EdgeInsets.only(left: 15, right: 15, top: 15),
+                child: Row(
+                  children: [
+                    ButtonGeneralPurpose(
+                      title: tripData['ride_basic_infos']['inRideToDestination']
+                          ? 'Destination'
+                          : 'Find client',
+                      showIcon: true,
+                      flex: 1,
+                      alignment: Alignment.centerLeft,
+                      textColor: Colors.white,
+                      backgroundColor: Colors.black,
+                      showTrailingArrow: false,
+                      actuatorFunctionl: () => navigationAssistant
+                          .startNavigation(
+                              origin: {
+                            'name': 'My location',
+                            'latitude': context
+                                .read<HomeProvider>()
+                                .userLocationCoords['latitude'],
+                            'longitude': context
+                                .read<HomeProvider>()
+                                .userLocationCoords['longitude']
+                          },
+                              destination: tripData['ride_basic_infos']
+                                      ['inRideToDestination']
+                                  ? {
+                                      'name': requestCardHelper
+                                          .getRealisticPlacesNames(
+                                              locationData: tripData[
+                                                          'origin_destination_infos']
+                                                      ['destination_infos']
+                                                  [0])['location_name'],
+                                      'latitude':
+                                          tripData['origin_destination_infos']
+                                                  ['destination_infos'][0]
+                                              ['coordinates']['latitude'],
+                                      'longitude':
+                                          tripData['origin_destination_infos']
+                                                  ['pickup_infos']
+                                              ['coordinates']['longitude']
+                                    }
+                                  : {
+                                      'name': requestCardHelper
+                                              .getRealisticPlacesNames(
+                                                  locationData: tripData[
+                                                          'origin_destination_infos']
+                                                      ['pickup_infos'])[
+                                          'location_name'],
+                                      'latitude':
+                                          tripData['origin_destination_infos']
+                                                  ['pickup_infos']
+                                              ['coordinates']['latitude'],
+                                      'longitude':
+                                          tripData['origin_destination_infos']
+                                                  ['pickup_infos']
+                                              ['coordinates']['longitude']
+                                    },
+                              context: context),
+                    ),
+                    const Padding(padding: EdgeInsets.symmetric(horizontal: 4)),
+                    ButtonGeneralPurpose(
+                      title: tripData['ride_basic_infos']
+                                  ['inRideToDestination'] ==
+                              false
+                          ? 'Confirm pickup'
+                          : 'Confirm dropoff',
+                      showIcon: false,
+                      showTrailingArrow: true,
+                      flex: 2,
+                      fontFamily: 'MoveTextMedium',
+                      fontSize: 19,
+                      backgroundColor: const Color.fromRGBO(9, 110, 212, 1),
+                      textColor: Colors.white,
+                      alignment: Alignment.center,
+                      actuatorFunctionl: tripData['ride_basic_infos']
+                                  ['inRideToDestination'] ==
+                              false
+                          ? () {
+                              ConfirmPickupRequest(context: context);
+                            }
+                          : () {
+                              ConfirmDropoffRequest(context: context);
+                            },
+                    )
+                  ],
+                ),
+              ),
+              //Trip trajectory details
+              const TitleIntros(
+                title: 'Trip',
+                topPadding: 45,
+              ),
+              //Pickup/destination details
+              OriginDestinationPrest(
+                requestData: tripData,
+              ),
+              //Payment-passengers strip
+              PaymentPassengersStrip(
+                tripData: tripData,
+              ),
+              // Cancel trips?
+              Visibility(
+                visible: tripData['ride_basic_infos']['inRideToDestination'] ==
+                    false,
+                child: Column(
+                  children: [
+                    InkWell(
+                      onTap: () => CancelRequest(context: context),
+                      child: const Padding(
+                        padding: EdgeInsets.only(top: 8.0),
+                        child: ListTile(
+                          horizontalTitleGap: 0,
+                          leading: Icon(Icons.not_interested,
+                              color: Color.fromRGBO(178, 34, 34, 1)),
+                          title: Text('Cancel the trip',
+                              style: TextStyle(
+                                  fontFamily: 'MoveTextRegular',
+                                  fontSize: 18,
+                                  color: Color.fromRGBO(178, 34, 34, 1))),
+                        ),
+                      ),
+                    ),
+                    const Divider(),
+                  ],
+                ),
+              ),
+              //Safety section
+              const TitleIntros(
+                title: 'Safety',
+                topPadding: 35,
+              ),
+              InkWell(
+                onTap: () =>
+                    PhoneNumberCaller.callNumber(phoneNumber: '061302302'),
+                child: const ListTile(
+                  horizontalTitleGap: 0,
+                  leading: Icon(Icons.security,
+                      color: Color.fromRGBO(178, 34, 34, 1)),
+                  title: Text('Emergency call',
+                      style: TextStyle(
+                          fontFamily: 'MoveTextMedium', fontSize: 18)),
+                  subtitle: Text('Reach quickly the police.'),
+                ),
+              )
+            ],
+          ),
+          Visibility(
+            visible: context.watch<HomeProvider>().shouldShowBlurredBackground,
+            child: SizedBox(
+                // color: Colors.red,
+                height: 50,
+                child: BackdropFilter(
+                  filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+                  child: const SizedBox(height: 20, width: 20),
+                )),
+          )
+        ])),
+      );
+    } catch (e) {
+      return Container(
+        child: Text(''),
+      );
+    }
   }
 
   //Cancel request
@@ -247,6 +299,31 @@ class _TripDetailsState extends State<TripDetails> {
                       color: Colors.white,
                       child: const Modal(
                           scenario: 'trip_pickupConfirmation_confirmation'),
+                    )),
+              );
+            })
+        .whenComplete(() => context
+            .read<HomeProvider>()
+            .updateBlurredBackgroundState(shouldShow: false));
+  }
+
+  //Confirm dropoff request
+  void ConfirmDropoffRequest({required BuildContext context}) {
+    context.read<HomeProvider>().updateBlurredBackgroundState(
+        shouldShow: true); //Show blurred background
+    showModalBottomSheet(
+            context: context,
+            builder: (context) {
+              //...
+              return Container(
+                color: Colors.white,
+                child: SafeArea(
+                    bottom: false,
+                    child: Container(
+                      width: MediaQuery.of(context).size.width,
+                      color: Colors.white,
+                      child: const Modal(
+                          scenario: 'trip_dropoffConfirmation_confirmation'),
                     )),
               );
             })

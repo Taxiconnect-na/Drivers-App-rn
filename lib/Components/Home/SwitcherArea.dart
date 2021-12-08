@@ -14,24 +14,34 @@ class SwictherArea extends StatefulWidget {
 class _SwictherAreaState extends State<SwictherArea> {
   @override
   Widget build(BuildContext context) {
+    Map graphData = context.watch<HomeProvider>().requestsGraphData;
+
     return SizedBox(
         height: 110,
         width: MediaQuery.of(context).size.width,
         child: InkWell(
-          onTap: () => showModalBottomSheet(
-              context: context,
-              builder: (context) {
-                return Container(
-                  color: Colors.white,
-                  child: SafeArea(
-                      bottom: false,
-                      child: Container(
-                        width: MediaQuery.of(context).size.width,
-                        color: Colors.white,
-                        child: const ModalForSelections(),
-                      )),
-                );
-              }),
+          onTap: () {
+            context.read<HomeProvider>().updateBlurredBackgroundState(
+                shouldShow: true); //Show blurred background
+            showModalBottomSheet(
+                context: context,
+                builder: (context) {
+                  return Container(
+                    color: Colors.white,
+                    child: SafeArea(
+                        bottom: false,
+                        child: Container(
+                          width: MediaQuery.of(context).size.width,
+                          color: Colors.white,
+                          child: const ModalForSelections(),
+                        )),
+                  );
+                }).whenComplete(() {
+              context
+                  .read<HomeProvider>()
+                  .updateBlurredBackgroundState(shouldShow: false);
+            });
+          },
           child: SafeArea(
             top: false,
             child: Container(
@@ -69,7 +79,16 @@ class _SwictherAreaState extends State<SwictherArea> {
                         )
                       ],
                     ),
-                    const NumberIndicator(number: 4)
+                    Visibility(
+                      visible: graphData['rides'] +
+                              graphData['deliveries'] +
+                              graphData['scheduled'] >
+                          0,
+                      child: NumberIndicator(
+                          number: graphData['rides'] +
+                              graphData['deliveries'] +
+                              graphData['scheduled']),
+                    )
                   ],
                 ),
               ),
@@ -82,8 +101,13 @@ class _SwictherAreaState extends State<SwictherArea> {
 // The number indicator showing the number of trips for various scenarios
 class NumberIndicator extends StatelessWidget {
   final int number;
+  final Color backgroundColor;
 
-  const NumberIndicator({Key? key, required this.number}) : super(key: key);
+  NumberIndicator(
+      {Key? key,
+      required this.number,
+      this.backgroundColor = const Color.fromRGBO(178, 34, 34, 1)})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -92,8 +116,8 @@ class NumberIndicator extends StatelessWidget {
       height: 40,
       alignment: Alignment.center,
       decoration: BoxDecoration(
-          color: const Color.fromRGBO(178, 34, 34, 1),
-          border: Border.all(color: const Color.fromRGBO(178, 34, 34, 1)),
+          color: backgroundColor,
+          border: Border.all(color: backgroundColor),
           borderRadius: BorderRadius.circular(100)),
       child: Text(number.toString(),
           style: const TextStyle(
@@ -115,25 +139,34 @@ class ModalForSelections extends StatelessWidget {
         const Padding(
           padding: EdgeInsets.only(top: 30, bottom: 35),
           child: Text('What do you want to see?',
-              style: TextStyle(fontFamily: 'MoveTextMedium', fontSize: 22)),
+              style: TextStyle(fontFamily: 'MoveTextMedium', fontSize: 21)),
         ),
         MenuOption(
           titleOption: 'Accepted trips',
           showDivider: true,
-          showIndicator: true,
+          showIndicator:
+              context.watch<HomeProvider>().requestsGraphData['accepted'] > 0,
+          indicatorValue:
+              context.watch<HomeProvider>().requestsGraphData['accepted'],
           showChecked:
               context.watch<HomeProvider>().selectedOption == 'accepted',
         ),
         MenuOption(
             titleOption: 'Rides',
             showDivider: true,
-            showIndicator: true,
+            showIndicator:
+                context.watch<HomeProvider>().requestsGraphData['rides'] > 0,
+            indicatorValue:
+                context.watch<HomeProvider>().requestsGraphData['rides'],
             showChecked:
                 context.watch<HomeProvider>().selectedOption == 'ride'),
         MenuOption(
           titleOption: 'Scheduled',
           showDivider: true,
-          showIndicator: false,
+          showIndicator:
+              context.watch<HomeProvider>().requestsGraphData['scheduled'] > 0,
+          indicatorValue:
+              context.watch<HomeProvider>().requestsGraphData['scheduled'],
           showChecked:
               context.watch<HomeProvider>().selectedOption == 'scheduled',
         ),
@@ -148,13 +181,15 @@ class MenuOption extends StatelessWidget {
   final bool showDivider;
   final bool showIndicator;
   final bool showChecked;
+  final int indicatorValue;
 
   const MenuOption(
       {Key? key,
       required this.titleOption,
       required this.showDivider,
       required this.showIndicator,
-      required this.showChecked})
+      required this.showChecked,
+      required this.indicatorValue})
       : super(key: key);
 
   @override
@@ -174,42 +209,62 @@ class MenuOption extends StatelessWidget {
         //Close modal
         Navigator.of(context).pop();
       },
-      child: Column(
-        children: [
-          SizedBox(
-            height: 50,
-            child: Padding(
-              padding: const EdgeInsets.only(left: 15, right: 15),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    titleOption,
-                    style: const TextStyle(
-                        fontFamily: 'MoveTextRegular', fontSize: 19),
-                  ),
-                  Row(
+      child: Container(
+        color: showChecked ? Colors.grey.shade200 : Colors.white,
+        child: Column(
+          children: [
+            Container(
+              color: showChecked ? Colors.grey.shade200 : Colors.white,
+              child: SizedBox(
+                height: 82,
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 15, right: 15),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      showIndicator
-                          ? const NumberIndicator(
-                              number: 2,
-                            )
-                          : const Text(''),
-                      showChecked
-                          ? const Padding(
-                              padding: EdgeInsets.only(left: 5),
-                              child: Icon(Icons.check,
-                                  color: Color.fromRGBO(14, 132, 145, 1)),
-                            )
-                          : const Text(''),
+                      Text(
+                        titleOption,
+                        style: const TextStyle(
+                            fontFamily: 'MoveTextRegular', fontSize: 19),
+                      ),
+                      Row(
+                        children: [
+                          showIndicator
+                              ? NumberIndicator(
+                                  number: indicatorValue,
+                                  backgroundColor: titleOption ==
+                                          'Accepted trips'
+                                      ? Colors.black
+                                      : const Color.fromRGBO(174, 34, 34, 1),
+                                )
+                              : const Text(''),
+                          showChecked
+                              ? const Padding(
+                                  padding: EdgeInsets.only(left: 5),
+                                  child: Icon(Icons.check,
+                                      size: 30,
+                                      color: Color.fromRGBO(14, 132, 145, 1)),
+                                )
+                              : const Padding(
+                                  padding: EdgeInsets.only(left: 5),
+                                  child: Opacity(
+                                      opacity: 0,
+                                      child: Icon(Icons.check, size: 30)),
+                                ),
+                        ],
+                      )
                     ],
-                  )
-                ],
+                  ),
+                ),
               ),
             ),
-          ),
-          showDivider ? const Divider() : const Text('')
-        ],
+            showDivider
+                ? const Divider(
+                    height: 0,
+                  )
+                : const Text('')
+          ],
+        ),
       ),
     );
   }

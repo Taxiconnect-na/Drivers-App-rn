@@ -29,6 +29,9 @@ class Watcher with ChangeNotifier {
           case 'LocationOpsHandler':
             actuatorFunctions[i]['actuator'].runLocationOpasHandler();
             break;
+          case 'GetRequestsGraphData':
+            actuatorFunctions[i]['actuator'].exec(context: context);
+            break;
           default:
         }
       }

@@ -49,20 +49,37 @@ class RequestCardHelper {
           : '';
 
       //? ---
-      Widget tempPass = Column(
+      Widget tempPass = Row(
         mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          SizedBox(
-            width: MediaQuery.of(context).size.width,
-            child: Text(suburb,
-                style:
-                    const TextStyle(fontFamily: 'MoveTextBold', fontSize: 19)),
+          Visibility(
+            visible: locationData.length > 1,
+            child: Padding(
+              padding: const EdgeInsets.only(right: 5, top: 2),
+              child: Text('${i + 1}.',
+                  style: const TextStyle(
+                      color: Color.fromRGBO(9, 110, 212, 1), fontSize: 17)),
+            ),
           ),
-          SizedBox(
-              width: MediaQuery.of(context).size.width,
-              child: Text(
-                  '$location_name${location_name.isNotEmpty && street_name.isNotEmpty ? ', ' : ''}$street_name',
-                  style: const TextStyle(fontSize: 15)))
+          Flexible(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                SizedBox(
+                  width: MediaQuery.of(context).size.width,
+                  child: Text(suburb,
+                      style: const TextStyle(
+                          fontFamily: 'MoveTextBold', fontSize: 19)),
+                ),
+                SizedBox(
+                    width: MediaQuery.of(context).size.width,
+                    child: Text(
+                        '$location_name${location_name.isNotEmpty && street_name.isNotEmpty ? ', ' : ''}$street_name',
+                        style: const TextStyle(fontSize: 15)))
+              ],
+            ),
+          )
         ],
       );
 

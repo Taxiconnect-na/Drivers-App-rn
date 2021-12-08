@@ -322,11 +322,56 @@ class RequestCard extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
-                  const Text(
-                    'Decline',
-                    style: TextStyle(
-                        fontSize: 18, color: Color.fromRGBO(178, 34, 34, 1)),
-                  ),
+                  requestData['ride_basic_infos']['isAccepted']
+                      ? const Text('')
+                      : InkWell(
+                          onTap: context
+                                          .watch<HomeProvider>()
+                                          .declineRequestProcessor[
+                                      'isProcessingRequest'] &&
+                                  context
+                                              .watch<HomeProvider>()
+                                              .declineRequestProcessor[
+                                          'request_fp'] ==
+                                      requestData['request_fp']
+                              ? () {}
+                              : () {
+                                  // ? Update the temporary ride data
+                                  context
+                                      .read<HomeProvider>()
+                                      .updateTargetedDeclinedRequestPro(
+                                          isBeingProcessed: true,
+                                          request_fp:
+                                              requestData['request_fp']);
+                                  //...
+                                  DeclineRequestNet declineRequestNet =
+                                      DeclineRequestNet();
+                                  declineRequestNet.exec(
+                                      context: context,
+                                      request_fp: requestData['request_fp']);
+                                },
+                          child: context
+                                          .watch<HomeProvider>()
+                                          .declineRequestProcessor[
+                                      'isProcessingRequest'] &&
+                                  context
+                                              .watch<HomeProvider>()
+                                              .declineRequestProcessor[
+                                          'request_fp'] ==
+                                      requestData['request_fp']
+                              ? const SizedBox(
+                                  width: 20,
+                                  height: 20,
+                                  child: CircularProgressIndicator(
+                                      strokeWidth: 2,
+                                      color: Color.fromRGBO(178, 34, 34, 1)))
+                              : const Text(
+                                  'Decline',
+                                  style: TextStyle(
+                                      fontSize: 18,
+                                      color: Color.fromRGBO(178, 34, 34, 1)),
+                                ),
+                        ),
                   AcceptOrDetailsBtn(
                     tripData: requestData,
                   )

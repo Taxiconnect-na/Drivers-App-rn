@@ -40,12 +40,12 @@ class Navigation {
     //....
     final WayPoint point1 = WayPoint(
         name: origin['name'].toString(),
-        latitude: double.parse(origin['latitude']),
-        longitude: double.parse(origin['longitude']));
+        latitude: double.parse(origin['latitude'].toString()),
+        longitude: double.parse(origin['longitude'].toString()));
     final WayPoint point2 = WayPoint(
         name: destination['name'].toString(),
-        latitude: double.parse(destination['latitude']),
-        longitude: double.parse(destination['longitude']));
+        latitude: double.parse(destination['latitude'].toString()),
+        longitude: double.parse(destination['longitude'].toString()));
     //....
     List<WayPoint> wayPoints = [];
     wayPoints.add(point1);

@@ -21,6 +21,7 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   // Create a new networking instance
   GlobalDataFetcher globalDataFetcher = GlobalDataFetcher();
+  GetRequestsGraphNet getRequestsGraphNet = GetRequestsGraphNet();
   late LocationOpsHandler locationOpsHandler;
   Watcher watcher = Watcher();
 
@@ -39,7 +40,8 @@ class _HomeState extends State<Home> {
         'name': 'GlobalDataFetcher',
         'actuator': globalDataFetcher
       }, //Get trips data
-      {'name': 'LocationOpsHandler', 'actuator': locationOpsHandler}
+      {'name': 'LocationOpsHandler', 'actuator': locationOpsHandler},
+      {'name': 'GetRequestsGraphData', 'actuator': getRequestsGraphNet}
     ]);
   }
 

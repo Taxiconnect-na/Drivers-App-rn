@@ -69,6 +69,44 @@ class Modal extends StatelessWidget {
                 ]),
           ),
         );
+      case 'warning_due_to_excessive_cancel':
+        return Container(
+          // color: Colors.red,
+          height: MediaQuery.of(context).size.height * 0.8,
+          alignment: Alignment.topCenter,
+          child: Padding(
+            padding: const EdgeInsets.only(top: 40),
+            child:
+                Column(mainAxisAlignment: MainAxisAlignment.start, children: [
+              const Icon(Icons.error,
+                  size: 45, color: Color.fromRGBO(178, 34, 34, 1)),
+              const Padding(
+                padding: EdgeInsets.only(top: 25),
+                child: Text('Abusive behaviour detected',
+                    style: TextStyle(fontFamily: 'MoveTextBold', fontSize: 20)),
+              ),
+              const Padding(
+                padding: EdgeInsets.only(top: 10, left: 15, right: 15),
+                child: Text(
+                    'You\'ve exceeded your daily amount of cancelled requests, please try from now on to only accept the requests that you will complete to avoid any potential suspension.',
+                    textAlign: TextAlign.left,
+                    style:
+                        TextStyle(fontFamily: 'MoveTextRegular', fontSize: 17)),
+              ),
+              const Expanded(child: Text('')),
+              SafeArea(
+                child: GenericRectButton(
+                    label: 'Close',
+                    labelFontSize: 22,
+                    isArrowShow: false,
+                    actuatorFunctionl: () {
+                      Navigator.of(context).pop();
+                      Navigator.of(context).pop();
+                    }),
+              )
+            ]),
+          ),
+        );
       case 'unable_to_cancel_request':
         return Container(
           // color: Colors.red,
@@ -98,6 +136,35 @@ class Modal extends StatelessWidget {
                 ]),
           ),
         );
+      case 'unable_to_decline_request':
+        return Container(
+          // color: Colors.red,
+          height: 350,
+          alignment: Alignment.topCenter,
+          child: Padding(
+            padding: const EdgeInsets.only(top: 40),
+            child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: const [
+                  Icon(Icons.error,
+                      size: 45, color: Color.fromRGBO(178, 34, 34, 1)),
+                  Padding(
+                    padding: EdgeInsets.only(top: 25),
+                    child: Text('Couldn\'t decline the request',
+                        style: TextStyle(
+                            fontFamily: 'MoveTextBold', fontSize: 20)),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(top: 10, left: 15, right: 15),
+                    child: Text(
+                        'Sorry due to an unexpected error we were unable to move forward with the declining of the request. Maybe try again later.',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            fontFamily: 'MoveTextRegular', fontSize: 17)),
+                  )
+                ]),
+          ),
+        );
       case 'unable_to_confirmPickup_request':
         return Container(
           // color: Colors.red,
@@ -112,7 +179,7 @@ class Modal extends StatelessWidget {
                       size: 45, color: Color.fromRGBO(178, 34, 34, 1)),
                   Padding(
                     padding: EdgeInsets.only(top: 25),
-                    child: Text('Couldn\'t accept',
+                    child: Text('Couldn\'t confirm pickup',
                         style: TextStyle(
                             fontFamily: 'MoveTextBold', fontSize: 20)),
                   ),
@@ -120,6 +187,35 @@ class Modal extends StatelessWidget {
                     padding: EdgeInsets.only(top: 10, left: 15, right: 15),
                     child: Text(
                         'Sorry due to an unexpected error we were unable to move forward with the pickup confirmation of the request. Maybe try again later.',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            fontFamily: 'MoveTextRegular', fontSize: 17)),
+                  )
+                ]),
+          ),
+        );
+      case 'unable_to_confirmDropoff_request':
+        return Container(
+          // color: Colors.red,
+          height: 350,
+          alignment: Alignment.topCenter,
+          child: Padding(
+            padding: const EdgeInsets.only(top: 40),
+            child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: const [
+                  Icon(Icons.error,
+                      size: 45, color: Color.fromRGBO(178, 34, 34, 1)),
+                  Padding(
+                    padding: EdgeInsets.only(top: 25),
+                    child: Text('Couldn\'t confirm dropoff',
+                        style: TextStyle(
+                            fontFamily: 'MoveTextBold', fontSize: 20)),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(top: 10, left: 15, right: 15),
+                    child: Text(
+                        'Sorry due to an unexpected error we were unable to move forward with the dropoff confirmation of the request. Maybe try again later.',
                         textAlign: TextAlign.center,
                         style: TextStyle(
                             fontFamily: 'MoveTextRegular', fontSize: 17)),
@@ -275,6 +371,96 @@ class Modal extends StatelessWidget {
                           ConfirmPickupRequestNet confirmPickupRequestNet =
                               ConfirmPickupRequestNet();
                           confirmPickupRequestNet.exec(
+                              context: context,
+                              request_fp: context
+                                  .read<HomeProvider>()
+                                  .tmpSelectedTripData['request_fp']);
+                        }),
+              GenericRectButton(
+                  label: 'Cancel',
+                  backgroundColor: Colors.grey.shade300,
+                  textColor: Colors.black,
+                  labelFontSize: 22,
+                  horizontalPadding: 15,
+                  isArrowShow: false,
+                  actuatorFunctionl: context
+                          .watch<HomeProvider>()
+                          .targetRequestProcessor['isProcessingRequest']
+                      ? () {}
+                      : () {
+                          Navigator.of(context).pop();
+                        })
+            ],
+          ),
+        );
+
+      case 'trip_dropoffConfirmation_confirmation':
+        return Container(
+          height: 380,
+          alignment: Alignment.center,
+          child: Column(
+            children: [
+              const Padding(
+                padding: EdgeInsets.only(top: 20, bottom: 15),
+                child: Text(
+                  'Confirm dropoff?',
+                  style: TextStyle(fontSize: 23, fontFamily: 'MoveBold'),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(bottom: 20, left: 15, right: 15),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Icon(Icons.info,
+                        size: 20, color: Color.fromRGBO(178, 34, 34, 1)),
+                    const SizedBox(
+                      width: 5,
+                    ),
+                    Flexible(
+                      child: Text(
+                        context
+                                        .read<HomeProvider>()
+                                        .tmpSelectedTripData['ride_basic_infos']
+                                    ['ride_mode'] ==
+                                'RIDE'
+                            ? 'By confirming the drop off you confirm that you\’ve taken the passenger up till the final destination.'
+                            : 'By confirming the drop off you confirm that you\’ve taken the package up till the final destination.',
+                        style: const TextStyle(
+                            fontSize: 16, fontFamily: 'MoveTextRegular'),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              GenericRectButton(
+                  label: context
+                          .watch<HomeProvider>()
+                          .targetRequestProcessor['isProcessingRequest']
+                      ? 'LOADING'
+                      : 'Confirm dropoff',
+                  backgroundColor: Colors.black,
+                  textColor: Colors.white,
+                  labelFontSize: 22,
+                  horizontalPadding: 15,
+                  verticalPadding: 10,
+                  isArrowShow: false,
+                  actuatorFunctionl: context
+                          .watch<HomeProvider>()
+                          .targetRequestProcessor['isProcessingRequest']
+                      ? () {}
+                      : () {
+                          //? Update the target processing state
+                          context.read<HomeProvider>().updateTargetedRequestPro(
+                              isBeingProcessed: true,
+                              request_fp: context
+                                  .read<HomeProvider>()
+                                  .tmpSelectedTripData['request_fp']);
+                          //?----
+                          ConfirmDropoffRequestNet confirmDropoffRequestNet =
+                              ConfirmDropoffRequestNet();
+                          confirmDropoffRequestNet.exec(
                               context: context,
                               request_fp: context
                                   .read<HomeProvider>()

@@ -48,11 +48,24 @@ class HomeProvider with ChangeNotifier {
     'isProcessingRequest': false, //If a request is being accepted
     'request_fp': '', //The fingerprint of the request being accepted
   };
+  //...Declining requests
+  Map<String, dynamic> declineRequestProcessor = {
+    'isProcessingRequest': false, //If a request is being accepted
+    'request_fp': '', //The fingerprint of the request being accepted
+  };
 
   bool shouldShowBlurredBackground = false;
 
   Map tmpSelectedTripData =
       {}; //The temporarily selected trip data for details viewing.
+
+  //Requests graphs
+  Map requestsGraphData = {
+    'rides': 0,
+    'deliveries': 0,
+    'scheduled': 0,
+    'accepted': 0
+  }; //Will contain the requests graph data
   //...
 
   //?4. Update the GPRS service status and the location permission
@@ -157,6 +170,14 @@ class HomeProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  //? 13.b Update the targeted requests processor for declined requests
+  void updateTargetedDeclinedRequestPro(
+      {required bool isBeingProcessed, required String request_fp}) {
+    declineRequestProcessor['isProcessingRequest'] = isBeingProcessed;
+    declineRequestProcessor['request_fp'] = request_fp;
+    notifyListeners();
+  }
+
   //? 14. Update blurred background status
   void updateBlurredBackgroundState({required bool shouldShow}) {
     shouldShowBlurredBackground = shouldShow;
@@ -168,6 +189,14 @@ class HomeProvider with ChangeNotifier {
     if (!mapEquals(data, tmpSelectedTripData)) //New data
     {
       tmpSelectedTripData = data;
+      notifyListeners();
+    }
+  }
+
+  //? 16. Update requests graph data
+  void updateRequestsGraphData({required Map data}) {
+    if (!mapEquals(data, requestsGraphData)) {
+      requestsGraphData = data;
       notifyListeners();
     }
   }
