@@ -69,6 +69,64 @@ class Modal extends StatelessWidget {
                 ]),
           ),
         );
+      case 'unable_to_cancel_request':
+        return Container(
+          // color: Colors.red,
+          height: 350,
+          alignment: Alignment.topCenter,
+          child: Padding(
+            padding: const EdgeInsets.only(top: 40),
+            child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: const [
+                  Icon(Icons.error,
+                      size: 45, color: Color.fromRGBO(178, 34, 34, 1)),
+                  Padding(
+                    padding: EdgeInsets.only(top: 25),
+                    child: Text('Couldn\'t accept',
+                        style: TextStyle(
+                            fontFamily: 'MoveTextBold', fontSize: 20)),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(top: 10, left: 15, right: 15),
+                    child: Text(
+                        'Sorry due to an unexpected error we were unable to move forward with the cancellation of the request. Maybe try again later.',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            fontFamily: 'MoveTextRegular', fontSize: 17)),
+                  )
+                ]),
+          ),
+        );
+      case 'unable_to_confirmPickup_request':
+        return Container(
+          // color: Colors.red,
+          height: 350,
+          alignment: Alignment.topCenter,
+          child: Padding(
+            padding: const EdgeInsets.only(top: 40),
+            child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: const [
+                  Icon(Icons.error,
+                      size: 45, color: Color.fromRGBO(178, 34, 34, 1)),
+                  Padding(
+                    padding: EdgeInsets.only(top: 25),
+                    child: Text('Couldn\'t accept',
+                        style: TextStyle(
+                            fontFamily: 'MoveTextBold', fontSize: 20)),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(top: 10, left: 15, right: 15),
+                    child: Text(
+                        'Sorry due to an unexpected error we were unable to move forward with the pickup confirmation of the request. Maybe try again later.',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            fontFamily: 'MoveTextRegular', fontSize: 17)),
+                  )
+                ]),
+          ),
+        );
       case 'trip_cancellation_confirmation':
         return Container(
           height: 380,
@@ -137,6 +195,95 @@ class Modal extends StatelessWidget {
               GenericRectButton(
                   label: 'Don\'t cancel',
                   backgroundColor: Colors.black,
+                  labelFontSize: 22,
+                  horizontalPadding: 15,
+                  isArrowShow: false,
+                  actuatorFunctionl: context
+                          .watch<HomeProvider>()
+                          .targetRequestProcessor['isProcessingRequest']
+                      ? () {}
+                      : () {
+                          Navigator.of(context).pop();
+                        })
+            ],
+          ),
+        );
+      case 'trip_pickupConfirmation_confirmation':
+        return Container(
+          height: 380,
+          alignment: Alignment.center,
+          child: Column(
+            children: [
+              const Padding(
+                padding: EdgeInsets.only(top: 20, bottom: 15),
+                child: Text(
+                  'Confirm pickup?',
+                  style: TextStyle(fontSize: 23, fontFamily: 'MoveBold'),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(bottom: 20, left: 15, right: 15),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Icon(Icons.info,
+                        size: 20, color: Color.fromRGBO(178, 34, 34, 1)),
+                    const SizedBox(
+                      width: 5,
+                    ),
+                    Flexible(
+                      child: Text(
+                        context
+                                        .read<HomeProvider>()
+                                        .tmpSelectedTripData['ride_basic_infos']
+                                    ['ride_mode'] ==
+                                'RIDE'
+                            ? 'By confirming the pickup you confirm that you\'ve picked up the passenger and you\'re ready to head to the destination.'
+                            : 'By confirming the pickup you confirm that you\'ve picked up the package and you\'re ready to head to the dropoff destination.',
+                        style: const TextStyle(
+                            fontSize: 16, fontFamily: 'MoveTextRegular'),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              GenericRectButton(
+                  label: context
+                          .watch<HomeProvider>()
+                          .targetRequestProcessor['isProcessingRequest']
+                      ? 'LOADING'
+                      : 'Confirm pickup',
+                  backgroundColor: Colors.black,
+                  textColor: Colors.white,
+                  labelFontSize: 22,
+                  horizontalPadding: 15,
+                  verticalPadding: 10,
+                  isArrowShow: false,
+                  actuatorFunctionl: context
+                          .watch<HomeProvider>()
+                          .targetRequestProcessor['isProcessingRequest']
+                      ? () {}
+                      : () {
+                          //? Update the target processing state
+                          context.read<HomeProvider>().updateTargetedRequestPro(
+                              isBeingProcessed: true,
+                              request_fp: context
+                                  .read<HomeProvider>()
+                                  .tmpSelectedTripData['request_fp']);
+                          //?----
+                          ConfirmPickupRequestNet confirmPickupRequestNet =
+                              ConfirmPickupRequestNet();
+                          confirmPickupRequestNet.exec(
+                              context: context,
+                              request_fp: context
+                                  .read<HomeProvider>()
+                                  .tmpSelectedTripData['request_fp']);
+                        }),
+              GenericRectButton(
+                  label: 'Cancel',
+                  backgroundColor: Colors.grey.shade300,
+                  textColor: Colors.black,
                   labelFontSize: 22,
                   horizontalPadding: 15,
                   isArrowShow: false,

@@ -300,7 +300,104 @@ class CancelRequestNet {
                 child: Container(
                   width: MediaQuery.of(context).size.width,
                   color: Colors.white,
-                  child: const Modal(scenario: 'unable_to_accept_request'),
+                  child: const Modal(scenario: 'unable_to_cancel_request'),
+                )),
+          );
+        }).whenComplete(() {
+      context
+          .read<HomeProvider>()
+          .updateBlurredBackgroundState(shouldShow: false);
+    });
+  }
+}
+
+//Confirm pickup
+class ConfirmPickupRequestNet {
+  Future exec(
+      {required BuildContext context, required String request_fp}) async {
+    //Init the sound
+    Sound sound = Sound();
+
+    Uri mainUrl = Uri.parse(Uri.encodeFull(
+        '${context.read<HomeProvider>().bridge}/confirm_pickup_request_driver_io'));
+
+    //Assemble the bundle data
+    Map<String, String> bundleData = {
+      'request_fp': request_fp,
+      'driver_fingerprint': context.read<HomeProvider>().user_fingerprint
+    };
+
+    try {
+      http.Response response = await http.post(mainUrl, body: bundleData);
+
+      if (response.statusCode == 200) //Got some results
+      {
+        if (json.decode(response.body)['response'] ==
+            'successfully_confirmed_pickup') //Successfully confirmed
+        {
+          //Close the processor loader
+          CloseLoader(context, request_fp);
+          log('confirmed pickup');
+        } else //Unable to cancel for some reasons
+        {
+          //Close the processor loader
+          CloseLoader(context, request_fp, ShouldPop: false);
+          log('Unable to confirm pickup');
+          UnableToDo(context);
+        }
+      } else //Has some errors
+      {
+        log(response.statusCode.toString());
+        //Close the processor loader
+        CloseLoader(context, request_fp, ShouldPop: false);
+        log('Unable to confirm pickup');
+        UnableToDo(context);
+      }
+    } catch (e) {
+      CloseLoader(context, request_fp, ShouldPop: false);
+
+      log(e.toString());
+      UnableToDo(context);
+    }
+  }
+
+  void CloseLoader(BuildContext context, String request_fp,
+      {bool ShouldPop = true}) {
+    //Close the processor loader
+    if (ShouldPop) {
+      Timer(const Duration(seconds: 4), () {
+        context
+            .read<HomeProvider>()
+            .updateTargetedRequestPro(isBeingProcessed: false, request_fp: '');
+        context.read<HomeProvider>().updateBlurredBackgroundState(
+            shouldShow: false); //Show blurred background
+        Navigator.of(context).pop();
+      });
+    }
+    //Conditional popping & unblurred
+    else {
+      context
+          .read<HomeProvider>()
+          .updateTargetedRequestPro(isBeingProcessed: false, request_fp: '');
+    }
+  }
+
+  //Unable to process request
+  void UnableToDo(BuildContext context) {
+    context.read<HomeProvider>().updateBlurredBackgroundState(shouldShow: true);
+    showModalBottomSheet(
+        context: context,
+        builder: (context) {
+          //...
+          return Container(
+            color: Colors.white,
+            child: SafeArea(
+                bottom: false,
+                child: Container(
+                  width: MediaQuery.of(context).size.width,
+                  color: Colors.white,
+                  child:
+                      const Modal(scenario: 'unable_to_confirmPickup_request'),
                 )),
           );
         }).whenComplete(() {

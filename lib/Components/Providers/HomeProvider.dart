@@ -116,18 +116,19 @@ class HomeProvider with ChangeNotifier {
 
   //?10. Update the trips metadata
   void updateTripRequestsMetadata({required List<dynamic> newTripList}) {
-    if (!listEquals(tripRequestsData, newTripList)) {
+    if (tripRequestsData.toString() != newTripList.toString()) {
       tripRequestsData = newTripList;
       //Update the select trip data if new
       if (tmpSelectedTripData['request_fp'] != null) //Has selected some trips
       {
-        tripRequestsData.map((trip) {
-          if (trip['request_fp'] ==
+        for (int i = 0; i < newTripList.length; i++) {
+          if (newTripList[i]['request_fp'] ==
               tmpSelectedTripData['request_fp']) //Same as the selected trip
           {
-            updateTmpSelectedTripsData(data: trip);
+            log('New trip data detected');
+            updateTmpSelectedTripsData(data: newTripList[i]);
           }
-        });
+        }
       }
 
       notifyListeners();

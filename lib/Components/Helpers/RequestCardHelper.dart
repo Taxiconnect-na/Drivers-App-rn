@@ -72,4 +72,54 @@ class RequestCardHelper {
     //DONE
     return finalCompilation;
   }
+
+  //Get the realistic names for the location name, suburb and street name
+  Map<String, String> getRealisticPlacesNames({required Map locationData}) {
+    //? Essentials
+    //1. Suburb
+    String suburb = locationData['suburb'] != false &&
+            locationData['suburb'] != 'false' &&
+            locationData['suburb'] != null
+        ? locationData['suburb']
+        : locationData['location_name'] != false &&
+                locationData['location_name'] != 'false' &&
+                locationData['location_name'] != null
+            ? locationData['location_name']
+            : locationData['street_name'] != false &&
+                    locationData['street_name'] != 'false' &&
+                    locationData['street_name'] != null
+                ? locationData['street_name']
+                : 'Unclear location';
+
+    //2. Location name
+    String location_name = locationData['location_name'] != false &&
+            locationData['location_name'] != 'false' &&
+            locationData['location_name'] != null
+        ? locationData['location_name'] != suburb
+            ? locationData['location_name']
+            : ''
+        : locationData['street_name'] != false &&
+                locationData['street_name'] != 'false' &&
+                locationData['street_name'] != null
+            ? locationData['street_name']
+            : '';
+
+    //3. Street name
+    String street_name = locationData['street_name'] != false &&
+            locationData['street_name'] != 'false' &&
+            locationData['street_name'] != null
+        ? locationData['street_name'] != suburb &&
+                locationData['street_name'] != location_name
+            ? locationData['street_name']
+            : ''
+        : '';
+
+    //? ---
+
+    return {
+      'location_name': location_name,
+      'street_name': street_name,
+      'suburb': suburb
+    };
+  }
 }

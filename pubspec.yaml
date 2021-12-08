@@ -1,5 +1,5 @@
 name: taxiconnectdrivers
-description: A new Flutter project.
+description: TaxiConnect drivers app build in Pure Dart and Flutter.
 
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
@@ -40,6 +40,8 @@ dependencies:
   http: ^0.13.4
   geolocator: ^8.0.0
   audioplayers: ^0.20.1
+  flutter_phone_direct_caller: ^2.1.0
+  flutter_mapbox_navigation: ^0.0.26
 
 dev_dependencies:
   flutter_test:
