@@ -82,7 +82,7 @@ class EmptyTripsWindow extends StatelessWidget {
                 ),
                 Padding(
                   padding: const EdgeInsets.only(bottom: 8.0),
-                  child: Text('No rides to far',
+                  child: Text(getSuitableEmptyScreen(context: context),
                       textAlign: TextAlign.center,
                       style: TextStyle(
                           fontFamily: 'MoveTextMedium',
@@ -99,6 +99,23 @@ class EmptyTripsWindow extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  //Get suitable sentences for empty screens
+  String getSuitableEmptyScreen({required BuildContext context}) {
+    String selectedOption = context
+        .watch<HomeProvider>()
+        .selectedOption; //ride, delivery, scheduled or accepted
+
+    if (selectedOption == 'ride') {
+      return 'No rides so far';
+    } else if (selectedOption == 'delivery') {
+      return 'No deliveries so far';
+    } else if (selectedOption == 'scheduled') {
+      return 'No scheduled ${context.read<HomeProvider>().authAndDailyEarningsData['supported_requests_types'].toString().toLowerCase()} so far';
+    } else {
+      return 'No request so far';
+    }
   }
 }
 

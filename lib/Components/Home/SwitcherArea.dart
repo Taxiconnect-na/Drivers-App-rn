@@ -1,5 +1,6 @@
 // ignore_for_file: file_names
 import 'dart:developer';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/src/provider.dart';
 import 'package:taxiconnectdrivers/Components/Providers/HomeProvider.dart';
@@ -151,15 +152,44 @@ class ModalForSelections extends StatelessWidget {
           showChecked:
               context.watch<HomeProvider>().selectedOption == 'accepted',
         ),
-        MenuOption(
-            titleOption: 'Rides',
-            showDivider: true,
-            showIndicator:
-                context.watch<HomeProvider>().requestsGraphData['rides'] > 0,
-            indicatorValue:
-                context.watch<HomeProvider>().requestsGraphData['rides'],
-            showChecked:
-                context.watch<HomeProvider>().selectedOption == 'ride'),
+        Visibility(
+          visible: mapEquals(
+                  {}, context.watch<HomeProvider>().authAndDailyEarningsData)
+              ? false
+              : context
+                      .watch<HomeProvider>()
+                      .authAndDailyEarningsData['supported_requests_types'] ==
+                  'Ride',
+          child: MenuOption(
+              titleOption: 'Rides',
+              showDivider: true,
+              showIndicator:
+                  context.watch<HomeProvider>().requestsGraphData['rides'] > 0,
+              indicatorValue:
+                  context.watch<HomeProvider>().requestsGraphData['rides'],
+              showChecked:
+                  context.watch<HomeProvider>().selectedOption == 'ride'),
+        ),
+        Visibility(
+          visible: mapEquals(
+                  {}, context.watch<HomeProvider>().authAndDailyEarningsData)
+              ? false
+              : context
+                      .watch<HomeProvider>()
+                      .authAndDailyEarningsData['supported_requests_types'] ==
+                  'Delivery',
+          child: MenuOption(
+              titleOption: 'Deliveries',
+              showDivider: true,
+              showIndicator: context
+                      .watch<HomeProvider>()
+                      .requestsGraphData['deliveries'] >
+                  0,
+              indicatorValue:
+                  context.watch<HomeProvider>().requestsGraphData['deliveries'],
+              showChecked:
+                  context.watch<HomeProvider>().selectedOption == 'delivery'),
+        ),
         MenuOption(
           titleOption: 'Scheduled',
           showDivider: true,

@@ -43,6 +43,8 @@ class GlobalDataFetcher with ChangeNotifier {
         context.read<HomeProvider>().updateMainLoaderVisibility(option: false);
         // log(response.body.toString());
         if (response.body.toString() == '{"response":"no_requests"}' ||
+            response.body.toString() == '{"response":"no_rides"}' ||
+            response.body.toString() == '{"request_status":"no_rides"}' ||
             response.body.toString() == '{"response":"error"}') //No trips found
         {
           String responseGot = json.decode(response.body)['response'];
@@ -103,9 +105,6 @@ class GlobalDataFetcher with ChangeNotifier {
 //Get request graphs
 class GetRequestsGraphNet {
   Future exec({required BuildContext context}) async {
-    //Init the sound
-    Sound sound = Sound();
-
     Uri mainUrl = Uri.parse(Uri.encodeFull(
         '${context.read<HomeProvider>().bridge}/update_requestsGraph'));
 
@@ -119,7 +118,7 @@ class GetRequestsGraphNet {
 
       if (response.statusCode == 200) //Got some results
       {
-        log(response.body.toString());
+        // log(response.body.toString());
         updateGraphData(context: context, graph: json.decode(response.body));
       } else //Has some errors
       {
@@ -692,5 +691,133 @@ class ConfirmDropoffRequestNet {
           .read<HomeProvider>()
           .updateBlurredBackgroundState(shouldShow: false);
     });
+  }
+}
+
+//Get wallet data
+class GetWalletDataNet {
+  Future exec({required BuildContext context}) async {
+    Uri mainUrl = Uri.parse(Uri.encodeFull(
+        '${context.read<HomeProvider>().bridge}/getDrivers_walletInfosDeep_io'));
+
+    //Assemble the bundle data
+    Map<String, String> bundleData = {
+      'user_fingerprint': context.read<HomeProvider>().user_fingerprint
+    };
+
+    try {
+      http.Response response = await http.post(mainUrl, body: bundleData);
+
+      if (response.statusCode == 200) //Got some results
+      {
+        // log(response.body.toString());
+        updateWalletData(context: context, data: json.decode(response.body));
+      } else //Has some errors
+      {
+        updateWalletData(context: context, data: {});
+      }
+    } catch (e) {
+      log(e.toString());
+      updateWalletData(context: context, data: {});
+    }
+  }
+
+  //Update wallet data
+  void updateWalletData({required BuildContext context, required Map data}) {
+    try {
+      context.read<HomeProvider>().updateWalletData(data: data);
+    } on Exception catch (e) {
+      // TODO
+      log(e.toString());
+    }
+  }
+}
+
+//Get wallet transactional data
+class GetWalletTransactionalDataNet {
+  Future exec({required BuildContext context}) async {
+    Uri mainUrl = Uri.parse(Uri.encodeFull(
+        '${context.read<HomeProvider>().bridge}/getRiders_walletInfos_io'));
+
+    //Assemble the bundle data
+    Map<String, String> bundleData = {
+      'user_fingerprint': context.read<HomeProvider>().user_fingerprint,
+      'mode': 'detailed',
+      'userType': 'driver'
+    };
+
+    try {
+      http.Response response = await http.post(mainUrl, body: bundleData);
+
+      if (response.statusCode == 200) //Got some results
+      {
+        // log(response.body.toString());
+        updateWalletData(context: context, data: json.decode(response.body));
+      } else //Has some errors
+      {
+        updateWalletData(context: context, data: {});
+      }
+    } catch (e) {
+      log(e.toString());
+      updateWalletData(context: context, data: {});
+    }
+  }
+
+  //Update wallet data
+  void updateWalletData({required BuildContext context, required Map data}) {
+    try {
+      context.read<HomeProvider>().updateWalletTransactionalData(data: data);
+    } on Exception catch (e) {
+      // TODO
+      log(e.toString());
+    }
+  }
+}
+
+//Get daily earning so far & auth checks data
+class GetDailyEarningAndAuthChecks {
+  Future exec({required BuildContext context}) async {
+    Uri mainUrl = Uri.parse(Uri.encodeFull(
+        '${context.read<HomeProvider>().bridge}/computeDaily_amountMadeSoFar_io'));
+
+    //Assemble the bundle data
+    Map<String, String> bundleData = {
+      'driver_fingerprint': context.read<HomeProvider>().user_fingerprint,
+    };
+
+    try {
+      http.Response response = await http.post(mainUrl, body: bundleData);
+
+      if (response.statusCode == 200) //Got some results
+      {
+        if (json.decode(response.body)['response'] != null &&
+            json.decode(response.body)['response'] == 'success') //Got some data
+        {
+          // log(response.body.toString());
+          updateAuthEarningData(
+              context: context, data: json.decode(response.body));
+        } else //No data got - defaults to empty
+        {
+          updateAuthEarningData(context: context, data: {});
+        }
+      } else //Has some errors
+      {
+        updateAuthEarningData(context: context, data: {});
+      }
+    } catch (e) {
+      log(e.toString());
+      updateAuthEarningData(context: context, data: {});
+    }
+  }
+
+  //Update auth earning data
+  void updateAuthEarningData(
+      {required BuildContext context, required Map data}) {
+    try {
+      context.read<HomeProvider>().updateAuthEarningData(data: data);
+    } on Exception catch (e) {
+      // TODO
+      log(e.toString());
+    }
   }
 }

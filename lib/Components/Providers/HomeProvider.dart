@@ -2,6 +2,7 @@
 
 import 'dart:developer';
 
+import 'package:camera/camera.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
@@ -11,7 +12,7 @@ import 'package:flutter/material.dart';
 class HomeProvider with ChangeNotifier {
   final String bridge = 'http://192.168.8.104:9999';
   String user_fingerprint =
-      '91ae265bca710a49756d90e382f9591dceba4b26cc03c01aaca3828145376321f9b8b401ae7e1efa41c99e7f210ecc191c62b2dc7bcda566e312378e1a1fdf1b';
+      '6fc0fbe78d093080ca60b1c534a1b7b5e171640dba4d796fb95337b88feb4befb6080417ede87759';
 
   Map<dynamic, dynamic> locationServicesStatus = {
     'isLocationServiceEnabled': true,
@@ -33,12 +34,14 @@ class HomeProvider with ChangeNotifier {
   final Map<String, String> mapOptionsToCodes = {
     'Accepted trips': 'accepted',
     'Rides': 'ride',
+    'Deliveries': 'delivery',
     'Scheduled': 'scheduled'
   };
 
   final Map<String, String> codesToOptions = {
     'accepted': 'Accepted trips',
     'ride': 'Rides',
+    'delivery': 'Deliveries',
     'scheduled': 'Scheduled'
   };
 
@@ -66,6 +69,25 @@ class HomeProvider with ChangeNotifier {
     'scheduled': 0,
     'accepted': 0
   }; //Will contain the requests graph data
+
+  //Wallet data
+  Map walletData = {}; //Will hold all the wallet data
+  //Transactions data
+  Map walletTransactionsData = {}; //Will hold all the wallet transactions data
+  //Auth & daily earning data
+  Map authAndDailyEarningsData =
+      {}; //Will hold all the authentication and daily earnings for the driver.
+
+  //Selected country code for phone input
+  Map selectedCountryCodeData = {
+    "name": "Namibia",
+    "flag": "🇳🇦",
+    "code": "NA",
+    "dial_code": "+264"
+  }; //Defaults - Namibia
+  String enteredPhoneNumber = ''; //Default - empty
+  //...Camera
+  late CameraController cameraController;
   //...
 
   //?4. Update the GPRS service status and the location permission
@@ -199,5 +221,55 @@ class HomeProvider with ChangeNotifier {
       requestsGraphData = data;
       notifyListeners();
     }
+  }
+
+  //? 17. Update the wallet data
+  void updateWalletData({required Map data}) {
+    if (data.toString() != walletData.toString()) //New data
+    {
+      walletData = data;
+      notifyListeners();
+    }
+  }
+
+  //? 18. Update the wallet transactional data
+  void updateWalletTransactionalData({required Map data}) {
+    if (data.toString() != walletTransactionsData.toString()) //New data
+    {
+      walletTransactionsData = data;
+      notifyListeners();
+    }
+  }
+
+  //? 18. Update Auth earning data
+  void updateAuthEarningData({required Map data}) {
+    if (data.toString() != authAndDailyEarningsData.toString()) //New data
+    {
+      authAndDailyEarningsData = data;
+      //Auto selected ride/delivery based on the supported request type
+      if (data['supported_requests_types'] == 'Ride' &&
+          selectedOption == 'ride') {
+        selectedOption = 'ride';
+      } else if (data['supported_requests_types'] == 'Ride' &&
+          selectedOption == 'ride') {
+        selectedOption = 'delivery';
+      }
+      //...
+      notifyListeners();
+    }
+  }
+
+  //? 19. Update selected country code
+  void updateSelectedCountryCode({required Map dialData}) {
+    selectedCountryCodeData = dialData;
+    log(dialData.toString());
+    notifyListeners();
+  }
+
+  //? 20. Update entered phone number
+  void updateEnteredPhoneNumber({required String phone}) {
+    enteredPhoneNumber = phone;
+    log(phone);
+    notifyListeners();
   }
 }

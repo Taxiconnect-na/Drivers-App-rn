@@ -11,4 +11,11 @@ class DateParser {
 
     return '${dateTime.hour}:${dateTime.minute}';
   }
+
+  //?2. Get normal readable date
+  String getReadableDate() {
+    DateTime dateTime = DateTime.parse(dateString);
+
+    return '${dateTime.day}-${dateTime.month}-${dateTime.year} at ${getReadableTime()}';
+  }
 }

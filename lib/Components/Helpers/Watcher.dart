@@ -3,6 +3,7 @@
 // ignore_for_file: file_names
 
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:flutter/material.dart';
 
@@ -22,17 +23,38 @@ class Watcher with ChangeNotifier {
         //? Structure
         // {name:'data fetcher name', actuator: Specific class instance child}
         //Call the tmp function
-        switch (actuatorFunctions[i]['name']) {
-          case 'GlobalDataFetcher':
-            actuatorFunctions[i]['actuator'].getCoreDate(context: context);
-            break;
-          case 'LocationOpsHandler':
-            actuatorFunctions[i]['actuator'].runLocationOpasHandler();
-            break;
-          case 'GetRequestsGraphData':
-            actuatorFunctions[i]['actuator'].exec(context: context);
-            break;
-          default:
+        try {
+          RegExp cleanerCheck = RegExp(r"no widget", caseSensitive: false);
+
+          if (cleanerCheck.hasMatch(context.toString()) == false) {
+            switch (actuatorFunctions[i]['name']) {
+              case 'GlobalDataFetcher':
+                actuatorFunctions[i]['actuator'].getCoreDate(context: context);
+                break;
+              case 'LocationOpsHandler':
+                actuatorFunctions[i]['actuator'].runLocationOpasHandler();
+                break;
+              case 'GetRequestsGraphData':
+                actuatorFunctions[i]['actuator'].exec(context: context);
+                break;
+              case 'GetWalletDataNet':
+                actuatorFunctions[i]['actuator'].exec(context: context);
+                break;
+              case 'GetWalletTransactionalDataNet':
+                actuatorFunctions[i]['actuator'].exec(context: context);
+                break;
+              case 'GetDailyEarningAndAuthChecks':
+                actuatorFunctions[i]['actuator'].exec(context: context);
+                break;
+              default:
+            }
+          } else //No valid context
+          {
+            log('No valid context detected! - try to dispose the timer');
+            mainLoop.cancel();
+          }
+        } catch (e) {
+          log(e.toString());
         }
       }
     });

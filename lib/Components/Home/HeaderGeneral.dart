@@ -1,6 +1,9 @@
 // ignore_for_file: file_names
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/src/provider.dart';
+import 'package:taxiconnectdrivers/Components/Providers/HomeProvider.dart';
 
 class HeaderGeneral extends StatefulWidget {
   const HeaderGeneral({Key? key}) : super(key: key);
@@ -59,11 +62,29 @@ class _HeaderGeneralState extends State<HeaderGeneral> {
                               color: Colors.black,
                               border: Border.all(color: Colors.black),
                               borderRadius: BorderRadius.circular(70)),
-                          child: const Text('N\$ 300',
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontFamily: 'MoveTextBold',
-                                  fontSize: 20))))),
+                          child: mapEquals(
+                                  {},
+                                  context
+                                      .watch<HomeProvider>()
+                                      .authAndDailyEarningsData)
+                              ? const SizedBox(
+                                  width: 20,
+                                  height: 20,
+                                  child: CircularProgressIndicator(
+                                      strokeWidth: 2, color: Colors.white),
+                                )
+                              : Text(
+                                  context
+                                                  .watch<HomeProvider>()
+                                                  .authAndDailyEarningsData[
+                                              'amount'] !=
+                                          null
+                                      ? 'N\$ ${context.watch<HomeProvider>().authAndDailyEarningsData['amount']}'
+                                      : 'N\$ 0',
+                                  style: const TextStyle(
+                                      color: Colors.white,
+                                      fontFamily: 'MoveTextBold',
+                                      fontSize: 20))))),
               Text('Other')
             ],
           ),

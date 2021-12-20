@@ -1,5 +1,7 @@
 // ignore_for_file: file_names
 
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:taxiconnectdrivers/Components/Providers/HomeProvider.dart';
@@ -51,21 +53,26 @@ class _DrawerMenuState extends State<DrawerMenu> {
                           const TextStyle(color: Colors.white, fontSize: 15)),
                 ))),
           ),
-          const MenuOption(
+          MenuOption(
             titleOption: 'Your rides',
             showDivider: true,
+            actuatorFnc: () => log('rides'),
           ),
-          const MenuOption(
+          MenuOption(
             titleOption: 'Wallet',
             showDivider: true,
+            actuatorFnc: () =>
+                Navigator.of(context).pushReplacementNamed('/Wallet'),
           ),
-          const MenuOption(
+          MenuOption(
             titleOption: 'Settings',
             showDivider: true,
+            actuatorFnc: () => log('rides'),
           ),
-          const MenuOption(
+          MenuOption(
             titleOption: 'Support',
             showDivider: false,
+            actuatorFnc: () => log('rides'),
           ),
           Expanded(
               child: SafeArea(
@@ -99,19 +106,27 @@ class _DrawerMenuState extends State<DrawerMenu> {
 class MenuOption extends StatelessWidget {
   final String titleOption;
   final bool showDivider;
+  final actuatorFnc;
 
   const MenuOption(
-      {Key? key, required this.titleOption, required this.showDivider})
+      {Key? key,
+      required this.titleOption,
+      required this.showDivider,
+      required this.actuatorFnc})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        ListTile(
-          title: Text(
-            titleOption,
-            style: const TextStyle(fontFamily: 'MoveTextMedium', fontSize: 22),
+        InkWell(
+          onTap: actuatorFnc,
+          child: ListTile(
+            title: Text(
+              titleOption,
+              style:
+                  const TextStyle(fontFamily: 'MoveTextMedium', fontSize: 22),
+            ),
           ),
         ),
         showDivider ? const Divider() : const Text('')
