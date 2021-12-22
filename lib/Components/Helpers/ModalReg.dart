@@ -3,7 +3,6 @@
 import 'dart:developer';
 import 'dart:io';
 
-import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/src/provider.dart';
@@ -38,6 +37,178 @@ class _ModalRegState extends State<ModalReg> {
   //Return the correct content based on the scenario
   Widget getContent({required BuildContext context, required String scenario}) {
     switch (scenario) {
+      case 'application_success_drivers':
+        return Container(
+          // color: Colors.red,
+          height: MediaQuery.of(context).size.height * 0.5,
+          alignment: Alignment.topCenter,
+          child: Padding(
+            padding: const EdgeInsets.only(top: 40),
+            child:
+                Column(mainAxisAlignment: MainAxisAlignment.start, children: [
+              Icon(Icons.check_circle,
+                  size: 45, color: Color.fromRGBO(9, 134, 74, 1)),
+              Padding(
+                padding: EdgeInsets.only(top: 25),
+                child: Text('Successfully applied',
+                    style: TextStyle(fontFamily: 'MoveTextBold', fontSize: 20)),
+              ),
+              Padding(
+                padding: EdgeInsets.only(top: 10, left: 15, right: 15),
+                child: Text(
+                    "We have successfully received your application, it is currently being processed, we'll get back to you in the next 3 business days.",
+                    textAlign: TextAlign.center,
+                    style:
+                        TextStyle(fontFamily: 'MoveTextRegular', fontSize: 17)),
+              ),
+              const Expanded(child: Text('')),
+              SafeArea(
+                child: GenericRectButton(
+                    label: 'Done',
+                    labelFontSize: 22,
+                    isArrowShow: true,
+                    actuatorFunctionl: () {
+                      //! Clear everything
+                      context.read<RegistrationProvider>().clearEverything();
+                      Navigator.of(context).pushNamed('/Entry');
+                    }),
+              )
+            ]),
+          ),
+        );
+      case 'error_application_already_submitted':
+        return Container(
+          // color: Colors.red,
+          height: MediaQuery.of(context).size.height * 0.5,
+          alignment: Alignment.topCenter,
+          child: Padding(
+            padding: const EdgeInsets.only(top: 40),
+            child:
+                Column(mainAxisAlignment: MainAxisAlignment.start, children: [
+              Icon(Icons.warning,
+                  size: 45, color: Color.fromRGBO(178, 34, 34, 1)),
+              Padding(
+                padding: EdgeInsets.only(top: 25),
+                child: Text('Already applied',
+                    style: TextStyle(fontFamily: 'MoveTextBold', fontSize: 20)),
+              ),
+              Padding(
+                padding: EdgeInsets.only(top: 10, left: 15, right: 15),
+                child: Text(
+                    "Sorry, it looks like you've already applied to be a driver with us, please wait until you receive a call from us, which will be very soon. Thanks.",
+                    textAlign: TextAlign.center,
+                    style:
+                        TextStyle(fontFamily: 'MoveTextRegular', fontSize: 17)),
+              ),
+              const Expanded(child: Text('')),
+              SafeArea(
+                child: GenericRectButton(
+                    label: 'Close',
+                    labelFontSize: 22,
+                    isArrowShow: false,
+                    actuatorFunctionl: () {
+                      Navigator.of(context).pop();
+                    }),
+              )
+            ]),
+          ),
+        );
+      case 'error_application_something':
+        return Container(
+          // color: Colors.red,
+          height: MediaQuery.of(context).size.height * 0.5,
+          alignment: Alignment.topCenter,
+          child: Padding(
+            padding: const EdgeInsets.only(top: 40),
+            child:
+                Column(mainAxisAlignment: MainAxisAlignment.start, children: [
+              Icon(Icons.error,
+                  size: 45, color: Color.fromRGBO(178, 34, 34, 1)),
+              Padding(
+                padding: EdgeInsets.only(top: 25),
+                child: Text('Error applying',
+                    style: TextStyle(fontFamily: 'MoveTextBold', fontSize: 20)),
+              ),
+              Padding(
+                padding: EdgeInsets.only(top: 10, left: 15, right: 15),
+                child: Text(
+                    "Sorry, due to an unexpected error we were unable to proceed with your application, please check your Internet and try again, or contact Support for more help.",
+                    textAlign: TextAlign.center,
+                    style:
+                        TextStyle(fontFamily: 'MoveTextRegular', fontSize: 17)),
+              ),
+              const Expanded(child: Text('')),
+              SafeArea(
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 15, right: 15),
+                  child: Row(
+                    children: [
+                      Flexible(
+                        child: GenericRectButton(
+                            label: 'Close',
+                            labelFontSize: 19,
+                            horizontalPadding: 0,
+                            isArrowShow: false,
+                            backgroundColor: Colors.grey.shade400,
+                            textColor: Colors.black,
+                            actuatorFunctionl: () {
+                              Navigator.of(context).pop();
+                            }),
+                      ),
+                      SizedBox(
+                        width: 15,
+                      ),
+                      Flexible(
+                        flex: 2,
+                        child: GenericRectButton(
+                            label: 'Call Support',
+                            labelFontSize: 20,
+                            horizontalPadding: 0,
+                            isArrowShow: true,
+                            actuatorFunctionl: () {
+                              Navigator.of(context).pop();
+                            }),
+                      ),
+                    ],
+                  ),
+                ),
+              )
+            ]),
+          ),
+        );
+      case 'show_loading_submission':
+        return Container(
+          // color: Colors.red,
+          height: MediaQuery.of(context).size.height * 0.7,
+          alignment: Alignment.center,
+          child: Padding(
+            padding: const EdgeInsets.only(left: 15, right: 15),
+            child: SafeArea(
+              child: Padding(
+                padding: const EdgeInsets.only(left: 15, right: 15),
+                child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      const CircularProgressIndicator(
+                        color: Colors.black,
+                      ),
+                      const Padding(
+                          padding: EdgeInsets.only(top: 45, bottom: 20),
+                          child: Text('Submitting your application',
+                              style: TextStyle(
+                                  fontFamily: 'MoveBold',
+                                  fontSize: 22,
+                                  color: Color.fromRGBO(9, 110, 212, 1)))),
+                      Text('Please do not close the app during this process.',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                              fontSize: 16, color: Colors.grey.shade700))
+                    ]),
+              ),
+            ),
+          ),
+        );
       case 'show_perso_details':
         return Container(
           // color: Colors.red,
@@ -59,14 +230,28 @@ class _ModalRegState extends State<ModalReg> {
                     ),
                     Row(mainAxisSize: MainAxisSize.max, children: [
                       BasicInputText(
-                        title: 'Name',
+                        title: context
+                                .watch<RegistrationProvider>()
+                                .personalDetails['name']!
+                                .isEmpty
+                            ? 'Name'
+                            : context
+                                .watch<RegistrationProvider>()
+                                .personalDetails['name'] as String,
                         nature: 'personal_details_name',
                       ),
-                      SizedBox(
+                      const SizedBox(
                         width: 15,
                       ),
                       BasicInputText(
-                        title: 'Surname',
+                        title: context
+                                .watch<RegistrationProvider>()
+                                .personalDetails['surname']!
+                                .isEmpty
+                            ? 'Surname'
+                            : context
+                                .watch<RegistrationProvider>()
+                                .personalDetails['surname'] as String,
                         nature: 'personal_details_surname',
                       )
                     ]),
@@ -74,7 +259,14 @@ class _ModalRegState extends State<ModalReg> {
                       height: 15,
                     ),
                     BasicInputText(
-                      title: 'Email',
+                      title: context
+                              .watch<RegistrationProvider>()
+                              .personalDetails['email']!
+                              .isEmpty
+                          ? 'Email'
+                          : context
+                              .watch<RegistrationProvider>()
+                              .personalDetails['email'] as String,
                       nature: 'personal_details_email',
                     ),
                     const Expanded(child: Text('')),
@@ -98,7 +290,7 @@ class _ModalRegState extends State<ModalReg> {
           child: Padding(
             padding: const EdgeInsets.only(left: 15, right: 15),
             child: SafeArea(
-                child: _imageSelected == null
+                child: context.watch<RegistrationProvider>().driverPhoto == null
                     ? showTakeProfilePicData(
                         context: context,
                         illustrationExamplePath: 'assets/Images/girlModel.png',
@@ -130,7 +322,7 @@ class _ModalRegState extends State<ModalReg> {
           child: Padding(
             padding: const EdgeInsets.only(left: 15, right: 15),
             child: SafeArea(
-                child: _imageSelected == null
+                child: context.watch<RegistrationProvider>().carPhoto == null
                     ? showTakeProfilePicData(
                         context: context,
                         illustrationExamplePath:
@@ -162,7 +354,8 @@ class _ModalRegState extends State<ModalReg> {
           child: Padding(
             padding: const EdgeInsets.only(left: 15, right: 15),
             child: SafeArea(
-                child: _imageSelected == null
+                child: context.watch<RegistrationProvider>().licensePhoto ==
+                        null
                     ? showTakeProfilePicData(
                         context: context,
                         illustrationExamplePath:
@@ -181,7 +374,7 @@ class _ModalRegState extends State<ModalReg> {
                     : showPreviewImageSelected(
                         context: context,
                         description:
-                            'For safety reasons, all the riders will be able to see your vehicle picture.',
+                            'This document will be used to verify your identify.',
                         natureData: 'licensePhoto')),
           ),
         );
@@ -193,7 +386,7 @@ class _ModalRegState extends State<ModalReg> {
           child: Padding(
             padding: const EdgeInsets.only(left: 15, right: 15),
             child: SafeArea(
-                child: _imageSelected == null
+                child: context.watch<RegistrationProvider>().idPhoto == null
                     ? showTakeProfilePicData(
                         context: context,
                         illustrationExamplePath: 'assets/Images/IDTemplate.png',
@@ -211,8 +404,98 @@ class _ModalRegState extends State<ModalReg> {
                     : showPreviewImageSelected(
                         context: context,
                         description:
-                            'For safety reasons, all the riders will be able to see your vehicle picture.',
+                            'This document will be used to verify your identify.',
                         natureData: 'idPhoto')),
+          ),
+        );
+      case 'bluePaper_photo_take':
+        return Container(
+          // color: Colors.red,
+          height: MediaQuery.of(context).size.height * 0.75,
+          alignment: Alignment.topLeft,
+          child: Padding(
+            padding: const EdgeInsets.only(left: 15, right: 15),
+            child: SafeArea(
+                child: context.watch<RegistrationProvider>().idPhoto == null
+                    ? showTakeProfilePicData(
+                        context: context,
+                        illustrationExamplePath: 'assets/Images/IDTemplate.png',
+                        title: 'Blue paper',
+                        descr1:
+                            'Please make sure that the document your are sending is your Blue Paper.',
+                        descr2: '',
+                        instructions: generateInstructions(
+                          stringRequirements: [
+                            'Make sure that all the card is captured.',
+                            'Make sure the photo is well fit, free of glare and in focus.',
+                          ],
+                        ),
+                        natureData: 'bluepaperPhoto')
+                    : showPreviewImageSelected(
+                        context: context,
+                        description:
+                            'This document will be used to verify your identify.',
+                        natureData: 'bluepaperPhoto')),
+          ),
+        );
+      case 'whitePaper_photo_take':
+        return Container(
+          // color: Colors.red,
+          height: MediaQuery.of(context).size.height * 0.75,
+          alignment: Alignment.topLeft,
+          child: Padding(
+            padding: const EdgeInsets.only(left: 15, right: 15),
+            child: SafeArea(
+                child: context.watch<RegistrationProvider>().idPhoto == null
+                    ? showTakeProfilePicData(
+                        context: context,
+                        illustrationExamplePath: 'assets/Images/IDTemplate.png',
+                        title: 'White paper',
+                        descr1:
+                            'Please make sure that the document your are sending is your White Paper.',
+                        descr2: '',
+                        instructions: generateInstructions(
+                          stringRequirements: [
+                            'Make sure that all the card is captured.',
+                            'Make sure the photo is well fit, free of glare and in focus.',
+                          ],
+                        ),
+                        natureData: 'whitepaperPhoto')
+                    : showPreviewImageSelected(
+                        context: context,
+                        description:
+                            'This document will be used to verify your identify.',
+                        natureData: 'whitepaperPhoto')),
+          ),
+        );
+      case 'permit_photo_take':
+        return Container(
+          // color: Colors.red,
+          height: MediaQuery.of(context).size.height * 0.75,
+          alignment: Alignment.topLeft,
+          child: Padding(
+            padding: const EdgeInsets.only(left: 15, right: 15),
+            child: SafeArea(
+                child: context.watch<RegistrationProvider>().idPhoto == null
+                    ? showTakeProfilePicData(
+                        context: context,
+                        illustrationExamplePath: 'assets/Images/IDTemplate.png',
+                        title: 'Permit',
+                        descr1:
+                            'Please make sure that the document your are sending is your permit.',
+                        descr2: '',
+                        instructions: generateInstructions(
+                          stringRequirements: [
+                            'Make sure that all the card is captured.',
+                            'Make sure the photo is well fit, free of glare and in focus.',
+                          ],
+                        ),
+                        natureData: 'permitPhoto')
+                    : showPreviewImageSelected(
+                        context: context,
+                        description:
+                            'This document will be used to verify your identify.',
+                        natureData: 'permitPhoto')),
           ),
         );
       default:
@@ -282,6 +565,26 @@ class _ModalRegState extends State<ModalReg> {
       {required BuildContext context,
       String description = '',
       required String natureData}) {
+    XFile? pictureAsset;
+    //Get the correct ressource
+    if (natureData == 'profilePhoto') {
+      pictureAsset = context.read<RegistrationProvider>().driverPhoto;
+    } else if (natureData == 'vehiclePhoto') {
+      pictureAsset = context.read<RegistrationProvider>().carPhoto;
+    } else if (natureData == 'licensePhoto') {
+      pictureAsset = context.read<RegistrationProvider>().licensePhoto;
+    } else if (natureData == 'idPhoto') {
+      pictureAsset = context.read<RegistrationProvider>().idPhoto;
+    }
+    //! only for ride registration
+    else if (natureData == 'bluepaperPhoto') {
+      pictureAsset = context.read<RegistrationProvider>().bluepaperPhoto;
+    } else if (natureData == 'whitepaperPhoto') {
+      pictureAsset = context.read<RegistrationProvider>().whitepaperPhoto;
+    } else if (natureData == 'permitPhoto') {
+      pictureAsset = context.read<RegistrationProvider>().permitPhoto;
+    }
+
     return Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -295,6 +598,7 @@ class _ModalRegState extends State<ModalReg> {
                     setState(() {
                       _imageSelected = null;
                     });
+                    Navigator.of(context).pop();
                   },
                   child: const Icon(
                     Icons.close,
@@ -313,7 +617,7 @@ class _ModalRegState extends State<ModalReg> {
             height: 250,
             decoration: BoxDecoration(border: Border.all(width: 0)),
             child: Image.file(
-              File(_imageSelected!.path),
+              File(pictureAsset!.path),
               fit: BoxFit.cover,
             ),
           ),
@@ -438,13 +742,13 @@ class _ModalRegState extends State<ModalReg> {
       final XFile? photo = await _picker.pickImage(source: ImageSource.camera);
     } else //Open the gallery
     {
-      // final XFile? image = await _picker.pickImage(
-      //     source: ImageSource.gallery,
-      //     maxWidth: 700,
-      //     maxHeight: 700,
-      //     imageQuality: 70,
-      //     preferredCameraDevice: CameraDevice.front);
-      final XFile? image = await _picker.pickImage(source: ImageSource.camera);
+      final XFile? image = await _picker.pickImage(
+          source: ImageSource.gallery,
+          maxWidth: 700,
+          maxHeight: 700,
+          imageQuality: 70,
+          preferredCameraDevice: CameraDevice.front);
+      // final XFile? image = await _picker.pickImage(source: ImageSource.camera);
       setState(() {
         print(image);
         _imageSelected = image;

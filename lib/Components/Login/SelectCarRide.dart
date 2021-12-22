@@ -5,14 +5,14 @@ import 'package:taxiconnectdrivers/Components/Helpers/ModalReg.dart';
 import 'package:taxiconnectdrivers/Components/Modules/GenericRectButton/GenericRectButton.dart';
 import 'package:taxiconnectdrivers/Components/Providers/RegistrationProvider.dart';
 
-class SelectCar extends StatefulWidget {
-  const SelectCar({Key? key}) : super(key: key);
+class SelectCarRide extends StatefulWidget {
+  const SelectCarRide({Key? key}) : super(key: key);
 
   @override
-  _SelectCarState createState() => _SelectCarState();
+  _SelectCarRideState createState() => _SelectCarRideState();
 }
 
-class _SelectCarState extends State<SelectCar> {
+class _SelectCarRideState extends State<SelectCarRide> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -22,7 +22,7 @@ class _SelectCarState extends State<SelectCar> {
             padding: EdgeInsets.only(left: 0),
             visualDensity: VisualDensity.comfortable,
             onPressed: () =>
-                Navigator.of(context).pushNamed('/RegistrationDelivery'),
+                Navigator.of(context).pushNamed('/RegistrationRide'),
             icon: Icon(Icons.arrow_back),
           ),
           title: const Text('Vehicle info',
@@ -45,16 +45,37 @@ class _SelectCarState extends State<SelectCar> {
                     const SizedBox(
                       height: 25,
                     ),
-                    BasicInputText(
-                      title: context
-                              .watch<RegistrationProvider>()
-                              .definitiveVehicleInfos['plate_number']!
-                              .isEmpty
-                          ? 'Plate number'
-                          : context
-                              .watch<RegistrationProvider>()
-                              .definitiveVehicleInfos['plate_number'] as String,
-                      nature: 'vehicle_details_plate_number',
+                    Row(
+                      children: [
+                        BasicInputText(
+                          title: context
+                                  .watch<RegistrationProvider>()
+                                  .definitiveVehicleInfos['plate_number']!
+                                  .isEmpty
+                              ? 'Plate number'
+                              : context
+                                      .watch<RegistrationProvider>()
+                                      .definitiveVehicleInfos['plate_number']
+                                  as String,
+                          nature: 'vehicle_details_plate_number',
+                        ),
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    Row(
+                      children: [
+                        BasicInputText(title: 'Taxi number', nature: ''),
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    Row(
+                      children: [
+                        BasicInputText(title: 'Permit number', nature: ''),
+                      ],
                     ),
                     const Expanded(child: Text('')),
                     GenericRectButton(
@@ -87,7 +108,8 @@ class _SelectCarState extends State<SelectCar> {
             borderRadius: BorderRadius.circular(4)),
         child: ListTile(
           contentPadding: EdgeInsets.only(left: 15, right: 15),
-          onTap: () => Navigator.of(context).pushNamed('/SelectCarDirectory'),
+          onTap: () =>
+              Navigator.of(context).pushNamed('/SelectCarRideDirectory'),
           title: const Text(
             'Select transport',
             style: TextStyle(fontFamily: 'MoveTextMedium'),
@@ -116,7 +138,8 @@ class _SelectCarState extends State<SelectCar> {
               )),
           horizontalTitleGap: 0,
           contentPadding: EdgeInsets.only(left: 15, right: 15),
-          onTap: () => Navigator.of(context).pushNamed('/SelectCarDirectory'),
+          onTap: () =>
+              Navigator.of(context).pushNamed('/SelectCarRideDirectory'),
           title: Text(
             context
                 .watch<RegistrationProvider>()

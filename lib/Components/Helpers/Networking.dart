@@ -3,13 +3,18 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:developer';
+import 'dart:io';
 
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
 import 'package:taxiconnectdrivers/Components/Helpers/Modal.dart';
+import 'package:taxiconnectdrivers/Components/Helpers/ModalReg.dart';
 import 'package:taxiconnectdrivers/Components/Helpers/Sound.dart';
 import 'package:taxiconnectdrivers/Components/Providers/HomeProvider.dart';
+import 'package:taxiconnectdrivers/Components/Providers/RegistrationProvider.dart';
 
 class GlobalDataFetcher with ChangeNotifier {
   Future getCoreDate({required BuildContext context}) async {
@@ -808,6 +813,220 @@ class GetDailyEarningAndAuthChecks {
       log(e.toString());
       updateAuthEarningData(context: context, data: {});
     }
+  }
+
+  //Update auth earning data
+  void updateAuthEarningData(
+      {required BuildContext context, required Map data}) {
+    try {
+      context.read<HomeProvider>().updateAuthEarningData(data: data);
+    } on Exception catch (e) {
+      // TODO
+      log(e.toString());
+    }
+  }
+}
+
+//Submit courier registration
+class SubmitCourierRegistrationNet {
+  Future exec({required BuildContext context}) async {
+    String mainUrl =
+        '${context.read<HomeProvider>().bridge}/registerCourier_ppline';
+
+    //? Convert images to base64
+    //driver photo
+    String driverPhotoExtension = context
+        .read<RegistrationProvider>()
+        .driverPhoto!
+        .path
+        .split('.')[context
+            .read<RegistrationProvider>()
+            .driverPhoto!
+            .path
+            .split('.')
+            .length -
+        1];
+    List<int> driverPhotoBytes =
+        await XFile(context.read<RegistrationProvider>().driverPhoto!.path)
+            .readAsBytes();
+    String driverPhotoBase64 = base64Encode(driverPhotoBytes);
+
+    //vehicle photo
+    String vehiclePhotoExtension = context
+            .read<RegistrationProvider>()
+            .carPhoto!
+            .path
+            .split('.')[
+        context.read<RegistrationProvider>().carPhoto!.path.split('.').length -
+            1];
+    List<int> vehiclePhotoBytes =
+        await XFile(context.read<RegistrationProvider>().carPhoto!.path)
+            .readAsBytes();
+    String vehiclePhotoBase64 = base64Encode(vehiclePhotoBytes);
+
+    //License photo
+    String licensePhotoExtension = context
+        .read<RegistrationProvider>()
+        .licensePhoto!
+        .path
+        .split('.')[context
+            .read<RegistrationProvider>()
+            .licensePhoto!
+            .path
+            .split('.')
+            .length -
+        1];
+    List<int> licensePhotoBytes =
+        await XFile(context.read<RegistrationProvider>().licensePhoto!.path)
+            .readAsBytes();
+    String licensePhotoBase64 = base64Encode(licensePhotoBytes);
+
+    //Id photo
+    String idPhotoExtension = context
+            .read<RegistrationProvider>()
+            .idPhoto!
+            .path
+            .split('.')[
+        context.read<RegistrationProvider>().idPhoto!.path.split('.').length -
+            1];
+    List<int> idPhotoBytes =
+        await XFile(context.read<RegistrationProvider>().idPhoto!.path)
+            .readAsBytes();
+    String idPhotoBase64 = base64Encode(idPhotoBytes);
+
+    //Request data for files
+    Map<String, String> bundleData = {
+      'city': 'Windhoek', //TODO: to be dynamically changed
+      'phone': '+2648570007167', //TODO: to be dynamically changed
+      'nature_driver': 'COURIER',
+      "personal_details": json
+          .encode(context.read<RegistrationProvider>().personalDetails)
+          .toString(),
+      'vehicle_details': json
+          .encode(context.read<RegistrationProvider>().definitiveVehicleInfos)
+          .toString(),
+      'did_accept_terms': true.toString(),
+      'did_certify_data_veracity': true.toString(),
+      'driver_photo': driverPhotoBase64,
+      'vehicle_photo': vehiclePhotoBase64,
+      'license_photo': licensePhotoBase64,
+      'id_photo': idPhotoBase64,
+      'extensions': json.encode({
+        'driver_photo': driverPhotoExtension,
+        'vehicle_photo': vehiclePhotoExtension,
+        'license_photo': licensePhotoExtension,
+        'id_photo': idPhotoExtension
+      }).toString()
+    };
+
+    print(bundleData);
+
+    try {
+      var response = await Dio().post(
+        mainUrl,
+        data: bundleData,
+        onSendProgress: (received, total) {
+          if (total != -1) {
+            // print((received / total * 100).toStringAsFixed(0) + '%');
+          }
+        },
+        onReceiveProgress: (received, total) {
+          if (total != -1) {
+            // log((received / total * 100).toStringAsFixed(0) + '%'.toString());
+          }
+        },
+      );
+
+      if (response.statusCode == 200) //Got some results
+      {
+        String responseGot = json.encode(response.data);
+        var responseGotData = json.decode(responseGot);
+
+        if (responseGotData['response'] ==
+            'error_duplicate_application') //Application realdy received
+        {
+          showModalBottomSheet(
+              context: context,
+              builder: (context) {
+                //...
+                return Container(
+                  color: Colors.white,
+                  child: SafeArea(
+                      bottom: false,
+                      child: Container(
+                        width: MediaQuery.of(context).size.width,
+                        color: Colors.white,
+                        child: const ModalReg(
+                            scenario: 'error_application_already_submitted'),
+                      )),
+                );
+              }).whenComplete(() {
+            context
+                .read<HomeProvider>()
+                .updateBlurredBackgroundState(shouldShow: false);
+            Navigator.of(context).pop();
+          });
+        } else if (RegExp(r"error")
+            .hasMatch(responseGotData['response'])) //Has some errors
+        {
+          showErrorsApplying(context: context);
+        } else //Successfully applied
+        {
+          showModalBottomSheet(
+              context: context,
+              builder: (context) {
+                //...
+                return Container(
+                  color: Colors.white,
+                  child: SafeArea(
+                      bottom: false,
+                      child: Container(
+                        width: MediaQuery.of(context).size.width,
+                        color: Colors.white,
+                        child: const ModalReg(
+                            scenario: 'application_success_drivers'),
+                      )),
+                );
+              }).whenComplete(() {
+            context
+                .read<HomeProvider>()
+                .updateBlurredBackgroundState(shouldShow: false);
+            Navigator.of(context).pop();
+          });
+        }
+      } else //Has some errors
+      {
+        showErrorsApplying(context: context);
+      }
+    } catch (e) {
+      log(e.toString());
+      showErrorsApplying(context: context);
+    }
+  }
+
+  //Show error applying
+  void showErrorsApplying({required BuildContext context}) {
+    showModalBottomSheet(
+        context: context,
+        builder: (context) {
+          //...
+          return Container(
+            color: Colors.white,
+            child: SafeArea(
+                bottom: false,
+                child: Container(
+                  width: MediaQuery.of(context).size.width,
+                  color: Colors.white,
+                  child:
+                      const ModalReg(scenario: 'error_application_something'),
+                )),
+          );
+        }).whenComplete(() {
+      context
+          .read<HomeProvider>()
+          .updateBlurredBackgroundState(shouldShow: false);
+      Navigator.of(context).pop();
+    });
   }
 
   //Update auth earning data

@@ -13,14 +13,14 @@ import 'package:taxiconnectdrivers/Components/Providers/HomeProvider.dart';
 import 'package:taxiconnectdrivers/Components/Providers/RegistrationProvider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class RegistrationDelivery extends StatefulWidget {
-  const RegistrationDelivery({Key? key}) : super(key: key);
+class RegistrationRide extends StatefulWidget {
+  const RegistrationRide({Key? key}) : super(key: key);
 
   @override
-  _RegistrationDeliveryState createState() => _RegistrationDeliveryState();
+  _RegistrationRideState createState() => _RegistrationRideState();
 }
 
-class _RegistrationDeliveryState extends State<RegistrationDelivery> {
+class _RegistrationRideState extends State<RegistrationRide> {
   @override
   void initState() {
     // TODO: implement initState
@@ -41,7 +41,7 @@ class _RegistrationDeliveryState extends State<RegistrationDelivery> {
                   child: Icon(Icons.arrow_back),
                 ),
                 leadingWidth: 15,
-                title: const Text('Courier registration',
+                title: const Text('Driver registration',
                     style:
                         TextStyle(fontFamily: 'MoveTextRegular', fontSize: 20)),
                 centerTitle: false,
@@ -104,8 +104,8 @@ class _RegistrationDeliveryState extends State<RegistrationDelivery> {
                                 context: context, nature: 'car_details')[1],
                             icoRepr: showProgressIcoStatus(
                                 context: context, nature: 'car_details')[0],
-                            actuator: () =>
-                                Navigator.of(context).pushNamed('/SelectCar'),
+                            actuator: () => Navigator.of(context)
+                                .pushNamed('/SelectCarRide'),
                           ),
                           const Divider(),
                           Options(
@@ -119,7 +119,7 @@ class _RegistrationDeliveryState extends State<RegistrationDelivery> {
                           ),
                           const Divider(),
                           Options(
-                            title: 'License',
+                            title: 'License with GP',
                             subTitle: showProgressIcoStatus(
                                 context: context, nature: 'license_photo')[1],
                             icoRepr: showProgressIcoStatus(
@@ -127,6 +127,33 @@ class _RegistrationDeliveryState extends State<RegistrationDelivery> {
                             actuator: () => showModalActions(
                                 context: context,
                                 scenario: 'license_photo_take'),
+                          ),
+                          const Divider(),
+                          Options(
+                            title: 'Blue Paper',
+                            subTitle: 'Here',
+                            icoRepr: Icon(Icons.description),
+                            actuator: () => showModalActions(
+                                context: context,
+                                scenario: 'bluePaper_photo_take'),
+                          ),
+                          const Divider(),
+                          Options(
+                            title: 'White Paper',
+                            subTitle: 'Here',
+                            icoRepr: Icon(Icons.description),
+                            actuator: () => showModalActions(
+                                context: context,
+                                scenario: 'whitePaper_photo_take'),
+                          ),
+                          const Divider(),
+                          Options(
+                            title: 'Permit',
+                            subTitle: 'Here',
+                            icoRepr: Icon(Icons.description),
+                            actuator: () => showModalActions(
+                                context: context,
+                                scenario: 'permit_photo_take'),
                           ),
                           const Divider(),
                           Options(

@@ -10,7 +10,7 @@ import 'package:flutter/material.dart';
 // Will hold all the home related globals - only!
 
 class HomeProvider with ChangeNotifier {
-  final String bridge = 'http://192.168.8.104:9999';
+  final String bridge = 'http://192.168.8.132:9999';
   String user_fingerprint =
       '6fc0fbe78d093080ca60b1c534a1b7b5e171640dba4d796fb95337b88feb4befb6080417ede87759';
 
