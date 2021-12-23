@@ -14,6 +14,8 @@ class RegistrationProvider with ChangeNotifier {
   //? I truly provided the right information
   bool iTrulyProvided = false;
 
+  String? driverNature = 'RIDE'; //The type of driver selected: COURIER or RIDE
+
   Map<String, String> personalDetails = {
     'name': '',
     'surname': '',
@@ -80,6 +82,10 @@ class RegistrationProvider with ChangeNotifier {
       } else //Found a saved state
       {
         // log(state['carPhoto']);
+        driverNature = state['driverNature'] == null
+            ? null
+            : state['driverNature']; //! The type of driver
+        //...
         personalDetails = {
           'name': state['personalDetails']['name'],
           'surname': state['personalDetails']['surname'],
@@ -99,7 +105,10 @@ class RegistrationProvider with ChangeNotifier {
           'brand_name': state['definitiveVehicleInfos']['brand_name'],
           'model_name': state['definitiveVehicleInfos']['model_name'],
           'color': state['definitiveVehicleInfos']['color'],
-          'plate_number': state['definitiveVehicleInfos']['plate_number']
+          'plate_number': state['definitiveVehicleInfos']['plate_number'],
+          //! Only for ride registration
+          'taxi_number': state['definitiveVehicleInfos']['taxi_number'],
+          'permit_number': state['definitiveVehicleInfos']['permit_number']
         };
         //! Only for ride registration
         bluepaperPhoto = state['bluepaperPhoto'] == null
@@ -160,6 +169,7 @@ class RegistrationProvider with ChangeNotifier {
   //! Convert class to Map
   Map<String, dynamic> toMap() {
     return {
+      'driverNature': driverNature,
       'personalDetails': personalDetails,
       'driverPhoto': driverPhoto == null ? null : driverPhoto!.path,
       'carDetails': carDetails,
@@ -254,6 +264,35 @@ class RegistrationProvider with ChangeNotifier {
     peristDataMap();
   }
 
+  //! Only for ride registration
+  //5.a Update the blue paper photo
+  void updateBluePaperPhoto({required XFile? photo}) {
+    bluepaperPhoto = photo;
+    notifyListeners();
+
+    //? persist
+    peristDataMap();
+  }
+
+  //5.b Update the white paper photo
+  void updateWhitePaperPhoto({required XFile? photo}) {
+    whitepaperPhoto = photo;
+    notifyListeners();
+
+    //? perssist
+    peristDataMap();
+  }
+
+  //5.c Update the permit photo
+  void updatePermitPhoto({required XFile? photo}) {
+    permitPhoto = photo;
+    notifyListeners();
+
+    //? perssist
+    peristDataMap();
+  }
+  //!-----
+
   //?6. Update the id photo
   void updateIDPhoto({required var photo}) {
     idPhoto = photo;
@@ -299,6 +338,14 @@ class RegistrationProvider with ChangeNotifier {
         break;
       case 'plate_number':
         definitiveVehicleInfos['plate_number'] = data;
+        notifyListeners();
+        break;
+      case 'taxi_number':
+        definitiveVehicleInfos['taxi_number'] = data;
+        notifyListeners();
+        break;
+      case 'permit_number':
+        definitiveVehicleInfos['permit_number'] = data;
         notifyListeners();
         break;
       default:

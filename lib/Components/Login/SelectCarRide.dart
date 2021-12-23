@@ -66,7 +66,9 @@ class _SelectCarRideState extends State<SelectCarRide> {
                     ),
                     Row(
                       children: [
-                        BasicInputText(title: 'Taxi number', nature: ''),
+                        BasicInputText(
+                            title: 'Taxi number',
+                            nature: 'vehicle_details_taxi_number'),
                       ],
                     ),
                     const SizedBox(
@@ -74,7 +76,9 @@ class _SelectCarRideState extends State<SelectCarRide> {
                     ),
                     Row(
                       children: [
-                        BasicInputText(title: 'Permit number', nature: ''),
+                        BasicInputText(
+                            title: 'Permit number',
+                            nature: 'vehicle_details_permit_number'),
                       ],
                     ),
                     const Expanded(child: Text('')),
@@ -84,8 +88,7 @@ class _SelectCarRideState extends State<SelectCarRide> {
                         isArrowShow: false,
                         horizontalPadding: 0,
                         actuatorFunctionl: () {
-                          Navigator.of(context)
-                              .pushNamed('/RegistrationDelivery');
+                          Navigator.of(context).pushNamed('/RegistrationRide');
                         })
                   ]),
             ),
@@ -108,8 +111,7 @@ class _SelectCarRideState extends State<SelectCarRide> {
             borderRadius: BorderRadius.circular(4)),
         child: ListTile(
           contentPadding: EdgeInsets.only(left: 15, right: 15),
-          onTap: () =>
-              Navigator.of(context).pushNamed('/SelectCarRideDirectory'),
+          onTap: () => Navigator.of(context).pushNamed('/SelectCarDirectory'),
           title: const Text(
             'Select transport',
             style: TextStyle(fontFamily: 'MoveTextMedium'),
@@ -138,8 +140,7 @@ class _SelectCarRideState extends State<SelectCarRide> {
               )),
           horizontalTitleGap: 0,
           contentPadding: EdgeInsets.only(left: 15, right: 15),
-          onTap: () =>
-              Navigator.of(context).pushNamed('/SelectCarRideDirectory'),
+          onTap: () => Navigator.of(context).pushNamed('/SelectCarDirectory'),
           title: Text(
             context
                 .watch<RegistrationProvider>()

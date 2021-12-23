@@ -166,10 +166,20 @@ class _RegistrationDeliveryState extends State<RegistrationDelivery> {
                                         : (val) {
                                             //nothing to do
                                           }),
-                                const Flexible(
-                                  child: Text(
-                                      "I'm sure that all the information provided are authentic and accurate.",
-                                      style: TextStyle(fontSize: 14)),
+                                Flexible(
+                                  child: InkWell(
+                                    onTap: () {
+                                      context
+                                          .read<RegistrationProvider>()
+                                          .updateTheTruylyProvidedInfos(
+                                              state: !context
+                                                  .read<RegistrationProvider>()
+                                                  .iTrulyProvided);
+                                    },
+                                    child: const Text(
+                                        "I'm sure that all the information provided are authentic and accurate.",
+                                        style: TextStyle(fontSize: 14)),
+                                  ),
                                 )
                               ],
                             ),

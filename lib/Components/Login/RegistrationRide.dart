@@ -131,8 +131,10 @@ class _RegistrationRideState extends State<RegistrationRide> {
                           const Divider(),
                           Options(
                             title: 'Blue Paper',
-                            subTitle: 'Here',
-                            icoRepr: Icon(Icons.description),
+                            subTitle: showProgressIcoStatus(
+                                context: context, nature: 'bluepaper_photo')[1],
+                            icoRepr: showProgressIcoStatus(
+                                context: context, nature: 'bluepaper_photo')[0],
                             actuator: () => showModalActions(
                                 context: context,
                                 scenario: 'bluePaper_photo_take'),
@@ -140,8 +142,12 @@ class _RegistrationRideState extends State<RegistrationRide> {
                           const Divider(),
                           Options(
                             title: 'White Paper',
-                            subTitle: 'Here',
-                            icoRepr: Icon(Icons.description),
+                            subTitle: showProgressIcoStatus(
+                                context: context,
+                                nature: 'whitepaper_photo')[1],
+                            icoRepr: showProgressIcoStatus(
+                                context: context,
+                                nature: 'whitepaper_photo')[0],
                             actuator: () => showModalActions(
                                 context: context,
                                 scenario: 'whitePaper_photo_take'),
@@ -149,8 +155,10 @@ class _RegistrationRideState extends State<RegistrationRide> {
                           const Divider(),
                           Options(
                             title: 'Permit',
-                            subTitle: 'Here',
-                            icoRepr: Icon(Icons.description),
+                            subTitle: showProgressIcoStatus(
+                                context: context, nature: 'permit_photo')[1],
+                            icoRepr: showProgressIcoStatus(
+                                context: context, nature: 'permit_photo')[0],
                             actuator: () => showModalActions(
                                 context: context,
                                 scenario: 'permit_photo_take'),
@@ -193,10 +201,20 @@ class _RegistrationRideState extends State<RegistrationRide> {
                                         : (val) {
                                             //nothing to do
                                           }),
-                                const Flexible(
-                                  child: Text(
-                                      "I'm sure that all the information provided are authentic and accurate.",
-                                      style: TextStyle(fontSize: 14)),
+                                Flexible(
+                                  child: InkWell(
+                                    onTap: () {
+                                      context
+                                          .read<RegistrationProvider>()
+                                          .updateTheTruylyProvidedInfos(
+                                              state: !context
+                                                  .read<RegistrationProvider>()
+                                                  .iTrulyProvided);
+                                    },
+                                    child: const Text(
+                                        "I'm sure that all the information provided are authentic and accurate.",
+                                        style: TextStyle(fontSize: 14)),
+                                  ),
                                 )
                               ],
                             ),
@@ -301,6 +319,12 @@ class _RegistrationRideState extends State<RegistrationRide> {
     XFile? carPhoto = context.watch<RegistrationProvider>().carPhoto;
     XFile? licensePhoto = context.watch<RegistrationProvider>().licensePhoto;
     XFile? idPhoto = context.watch<RegistrationProvider>().idPhoto;
+    XFile? bluepaperPhoto =
+        context.watch<RegistrationProvider>().bluepaperPhoto;
+    XFile? whitepaperPhoto =
+        context.watch<RegistrationProvider>().whitepaperPhoto;
+    XFile? permitPhoto = context.watch<RegistrationProvider>().permitPhoto;
+
     if (personalDetails['name']!.isNotEmpty &&
         personalDetails['surname']!.isNotEmpty &&
         personalDetails['email']!.isNotEmpty &&
@@ -309,9 +333,14 @@ class _RegistrationRideState extends State<RegistrationRide> {
         carDetails['model_name']!.isNotEmpty &&
         carDetails['color']!.isNotEmpty &&
         carDetails['plate_number']!.isNotEmpty &&
+        carDetails['taxi_number']!.isNotEmpty &&
+        carDetails['permit_number']!.isNotEmpty &&
         carPhoto != null &&
         licensePhoto != null &&
-        idPhoto != null) {
+        idPhoto != null &&
+        bluepaperPhoto != null &&
+        whitepaperPhoto != null &&
+        permitPhoto != null) {
       return {
         'opacity': 1.0,
         'actuator': () {
@@ -415,12 +444,16 @@ class _RegistrationRideState extends State<RegistrationRide> {
         return data['brand_name']!.isNotEmpty &&
                 data['model_name']!.isNotEmpty &&
                 data['color']!.isNotEmpty &&
-                data['plate_number']!.isNotEmpty
+                data['plate_number']!.isNotEmpty &&
+                data['taxi_number']!.isNotEmpty &&
+                data['permit_number']!.isNotEmpty
             ? [Icon(Icons.check_circle, color: Colors.green), 'Done']
             : data['brand_name']!.isEmpty &&
                     data['model_name']!.isEmpty &&
                     data['color']!.isEmpty &&
-                    data['plate_number']!.isEmpty
+                    data['plate_number']!.isEmpty &&
+                    data['taxi_number']!.isEmpty &&
+                    data['permit_number']!.isEmpty
                 ? [
                     const Icon(
                       Icons.description,
@@ -456,6 +489,39 @@ class _RegistrationRideState extends State<RegistrationRide> {
             : [Icon(Icons.check_circle, color: Colors.green), 'Done'];
       case 'id_photo':
         XFile? data = context.watch<RegistrationProvider>().idPhoto;
+        return data == null
+            ? [
+                const Icon(
+                  Icons.description,
+                  color: Colors.black,
+                ),
+                'Ready to begin'
+              ]
+            : [Icon(Icons.check_circle, color: Colors.green), 'Done'];
+      case 'bluepaper_photo':
+        XFile? data = context.watch<RegistrationProvider>().bluepaperPhoto;
+        return data == null
+            ? [
+                const Icon(
+                  Icons.description,
+                  color: Colors.black,
+                ),
+                'Ready to begin'
+              ]
+            : [Icon(Icons.check_circle, color: Colors.green), 'Done'];
+      case 'whitepaper_photo':
+        XFile? data = context.watch<RegistrationProvider>().whitepaperPhoto;
+        return data == null
+            ? [
+                const Icon(
+                  Icons.description,
+                  color: Colors.black,
+                ),
+                'Ready to begin'
+              ]
+            : [Icon(Icons.check_circle, color: Colors.green), 'Done'];
+      case 'permit_photo':
+        XFile? data = context.watch<RegistrationProvider>().permitPhoto;
         return data == null
             ? [
                 const Icon(

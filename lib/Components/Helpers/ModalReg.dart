@@ -416,10 +416,11 @@ class _ModalRegState extends State<ModalReg> {
           child: Padding(
             padding: const EdgeInsets.only(left: 15, right: 15),
             child: SafeArea(
-                child: context.watch<RegistrationProvider>().idPhoto == null
+                child: context.watch<RegistrationProvider>().bluepaperPhoto ==
+                        null
                     ? showTakeProfilePicData(
                         context: context,
-                        illustrationExamplePath: 'assets/Images/IDTemplate.png',
+                        illustrationExamplePath: 'assets/Images/logo.png',
                         title: 'Blue paper',
                         descr1:
                             'Please make sure that the document your are sending is your Blue Paper.',
@@ -446,10 +447,11 @@ class _ModalRegState extends State<ModalReg> {
           child: Padding(
             padding: const EdgeInsets.only(left: 15, right: 15),
             child: SafeArea(
-                child: context.watch<RegistrationProvider>().idPhoto == null
+                child: context.watch<RegistrationProvider>().whitepaperPhoto ==
+                        null
                     ? showTakeProfilePicData(
                         context: context,
-                        illustrationExamplePath: 'assets/Images/IDTemplate.png',
+                        illustrationExamplePath: 'assets/Images/logo.png',
                         title: 'White paper',
                         descr1:
                             'Please make sure that the document your are sending is your White Paper.',
@@ -476,10 +478,10 @@ class _ModalRegState extends State<ModalReg> {
           child: Padding(
             padding: const EdgeInsets.only(left: 15, right: 15),
             child: SafeArea(
-                child: context.watch<RegistrationProvider>().idPhoto == null
+                child: context.watch<RegistrationProvider>().permitPhoto == null
                     ? showTakeProfilePicData(
                         context: context,
-                        illustrationExamplePath: 'assets/Images/IDTemplate.png',
+                        illustrationExamplePath: 'assets/Images/logo.png',
                         title: 'Permit',
                         descr1:
                             'Please make sure that the document your are sending is your permit.',
@@ -770,6 +772,22 @@ class _ModalRegState extends State<ModalReg> {
           case 'idPhoto':
             context.read<RegistrationProvider>().updateIDPhoto(photo: image);
             break;
+          //! Only for ride registration
+          case 'bluepaperPhoto':
+            context
+                .read<RegistrationProvider>()
+                .updateBluePaperPhoto(photo: image);
+            break;
+          case 'whitepaperPhoto':
+            context
+                .read<RegistrationProvider>()
+                .updateWhitePaperPhoto(photo: image);
+            break;
+          case 'permitPhoto':
+            context
+                .read<RegistrationProvider>()
+                .updatePermitPhoto(photo: image);
+            break;
           default:
         }
       });
@@ -834,6 +852,26 @@ class _BasicInputTextState extends State<BasicInputText> {
 
               context.read<RegistrationProvider>().updateDefinitiveVehicleInfos(
                   nature: 'plate_number', data: value.toUpperCase());
+              break;
+            case 'vehicle_details_taxi_number':
+              setState(() {
+                textEditingController.text = value.toUpperCase();
+                textEditingController.selection = TextSelection.fromPosition(
+                    TextPosition(offset: textEditingController.text.length));
+              });
+
+              context.read<RegistrationProvider>().updateDefinitiveVehicleInfos(
+                  nature: 'taxi_number', data: value.toUpperCase());
+              break;
+            case 'vehicle_details_permit_number':
+              setState(() {
+                textEditingController.text = value.toUpperCase();
+                textEditingController.selection = TextSelection.fromPosition(
+                    TextPosition(offset: textEditingController.text.length));
+              });
+
+              context.read<RegistrationProvider>().updateDefinitiveVehicleInfos(
+                  nature: 'permit_number', data: value.toUpperCase());
               break;
             default:
           }
