@@ -1,8 +1,10 @@
 // ignore_for_file: file_names
 
 import 'package:flutter/material.dart';
+import 'package:provider/src/provider.dart';
 import 'package:taxiconnectdrivers/Components/Home/TripDetails.dart';
 import 'package:taxiconnectdrivers/Components/Modules/GenericRectButton/GenericRectButton.dart';
+import 'package:taxiconnectdrivers/Components/Providers/RegistrationProvider.dart';
 
 class SignupEntry extends StatefulWidget {
   const SignupEntry({Key? key}) : super(key: key);
@@ -71,7 +73,8 @@ class _SignupEntryState extends State<SignupEntry> {
                   label: 'Next',
                   horizontalPadding: 0,
                   labelFontSize: 20,
-                  actuatorFunctionl: () {})
+                  actuatorFunctionl: () =>
+                      Navigator.of(context).pushNamed('/RegisterOptions'))
             ],
           ),
         ),
@@ -116,6 +119,7 @@ class CitySelect extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.only(left: 8, right: 8),
         child: DropdownButton(
+          value: context.watch<RegistrationProvider>().city,
           isExpanded: true,
           underline: Divider(
             color: Colors.grey.shade200,
@@ -124,7 +128,9 @@ class CitySelect extends StatelessWidget {
           items: ['Windhoek', 'Swakopmund', 'Walvis Bay'].map((String value) {
             return DropdownMenuItem(child: Text(value), value: value);
           }).toList(),
-          onChanged: (value) => print(value),
+          onChanged: (value) => context
+              .read<RegistrationProvider>()
+              .updateSelectedCity(data: value as String?),
         ),
       ),
     );

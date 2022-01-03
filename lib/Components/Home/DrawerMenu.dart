@@ -28,11 +28,28 @@ class _DrawerMenuState extends State<DrawerMenu> {
                 child: SafeArea(
                     child: ListTile(
                   horizontalTitleGap: 10,
-                  leading: const CircleAvatar(
-                    radius: 35,
-                    backgroundColor: Colors.grey,
-                    backgroundImage: AssetImage('assets/Images/girl.jpg'),
-                  ),
+                  leading: CircleAvatar(
+                      radius: 35,
+                      backgroundColor: Colors.white,
+                      // backgroundImage: Image.network(context.watch<HomeProvider>().userAccountDetails['profile_pciture']),
+                      child: Image.network(
+                        context
+                                .watch<HomeProvider>()
+                                .userAccountDetails['profile_pciture'] ??
+                            '',
+                        fit: BoxFit.cover,
+                        width: 70.0,
+                        height: 70.0,
+                        errorBuilder: (context, error, stackTrace) {
+                          return const CircleAvatar(
+                            radius: 25,
+                            backgroundColor: Colors.white,
+                            backgroundImage: AssetImage(
+                              'assets/Images/user.png',
+                            ),
+                          );
+                        },
+                      )),
                   title: const Text(
                     'Alex',
                     style: TextStyle(
@@ -67,12 +84,14 @@ class _DrawerMenuState extends State<DrawerMenu> {
           MenuOption(
             titleOption: 'Settings',
             showDivider: true,
-            actuatorFnc: () => log('rides'),
+            actuatorFnc: () =>
+                Navigator.of(context).pushReplacementNamed('/Settings'),
           ),
           MenuOption(
             titleOption: 'Support',
             showDivider: false,
-            actuatorFnc: () => log('rides'),
+            actuatorFnc: () =>
+                Navigator.of(context).pushReplacementNamed('/Support'),
           ),
           Expanded(
               child: SafeArea(

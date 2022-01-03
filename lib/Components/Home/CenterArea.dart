@@ -52,9 +52,56 @@ class _CenterAreaState extends State<CenterArea> {
                           const Padding(padding: EdgeInsets.only(top: 15)),
                       itemCount:
                           context.read<HomeProvider>().tripRequestsData.length)
-                  : const EmptyTripsWindow()
+                  : context.watch<HomeProvider>().onlineOfflineData['flag'] ==
+                          'offline'
+                      ? const OfflineWindow()
+                      : const EmptyTripsWindow()
               : const RequestLocationWindow()),
     ));
+  }
+}
+
+//Show offline
+class OfflineWindow extends StatelessWidget {
+  const OfflineWindow({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: MediaQuery.of(context).size.width,
+      child: Column(
+        children: [
+          Expanded(
+              child: Padding(
+            padding: const EdgeInsets.only(left: 20, right: 20),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 15),
+                  child: Icon(Icons.power_settings_new,
+                      size: 50, color: Colors.grey.shade600),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 8.0),
+                  child: Text("You're offline",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          fontFamily: 'MoveTextMedium',
+                          color: Colors.grey.shade600,
+                          fontSize: 20)),
+                ),
+                Text("Go online to receive requests.",
+                    textAlign: TextAlign.center,
+                    style:
+                        TextStyle(color: Colors.grey.shade600, fontSize: 16)),
+              ],
+            ),
+          ))
+        ],
+      ),
+    );
   }
 }
 

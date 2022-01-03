@@ -3,11 +3,13 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 import 'package:provider/src/provider.dart';
 import 'package:taxiconnectdrivers/Components/Helpers/Networking.dart';
 import 'package:taxiconnectdrivers/Components/Home/TripDetails.dart';
 import 'package:taxiconnectdrivers/Components/Modules/GenericRectButton/GenericRectButton.dart';
 import 'package:taxiconnectdrivers/Components/Providers/HomeProvider.dart';
+import 'package:taxiconnectdrivers/Components/Providers/RegistrationProvider.dart';
 
 class Modal extends StatelessWidget {
   final String scenario;
@@ -19,9 +21,153 @@ class Modal extends StatelessWidget {
     return getContent(context: context, scenario: scenario);
   }
 
+  void _callNumber({required String phone}) async {
+    bool? res = await FlutterPhoneDirectCaller.callNumber(phone);
+  }
+
   //Return the correct content based on the scenario
   Widget getContent({required BuildContext context, required String scenario}) {
     switch (scenario) {
+      case 'help_signup_details':
+        return Container(
+          // color: Colors.red,
+          height: 250,
+          alignment: Alignment.topCenter,
+          child: Padding(
+            padding: const EdgeInsets.only(top: 40),
+            child:
+                Column(mainAxisAlignment: MainAxisAlignment.start, children: [
+              ListTile(
+                onTap: () {
+                  _callNumber(phone: '0856997167');
+                },
+                leading: const Icon(Icons.phone, color: Colors.black),
+                horizontalTitleGap: 0,
+                title: const Text('Call support',
+                    style:
+                        TextStyle(fontSize: 18, fontFamily: 'MoveTextMedium')),
+              ),
+              const Divider(),
+              ListTile(
+                onTap: () {
+                  //Clear everything
+                  //! 1. Registration
+                  context.read<RegistrationProvider>().clearEverything();
+                  //! 2. Home
+                  context.read<HomeProvider>().clearEverything();
+
+                  Navigator.of(context).pushReplacementNamed('/Entry');
+                },
+                leading: Icon(Icons.logout, color: Colors.red.shade600),
+                horizontalTitleGap: 0,
+                title: const Text('Sign out',
+                    style:
+                        TextStyle(fontSize: 18, fontFamily: 'MoveTextMedium')),
+              ),
+            ]),
+          ),
+        );
+      case 'error_checking_otpCode':
+        return Container(
+          // color: Colors.red,
+          height: 450,
+          alignment: Alignment.topCenter,
+          child: Padding(
+            padding: const EdgeInsets.only(top: 40),
+            child:
+                Column(mainAxisAlignment: MainAxisAlignment.start, children: [
+              const Icon(Icons.error,
+                  size: 45, color: Color.fromRGBO(178, 34, 34, 1)),
+              const Padding(
+                padding: EdgeInsets.only(top: 25),
+                child: Text("Couldn't check the OTP",
+                    style: TextStyle(fontFamily: 'MoveTextBold', fontSize: 20)),
+              ),
+              const Padding(
+                padding: EdgeInsets.only(top: 10, left: 15, right: 15),
+                child: Text(
+                    'Sorry due to an unexpected error we were unable to move forward with the authentication of your OTP, please try again.',
+                    textAlign: TextAlign.center,
+                    style:
+                        TextStyle(fontFamily: 'MoveTextRegular', fontSize: 17)),
+              ),
+              const Expanded(child: Text('')),
+              GenericRectButton(
+                  label: 'Try again',
+                  labelFontSize: 20,
+                  isArrowShow: false,
+                  actuatorFunctionl: () =>
+                      Navigator.of(context).pushNamed('/PhoneDetailsScreen'))
+            ]),
+          ),
+        );
+      case 'wrong_otp_code_entered':
+        return Container(
+          // color: Colors.red,
+          height: 450,
+          alignment: Alignment.topCenter,
+          child: Padding(
+            padding: const EdgeInsets.only(top: 40),
+            child:
+                Column(mainAxisAlignment: MainAxisAlignment.start, children: [
+              const Icon(Icons.error,
+                  size: 45, color: Color.fromRGBO(178, 34, 34, 1)),
+              const Padding(
+                padding: EdgeInsets.only(top: 25),
+                child: Text("Wrong code",
+                    style: TextStyle(fontFamily: 'MoveTextBold', fontSize: 20)),
+              ),
+              const Padding(
+                padding: EdgeInsets.only(top: 10, left: 15, right: 15),
+                child: Text(
+                    "Sorry, it looks like the code that you've entered is not the last one we've sent, please double check your SMS and try again.",
+                    textAlign: TextAlign.center,
+                    style:
+                        TextStyle(fontFamily: 'MoveTextRegular', fontSize: 17)),
+              ),
+              const Expanded(child: Text('')),
+              GenericRectButton(
+                  label: 'Try again',
+                  labelFontSize: 20,
+                  isArrowShow: false,
+                  actuatorFunctionl: () => Navigator.of(context).pop())
+            ]),
+          ),
+        );
+      case 'error_sending_otpCode':
+        return Container(
+          // color: Colors.red,
+          height: 450,
+          alignment: Alignment.topCenter,
+          child: Padding(
+            padding: const EdgeInsets.only(top: 40),
+            child:
+                Column(mainAxisAlignment: MainAxisAlignment.start, children: [
+              const Icon(Icons.error,
+                  size: 45, color: Color.fromRGBO(178, 34, 34, 1)),
+              const Padding(
+                padding: EdgeInsets.only(top: 25),
+                child: Text("Something's wrong",
+                    style: TextStyle(fontFamily: 'MoveTextBold', fontSize: 20)),
+              ),
+              const Padding(
+                padding: EdgeInsets.only(top: 10, left: 15, right: 15),
+                child: Text(
+                    'Sorry due to an unexpected error we were unable to move forward with the authentication of your phone number, please try again.',
+                    textAlign: TextAlign.center,
+                    style:
+                        TextStyle(fontFamily: 'MoveTextRegular', fontSize: 17)),
+              ),
+              const Expanded(child: Text('')),
+              GenericRectButton(
+                  label: 'Try again',
+                  labelFontSize: 20,
+                  isArrowShow: false,
+                  actuatorFunctionl: () =>
+                      Navigator.of(context).pushNamed('/PhoneDetailsScreen'))
+            ]),
+          ),
+        );
       case 'accepted_request':
         return Container(
           // color: Colors.red,

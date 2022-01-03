@@ -49,48 +49,53 @@ class _WalletState extends State<Wallet> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        shadowColor: Colors.white,
-        elevation: 0,
-        leading: InkWell(
-            onTap: () => Navigator.of(context).pushReplacementNamed('/Home'),
-            child: const Icon(Icons.arrow_back, color: Colors.black)),
-        title: const Text(
-          'Wallet',
-          style: TextStyle(
-              color: Colors.black, fontFamily: 'MoveBold', fontSize: 23),
+    return WillPopScope(
+      onWillPop: () async {
+        return Future.value(false);
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.white,
+          shadowColor: Colors.white,
+          elevation: 0,
+          leading: InkWell(
+              onTap: () => Navigator.of(context).pushReplacementNamed('/Home'),
+              child: const Icon(Icons.arrow_back, color: Colors.black)),
+          title: const Text(
+            'Wallet',
+            style: TextStyle(
+                color: Colors.black, fontFamily: 'MoveBold', fontSize: 23),
+          ),
         ),
-      ),
-      backgroundColor: Colors.white,
-      body: Column(
-        children: [
-          const HeaderPartWallet(),
-          Expanded(
-            child: SafeArea(
-              bottom: false,
-              child: Container(
-                width: MediaQuery.of(context).size.width,
-                decoration: BoxDecoration(
-                    boxShadow: [
-                      BoxShadow(
-                          color: Colors.black.withOpacity(0.2),
-                          spreadRadius: 3,
-                          blurRadius: 6)
-                    ],
-                    color: Colors.white,
-                    borderRadius: const BorderRadius.only(
-                        topLeft: Radius.circular(35),
-                        topRight: Radius.circular(35))),
-                child: const Padding(
-                  padding: EdgeInsets.only(top: 10),
-                  child: WalletBottomPart(),
+        backgroundColor: Colors.white,
+        body: Column(
+          children: [
+            const HeaderPartWallet(),
+            Expanded(
+              child: SafeArea(
+                bottom: false,
+                child: Container(
+                  width: MediaQuery.of(context).size.width,
+                  decoration: BoxDecoration(
+                      boxShadow: [
+                        BoxShadow(
+                            color: Colors.black.withOpacity(0.2),
+                            spreadRadius: 3,
+                            blurRadius: 6)
+                      ],
+                      color: Colors.white,
+                      borderRadius: const BorderRadius.only(
+                          topLeft: Radius.circular(35),
+                          topRight: Radius.circular(35))),
+                  child: const Padding(
+                    padding: EdgeInsets.only(top: 10),
+                    child: WalletBottomPart(),
+                  ),
                 ),
               ),
-            ),
-          )
-        ],
+            )
+          ],
+        ),
       ),
     );
   }
@@ -120,10 +125,40 @@ class HeaderPartWallet extends StatelessWidget {
                         spreadRadius: 4,
                         blurRadius: 8)
                   ]),
-                  child: const CircleAvatar(
-                    backgroundImage: AssetImage('assets/Images/girl.jpg'),
-                    radius: 40,
-                  ),
+                  child: CircleAvatar(
+                      // backgroundImage: AssetImage('assets/Images/girl.jpg'),
+                      radius: 40,
+                      backgroundColor: Colors.white,
+                      child: Container(
+                        decoration: BoxDecoration(
+                            // border: Border.all(
+                            //   width: 1,
+                            // ),
+                            boxShadow: [
+                              BoxShadow(
+                                  color: Colors.grey.shade300,
+                                  blurRadius: 5,
+                                  spreadRadius: 5)
+                            ], shape: BoxShape.circle),
+                        child: Image.network(
+                          context
+                                  .watch<HomeProvider>()
+                                  .userAccountDetails['profile_pciture'] ??
+                              '',
+                          fit: BoxFit.cover,
+                          width: 80.0,
+                          height: 80.0,
+                          errorBuilder: (context, error, stackTrace) {
+                            return const CircleAvatar(
+                              radius: 37,
+                              backgroundColor: Colors.white,
+                              backgroundImage: AssetImage(
+                                'assets/Images/user.png',
+                              ),
+                            );
+                          },
+                        ),
+                      )),
                 ),
               ],
             ),

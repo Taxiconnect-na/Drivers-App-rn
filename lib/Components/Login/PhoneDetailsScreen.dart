@@ -63,9 +63,10 @@ class _PhoneDetailsScreenState extends State<PhoneDetailsScreen> {
                         ),
                       ),
                       trailing: GenericCircButton(
-                        actuatorFunctionl: () => Navigator.pushNamed(
-                            context, '/OTPVerificationEntry'),
-                      ),
+                          actuatorFunctionl: () => Navigator.pushNamed(
+                                context,
+                                '/OTPVerificationEntry',
+                              )),
                     ),
                   ))
             ],

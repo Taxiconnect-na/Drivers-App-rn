@@ -36,11 +36,17 @@ class _RegistrationRideState extends State<RegistrationRide> {
             ? null
             : AppBar(
                 backgroundColor: Colors.black,
-                leading: const Padding(
-                  padding: EdgeInsets.only(right: 8.0, left: 5),
-                  child: Icon(Icons.arrow_back),
+                leading: IconButton(
+                  padding: EdgeInsets.only(left: 0),
+                  visualDensity: VisualDensity.comfortable,
+                  onPressed: () {
+                    //Clear all the data
+                    context.read<RegistrationProvider>().clearEverything();
+                    //...
+                    Navigator.of(context).pushNamed('/RegisterOptions');
+                  },
+                  icon: Icon(Icons.arrow_back),
                 ),
-                leadingWidth: 15,
                 title: const Text('Driver registration',
                     style:
                         TextStyle(fontFamily: 'MoveTextRegular', fontSize: 20)),
@@ -365,9 +371,9 @@ class _RegistrationRideState extends State<RegistrationRide> {
                       )),
                 );
               });
-          SubmitCourierRegistrationNet submitCourierRegistrationNet =
-              SubmitCourierRegistrationNet();
-          submitCourierRegistrationNet.exec(context: context);
+          SubmitRidesRegistrationNet submitRidesRegistrationNet =
+              SubmitRidesRegistrationNet();
+          submitRidesRegistrationNet.exec(context: context);
         }
       };
     } else //!Incomplete
@@ -411,7 +417,7 @@ class _RegistrationRideState extends State<RegistrationRide> {
         return data['name']!.isNotEmpty &&
                 data['surname']!.isNotEmpty &&
                 data['email']!.isNotEmpty
-            ? [Icon(Icons.check_circle, color: Colors.green), 'Done']
+            ? [const Icon(Icons.check_circle, color: Colors.green), 'Done']
             : data['name']!.isEmpty &&
                     data['surname']!.isEmpty &&
                     data['email']!.isEmpty
@@ -436,7 +442,7 @@ class _RegistrationRideState extends State<RegistrationRide> {
                 ),
                 'Ready to begin'
               ]
-            : [Icon(Icons.check_circle, color: Colors.green), 'Done'];
+            : [const Icon(Icons.check_circle, color: Colors.green), 'Done'];
 
       case 'car_details':
         Map<String, String> data =
@@ -447,7 +453,7 @@ class _RegistrationRideState extends State<RegistrationRide> {
                 data['plate_number']!.isNotEmpty &&
                 data['taxi_number']!.isNotEmpty &&
                 data['permit_number']!.isNotEmpty
-            ? [Icon(Icons.check_circle, color: Colors.green), 'Done']
+            ? [const Icon(Icons.check_circle, color: Colors.green), 'Done']
             : data['brand_name']!.isEmpty &&
                     data['model_name']!.isEmpty &&
                     data['color']!.isEmpty &&
@@ -475,7 +481,7 @@ class _RegistrationRideState extends State<RegistrationRide> {
                 ),
                 'Ready to begin'
               ]
-            : [Icon(Icons.check_circle, color: Colors.green), 'Done'];
+            : [const Icon(Icons.check_circle, color: Colors.green), 'Done'];
       case 'license_photo':
         XFile? data = context.watch<RegistrationProvider>().licensePhoto;
         return data == null
@@ -486,7 +492,7 @@ class _RegistrationRideState extends State<RegistrationRide> {
                 ),
                 'Ready to begin'
               ]
-            : [Icon(Icons.check_circle, color: Colors.green), 'Done'];
+            : [const Icon(Icons.check_circle, color: Colors.green), 'Done'];
       case 'id_photo':
         XFile? data = context.watch<RegistrationProvider>().idPhoto;
         return data == null
@@ -497,7 +503,7 @@ class _RegistrationRideState extends State<RegistrationRide> {
                 ),
                 'Ready to begin'
               ]
-            : [Icon(Icons.check_circle, color: Colors.green), 'Done'];
+            : [const Icon(Icons.check_circle, color: Colors.green), 'Done'];
       case 'bluepaper_photo':
         XFile? data = context.watch<RegistrationProvider>().bluepaperPhoto;
         return data == null
@@ -508,7 +514,7 @@ class _RegistrationRideState extends State<RegistrationRide> {
                 ),
                 'Ready to begin'
               ]
-            : [Icon(Icons.check_circle, color: Colors.green), 'Done'];
+            : [const Icon(Icons.check_circle, color: Colors.green), 'Done'];
       case 'whitepaper_photo':
         XFile? data = context.watch<RegistrationProvider>().whitepaperPhoto;
         return data == null
@@ -519,7 +525,7 @@ class _RegistrationRideState extends State<RegistrationRide> {
                 ),
                 'Ready to begin'
               ]
-            : [Icon(Icons.check_circle, color: Colors.green), 'Done'];
+            : [const Icon(Icons.check_circle, color: Colors.green), 'Done'];
       case 'permit_photo':
         XFile? data = context.watch<RegistrationProvider>().permitPhoto;
         return data == null
@@ -530,7 +536,7 @@ class _RegistrationRideState extends State<RegistrationRide> {
                 ),
                 'Ready to begin'
               ]
-            : [Icon(Icons.check_circle, color: Colors.green), 'Done'];
+            : [const Icon(Icons.check_circle, color: Colors.green), 'Done'];
       default:
         return [
           const Icon(

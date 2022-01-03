@@ -1,8 +1,11 @@
 // ignore_for_file: file_names
 import 'dart:developer';
+import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/src/provider.dart';
+import 'package:taxiconnectdrivers/Components/Helpers/Networking.dart';
+import 'package:taxiconnectdrivers/Components/Helpers/Sound.dart';
 import 'package:taxiconnectdrivers/Components/Providers/HomeProvider.dart';
 
 class SwictherArea extends StatefulWidget {
@@ -20,82 +23,218 @@ class _SwictherAreaState extends State<SwictherArea> {
     return SizedBox(
         height: 110,
         width: MediaQuery.of(context).size.width,
-        child: InkWell(
-          onTap: () {
-            context.read<HomeProvider>().updateBlurredBackgroundState(
-                shouldShow: true); //Show blurred background
-            showModalBottomSheet(
-                context: context,
-                builder: (context) {
-                  return Container(
-                    color: Colors.white,
-                    child: SafeArea(
-                        bottom: false,
-                        child: Container(
-                          width: MediaQuery.of(context).size.width,
+        child: context.watch<HomeProvider>().onlineOfflineData['flag'] ==
+                'offline'
+            ? const OfflineStrip()
+            : InkWell(
+                onTap: () {
+                  context.read<HomeProvider>().updateBlurredBackgroundState(
+                      shouldShow: true); //Show blurred background
+                  showModalBottomSheet(
+                      enableDrag: context
+                              .read<HomeProvider>()
+                              .goingOnlineOfflineVars['isGoingOffline']!
+                          ? false
+                          : true,
+                      isDismissible: context
+                              .read<HomeProvider>()
+                              .goingOnlineOfflineVars['isGoingOffline']!
+                          ? false
+                          : true,
+                      context: context,
+                      builder: (context) {
+                        return Container(
                           color: Colors.white,
-                          child: const ModalForSelections(),
-                        )),
-                  );
-                }).whenComplete(() {
-              context
-                  .read<HomeProvider>()
-                  .updateBlurredBackgroundState(shouldShow: false);
-            });
-          },
-          child: SafeArea(
-            top: false,
-            child: Container(
-              alignment: Alignment.centerLeft,
-              decoration: BoxDecoration(
-                  border: const Border(top: BorderSide(width: 2)),
-                  color: Colors.white,
-                  boxShadow: [
-                    BoxShadow(
-                        color: Colors.grey.withOpacity(0.2),
-                        spreadRadius: 0,
-                        blurRadius: 7,
-                        offset: Offset.fromDirection(-1.5, 13))
-                  ]),
-              child: Padding(
-                padding: const EdgeInsets.only(top: 8.0, left: 15, right: 15),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Row(
-                      children: [
-                        const Icon(
-                          Icons.stop,
-                          size: 13,
-                        ),
-                        Text(
-                          context
-                              .watch<HomeProvider>()
-                              .codesToOptions[
-                                  context.watch<HomeProvider>().selectedOption]
-                              .toString(),
-                          style: const TextStyle(
-                              fontFamily: 'MoveTextBold', fontSize: 20),
-                        )
-                      ],
+                          child: SafeArea(
+                              bottom: false,
+                              child: Container(
+                                width: MediaQuery.of(context).size.width,
+                                color: Colors.white,
+                                child: const ModalForSelections(),
+                              )),
+                        );
+                      }).whenComplete(() {
+                    context
+                        .read<HomeProvider>()
+                        .updateBlurredBackgroundState(shouldShow: false);
+                  });
+                },
+                child: SafeArea(
+                  top: false,
+                  child: Container(
+                    alignment: Alignment.centerLeft,
+                    decoration: BoxDecoration(
+                        border: const Border(top: BorderSide(width: 2)),
+                        color: Colors.white,
+                        boxShadow: [
+                          BoxShadow(
+                              color: Colors.grey.withOpacity(0.2),
+                              spreadRadius: 0,
+                              blurRadius: 7,
+                              offset: Offset.fromDirection(-1.5, 13))
+                        ]),
+                    child: Padding(
+                      padding:
+                          const EdgeInsets.only(top: 8.0, left: 15, right: 15),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Row(
+                            children: [
+                              const Icon(
+                                Icons.stop,
+                                size: 13,
+                              ),
+                              Text(
+                                context
+                                    .watch<HomeProvider>()
+                                    .codesToOptions[context
+                                        .watch<HomeProvider>()
+                                        .selectedOption]
+                                    .toString(),
+                                style: const TextStyle(
+                                    fontFamily: 'MoveTextBold', fontSize: 20),
+                              )
+                            ],
+                          ),
+                          Visibility(
+                            visible: graphData['rides'] +
+                                    graphData['deliveries'] +
+                                    graphData['scheduled'] >
+                                0,
+                            child: NumberIndicator(
+                                number: graphData['rides'] +
+                                    graphData['deliveries'] +
+                                    graphData['scheduled']),
+                          )
+                        ],
+                      ),
                     ),
-                    Visibility(
-                      visible: graphData['rides'] +
-                              graphData['deliveries'] +
-                              graphData['scheduled'] >
-                          0,
-                      child: NumberIndicator(
-                          number: graphData['rides'] +
-                              graphData['deliveries'] +
-                              graphData['scheduled']),
-                    )
-                  ],
+                  ),
                 ),
+              ));
+  }
+}
+
+class OfflineStrip extends StatefulWidget {
+  const OfflineStrip({Key? key}) : super(key: key);
+
+  @override
+  _OfflineStripState createState() => _OfflineStripState();
+}
+
+class _OfflineStripState extends State<OfflineStrip>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+  late final Animation<double> scaleGoingOnline;
+  final Interval forwardInterval =
+      const Interval(0.0, 1.0, curve: Curves.easeInOutCubic);
+  final Sound _sound = Sound();
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+    _controller = AnimationController(
+        duration: const Duration(milliseconds: 800), vsync: this);
+
+    scaleGoingOnline = Tween(begin: 0.0, end: 10.0)
+        .animate(CurvedAnimation(parent: _controller, curve: forwardInterval));
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    _controller.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      alignment: Alignment.center,
+      children: [
+        SizedBox(
+          height: 110,
+          width: MediaQuery.of(context).size.width,
+          child: ClipRRect(
+            child: ScaleTransition(
+              scale: scaleGoingOnline,
+              child: Container(
+                height: 50,
+                width: 50,
+                decoration: const BoxDecoration(
+                    color: Color.fromRGBO(9, 110, 212, 1),
+                    shape: BoxShape.circle),
               ),
             ),
           ),
-        ));
+        ),
+        Container(
+          child: DefaultTextStyle(
+            style: const TextStyle(
+              fontSize: 25.0,
+              fontFamily: 'MoveBold',
+            ),
+            child: context
+                    .watch<HomeProvider>()
+                    .goingOnlineOfflineVars['isGoingOnline']!
+                ? Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: const [
+                      SizedBox(
+                          width: 15,
+                          height: 15,
+                          child: CircularProgressIndicator(
+                            strokeWidth: 2,
+                            color: Colors.white,
+                          )),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Text('Going online', style: TextStyle(fontSize: 22)),
+                    ],
+                  )
+                : context
+                        .watch<HomeProvider>()
+                        .goingOnlineOfflineVars['isGoingOffline']!
+                    ? Text('Going offline...', style: TextStyle(fontSize: 22))
+                    : AnimatedTextKit(
+                        repeatForever: true,
+                        pause: const Duration(seconds: 1),
+                        animatedTexts: [
+                          RotateAnimatedText('Offline',
+                              transitionHeight: 60,
+                              duration: const Duration(seconds: 2),
+                              textStyle: const TextStyle(
+                                  color: Color.fromRGBO(178, 34, 34, 1))),
+                          RotateAnimatedText('Go online',
+                              transitionHeight: 60,
+                              duration: const Duration(seconds: 2),
+                              textStyle: const TextStyle(
+                                  color: Color.fromRGBO(9, 110, 212, 1))),
+                        ],
+                        onTap: () {
+                          _sound.playSound(audio: 'onclick.mp3');
+                          //Set the going online button to true
+                          context.read<HomeProvider>().updateGoingOnlineOffline(
+                              scenario: 'online', state: true);
+                          //...
+                          _controller.forward().whenComplete(() {
+                            print('Going online set...');
+                            SetOnlineOfflineStatus setOnlineOfflineStatus =
+                                SetOnlineOfflineStatus();
+                            setOnlineOfflineStatus.execGet(
+                                context: context, state: 'online');
+                          });
+                        },
+                      ),
+          ),
+        ),
+      ],
+    );
   }
 }
 
@@ -104,7 +243,7 @@ class NumberIndicator extends StatelessWidget {
   final int number;
   final Color backgroundColor;
 
-  NumberIndicator(
+  const NumberIndicator(
       {Key? key,
       required this.number,
       this.backgroundColor = const Color.fromRGBO(178, 34, 34, 1)})
@@ -314,6 +453,17 @@ class OnlineOfflineBtns extends StatelessWidget {
     return Column(
       children: [
         ListTile(
+          onTap: () {
+            print('Going offline.');
+            //Set going offline to true
+            context
+                .read<HomeProvider>()
+                .updateGoingOnlineOffline(scenario: 'offline', state: true);
+            //...
+            SetOnlineOfflineStatus setOnlineOfflineStatus =
+                SetOnlineOfflineStatus();
+            setOnlineOfflineStatus.execGet(context: context, state: 'offline');
+          },
           title: Text(
             titleOption,
             style: const TextStyle(
@@ -321,11 +471,22 @@ class OnlineOfflineBtns extends StatelessWidget {
                 fontSize: 19,
                 color: Color.fromRGBO(178, 34, 34, 1)),
           ),
-          trailing: const Icon(
-            Icons.arrow_forward_ios,
-            size: 15,
-            color: Color.fromRGBO(178, 34, 34, 1),
-          ),
+          trailing: context
+                  .watch<HomeProvider>()
+                  .goingOnlineOfflineVars['isGoingOffline']!
+              ? const SizedBox(
+                  width: 15,
+                  height: 15,
+                  child: CircularProgressIndicator(
+                    strokeWidth: 2,
+                    color: Color.fromRGBO(178, 34, 34, 1),
+                  ),
+                )
+              : const Icon(
+                  Icons.arrow_forward_ios,
+                  size: 15,
+                  color: Color.fromRGBO(178, 34, 34, 1),
+                ),
         ),
         showDivider ? const Divider() : const Text('')
       ],

@@ -46,7 +46,7 @@ class _ModalRegState extends State<ModalReg> {
             padding: const EdgeInsets.only(top: 40),
             child:
                 Column(mainAxisAlignment: MainAxisAlignment.start, children: [
-              Icon(Icons.check_circle,
+              const Icon(Icons.check_circle,
                   size: 45, color: Color.fromRGBO(9, 134, 74, 1)),
               Padding(
                 padding: EdgeInsets.only(top: 25),
@@ -69,7 +69,11 @@ class _ModalRegState extends State<ModalReg> {
                     isArrowShow: true,
                     actuatorFunctionl: () {
                       //! Clear everything
+                      //! 1. Registration
                       context.read<RegistrationProvider>().clearEverything();
+                      //! 2. Home
+                      context.read<HomeProvider>().clearEverything();
+                      //...
                       Navigator.of(context).pushNamed('/Entry');
                     }),
               )

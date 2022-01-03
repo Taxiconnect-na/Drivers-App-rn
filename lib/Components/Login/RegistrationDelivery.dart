@@ -6,6 +6,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:provider/src/provider.dart';
+import 'package:taxiconnectdrivers/Components/Helpers/Modal.dart';
 import 'package:taxiconnectdrivers/Components/Helpers/ModalReg.dart';
 import 'package:taxiconnectdrivers/Components/Helpers/Networking.dart';
 import 'package:taxiconnectdrivers/Components/Modules/GenericRectButton/GenericRectButton.dart';
@@ -36,15 +37,45 @@ class _RegistrationDeliveryState extends State<RegistrationDelivery> {
             ? null
             : AppBar(
                 backgroundColor: Colors.black,
-                leading: const Padding(
-                  padding: EdgeInsets.only(right: 8.0, left: 5),
-                  child: Icon(Icons.arrow_back),
+                leading: IconButton(
+                  padding: EdgeInsets.only(left: 0),
+                  visualDensity: VisualDensity.comfortable,
+                  onPressed: () {
+                    //Clear all the data
+                    //! 1. Registration
+                    context.read<RegistrationProvider>().clearEverything();
+                    //! 2. Home
+                    context.read<HomeProvider>().clearEverything();
+                    //...
+                    Navigator.of(context).pushNamed('/RegisterOptions');
+                  },
+                  icon: Icon(Icons.arrow_back),
                 ),
-                leadingWidth: 15,
                 title: const Text('Courier registration',
                     style:
                         TextStyle(fontFamily: 'MoveTextRegular', fontSize: 20)),
                 centerTitle: false,
+                actions: [
+                  IconButton(
+                      onPressed: () {
+                        showModalBottomSheet(
+                            context: context,
+                            builder: (context) {
+                              //...
+                              return Container(
+                                color: Colors.white,
+                                child: SafeArea(
+                                    child: Container(
+                                  width: MediaQuery.of(context).size.width,
+                                  color: Colors.white,
+                                  child: const Modal(
+                                      scenario: 'help_signup_details'),
+                                )),
+                              );
+                            });
+                      },
+                      icon: Icon(Icons.person))
+                ],
               ),
         body: Stack(
           children: [

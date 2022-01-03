@@ -1,6 +1,12 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
+import 'package:provider/src/provider.dart';
+import 'package:taxiconnectdrivers/Components/Helpers/Networking.dart';
+import 'package:taxiconnectdrivers/Components/Helpers/LoaderInstance.dart';
 import 'package:taxiconnectdrivers/Components/Modules/GenericCircButton/GenericCircButton.dart';
 import 'package:taxiconnectdrivers/Components/Modules/OTPVerificationInput/OTPVerificationInput.dart';
+import 'package:taxiconnectdrivers/Components/Providers/HomeProvider.dart';
 
 class OTPVerificationEntry extends StatefulWidget {
   const OTPVerificationEntry({Key? key}) : super(key: key);
@@ -11,6 +17,15 @@ class OTPVerificationEntry extends StatefulWidget {
 
 class _OTPVerificationEntryState extends State<OTPVerificationEntry> {
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    //Send initial code
+    SendOTPCodeNet sendOTPCodeNet = SendOTPCodeNet();
+    sendOTPCodeNet.exec(context: context);
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
@@ -19,13 +34,14 @@ class _OTPVerificationEntryState extends State<OTPVerificationEntry> {
           color: Colors.white,
           child: Column(
             children: [
+              LoaderInstance(),
               ListTile(
                 leading: InkWell(
                     onTap: () {
                       Navigator.pop(context);
                     },
-                    child:
-                        Icon(Icons.arrow_back, size: 33, color: Colors.black)),
+                    child: const Icon(Icons.arrow_back,
+                        size: 33, color: Colors.black)),
               ),
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 16, vertical: 10),

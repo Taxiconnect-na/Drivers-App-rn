@@ -109,13 +109,22 @@ class TextEntryPhoneInput extends StatelessWidget {
                   controller: textInputController,
                   //autofocus: true,
                   onChanged: (value) {
-                    RegExp regExpCleaner = RegExp(r"^0");
+                    // RegExp regExpCleaner = RegExp(r"^0");
+                    RegExp regExpCleaner2 = RegExp(r"^\+");
 
-                    String numberBody = regExpCleaner.hasMatch(value.toString())
-                        ? value.toString().replaceFirst('0', '')
-                        : value.toString();
+                    // String numberBody = regExpCleaner.hasMatch(value.toString())
+                    //     ? value.toString().replaceFirst('0', '')
+                    //     : value.toString();
                     //...
-                    // textInputController.text = numberBody;
+                    String numberBody =
+                        regExpCleaner2.hasMatch(value.toString())
+                            ? value.toString().replaceFirst('+', '')
+                            : value.toString();
+                    //...
+                    textInputController.text = numberBody;
+                    textInputController.selection = TextSelection.fromPosition(
+                        TextPosition(offset: textInputController.text.length));
+
                     context
                         .read<HomeProvider>()
                         .updateEnteredPhoneNumber(phone: numberBody);

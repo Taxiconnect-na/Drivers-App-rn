@@ -14,7 +14,9 @@ class RegistrationProvider with ChangeNotifier {
   //? I truly provided the right information
   bool iTrulyProvided = false;
 
-  String? driverNature = 'RIDE'; //The type of driver selected: COURIER or RIDE
+  String? driverNature; //The type of driver selected: COURIER or RIDE
+
+  String? city; //The default selected city for operations
 
   Map<String, String> personalDetails = {
     'name': '',
@@ -82,6 +84,7 @@ class RegistrationProvider with ChangeNotifier {
       } else //Found a saved state
       {
         // log(state['carPhoto']);
+        city = state['city'] == null ? null : state['city'];
         driverNature = state['driverNature'] == null
             ? null
             : state['driverNature']; //! The type of driver
@@ -169,6 +172,7 @@ class RegistrationProvider with ChangeNotifier {
   //! Convert class to Map
   Map<String, dynamic> toMap() {
     return {
+      'city': city,
       'driverNature': driverNature,
       'personalDetails': personalDetails,
       'driverPhoto': driverPhoto == null ? null : driverPhoto!.path,
@@ -186,16 +190,24 @@ class RegistrationProvider with ChangeNotifier {
 
   //! Clear everything
   void clearEverything() {
-    personalDetails = {};
+    personalDetails = {'name': '', 'surname': '', 'email': ''};
     driverPhoto = null;
-    carDetails = {};
+    carDetails = {'brand': '', 'plate_no': ''};
     carPhoto = null;
     licensePhoto = null;
-    definitiveVehicleInfos = {};
+    definitiveVehicleInfos = {
+      'brand_name': '',
+      'model_name': '',
+      'color': '',
+      'plate_number': '',
+      //!Only for rides registration
+      'taxi_number': '',
+      'permit_number': ''
+    };
     //...
     peristDataMap();
     //...
-    notifyListeners();
+    //notifyListeners();
   }
   //!-----------------
 
@@ -364,6 +376,24 @@ class RegistrationProvider with ChangeNotifier {
   //?11. Update the truly provided the right infos
   void updateTheTruylyProvidedInfos({required bool state}) {
     iTrulyProvided = state;
+    notifyListeners();
+  }
+
+  //?12. Update the selected city
+  void updateSelectedCity({required String? data}) {
+    city = data;
+    //...
+    peristDataMap();
+    //...
+    notifyListeners();
+  }
+
+  //?13. Update the selected driver type
+  void updateSelectedDriverNature({required String data}) {
+    driverNature = data;
+    //...
+    peristDataMap();
+    //...
     notifyListeners();
   }
 }

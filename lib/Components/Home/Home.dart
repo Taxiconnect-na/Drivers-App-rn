@@ -20,6 +20,7 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   // Create a new networking instance
+  GetOnlineOfflineStatus _getOnlineOfflineStatus = GetOnlineOfflineStatus();
   GlobalDataFetcher globalDataFetcher = GlobalDataFetcher();
   GetRequestsGraphNet getRequestsGraphNet = GetRequestsGraphNet();
   GetDailyEarningAndAuthChecks getDailyEarningAndAuthChecks =
@@ -38,6 +39,7 @@ class _HomeState extends State<Home> {
     locationOpsHandler.requestLocationPermission();
     //globalDataFetcher.getCoreDate(context: context);
     watcher.startWatcher(context: context, actuatorFunctions: [
+      {'name': 'GetOnlineOfflineStatus', 'actuator': _getOnlineOfflineStatus},
       {
         'name': 'GlobalDataFetcher',
         'actuator': globalDataFetcher
@@ -62,33 +64,38 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        backgroundColor: Colors.white,
-        drawer: const DrawerMenu(),
-        body: Container(
-          decoration: BoxDecoration(border: Border.all(color: Colors.black)),
-          child: Stack(children: [
-            Column(
-              children: [
-                HeaderGeneral(),
-                LoaderInstance(),
-                CenterArea(),
-                SwictherArea(),
-              ],
-            ),
-            Visibility(
-              visible:
-                  context.watch<HomeProvider>().shouldShowBlurredBackground,
-              child: SizedBox(
-                  // color: Colors.red,
-                  height: 50,
-                  child: BackdropFilter(
-                    filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
-                    child: const SizedBox(height: 20, width: 20),
-                  )),
-            )
-          ]),
-        ));
+    return WillPopScope(
+      onWillPop: () async {
+        return Future.value(false);
+      },
+      child: Scaffold(
+          backgroundColor: Colors.white,
+          drawer: const DrawerMenu(),
+          body: Container(
+            decoration: BoxDecoration(border: Border.all(color: Colors.black)),
+            child: Stack(children: [
+              Column(
+                children: [
+                  HeaderGeneral(),
+                  LoaderInstance(),
+                  CenterArea(),
+                  SwictherArea(),
+                ],
+              ),
+              Visibility(
+                visible:
+                    context.watch<HomeProvider>().shouldShowBlurredBackground,
+                child: SizedBox(
+                    // color: Colors.red,
+                    height: 50,
+                    child: BackdropFilter(
+                      filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+                      child: const SizedBox(height: 20, width: 20),
+                    )),
+              )
+            ]),
+          )),
+    );
   }
 }
 

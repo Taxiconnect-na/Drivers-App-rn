@@ -1,9 +1,14 @@
 // ignore_for_file: file_names, prefer_const_constructors
 
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_countdown_timer/current_remaining_time.dart';
 import 'package:flutter_countdown_timer/flutter_countdown_timer.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
+import 'package:provider/src/provider.dart';
+import 'package:taxiconnectdrivers/Components/Helpers/Networking.dart';
+import 'package:taxiconnectdrivers/Components/Providers/HomeProvider.dart';
 
 class OTPVerificationInput extends StatefulWidget {
   const OTPVerificationInput({Key? key}) : super(key: key);
@@ -40,13 +45,19 @@ class _OTPVerificationInputState extends State<OTPVerificationInput> {
               fieldHeight: 60,
               activeColor: Colors.grey.shade700,
               inactiveColor: Colors.grey.shade400,
-              selectedColor: Color.fromRGBO(14, 132, 145, 1),
+              selectedColor: Color.fromRGBO(9, 110, 212, 1),
               fieldWidth: MediaQuery.of(context).size.width / 7,
               activeFillColor: Colors.white),
           animationDuration: Duration(milliseconds: 300),
           backgroundColor: Colors.white,
           onCompleted: (v) {
             print("Completed");
+            log(v.toString());
+            context.read<HomeProvider>().updateOTPValueData(data: v);
+            //Check the otp
+            context.read<HomeProvider>().updateGenericLoaderShow(state: true);
+            CheckOTPCodeNet checkOTPCodeNet = CheckOTPCodeNet();
+            checkOTPCodeNet.exec(context: context);
           },
           onChanged: (value) {
             print(value);
@@ -68,12 +79,12 @@ class _OTPVerificationInputState extends State<OTPVerificationInput> {
 class TimerAndErrorNotifiyer extends StatelessWidget {
   TimerAndErrorNotifiyer({Key? key}) : super(key: key);
 
-  final int endTime = DateTime.now().millisecondsSinceEpoch + 1000 * 5;
+  final int endTime = DateTime.now().millisecondsSinceEpoch + 1000 * 60;
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-        padding: EdgeInsets.symmetric(vertical: 25),
+        padding: EdgeInsets.only(top: 40),
         child: Container(
           child: Row(
             children: [
@@ -89,9 +100,9 @@ class TimerAndErrorNotifiyer extends StatelessWidget {
                             style: TextStyle(
                                 fontSize: 17,
                                 fontFamily: 'MoveTextMedium',
-                                color: Color.fromRGBO(14, 132, 145, 1))));
+                                color: Color.fromRGBO(9, 110, 212, 1))));
                   }
-                  print(time);
+                  // print(time);
                   //...
                   return Text(
                       'Resend the code in ${time.min == null ? '00' : time.min}:${time.sec}',

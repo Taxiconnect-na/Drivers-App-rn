@@ -2,7 +2,9 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
+import 'package:provider/src/provider.dart';
 import 'package:taxiconnectdrivers/Components/Home/Home.dart';
+import 'package:taxiconnectdrivers/Components/Providers/HomeProvider.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
@@ -23,10 +25,10 @@ class _SplashScreenState extends State<SplashScreen>
   late final Animation globalOpacityAnimation;
 
   final Interval forwardInterval =
-      Interval(0.0, 1.0, curve: Curves.easeInOutExpo);
+      const Interval(0.0, 1.0, curve: Curves.easeInOutExpo);
   final Interval superInterval =
-      Interval(0.4, 1.0, curve: Curves.easeInOutCubic);
-  final Interval opacityInterval = Interval(0.6, 1.0, curve: Curves.ease);
+      const Interval(0.4, 1.0, curve: Curves.easeInOutCubic);
+  final Interval opacityInterval = const Interval(0.6, 1.0, curve: Curves.ease);
 
   @override
   void initState() {
@@ -34,13 +36,13 @@ class _SplashScreenState extends State<SplashScreen>
     _controller = AnimationController(
         duration: const Duration(milliseconds: 800), vsync: this);
 
-    logoScaleAnimation = new Tween(begin: 1.0, end: 0.0)
+    logoScaleAnimation = Tween(begin: 1.0, end: 0.0)
         .animate(CurvedAnimation(parent: _controller, curve: forwardInterval));
 
-    superScaleAnimation = new Tween(begin: 1.0, end: 50.0)
+    superScaleAnimation = Tween(begin: 1.0, end: 50.0)
         .animate(CurvedAnimation(parent: _controller, curve: superInterval));
 
-    globalOpacityAnimation = new Tween(begin: 1.0, end: 0.0)
+    globalOpacityAnimation = Tween(begin: 1.0, end: 0.0)
         .animate(CurvedAnimation(parent: _controller, curve: opacityInterval));
 
     globalOpacityAnimation.addListener(() {
@@ -51,8 +53,12 @@ class _SplashScreenState extends State<SplashScreen>
 
     //Debug start
     Future.delayed(Duration(seconds: 2), () {
-      _controller.forward().whenComplete(() => Navigator.push(context,
-          PageTransition(child: Home(), type: PageTransitionType.fade)));
+      _controller.forward().whenComplete(() {
+        //Restore the home flow
+        context.read<HomeProvider>().restoreStateData(context: context);
+        // Navigator.push(context,
+        //     PageTransition(child: Home(), type: PageTransitionType.fade));
+      });
     });
   }
 
@@ -71,9 +77,8 @@ class _SplashScreenState extends State<SplashScreen>
         child: Container(
           alignment: Alignment.center,
           width: MediaQuery.of(context).size.width,
-          decoration: BoxDecoration(
-              color: Color.fromRGBO(9, 132, 145, 1),
-              border: Border.all(width: 1)),
+          decoration:
+              BoxDecoration(color: Colors.black, border: Border.all(width: 1)),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -87,27 +92,25 @@ class _SplashScreenState extends State<SplashScreen>
                       alignment: Alignment.center,
                       width: superSideLength,
                       height: superSideLength,
-                      decoration: BoxDecoration(
+                      decoration: const BoxDecoration(
                           color: Colors.white, shape: BoxShape.circle),
                     ),
                   ),
-                  Container(
-                    child: ScaleTransition(
-                      scale: logoScaleAnimation,
-                      child: Container(
-                          alignment: Alignment.center,
-                          width: sideLength,
-                          height: sideLength,
-                          decoration: BoxDecoration(
-                              color: Colors.white, shape: BoxShape.circle),
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(200),
-                            child: Image.asset(
-                              'Assets/Images/logo.png',
-                              fit: BoxFit.contain,
-                            ),
-                          )),
-                    ),
+                  ScaleTransition(
+                    scale: logoScaleAnimation,
+                    child: Container(
+                        alignment: Alignment.center,
+                        width: sideLength,
+                        height: sideLength,
+                        decoration: const BoxDecoration(
+                            color: Colors.white, shape: BoxShape.circle),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(200),
+                          child: Image.asset(
+                            'assets/Images/logo.png',
+                            fit: BoxFit.contain,
+                          ),
+                        )),
                   )
                 ],
               )),

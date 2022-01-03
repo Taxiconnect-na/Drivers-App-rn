@@ -28,6 +28,9 @@ class Watcher with ChangeNotifier {
 
           if (cleanerCheck.hasMatch(context.toString()) == false) {
             switch (actuatorFunctions[i]['name']) {
+              case 'GetOnlineOfflineStatus':
+                actuatorFunctions[i]['actuator'].execGet(context: context);
+                break;
               case 'GlobalDataFetcher':
                 actuatorFunctions[i]['actuator'].getCoreDate(context: context);
                 break;

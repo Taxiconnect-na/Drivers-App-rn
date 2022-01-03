@@ -1,18 +1,49 @@
 // ignore_for_file: file_names, non_constant_identifier_names
 
+import 'dart:convert';
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:camera/camera.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:provider/src/provider.dart';
+import 'package:taxiconnectdrivers/Components/Providers/RegistrationProvider.dart';
 
 //? HOME PROVIDER
 // Will hold all the home related globals - only!
 
 class HomeProvider with ChangeNotifier {
   final String bridge = 'http://192.168.8.132:9999';
+
+  Map<dynamic, dynamic> onlineOfflineData = {
+    'flag': 'offline'
+  }; //! Will hold the online/offline and suspension status of the driver
+
+  Map<String, bool> goingOnlineOfflineVars = {
+    'isGoingOnline': false,
+    'isGoingOffline': false
+  }; //Vars to manage to going online and offline states.
+
+  String logginStatus =
+      'out'; //! To know if the user is logged in (logged) or out (out)
+
   String user_fingerprint =
-      '6fc0fbe78d093080ca60b1c534a1b7b5e171640dba4d796fb95337b88feb4befb6080417ede87759';
+      ''; //Will hold the single user fp that can also be found in the user account details var
+
+  Map<dynamic, dynamic> userAccountDetails =
+      {}; //Will contain all the account details
+
+  Map<dynamic, dynamic> generalNumbers =
+      {}; //Will hold all the drivers general numbers: rides, deliveries, trips, revenue, rating,...
+
+  String userStatus =
+      'new_user'; //Tempo variable to hold the status of the user : new_user or registered_user
+
+  String otpValue = ''; //Will hold the OTP value
+
+  bool shouldShowGenericLoader = true; //If should show the generic loader
 
   Map<dynamic, dynamic> locationServicesStatus = {
     'isLocationServiceEnabled': true,
@@ -89,6 +120,127 @@ class HomeProvider with ChangeNotifier {
   //...Camera
   late CameraController cameraController;
   //...
+
+  //! Persist data map
+  void peristDataMap() {
+    Map<String, dynamic> globalStateData = toMap();
+    String stateString = json.encode(globalStateData).toString();
+
+    log(globalStateData.toString());
+
+    //Write
+    writeStateToFile(stateString);
+  }
+
+  //! Restore data map
+  void restoreStateData({required BuildContext context}) {
+    print('Restore registration provider state - Home');
+    Future<Map<String, dynamic>> restoredState = readStateFile();
+    restoredState.then((state) {
+      print(state);
+      if (state['logginStatus'] == 'out' ||
+          state['logginStatus'] == null) //?No state saved yet
+      {
+        log('No state saved found - HOME');
+        Navigator.of(context).pushNamed('/Entry');
+        //? Close loader
+        // isLoadingRegistration = false;
+        //?....
+        notifyListeners();
+      } else //Found a saved state
+      {
+        log('Found saved home state - HOME');
+        //? Restore
+        logginStatus = state['logginStatus'];
+        user_fingerprint = state['user_fingerprint'];
+        userAccountDetails = state['userAccountDetails'];
+        userStatus = state['userStatus'];
+
+        //Check the user nature
+        if (state['userStatus'] ==
+            'new_user') //New user - check if RIDE or COURIER or nothing yet
+        {
+          if (context.read<RegistrationProvider>().driverNature ==
+              'RIDE') //Ride registration
+          {
+            Navigator.of(context).pushNamed('/RegistrationRide');
+          } else if (context.read<RegistrationProvider>().driverNature ==
+              'COURIER') //Courier registration
+          {
+            Navigator.of(context).pushNamed('/RegistrationDelivery');
+          } else //Nothing yet selected
+          {
+            Navigator.of(context).pushNamed('/SignupEntry');
+          }
+        } else //Registered user
+        {
+          Navigator.of(context).pushNamed('/Home');
+        }
+        //?....
+        notifyListeners();
+      }
+    });
+  }
+
+  //The higher order absolute class
+  Future<String> get _localPath async {
+    final directory = await getApplicationDocumentsDirectory();
+
+    return directory.path;
+  }
+
+  //The full file path
+  Future<File> get _localFile async {
+    final path = await _localPath;
+    return File('$path/homeProvider.txt');
+  }
+
+  //Write to file
+  Future<File> writeStateToFile(String state) async {
+    final file = await _localFile;
+
+    // Write the file
+    return file.writeAsString(state);
+  }
+
+  //Read file
+  Future<Map<String, dynamic>> readStateFile() async {
+    try {
+      final file = await _localFile;
+
+      // Read the file
+      final contents = await file.readAsString();
+
+      return json.decode(contents);
+    } catch (e) {
+      log(e.toString());
+      // If encountering an error, return 0
+      return {};
+    }
+  }
+
+  //! Convert class to Map
+  Map<String, dynamic> toMap() {
+    return {
+      'logginStatus': logginStatus,
+      'user_fingerprint': user_fingerprint,
+      'userAccountDetails': userAccountDetails,
+      'userStatus': userStatus
+    };
+  }
+
+  //! Clear everything
+  void clearEverything() {
+    logginStatus = 'out';
+    user_fingerprint = '';
+    userAccountDetails = {};
+    userStatus = 'new_user';
+    //...
+    peristDataMap();
+    //...
+    // notifyListeners();
+  }
+  //!-----------------
 
   //?4. Update the GPRS service status and the location permission
   void updateGPRSServiceStatusAndLocationPermissions(
@@ -270,6 +422,82 @@ class HomeProvider with ChangeNotifier {
   void updateEnteredPhoneNumber({required String phone}) {
     enteredPhoneNumber = phone;
     log(phone);
+    notifyListeners();
+  }
+
+  //? 21. Update the account details
+  void updateAccountDetails({required Map<dynamic, dynamic> data}) {
+    userAccountDetails = data;
+    //...
+    peristDataMap();
+    //...
+    notifyListeners();
+  }
+
+  //?22. Update the user fp
+  void updateUserFpData({required String data}) {
+    user_fingerprint = data;
+    //...
+    peristDataMap();
+    //...
+    notifyListeners();
+  }
+
+  //?23. Update the user's registration status
+  void updateRegistrationStatus({required String data}) {
+    userStatus = data;
+    //...
+    peristDataMap();
+    //...
+    notifyListeners();
+  }
+
+  //?24. Update the otp value
+  void updateOTPValueData({required String data}) {
+    otpValue = data;
+    notifyListeners();
+  }
+
+  //?25. Update the generic loader status
+  void updateGenericLoaderShow({required bool state}) {
+    shouldShowGenericLoader = state;
+    notifyListeners();
+  }
+
+  //?26. Update the loggin status
+  void updateLogginStatus({required String status}) {
+    logginStatus = status;
+    //...
+    peristDataMap();
+    //...
+    notifyListeners();
+  }
+
+  //? 27. Update the online/offline and suspension data
+  void updateOnlineOfflineData({required Map<dynamic, dynamic> data}) {
+    onlineOfflineData = data;
+    notifyListeners();
+  }
+
+  //? 28. Update the going online state
+  void updateGoingOnlineOffline(
+      {required String scenario, required bool state}) {
+    switch (scenario) {
+      case 'online':
+        goingOnlineOfflineVars['isGoingOnline'] = state;
+        notifyListeners();
+        break;
+      case 'offline':
+        goingOnlineOfflineVars['isGoingOffline'] = state;
+        notifyListeners();
+        break;
+      default:
+    }
+  }
+
+  //? 29. Update the drivers general numbers
+  void updateDriverGeneralNumbers({required Map<dynamic, dynamic> data}) {
+    generalNumbers = data;
     notifyListeners();
   }
 }

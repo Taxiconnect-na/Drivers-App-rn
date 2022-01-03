@@ -16,6 +16,153 @@ import 'package:taxiconnectdrivers/Components/Helpers/Sound.dart';
 import 'package:taxiconnectdrivers/Components/Providers/HomeProvider.dart';
 import 'package:taxiconnectdrivers/Components/Providers/RegistrationProvider.dart';
 
+class GetDriverGeneralNumbers {
+  Future exec({required BuildContext context}) async {
+    Uri mainUrl = Uri.parse(Uri.encodeFull(
+        '${context.read<HomeProvider>().bridge}/driversOverallNumbers'));
+
+    //Assemble the bundle data
+    Map<String, String> bundleData = {
+      'user_fingerprint': context.read<HomeProvider>().user_fingerprint
+    };
+
+    print(bundleData);
+
+    try {
+      http.Response response = await http.post(mainUrl, body: bundleData);
+
+      if (response.statusCode == 200) //Got some results
+      {
+        log(response.body.toString());
+        Map responseGet = json.decode(response.body);
+        if (responseGet['rides'] != null) //Got something
+        {
+          context
+              .read<HomeProvider>()
+              .updateDriverGeneralNumbers(data: responseGet);
+        } else //Error?
+        {
+          context.read<HomeProvider>().updateDriverGeneralNumbers(data: {});
+        }
+      } else //Has some errors
+      {
+        log(response.statusCode.toString());
+        context.read<HomeProvider>().updateDriverGeneralNumbers(data: {});
+      }
+    } catch (e) {
+      log(e.toString());
+      context.read<HomeProvider>().updateDriverGeneralNumbers(data: {});
+    }
+  }
+}
+
+class GetOnlineOfflineStatus {
+  Future execGet({required BuildContext context}) async {
+    Uri mainUrl = Uri.parse(Uri.encodeFull(
+        '${context.read<HomeProvider>().bridge}/goOnline_offlineDrivers_io'));
+
+    //Assemble the bundle data
+    Map<String, String> bundleData = {
+      'action': 'get',
+      'driver_fingerprint': context.read<HomeProvider>().user_fingerprint
+    };
+
+    try {
+      http.Response response = await http.post(mainUrl, body: bundleData);
+
+      if (response.statusCode == 200) //Got some results
+      {
+        // log(response.body.toString());
+        Map responseGet = json.decode(response.body);
+        context.read<HomeProvider>().updateOnlineOfflineData(data: responseGet);
+      } else //Has some errors
+      {
+        //Mark as offline
+        log(response.statusCode.toString());
+        context.read<HomeProvider>().updateOnlineOfflineData(data: {
+          "response": "successfully_got",
+          "flag": "offline",
+          "suspension_infos": {"is_suspended": false, "message": false}
+        });
+      }
+    } catch (e) {
+      log(e.toString());
+      context.read<HomeProvider>().updateOnlineOfflineData(data: {
+        "response": "successfully_got",
+        "flag": "offline",
+        "suspension_infos": {"is_suspended": false, "message": false}
+      });
+    }
+  }
+}
+
+class SetOnlineOfflineStatus {
+  final Sound _sound = Sound();
+
+  Future execGet({required BuildContext context, required String state}) async {
+    Uri mainUrl = Uri.parse(Uri.encodeFull(
+        '${context.read<HomeProvider>().bridge}/goOnline_offlineDrivers_io'));
+
+    //Assemble the bundle data
+    Map<String, String> bundleData = {
+      'driver_fingerprint': context.read<HomeProvider>().user_fingerprint,
+      'state': state, //online or offline
+      'action': 'make',
+    };
+
+    try {
+      http.Response response = await http.post(mainUrl, body: bundleData);
+
+      if (response.statusCode == 200) //Got some results
+      {
+        // log(response.body.toString());
+        resetLoadingStates(context: context, state: state);
+      } else //Has some errors
+      {
+        //Mark as offline
+        log(response.statusCode.toString());
+        resetLoadingStates(context: context, state: state);
+      }
+    } catch (e) {
+      log(e.toString());
+      resetLoadingStates(context: context, state: state);
+    }
+  }
+
+  //Reset the loading states
+  void resetLoadingStates(
+      {required BuildContext context, required String state}) {
+    Timer(const Duration(seconds: 4), () {
+      try {
+        if (RegExp(r"no widget").hasMatch(context.toString())) //! Dirty state
+        {
+          _sound.playSound(audio: 'success.mp3');
+        } else {
+          context
+              .read<HomeProvider>()
+              .updateGoingOnlineOffline(scenario: 'online', state: false);
+          context
+              .read<HomeProvider>()
+              .updateGoingOnlineOffline(scenario: 'offline', state: false);
+          //Close modal if switch to offline
+          if (state == 'offline') {
+            // Empty the ride array
+            context
+                .read<HomeProvider>()
+                .updateTripRequestsMetadata(newTripList: []);
+            Navigator.of(context).pop();
+          } else {
+            _sound.playSound(audio: 'success.mp3');
+          }
+        }
+      } on Exception catch (e) {
+        // TODO
+        log(e.toString());
+      }
+    });
+  }
+}
+
 class GlobalDataFetcher with ChangeNotifier {
   Future getCoreDate({required BuildContext context}) async {
     Uri globalTrips = Uri.parse(Uri.encodeFull(
@@ -44,6 +191,7 @@ class GlobalDataFetcher with ChangeNotifier {
 
       if (response.statusCode == 200) //well received
       {
+        // log(response.body.toString());
         //Close the main loader
         context.read<HomeProvider>().updateMainLoaderVisibility(option: false);
         // log(response.body.toString());
@@ -103,6 +251,7 @@ class GlobalDataFetcher with ChangeNotifier {
       }
     } catch (e) {
       log(e.toString());
+      context.read<HomeProvider>().updateTripRequestsMetadata(newTripList: []);
     }
   }
 }
@@ -178,7 +327,7 @@ class AcceptRequestNet {
                   enableDrag: false,
                   context: context,
                   builder: (context) {
-                    sound.playSound(type: 'accept_request');
+                    sound.playSound();
                     //...
                     return Container(
                       color: Colors.white,
@@ -556,7 +705,6 @@ class DeclineRequestNet {
             isBeingProcessed: false, request_fp: '');
         context.read<HomeProvider>().updateBlurredBackgroundState(
             shouldShow: false); //Show blurred background
-        Navigator.of(context).pop();
       });
     }
     //Conditional popping & unblurred
@@ -789,6 +937,7 @@ class GetDailyEarningAndAuthChecks {
     Map<String, String> bundleData = {
       'driver_fingerprint': context.read<HomeProvider>().user_fingerprint,
     };
+    print(bundleData);
 
     try {
       http.Response response = await http.post(mainUrl, body: bundleData);
@@ -896,8 +1045,9 @@ class SubmitCourierRegistrationNet {
 
     //Request data for files
     Map<String, String> bundleData = {
-      'city': 'Windhoek', //TODO: to be dynamically changed
-      'phone': '+2648570007167', //TODO: to be dynamically changed
+      'city': context.read<RegistrationProvider>().city as String,
+      'phone':
+          '${context.read<HomeProvider>().selectedCountryCodeData['dial_code']}${context.read<HomeProvider>().enteredPhoneNumber}',
       'nature_driver': 'COURIER',
       "personal_details": json
           .encode(context.read<RegistrationProvider>().personalDetails)
@@ -1038,5 +1188,492 @@ class SubmitCourierRegistrationNet {
       // TODO
       log(e.toString());
     }
+  }
+}
+
+//Submit rides registration
+class SubmitRidesRegistrationNet {
+  Future exec({required BuildContext context}) async {
+    String mainUrl =
+        '${context.read<HomeProvider>().bridge}/registerDriver_ppline';
+
+    log(mainUrl);
+
+    //? Convert images to base64
+    //driver photo
+    String driverPhotoExtension = context
+        .read<RegistrationProvider>()
+        .driverPhoto!
+        .path
+        .split('.')[context
+            .read<RegistrationProvider>()
+            .driverPhoto!
+            .path
+            .split('.')
+            .length -
+        1];
+    List<int> driverPhotoBytes =
+        await XFile(context.read<RegistrationProvider>().driverPhoto!.path)
+            .readAsBytes();
+    String driverPhotoBase64 = base64Encode(driverPhotoBytes);
+
+    //vehicle photo
+    String vehiclePhotoExtension = context
+            .read<RegistrationProvider>()
+            .carPhoto!
+            .path
+            .split('.')[
+        context.read<RegistrationProvider>().carPhoto!.path.split('.').length -
+            1];
+    List<int> vehiclePhotoBytes =
+        await XFile(context.read<RegistrationProvider>().carPhoto!.path)
+            .readAsBytes();
+    String vehiclePhotoBase64 = base64Encode(vehiclePhotoBytes);
+
+    //License photo
+    String licensePhotoExtension = context
+        .read<RegistrationProvider>()
+        .licensePhoto!
+        .path
+        .split('.')[context
+            .read<RegistrationProvider>()
+            .licensePhoto!
+            .path
+            .split('.')
+            .length -
+        1];
+    List<int> licensePhotoBytes =
+        await XFile(context.read<RegistrationProvider>().licensePhoto!.path)
+            .readAsBytes();
+    String licensePhotoBase64 = base64Encode(licensePhotoBytes);
+
+    //Id photo
+    String idPhotoExtension = context
+            .read<RegistrationProvider>()
+            .idPhoto!
+            .path
+            .split('.')[
+        context.read<RegistrationProvider>().idPhoto!.path.split('.').length -
+            1];
+    List<int> idPhotoBytes =
+        await XFile(context.read<RegistrationProvider>().idPhoto!.path)
+            .readAsBytes();
+    String idPhotoBase64 = base64Encode(idPhotoBytes);
+
+    //Blue paper photo
+    String bluepaperPhotoExtension =
+        context.read<RegistrationProvider>().idPhoto!.path.split('.')[context
+                .read<RegistrationProvider>()
+                .bluepaperPhoto!
+                .path
+                .split('.')
+                .length -
+            1];
+    List<int> bluepaperPhotoBytes =
+        await XFile(context.read<RegistrationProvider>().bluepaperPhoto!.path)
+            .readAsBytes();
+    String bluepaperPhotoBase64 = base64Encode(bluepaperPhotoBytes);
+
+    //White paper photo
+    String whitepaperPhotoExtension =
+        context.read<RegistrationProvider>().idPhoto!.path.split('.')[context
+                .read<RegistrationProvider>()
+                .whitepaperPhoto!
+                .path
+                .split('.')
+                .length -
+            1];
+    List<int> whitepaperPhotoBytes =
+        await XFile(context.read<RegistrationProvider>().whitepaperPhoto!.path)
+            .readAsBytes();
+    String whitepaperPhotoBase64 = base64Encode(whitepaperPhotoBytes);
+
+    //Permit photo
+    String permitPhotoExtension =
+        context.read<RegistrationProvider>().idPhoto!.path.split('.')[context
+                .read<RegistrationProvider>()
+                .permitPhoto!
+                .path
+                .split('.')
+                .length -
+            1];
+    List<int> permitPhotoBytes =
+        await XFile(context.read<RegistrationProvider>().permitPhoto!.path)
+            .readAsBytes();
+    String permitPhotoBase64 = base64Encode(permitPhotoBytes);
+
+    //Request data for files
+    Map<String, String> bundleData = {
+      'city': context.read<RegistrationProvider>().city as String,
+      'phone':
+          '${context.read<HomeProvider>().selectedCountryCodeData['dial_code']}${context.read<HomeProvider>().enteredPhoneNumber}',
+      'nature_driver':
+          context.read<RegistrationProvider>().driverNature as String,
+      "personal_details": json
+          .encode(context.read<RegistrationProvider>().personalDetails)
+          .toString(),
+      'vehicle_details': json
+          .encode(context.read<RegistrationProvider>().definitiveVehicleInfos)
+          .toString(),
+      'did_accept_terms': true.toString(),
+      'did_certify_data_veracity': true.toString(),
+      'driver_photo': driverPhotoBase64,
+      'vehicle_photo': vehiclePhotoBase64,
+      'license_photo': licensePhotoBase64,
+      'id_photo': idPhotoBase64,
+      'bluepaper_photo': bluepaperPhotoBase64,
+      'whitepaper_photo': whitepaperPhotoBase64,
+      'permit_photo': permitPhotoBase64,
+      'extensions': json.encode({
+        'driver_photo': driverPhotoExtension,
+        'vehicle_photo': vehiclePhotoExtension,
+        'license_photo': licensePhotoExtension,
+        'id_photo': idPhotoExtension,
+        'bluepaper_photo': bluepaperPhotoExtension,
+        'whitepaper_photo': whitepaperPhotoExtension,
+        'permit_photo': permitPhotoExtension
+      }).toString()
+    };
+
+    print(bundleData);
+
+    try {
+      var response = await Dio().post(
+        mainUrl,
+        data: bundleData,
+        onSendProgress: (received, total) {
+          if (total != -1) {
+            // print((received / total * 100).toStringAsFixed(0) + '%');
+          }
+        },
+        onReceiveProgress: (received, total) {
+          if (total != -1) {
+            // log((received / total * 100).toStringAsFixed(0) + '%'.toString());
+          }
+        },
+      );
+
+      if (response.statusCode == 200) //Got some results
+      {
+        String responseGot = json.encode(response.data);
+        var responseGotData = json.decode(responseGot);
+
+        if (responseGotData['response'] ==
+            'error_duplicate_application') //Application realdy received
+        {
+          showModalBottomSheet(
+              context: context,
+              builder: (context) {
+                //...
+                return Container(
+                  color: Colors.white,
+                  child: SafeArea(
+                      bottom: false,
+                      child: Container(
+                        width: MediaQuery.of(context).size.width,
+                        color: Colors.white,
+                        child: const ModalReg(
+                            scenario: 'error_application_already_submitted'),
+                      )),
+                );
+              }).whenComplete(() {
+            context
+                .read<HomeProvider>()
+                .updateBlurredBackgroundState(shouldShow: false);
+            Navigator.of(context).pop();
+          });
+        } else if (RegExp(r"error")
+            .hasMatch(responseGotData['response'])) //Has some errors
+        {
+          showErrorsApplying(context: context);
+        } else //Successfully applied
+        {
+          showModalBottomSheet(
+              context: context,
+              builder: (context) {
+                //...
+                return Container(
+                  color: Colors.white,
+                  child: SafeArea(
+                      bottom: false,
+                      child: Container(
+                        width: MediaQuery.of(context).size.width,
+                        color: Colors.white,
+                        child: const ModalReg(
+                            scenario: 'application_success_drivers'),
+                      )),
+                );
+              }).whenComplete(() {
+            context
+                .read<HomeProvider>()
+                .updateBlurredBackgroundState(shouldShow: false);
+            Navigator.of(context).pop();
+          });
+        }
+      } else //Has some errors
+      {
+        showErrorsApplying(context: context);
+      }
+    } catch (e) {
+      log(e.toString());
+      showErrorsApplying(context: context);
+    }
+  }
+
+  //Show error applying
+  void showErrorsApplying({required BuildContext context}) {
+    showModalBottomSheet(
+        context: context,
+        builder: (context) {
+          //...
+          return Container(
+            color: Colors.white,
+            child: SafeArea(
+                bottom: false,
+                child: Container(
+                  width: MediaQuery.of(context).size.width,
+                  color: Colors.white,
+                  child:
+                      const ModalReg(scenario: 'error_application_something'),
+                )),
+          );
+        }).whenComplete(() {
+      context
+          .read<HomeProvider>()
+          .updateBlurredBackgroundState(shouldShow: false);
+      Navigator.of(context).pop();
+    });
+  }
+
+  //Update auth earning data
+  void updateAuthEarningData(
+      {required BuildContext context, required Map data}) {
+    try {
+      context.read<HomeProvider>().updateAuthEarningData(data: data);
+    } on Exception catch (e) {
+      // TODO
+      log(e.toString());
+    }
+  }
+}
+
+//Send the OTP code
+class SendOTPCodeNet {
+  Future exec({required BuildContext context}) async {
+    Uri mainUrl = Uri.parse(Uri.encodeFull(
+        '${context.read<HomeProvider>().bridge}/sendOtpAndCheckerUserStatusTc'));
+
+    //Assemble the bundle data
+    Map<String, String> bundleData = {
+      'user_nature': 'driver',
+      'phone_number':
+          '${context.read<HomeProvider>().selectedCountryCodeData['dial_code']}${context.read<HomeProvider>().enteredPhoneNumber}',
+      'smsHashLinker': 'absdEjdjs'
+    };
+
+    print(bundleData);
+
+    try {
+      http.Response response = await http.post(mainUrl, body: bundleData);
+
+      context.read<HomeProvider>().updateGenericLoaderShow(state: false);
+
+      if (response.statusCode == 200) //Got some results
+      {
+        log(response.body.toString());
+        Map responseGot = json.decode(response.body);
+        if (RegExp(r"error").hasMatch(responseGot['response']) ==
+            false) //No error found
+        {
+          if (RegExp(r"not_yet_registered")
+              .hasMatch(responseGot['response'])) //Not yet registered
+          {
+            log('driver not yet registered, move to registration');
+            //! Update the user's status: new_user
+            context
+                .read<HomeProvider>()
+                .updateRegistrationStatus(data: 'new_user');
+          } else if (RegExp(r"registered")
+              .hasMatch(responseGot['response'])) //registered driver
+          {
+            log('registered, move forward');
+            //Update the account details, user fp and move forward
+            context
+                .read<HomeProvider>()
+                .updateAccountDetails(data: responseGot);
+            context
+                .read<HomeProvider>()
+                .updateUserFpData(data: responseGot['user_fp']);
+            //Done
+            //! Update the user's status: registered_user
+            context
+                .read<HomeProvider>()
+                .updateRegistrationStatus(data: 'registered_user');
+          } else //Encountered some errors
+          {
+            log('Encountered some errors.');
+            showErrorsSendingCode(context: context);
+          }
+        } else //Found some errors
+        {
+          log('Found some errors');
+          showErrorsSendingCode(context: context);
+        }
+      } else //Has some errors
+      {
+        log(response.statusCode.toString());
+        showErrorsSendingCode(context: context);
+      }
+    } catch (e) {
+      log(e.toString());
+      showErrorsSendingCode(context: context);
+    }
+  }
+
+  //Show error encountered
+  void showErrorsSendingCode({required BuildContext context}) {
+    // context.read<HomeProvider>().updateBlurredBackgroundState(shouldShow: true);
+    context.read<HomeProvider>().updateRegistrationStatus(data: 'new_user');
+    showModalBottomSheet(
+        context: context,
+        builder: (context) {
+          //...
+          return Container(
+            color: Colors.white,
+            child: SafeArea(
+                child: Container(
+              width: MediaQuery.of(context).size.width,
+              color: Colors.white,
+              child: const Modal(scenario: 'error_sending_otpCode'),
+            )),
+          );
+        }).whenComplete(() {
+      context
+          .read<HomeProvider>()
+          .updateBlurredBackgroundState(shouldShow: false);
+      Navigator.of(context).pushNamed('/PhoneDetailsScreen');
+    });
+  }
+}
+
+//Check the OTP code
+class CheckOTPCodeNet {
+  Future exec({required BuildContext context}) async {
+    Uri mainUrl = Uri.parse(Uri.encodeFull(
+        '${context.read<HomeProvider>().bridge}/checkThisOTP_SMS'));
+
+    //Assemble the bundle data
+    Map<String, String> bundleData = {
+      'user_nature': 'driver',
+      'phone_number':
+          '${context.read<HomeProvider>().selectedCountryCodeData['dial_code']}${context.read<HomeProvider>().enteredPhoneNumber}',
+      'otp': context.read<HomeProvider>().otpValue
+    };
+
+    print(bundleData);
+
+    try {
+      http.Response response = await http.post(mainUrl, body: bundleData);
+
+      context.read<HomeProvider>().updateGenericLoaderShow(state: false);
+
+      if (response.statusCode == 200) //Got some results
+      {
+        log(response.body.toString());
+        Map responseGot = json.decode(response.body);
+        if (responseGot['response'] == false) //Wrong OTP Code
+        {
+          log('Wrong code');
+          showWrongCodeEntered(context: context);
+        } else //True OTP code
+        {
+          log('True code');
+          //Check the user status
+          if (context.read<HomeProvider>().userStatus ==
+              'new_user') //Move to signup
+          {
+            //! Update the loggin status
+            context.read<HomeProvider>().updateLogginStatus(status: 'logged');
+            //!...
+            Navigator.of(context).pushNamed('/SignupEntry');
+          } else //registered user
+          {
+            //? Get the user account details
+            Map userAccountDetailsFull =
+                context.read<HomeProvider>().userAccountDetails;
+            // print(context.read<HomeProvider>().userAccountDetails);
+            // Check the state of the account creation
+            if (RegExp(r"(true|valid)")
+                    .hasMatch(userAccountDetailsFull['account_state']) ||
+                userAccountDetailsFull['account_state']) //Valid account
+            {
+              //! Update the loggin status
+              context.read<HomeProvider>().updateLogginStatus(status: 'logged');
+              //!...
+              Navigator.of(context).pushNamed('/Home');
+            } else if (RegExp(r"(suspended|blocked|deactivated|expelled)")
+                .hasMatch(userAccountDetailsFull[
+                    'account_state'])) //Blocked or suspendGetDailyEarningAndAuthChecks
+            {
+              log('Locked account');
+            }
+          }
+        }
+      } else //Has some errors
+      {
+        log(response.statusCode.toString());
+        showErrorsCheckingCode(context: context);
+      }
+    } catch (e) {
+      log(e.toString());
+      showErrorsCheckingCode(context: context);
+    }
+  }
+
+  //Show error encountered
+  void showErrorsCheckingCode({required BuildContext context}) {
+    // context.read<HomeProvider>().updateBlurredBackgroundState(shouldShow: true);
+    showModalBottomSheet(
+        context: context,
+        builder: (context) {
+          //...
+          return Container(
+            color: Colors.white,
+            child: SafeArea(
+                child: Container(
+              width: MediaQuery.of(context).size.width,
+              color: Colors.white,
+              child: const Modal(scenario: 'error_checking_otpCode'),
+            )),
+          );
+        }).whenComplete(() {
+      context
+          .read<HomeProvider>()
+          .updateBlurredBackgroundState(shouldShow: false);
+      //Navigator.of(context).pushNamed('/PhoneDetailsScreen');
+    });
+  }
+
+  //Show wrong code
+  void showWrongCodeEntered({required BuildContext context}) {
+    showModalBottomSheet(
+        context: context,
+        builder: (context) {
+          //...
+          return Container(
+            color: Colors.white,
+            child: SafeArea(
+                child: Container(
+              width: MediaQuery.of(context).size.width,
+              color: Colors.white,
+              child: const Modal(scenario: 'wrong_otp_code_entered'),
+            )),
+          );
+        }).whenComplete(() {
+      context
+          .read<HomeProvider>()
+          .updateBlurredBackgroundState(shouldShow: false);
+      //Navigator.of(context).pushNamed('/PhoneDetailsScreen');
+    });
   }
 }
