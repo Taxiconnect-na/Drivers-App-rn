@@ -71,7 +71,7 @@ class _SupportState extends State<Support> {
                     color: Color.fromRGBO(9, 110, 212, 1)),
                 isTitleBold: true,
                 actuator: () => _callNumber(phone: '+264814400089')),
-            SizedBox(height: 25),
+            const SizedBox(height: 25),
             Options(
                 title: 'Call City Police',
                 icon: Icon(Icons.shield, color: Color.fromRGBO(178, 34, 34, 1)),

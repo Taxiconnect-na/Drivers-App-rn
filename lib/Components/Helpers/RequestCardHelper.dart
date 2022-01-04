@@ -7,7 +7,10 @@ import 'package:taxiconnectdrivers/Components/Providers/HomeProvider.dart';
 class RequestCardHelper {
   //?1. Fit destination widgets to List
   List<Widget> fitLocationWidgetsToList(
-      {required BuildContext context, required List<dynamic> locationData}) {
+      {required BuildContext context,
+      required List<dynamic> locationData,
+      String fontFamily = 'MoveTextBold',
+      double fontSize = 19}) {
     List<Widget> finalCompilation = [];
 
     for (int i = 0; i < locationData.length; i++) {
@@ -71,8 +74,8 @@ class RequestCardHelper {
                 SizedBox(
                   width: MediaQuery.of(context).size.width,
                   child: Text(suburb,
-                      style: const TextStyle(
-                          fontFamily: 'MoveTextBold', fontSize: 19)),
+                      style: TextStyle(
+                          fontFamily: fontFamily, fontSize: fontSize)),
                 ),
                 SizedBox(
                     width: MediaQuery.of(context).size.width,
@@ -140,5 +143,78 @@ class RequestCardHelper {
       'street_name': street_name,
       'suburb': suburb
     };
+  }
+}
+
+class DisplayCarInformation extends StatelessWidget {
+  EdgeInsetsGeometry padding;
+  final String plateNumber;
+  final String carBrand;
+  final String carImageURL;
+
+  DisplayCarInformation(
+      {Key? key,
+      this.padding = EdgeInsets.zero,
+      required this.plateNumber,
+      required this.carBrand,
+      required this.carImageURL})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: padding,
+      child: ListTile(
+        leading: Container(
+          width: MediaQuery.of(context).size.width * 0.3,
+          height: 250,
+          decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(3),
+              border:
+                  Border.all(width: 1, color: Colors.grey.withOpacity(0.2))),
+          child: Image.network(
+            carImageURL,
+            fit: BoxFit.cover,
+            errorBuilder: (context, error, stackTrace) => Container(
+              width: MediaQuery.of(context).size.width * 0.3,
+              height: 250,
+              alignment: Alignment.center,
+              child: Image.asset('assets/Images/Vehicles/economy_1.jpg'),
+            ),
+          ),
+        ),
+        title: Text(
+          plateNumber,
+          style: TextStyle(fontFamily: 'MoveTextMedium', fontSize: 17),
+        ),
+        subtitle: Padding(
+          padding: const EdgeInsets.only(top: 5),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(carBrand),
+              Padding(
+                padding: const EdgeInsets.only(top: 5),
+                child: Row(
+                  children: const [
+                    Icon(Icons.shield,
+                        size: 13, color: Color.fromRGBO(9, 134, 74, 1)),
+                    SizedBox(
+                      width: 3,
+                    ),
+                    Text(
+                      "Verified",
+                      style: TextStyle(color: Color.fromRGBO(9, 134, 74, 1)),
+                    ),
+                  ],
+                ),
+              )
+            ],
+          ),
+        ),
+      ),
+    );
   }
 }

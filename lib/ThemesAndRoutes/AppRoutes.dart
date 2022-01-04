@@ -23,6 +23,8 @@ import 'package:taxiconnectdrivers/Components/Support/Support.dart';
 import 'package:taxiconnectdrivers/Components/Wallet/Payouts.dart';
 import 'package:taxiconnectdrivers/Components/Wallet/Summary.dart';
 import 'package:taxiconnectdrivers/Components/Wallet/Wallet.dart';
+import 'package:taxiconnectdrivers/Components/YourRides/DetailedTripShow.dart';
+import 'package:taxiconnectdrivers/Components/YourRides/YourRides.dart';
 import 'package:taxiconnectdrivers/ThemesAndRoutes/AppTheme.dart' as AppTheme;
 
 class AppGeneralEntry extends StatefulWidget {
@@ -58,11 +60,13 @@ class _AppGeneralEntryState extends State<AppGeneralEntry> {
       '/SelectCarModels': (context) => const SelectCarModels(),
       '/SelectCarColor': (context) => const SelectCarColor(),
       '/Home': (context) => Home(),
+      '/YourRides': (context) => const YourRides(),
+      '/DetailedTripShow': (context) => const DetailedTripShow(),
       '/Wallet': (context) => const Wallet(),
       '/WalletSummary': (context) => const Summary(),
       '/WalletPayout': (context) => const Payouts(),
       '/Settings': (context) => const Settings(),
-      '/Support': (context) => const Support()
+      '/Support': (context) => const Support(),
     });
   }
 }

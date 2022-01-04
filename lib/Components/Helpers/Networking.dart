@@ -16,6 +16,123 @@ import 'package:taxiconnectdrivers/Components/Helpers/Sound.dart';
 import 'package:taxiconnectdrivers/Components/Providers/HomeProvider.dart';
 import 'package:taxiconnectdrivers/Components/Providers/RegistrationProvider.dart';
 
+class getRideHistoryTargeted {
+  Future exec({required BuildContext context}) async {
+    Uri mainUrl = Uri.parse(Uri.encodeFull(
+        '${context.read<HomeProvider>().bridge}/getRides_historyRiders_batchOrNot'));
+
+    //Assemble the bundle data
+    //* @param type: the type of request (past, scheduled, business)
+    Map<String, String> bundleData = {
+      'user_fingerprint': context.read<HomeProvider>().user_fingerprint,
+      'target': 'single',
+      'user_nature': 'driver',
+      'request_fp': context.read<HomeProvider>().tempoRideHistoryFocusedFP
+    };
+
+    try {
+      http.Response response = await http.post(mainUrl, body: bundleData);
+
+      if (response.statusCode == 200) //Got some results
+      {
+        log(response.body.toString());
+        Map responseGet = json.decode(response.body);
+        if (responseGet['response'] == 'success') //Go the data
+        {
+          //Deactivate the loader
+          context
+              .read<HomeProvider>()
+              .updateMainLoaderVisibility(option: false);
+          // log(responseGet.toString());
+          //!remove any False
+          List data = responseGet['data'];
+          //....
+          context
+              .read<HomeProvider>()
+              .updateRideHistorySelectedData(data: data);
+        } else //No data
+        {
+          resetRideHistoryList(context: context);
+        }
+      } else //Has some errors
+      {
+        //Mark as offline
+        log(response.statusCode.toString());
+        resetRideHistoryList(context: context);
+      }
+    } catch (e) {
+      log(e.toString());
+      resetRideHistoryList(context: context);
+    }
+  }
+
+  //Reset the ride history to 0
+  void resetRideHistoryList({required BuildContext context}) {
+    //Deactivate the loader
+    context.read<HomeProvider>().updateMainLoaderVisibility(option: false);
+  }
+}
+
+class getRideHistoryBatch {
+  Future exec({required BuildContext context}) async {
+    Uri mainUrl = Uri.parse(Uri.encodeFull(
+        '${context.read<HomeProvider>().bridge}/getRides_historyRiders_batchOrNot'));
+
+    //Assemble the bundle data
+    //* @param type: the type of request (past, scheduled, business)
+    Map<String, String> bundleData = {
+      'user_fingerprint': context.read<HomeProvider>().user_fingerprint,
+      'ride_type': 'past',
+      'user_nature': 'driver',
+    };
+
+    try {
+      http.Response response = await http.post(mainUrl, body: bundleData);
+
+      if (response.statusCode == 200) //Got some results
+      {
+        // log(response.body.toString());
+        Map responseGet = json.decode(response.body);
+        if (responseGet['response'] == 'success') //Go the data
+        {
+          //Deactivate the loader
+          context
+              .read<HomeProvider>()
+              .updateMainLoaderVisibility(option: false);
+          // log(responseGet.toString());
+          //!remove any False
+          List rawData = responseGet['data'];
+          List filteredData = rawData
+              .where((element) => element != false && element != null)
+              .toList();
+          //....
+          context
+              .read<HomeProvider>()
+              .updateRideHistoryList(data: filteredData);
+        } else //No data
+        {
+          resetRideHistoryList(context: context);
+        }
+      } else //Has some errors
+      {
+        //Mark as offline
+        log(response.statusCode.toString());
+        resetRideHistoryList(context: context);
+      }
+    } catch (e) {
+      log(e.toString());
+      resetRideHistoryList(context: context);
+    }
+  }
+
+  //Reset the ride history to 0
+  void resetRideHistoryList({required BuildContext context}) {
+    //Deactivate the loader
+    context.read<HomeProvider>().updateMainLoaderVisibility(option: false);
+    context.read<HomeProvider>().updateRideHistoryList(data: []);
+  }
+}
+
 class GetDriverGeneralNumbers {
   Future exec({required BuildContext context}) async {
     Uri mainUrl = Uri.parse(Uri.encodeFull(
@@ -25,8 +142,6 @@ class GetDriverGeneralNumbers {
     Map<String, String> bundleData = {
       'user_fingerprint': context.read<HomeProvider>().user_fingerprint
     };
-
-    print(bundleData);
 
     try {
       http.Response response = await http.post(mainUrl, body: bundleData);

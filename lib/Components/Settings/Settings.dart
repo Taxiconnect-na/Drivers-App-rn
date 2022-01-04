@@ -3,6 +3,7 @@ import 'package:provider/src/provider.dart';
 import 'package:taxiconnectdrivers/Components/Helpers/Networking.dart';
 import 'package:taxiconnectdrivers/Components/Providers/HomeProvider.dart';
 import 'package:taxiconnectdrivers/Components/Providers/RegistrationProvider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class Settings extends StatefulWidget {
   const Settings({Key? key}) : super(key: key);
@@ -106,7 +107,7 @@ class _SettingsState extends State<Settings> {
                     StagedNumbers(
                       title: context
                               .watch<HomeProvider>()
-                              .generalNumbers['trips']
+                              .generalNumbers['trips']!
                               .toString() ??
                           '*',
                       subTitle: Text('Trips'),
@@ -114,7 +115,7 @@ class _SettingsState extends State<Settings> {
                     StagedNumbers(
                       title: context
                               .watch<HomeProvider>()
-                              .generalNumbers['rating']
+                              .generalNumbers['rating']!
                               .toString() ??
                           '*',
                       subTitle: Icon(Icons.star, color: Colors.amber),
@@ -122,7 +123,7 @@ class _SettingsState extends State<Settings> {
                     StagedNumbers(
                       title: context
                               .watch<HomeProvider>()
-                              .generalNumbers['revenue']
+                              .generalNumbers['revenue']!
                               .toString() ??
                           '*',
                       subTitle: Text('N\$'),
@@ -145,8 +146,20 @@ class _SettingsState extends State<Settings> {
               //   height: 30,
               // ),
               TitlePlaceholder(title: 'Privacy'),
-              Options(title: 'Terms & Conditions', actuator: () {}),
-              Options(title: 'Privacy statements', actuator: () {}),
+              Options(
+                  title: 'Terms & Conditions',
+                  actuator: () async {
+                    if (!await launch('https://www.taxiconnectna.com/terms')) {
+                      throw 'Could not launch the URL';
+                    }
+                  }),
+              Options(
+                  title: 'Privacy statements',
+                  actuator: () async {
+                    if (!await launch('https://www.taxiconnectna.com/terms')) {
+                      throw 'Could not launch the URL';
+                    }
+                  }),
               SizedBox(
                 height: 20,
               ),

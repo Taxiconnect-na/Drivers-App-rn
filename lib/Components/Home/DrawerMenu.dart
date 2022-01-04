@@ -5,6 +5,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:taxiconnectdrivers/Components/Providers/HomeProvider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class DrawerMenu extends StatefulWidget {
   const DrawerMenu({Key? key}) : super(key: key);
@@ -73,7 +74,8 @@ class _DrawerMenuState extends State<DrawerMenu> {
           MenuOption(
             titleOption: 'Your rides',
             showDivider: true,
-            actuatorFnc: () => log('rides'),
+            actuatorFnc: () =>
+                Navigator.of(context).pushReplacementNamed('/YourRides'),
           ),
           MenuOption(
             titleOption: 'Wallet',
@@ -107,11 +109,19 @@ class _DrawerMenuState extends State<DrawerMenu> {
                             top: BorderSide(
                                 width: 1,
                                 color: Colors.grey.withOpacity(0.2)))),
-                    child: const Padding(
+                    child: Padding(
                       padding: EdgeInsets.only(top: 10),
                       child: ListTile(
-                        leading: Text('Legal', style: TextStyle(fontSize: 16)),
-                        trailing: Text('v3.0.05',
+                        leading: InkWell(
+                            onTap: () async {
+                              if (!await launch(
+                                  'https://www.taxiconnectna.com')) {
+                                throw 'Could not launch the URL';
+                              }
+                            },
+                            child: const Text('Legal',
+                                style: TextStyle(fontSize: 16))),
+                        trailing: const Text('v3.0.05',
                             style: TextStyle(fontSize: 16, color: Colors.grey)),
                       ),
                     ))),

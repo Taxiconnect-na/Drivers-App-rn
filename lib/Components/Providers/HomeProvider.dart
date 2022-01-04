@@ -38,6 +38,13 @@ class HomeProvider with ChangeNotifier {
   Map<dynamic, dynamic> generalNumbers =
       {}; //Will hold all the drivers general numbers: rides, deliveries, trips, revenue, rating,...
 
+  List rideHistory = []; //Will hold the ride history list
+
+  String tempoRideHistoryFocusedFP =
+      ''; //Will hold the currently selected ride history f[]
+  List rideHistorySelectedData =
+      []; //Will hold the data for the temporarily selected ride history record.
+
   String userStatus =
       'new_user'; //Tempo variable to hold the status of the user : new_user or registered_user
 
@@ -329,10 +336,13 @@ class HomeProvider with ChangeNotifier {
   }
 
   //? 12. Update main loader visibility
-  void updateMainLoaderVisibility({required bool option}) {
+  void updateMainLoaderVisibility(
+      {required bool option, bool shouldUpdate = true}) {
     if (shouldShowMainLoader != option) {
       shouldShowMainLoader = option;
-      notifyListeners();
+      if (shouldUpdate) {
+        notifyListeners();
+      }
     }
   }
 
@@ -498,6 +508,24 @@ class HomeProvider with ChangeNotifier {
   //? 29. Update the drivers general numbers
   void updateDriverGeneralNumbers({required Map<dynamic, dynamic> data}) {
     generalNumbers = data;
+    notifyListeners();
+  }
+
+  //? 30. Update the ride history list
+  void updateRideHistoryList({required List data}) {
+    rideHistory = data;
+    notifyListeners();
+  }
+
+  //? 31. Update the tempo selected ride history fp
+  void updateTempoRideHistorySelected({required String data}) {
+    tempoRideHistoryFocusedFP = data;
+    notifyListeners();
+  }
+
+  //? 32. Update ride history selected record data
+  void updateRideHistorySelectedData({required List data}) {
+    rideHistorySelectedData = data;
     notifyListeners();
   }
 }
