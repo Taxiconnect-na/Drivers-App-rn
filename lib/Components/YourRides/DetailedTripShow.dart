@@ -80,7 +80,7 @@ class _DetailedTripShowState extends State<DetailedTripShow> {
                         padding: const EdgeInsets.only(bottom: 70),
                         children: [
                           Container(
-                            color: Colors.amber,
+                            color: Colors.grey.withOpacity(0.1),
                             height: 200,
                             child: Image.network(
                               'https://api.mapbox.com/styles/v1/mapbox/streets-v11/static/17.0824,-22.5747,11.8,0/1280x1280?access_token=pk.eyJ1IjoiZG9taW5pcXVla3R0IiwiYSI6ImNrYXg0M3gyNDAybDgyem81cjZuMXp4dzcifQ.PpW6VnORUHYSYqNCD9n6Yg',
@@ -90,8 +90,7 @@ class _DetailedTripShowState extends State<DetailedTripShow> {
                                       width: MediaQuery.of(context).size.width,
                                       height: 200,
                                       alignment: Alignment.center,
-                                      child:
-                                          const Text("Couldn't load the map.")),
+                                      child: const Text("...")),
                             ),
                           ),
                           Container(
@@ -116,12 +115,12 @@ class _DetailedTripShowState extends State<DetailedTripShow> {
                                     .toString()
                                     .replaceAll('/', '-')
                                     .replaceFirst(', ', ' at '),
-                                style: TextStyle(
+                                style: const TextStyle(
                                     fontSize: 16, color: Colors.white),
                               ),
                             ),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 10,
                           ),
                           TitlePlaceholder(title: 'Trip'),

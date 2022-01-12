@@ -85,7 +85,10 @@ class _HeaderGeneralState extends State<HeaderGeneral> {
                                       color: Colors.white,
                                       fontFamily: 'MoveTextBold',
                                       fontSize: 20))))),
-              Text('Other')
+              InkWell(
+                  onTap: () =>
+                      Navigator.of(context).pushReplacementNamed('/Settings'),
+                  child: Icon(Icons.settings))
             ],
           ),
         ),

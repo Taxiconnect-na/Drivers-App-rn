@@ -17,6 +17,8 @@ import 'package:taxiconnectdrivers/Components/Providers/RegistrationProvider.dar
 class HomeProvider with ChangeNotifier {
   final String bridge = 'http://192.168.8.132:9999';
 
+  late AnimationController controllerSwicther; //The bottom switcher animator
+
   Map<dynamic, dynamic> onlineOfflineData = {
     'flag': 'offline'
   }; //! Will hold the online/offline and suspension status of the driver
@@ -26,7 +28,7 @@ class HomeProvider with ChangeNotifier {
     'isGoingOffline': false
   }; //Vars to manage to going online and offline states.
 
-  String logginStatus =
+  late String logginStatus =
       'out'; //! To know if the user is logged in (logged) or out (out)
 
   String user_fingerprint =
@@ -527,5 +529,12 @@ class HomeProvider with ChangeNotifier {
   void updateRideHistorySelectedData({required List data}) {
     rideHistorySelectedData = data;
     notifyListeners();
+  }
+
+  //? 33. Initialize the animation controller
+  void initializeAnimationSwictherController(
+      {required AnimationController controller}) {
+    controllerSwicther = controller;
+    // notifyListeners();
   }
 }

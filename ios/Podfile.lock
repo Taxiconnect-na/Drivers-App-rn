@@ -36,6 +36,10 @@ PODS:
   - MapboxNavigationNative (32.0.0):
     - MapboxCommon (= 9.2.0)
   - MapboxSpeech (1.0.0)
+  - onesignal_flutter (3.2.7):
+    - Flutter
+    - OneSignalXCFramework (= 3.9.1)
+  - OneSignalXCFramework (3.9.1)
   - path_provider_ios (0.0.1):
     - Flutter
   - Polyline (5.0.2)
@@ -52,6 +56,8 @@ DEPENDENCIES:
   - flutter_phone_direct_caller (from `.symlinks/plugins/flutter_phone_direct_caller/ios`)
   - geolocator_apple (from `.symlinks/plugins/geolocator_apple/ios`)
   - image_picker (from `.symlinks/plugins/image_picker/ios`)
+  - onesignal_flutter (from `.symlinks/plugins/onesignal_flutter/ios`)
+  - OneSignalXCFramework (< 4.0, >= 3.4.3)
   - path_provider_ios (from `.symlinks/plugins/path_provider_ios/ios`)
   - url_launcher_ios (from `.symlinks/plugins/url_launcher_ios/ios`)
 
@@ -66,6 +72,7 @@ SPEC REPOS:
     - MapboxNavigation
     - MapboxNavigationNative
     - MapboxSpeech
+    - OneSignalXCFramework
     - Polyline
     - Solar
     - Turf
@@ -85,6 +92,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/geolocator_apple/ios"
   image_picker:
     :path: ".symlinks/plugins/image_picker/ios"
+  onesignal_flutter:
+    :path: ".symlinks/plugins/onesignal_flutter/ios"
   path_provider_ios:
     :path: ".symlinks/plugins/path_provider_ios/ios"
   url_launcher_ios:
@@ -107,12 +116,14 @@ SPEC CHECKSUMS:
   MapboxNavigation: b596028515707e1b4b94d22f298a7c7000712e6d
   MapboxNavigationNative: e811b9beed18c01e4693e29f843d36b4a760fa61
   MapboxSpeech: 4b3aea42e35d056fae1d7ad847a9fc0f412d911e
+  onesignal_flutter: be350169f5b07461e7b1e9c978d8a39908c5cf37
+  OneSignalXCFramework: 27159b0a150cdfe528c85325215c9d78b2f973c7
   path_provider_ios: 7d7ce634493af4477d156294792024ec3485acd5
   Polyline: fce41d72e1146c41c6d081f7656827226f643dff
   Solar: 2dc6e7cc39186cb0c8228fa08df76fb50c7d8f24
   Turf: aaa060138b11a8e979a19e6d81091d156a31bc58
   url_launcher_ios: 02f1989d4e14e998335b02b67a7590fa34f971af
 
-PODFILE CHECKSUM: 52bf3b56c493f4e94929c14ba72fc583188f3ea0
+PODFILE CHECKSUM: 60dc83305ed4baeb8c69d90869e67752ea637fca
 
 COCOAPODS: 1.10.1

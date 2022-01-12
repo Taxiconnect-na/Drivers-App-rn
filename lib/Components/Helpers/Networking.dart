@@ -237,11 +237,33 @@ class SetOnlineOfflineStatus {
         //Mark as offline
         log(response.statusCode.toString());
         resetLoadingStates(context: context, state: state);
+        showErrorGoingOnline(context: context);
       }
     } catch (e) {
       log(e.toString());
       resetLoadingStates(context: context, state: state);
+      showErrorGoingOnline(context: context);
     }
+  }
+
+  //Show unable to go online modal
+  void showErrorGoingOnline({required BuildContext context}) {
+    showModalBottomSheet(
+        context: context,
+        builder: (context) {
+          return Container(
+            color: Colors.white,
+            child: SafeArea(
+                child: Container(
+              width: MediaQuery.of(context).size.width,
+              color: Colors.white,
+              child: const Modal(scenario: 'error_going_online'),
+            )),
+          );
+        }).whenComplete(() {
+      context.read<HomeProvider>().controllerSwicther.reverse();
+      resetLoadingStates(context: context, state: 'online');
+    });
   }
 
   //Reset the loading states
@@ -387,11 +409,16 @@ class GetRequestsGraphNet {
 
       if (response.statusCode == 200) //Got some results
       {
-        // log(response.body.toString());
+        log(response.body.toString());
         updateGraphData(context: context, graph: json.decode(response.body));
       } else //Has some errors
       {
-        updateGraphData(context: context, graph: json.decode(response.body));
+        updateGraphData(context: context, graph: {
+          'rides': 0,
+          'deliveries': 0,
+          'scheduled': 0,
+          'accepted': 0
+        });
       }
     } catch (e) {
       log(e.toString());
@@ -1067,15 +1094,30 @@ class GetDailyEarningAndAuthChecks {
               context: context, data: json.decode(response.body));
         } else //No data got - defaults to empty
         {
-          updateAuthEarningData(context: context, data: {});
+          updateAuthEarningData(context: context, data: {
+            'amount': 0,
+            'currency': "NAD",
+            'currency_symbol': "N\$",
+            'response': "error",
+          });
         }
       } else //Has some errors
       {
-        updateAuthEarningData(context: context, data: {});
+        updateAuthEarningData(context: context, data: {
+          'amount': 0,
+          'currency': "NAD",
+          'currency_symbol': "N\$",
+          'response': "error",
+        });
       }
     } catch (e) {
       log(e.toString());
-      updateAuthEarningData(context: context, data: {});
+      updateAuthEarningData(context: context, data: {
+        'amount': 0,
+        'currency': "NAD",
+        'currency_symbol': "N\$",
+        'response': "error",
+      });
     }
   }
 

@@ -55,7 +55,7 @@ class _TripDetailsState extends State<TripDetails> {
                         style: TextStyle(
                             fontFamily: 'MoveTextMedium', fontSize: 17)),
                   ),
-                  trailing: Text('Other'),
+                  trailing: Text(''),
                 ),
               ),
               // User details
@@ -251,6 +251,7 @@ class _TripDetailsState extends State<TripDetails> {
         ])),
       );
     } catch (e) {
+      Navigator.of(context).pop(); //Autoclose the modal
       return Container(
         child: Text(''),
       );

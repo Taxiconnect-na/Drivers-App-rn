@@ -137,11 +137,13 @@ class _OfflineStripState extends State<OfflineStrip>
     // TODO: implement initState
     super.initState();
 
-    _controller = AnimationController(
-        duration: const Duration(milliseconds: 800), vsync: this);
+    context.read<HomeProvider>().initializeAnimationSwictherController(
+        controller: AnimationController(
+            duration: const Duration(milliseconds: 800), vsync: this));
 
-    scaleGoingOnline = Tween(begin: 0.0, end: 10.0)
-        .animate(CurvedAnimation(parent: _controller, curve: forwardInterval));
+    scaleGoingOnline = Tween(begin: 0.0, end: 10.0).animate(CurvedAnimation(
+        parent: context.read<HomeProvider>().controllerSwicther,
+        curve: forwardInterval));
   }
 
   @override
@@ -222,7 +224,11 @@ class _OfflineStripState extends State<OfflineStrip>
                           context.read<HomeProvider>().updateGoingOnlineOffline(
                               scenario: 'online', state: true);
                           //...
-                          _controller.forward().whenComplete(() {
+                          context
+                              .read<HomeProvider>()
+                              .controllerSwicther
+                              .forward()
+                              .whenComplete(() {
                             print('Going online set...');
                             SetOnlineOfflineStatus setOnlineOfflineStatus =
                                 SetOnlineOfflineStatus();

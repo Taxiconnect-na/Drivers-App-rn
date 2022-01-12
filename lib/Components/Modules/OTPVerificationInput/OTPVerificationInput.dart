@@ -30,6 +30,7 @@ class _OTPVerificationInputState extends State<OTPVerificationInput> {
           autovalidateMode: AutovalidateMode.disabled,
           autoDismissKeyboard: true,
           appContext: context,
+          keyboardType: TextInputType.number,
           length: 5,
           obscureText: false,
           blinkDuration: Duration(milliseconds: 250),

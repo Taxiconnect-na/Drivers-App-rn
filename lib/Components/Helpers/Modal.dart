@@ -28,6 +28,39 @@ class Modal extends StatelessWidget {
   //Return the correct content based on the scenario
   Widget getContent({required BuildContext context, required String scenario}) {
     switch (scenario) {
+      case 'error_going_online':
+        return Container(
+          // color: Colors.red,
+          height: 350,
+          alignment: Alignment.topCenter,
+          child: Padding(
+            padding: const EdgeInsets.only(top: 40),
+            child:
+                Column(mainAxisAlignment: MainAxisAlignment.start, children: [
+              const Icon(Icons.cloud_off_outlined,
+                  size: 45, color: Color.fromRGBO(178, 34, 34, 1)),
+              const Padding(
+                padding: EdgeInsets.only(top: 25),
+                child: Text("Unable to go online",
+                    style: TextStyle(fontFamily: 'MoveTextBold', fontSize: 20)),
+              ),
+              const Padding(
+                padding: EdgeInsets.only(top: 10, left: 15, right: 15),
+                child: Text(
+                    'Sorry due to an unexpected error we were unable to go online, please check your Internet and try again.',
+                    textAlign: TextAlign.center,
+                    style:
+                        TextStyle(fontFamily: 'MoveTextRegular', fontSize: 17)),
+              ),
+              const Expanded(child: Text('')),
+              GenericRectButton(
+                  label: 'Close',
+                  labelFontSize: 20,
+                  isArrowShow: false,
+                  actuatorFunctionl: () => Navigator.of(context).pop())
+            ]),
+          ),
+        );
       case 'help_signup_details':
         return Container(
           // color: Colors.red,
