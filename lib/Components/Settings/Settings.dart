@@ -106,26 +106,38 @@ class _SettingsState extends State<Settings> {
                   children: [
                     StagedNumbers(
                       title: context
+                                  .watch<HomeProvider>()
+                                  .generalNumbers['trips'] !=
+                              null
+                          ? context
                               .watch<HomeProvider>()
-                              .generalNumbers['trips']!
-                              .toString() ??
-                          '*',
+                              .generalNumbers['trips']
+                              .toString()
+                          : '*',
                       subTitle: Text('Trips'),
                     ),
                     StagedNumbers(
                       title: context
+                                  .watch<HomeProvider>()
+                                  .generalNumbers['rating'] !=
+                              null
+                          ? context
                               .watch<HomeProvider>()
-                              .generalNumbers['rating']!
-                              .toString() ??
-                          '*',
+                              .generalNumbers['rating']
+                              .toString()
+                          : '*',
                       subTitle: Icon(Icons.star, color: Colors.amber),
                     ),
                     StagedNumbers(
                       title: context
+                                  .watch<HomeProvider>()
+                                  .generalNumbers['revenue'] !=
+                              null
+                          ? context
                               .watch<HomeProvider>()
-                              .generalNumbers['revenue']!
-                              .toString() ??
-                          '*',
+                              .generalNumbers['revenue']
+                              .toString()
+                          : '*',
                       subTitle: Text('N\$'),
                     )
                   ],

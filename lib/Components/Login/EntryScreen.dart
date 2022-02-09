@@ -26,16 +26,15 @@ class _EntryScreenState extends State<EntryScreen> {
         return Future.value(false);
       },
       child: Scaffold(
-          body: InkWell(
-        onTap: () {
-          Navigator.of(context).pushNamed('/PhoneDetailsScreen');
-        },
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Expanded(
-                flex: 3,
+          body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Expanded(
+              flex: 3,
+              child: InkWell(
+                onTap: () =>
+                    Navigator.of(context).pushNamed('/PhoneDetailsScreen'),
                 child: Container(
                   alignment: Alignment.topCenter,
                   width: MediaQuery.of(context).size.width,
@@ -80,10 +79,14 @@ class _EntryScreenState extends State<EntryScreen> {
                       ),
                     ],
                   )),
-                )),
-            Expanded(
-              flex: 1,
-              child: Container(
+                ),
+              )),
+          Expanded(
+            flex: 1,
+            child: InkWell(
+              onTap: () =>
+                  Navigator.of(context).pushNamed('/PhoneDetailsScreen'),
+              child: SizedBox(
                 width: MediaQuery.of(context).size.width,
                 child: SafeArea(
                     child: Container(
@@ -102,9 +105,9 @@ class _EntryScreenState extends State<EntryScreen> {
                           size: 20, color: Colors.black)),
                 )),
               ),
-            )
-          ],
-        ),
+            ),
+          )
+        ],
       )),
     );
   }

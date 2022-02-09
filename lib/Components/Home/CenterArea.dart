@@ -287,6 +287,35 @@ class RequestCard extends StatelessWidget {
             color: Colors.white),
         child: Column(
           children: [
+            Visibility(
+                visible: requestData['request_type'] == 'scheduled',
+                child: Container(
+                  color: const Color.fromRGBO(178, 34, 34, 1),
+                  child: Padding(
+                    padding: const EdgeInsets.only(
+                        top: 8, left: 8, right: 8, bottom: 8),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            const Icon(Icons.calendar_today,
+                                color: Colors.white, size: 15),
+                            const Padding(padding: EdgeInsets.only(left: 2)),
+                            Text(
+                              '${requestData['ride_basic_infos']['date_state_wishedPickup_time']} at ${DateParser(requestData['ride_basic_infos']['wished_pickup_time']).getReadableTime()}',
+                              style: const TextStyle(
+                                  fontSize: 16,
+                                  fontFamily: 'MoveTextRegular',
+                                  color: Colors.white),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                )),
             Padding(
               padding: const EdgeInsets.only(top: 8, left: 8, right: 8),
               child: Row(
@@ -306,9 +335,12 @@ class RequestCard extends StatelessWidget {
                       ),
                     ],
                   ),
-                  Text(
-                    'Sent ${DateParser(requestData['ride_basic_infos']['wished_pickup_time']).getReadableTime()}',
-                    style: const TextStyle(fontSize: 15),
+                  Visibility(
+                    visible: requestData['request_type'] != 'scheduled',
+                    child: Text(
+                      'Sent ${DateParser(requestData['ride_basic_infos']['wished_pickup_time']).getReadableTime()}',
+                      style: const TextStyle(fontSize: 15),
+                    ),
                   )
                 ],
               ),

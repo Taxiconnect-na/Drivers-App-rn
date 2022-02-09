@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/src/provider.dart';
 import 'package:taxiconnectdrivers/Components/Home/TripDetails.dart';
 import 'package:taxiconnectdrivers/Components/Modules/GenericRectButton/GenericRectButton.dart';
+import 'package:taxiconnectdrivers/Components/Providers/HomeProvider.dart';
 import 'package:taxiconnectdrivers/Components/Providers/RegistrationProvider.dart';
 
 class SignupEntry extends StatefulWidget {
@@ -19,11 +20,20 @@ class _SignupEntryState extends State<SignupEntry> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.black,
-        leading: Padding(
-          padding: const EdgeInsets.only(right: 8.0, left: 5),
-          child: Icon(Icons.arrow_back),
+        leading: IconButton(
+          padding: EdgeInsets.only(left: 0),
+          visualDensity: VisualDensity.comfortable,
+          onPressed: () {
+            //Clear everything
+            //! 1. Registration
+            context.read<RegistrationProvider>().clearEverything();
+            //! 2. Home
+            context.read<HomeProvider>().clearEverything();
+            //...
+            Navigator.of(context).pushNamed('/PhoneDetailsScreen');
+          },
+          icon: Icon(Icons.arrow_back),
         ),
-        leadingWidth: 15,
         title: Text('Sign up to drive',
             style: TextStyle(fontFamily: 'MoveTextBold', fontSize: 20)),
         centerTitle: false,

@@ -16,6 +16,8 @@ class RegistrationProvider with ChangeNotifier {
 
   String? driverNature; //The type of driver selected: COURIER or RIDE
 
+  String? driverTypeProperty; //The type of driver: TAXI or INDIVIDUAL
+
   String? city; //The default selected city for operations
 
   Map<String, String> personalDetails = {
@@ -88,6 +90,10 @@ class RegistrationProvider with ChangeNotifier {
         driverNature = state['driverNature'] == null
             ? null
             : state['driverNature']; //! The type of driver
+        //...
+        driverTypeProperty = state['driverTypeProperty'] == null
+            ? null
+            : state['driverTypeProperty']; //! Driver type person.
         //...
         personalDetails = {
           'name': state['personalDetails']['name'],
@@ -174,6 +180,7 @@ class RegistrationProvider with ChangeNotifier {
     return {
       'city': city,
       'driverNature': driverNature,
+      'driverTypeProperty': driverTypeProperty,
       'personalDetails': personalDetails,
       'driverPhoto': driverPhoto == null ? null : driverPhoto!.path,
       'carDetails': carDetails,
@@ -391,6 +398,15 @@ class RegistrationProvider with ChangeNotifier {
   //?13. Update the selected driver type
   void updateSelectedDriverNature({required String data}) {
     driverNature = data;
+    //...
+    peristDataMap();
+    //...
+    notifyListeners();
+  }
+
+  //?14. Update the selected driver person
+  void updateSelectedDriverPerson({required String data}) {
+    driverTypeProperty = data;
     //...
     peristDataMap();
     //...

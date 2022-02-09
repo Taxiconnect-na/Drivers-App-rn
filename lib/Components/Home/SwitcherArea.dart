@@ -101,12 +101,14 @@ class _SwictherAreaState extends State<SwictherArea> {
                           Visibility(
                             visible: graphData['rides'] +
                                     graphData['deliveries'] +
-                                    graphData['scheduled'] >
+                                    graphData['scheduled'] +
+                                    graphData['accepted'] >
                                 0,
                             child: NumberIndicator(
                                 number: graphData['rides'] +
                                     graphData['deliveries'] +
-                                    graphData['scheduled']),
+                                    graphData['scheduled'] +
+                                    graphData['accepted']),
                           )
                         ],
                       ),
@@ -126,7 +128,7 @@ class OfflineStrip extends StatefulWidget {
 
 class _OfflineStripState extends State<OfflineStrip>
     with SingleTickerProviderStateMixin {
-  late AnimationController _controller;
+  // late AnimationController _controller;
   late final Animation<double> scaleGoingOnline;
   final Interval forwardInterval =
       const Interval(0.0, 1.0, curve: Curves.easeInOutCubic);
@@ -150,7 +152,7 @@ class _OfflineStripState extends State<OfflineStrip>
   void dispose() {
     // TODO: implement dispose
     super.dispose();
-    _controller.dispose();
+    context.read<HomeProvider>().controllerSwicther.dispose();
   }
 
   @override

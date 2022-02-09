@@ -7,13 +7,16 @@ import 'package:taxiconnectdrivers/Components/Login/EntryScreen.dart';
 import 'package:taxiconnectdrivers/Components/Login/OTPVerificationEntry.dart';
 import 'package:taxiconnectdrivers/Components/Login/PhoneDetailsScreen.dart';
 import 'package:taxiconnectdrivers/Components/Login/RegisterOptions.dart';
+import 'package:taxiconnectdrivers/Components/Login/RegisterOptionsDriver.dart';
 import 'package:taxiconnectdrivers/Components/Login/RegistrationDelivery.dart';
 import 'package:taxiconnectdrivers/Components/Login/RegistrationRide.dart';
+import 'package:taxiconnectdrivers/Components/Login/RegistrationRideIndividual.dart';
 import 'package:taxiconnectdrivers/Components/Login/SelectCar.dart';
 import 'package:taxiconnectdrivers/Components/Login/SelectCarColor.dart';
 import 'package:taxiconnectdrivers/Components/Login/SelectCarDirectory.dart';
 import 'package:taxiconnectdrivers/Components/Login/SelectCarModels.dart';
 import 'package:taxiconnectdrivers/Components/Login/SelectCarRide.dart';
+import 'package:taxiconnectdrivers/Components/Login/SelectCarRideIndividual.dart';
 import 'package:taxiconnectdrivers/Components/Login/SignupEntry.dart';
 import 'package:taxiconnectdrivers/Components/Login/SplashScreen.dart';
 import 'package:taxiconnectdrivers/Components/Providers/HomeProvider.dart';
@@ -52,10 +55,14 @@ class _AppGeneralEntryState extends State<AppGeneralEntry> {
       '/OTPVerificationEntry': (context) => const OTPVerificationEntry(),
       '/SignupEntry': (context) => const SignupEntry(),
       '/RegisterOptions': (context) => const RegisterOptions(),
+      '/RegisterOptionsDriver': (context) => const RegisterOptionsDriver(),
       '/RegistrationDelivery': (context) => const RegistrationDelivery(),
       '/RegistrationRide': (context) => const RegistrationRide(),
+      '/RegistrationRideIndividual': (context) =>
+          const RegistrationRideIndividual(),
       '/SelectCar': (context) => const SelectCar(),
       '/SelectCarRide': (context) => const SelectCarRide(),
+      '/SelectCarRideIndividual': (context) => const SelectCarRideIndividual(),
       '/SelectCarDirectory': (context) => const SelectCarDirectory(),
       '/SelectCarModels': (context) => const SelectCarModels(),
       '/SelectCarColor': (context) => const SelectCarColor(),

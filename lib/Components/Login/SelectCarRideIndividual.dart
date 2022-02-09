@@ -5,14 +5,15 @@ import 'package:taxiconnectdrivers/Components/Helpers/ModalReg.dart';
 import 'package:taxiconnectdrivers/Components/Modules/GenericRectButton/GenericRectButton.dart';
 import 'package:taxiconnectdrivers/Components/Providers/RegistrationProvider.dart';
 
-class SelectCarRide extends StatefulWidget {
-  const SelectCarRide({Key? key}) : super(key: key);
+class SelectCarRideIndividual extends StatefulWidget {
+  const SelectCarRideIndividual({Key? key}) : super(key: key);
 
   @override
-  _SelectCarRideState createState() => _SelectCarRideState();
+  _SelectCarRideIndividualState createState() =>
+      _SelectCarRideIndividualState();
 }
 
-class _SelectCarRideState extends State<SelectCarRide> {
+class _SelectCarRideIndividualState extends State<SelectCarRideIndividual> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -21,11 +22,8 @@ class _SelectCarRideState extends State<SelectCarRide> {
           leading: IconButton(
             padding: EdgeInsets.only(left: 0),
             visualDensity: VisualDensity.comfortable,
-            onPressed: () => Navigator.of(context).pushNamed(
-                context.read<RegistrationProvider>().driverTypeProperty ==
-                        'TAXI'
-                    ? '/RegistrationRide'
-                    : '/RegistrationRideIndividual'),
+            onPressed: () =>
+                Navigator.of(context).pushNamed('/RegistrationRideIndividual'),
             icon: Icon(Icons.arrow_back),
           ),
           title: const Text('Vehicle info',
@@ -67,23 +65,6 @@ class _SelectCarRideState extends State<SelectCarRide> {
                     const SizedBox(
                       height: 20,
                     ),
-                    Row(
-                      children: [
-                        BasicInputText(
-                            title: 'Taxi number',
-                            nature: 'vehicle_details_taxi_number'),
-                      ],
-                    ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    Row(
-                      children: [
-                        BasicInputText(
-                            title: 'Permit number',
-                            nature: 'vehicle_details_permit_number'),
-                      ],
-                    ),
                     const Expanded(child: Text('')),
                     GenericRectButton(
                         label: 'Done',
@@ -91,7 +72,8 @@ class _SelectCarRideState extends State<SelectCarRide> {
                         isArrowShow: false,
                         horizontalPadding: 0,
                         actuatorFunctionl: () {
-                          Navigator.of(context).pushNamed('/RegistrationRide');
+                          Navigator.of(context)
+                              .pushNamed('/RegistrationRideIndividual');
                         })
                   ]),
             ),

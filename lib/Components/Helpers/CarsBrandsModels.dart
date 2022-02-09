@@ -856,6 +856,7 @@ class CarsBrandsModels {
         {"title": "CR-Z"},
         {"title": "CRX"},
         {"title": "Element"},
+        {"title": "Fit"},
         {"title": "FR-V"},
         {"title": "HR-V"},
         {"title": "Insight"},
@@ -1036,7 +1037,7 @@ class CarsBrandsModels {
       ]
     },
     {
-      "brand": "KÃƒÆ’Ã‚Â¶nigsegg",
+      "brand": "Koenigsegg",
       "models": [
         {"title": "CCR"}
       ]
@@ -1080,7 +1081,7 @@ class CarsBrandsModels {
         {"title": "Jalpa"},
         {"title": "LM"},
         {"title": "Miura"},
-        {"title": "MurciÃƒÂ©lago"},
+        {"title": "Murciélago"},
         {"title": "Urraco"}
       ]
     },
@@ -1281,7 +1282,7 @@ class CarsBrandsModels {
     {
       "brand": "McLaren",
       "models": [
-        {"title": "650S CoupÃƒÂ©"},
+        {"title": "650S Coupée"},
         {"title": "650S Spider"},
         {"title": "MP4-12C"}
       ]
@@ -1799,6 +1800,7 @@ class CarsBrandsModels {
         {"title": "Kubistar"},
         {"title": "Laurel"},
         {"title": "Leaf"},
+        {"title": "March"},
         {"title": "Maxima"},
         {"title": "Micra"},
         {"title": "Murano"},
@@ -2317,6 +2319,7 @@ class CarsBrandsModels {
         {"title": "Tacoma"},
         {"title": "Tercel"},
         {"title": "Tundra"},
+        {"title": "Quest"},
         {"title": "Urban Cruiser"},
         {"title": "Verso"},
         {"title": "Verso-S"},
@@ -2372,7 +2375,7 @@ class CarsBrandsModels {
         {"title": "Iltis"},
         {"title": "Jetta"},
         {"title": "Karmann Ghia"},
-        {"title": "KÃƒÂ¤fer"},
+        {"title": "Käfer"},
         {"title": "LT"},
         {"title": "Lupo"},
         {"title": "New Beetle"},

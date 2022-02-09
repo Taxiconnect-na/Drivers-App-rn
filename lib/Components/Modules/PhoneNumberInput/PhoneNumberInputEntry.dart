@@ -16,6 +16,8 @@ class PhoneNumberInputEntry extends StatefulWidget {
 }
 
 class _PhoneNumberInputEntryState extends State<PhoneNumberInputEntry> {
+  TextEditingController textInputController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -31,10 +33,19 @@ class _PhoneNumberInputEntryState extends State<PhoneNumberInputEntry> {
               const SizedBox(
                 width: 5,
               ),
-              TextEntryPhoneInput()
+              TextEntryPhoneInput(
+                textInputController: textInputController,
+              )
             ],
           ),
         )));
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    textInputController.dispose();
   }
 }
 
@@ -91,9 +102,10 @@ class FlagPartPhoneEntry extends StatelessWidget {
 
 //Second part text entry phone input
 class TextEntryPhoneInput extends StatelessWidget {
-  TextEditingController textInputController = TextEditingController();
+  TextEditingController textInputController;
 
-  TextEntryPhoneInput({Key? key}) : super(key: key);
+  TextEntryPhoneInput({Key? key, required this.textInputController})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -109,7 +121,7 @@ class TextEntryPhoneInput extends StatelessWidget {
                   controller: textInputController,
                   //autofocus: true,
                   onChanged: (value) {
-                    // RegExp regExpCleaner = RegExp(r"^0");
+                    RegExp regExpCleaner = RegExp(r"^0");
                     RegExp regExpCleaner2 = RegExp(r"^\+");
 
                     // String numberBody = regExpCleaner.hasMatch(value.toString())
@@ -124,6 +136,14 @@ class TextEntryPhoneInput extends StatelessWidget {
                     textInputController.text = numberBody;
                     textInputController.selection = TextSelection.fromPosition(
                         TextPosition(offset: textInputController.text.length));
+
+                    //...remove first zero
+                    numberBody = regExpCleaner.hasMatch(numberBody)
+                        ? numberBody.substring(1, numberBody.length)
+                        : numberBody;
+                    // print(regExpCleaner.hasMatch(numberBody));
+                    // print(numberBody.replaceFirst('0', ''));
+                    print(numberBody);
 
                     context
                         .read<HomeProvider>()

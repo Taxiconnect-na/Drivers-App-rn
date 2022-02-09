@@ -28,6 +28,8 @@ class _DrawerMenuState extends State<DrawerMenu> {
                 decoration: const BoxDecoration(color: Colors.black),
                 child: SafeArea(
                     child: ListTile(
+                  onTap: () =>
+                      Navigator.of(context).pushReplacementNamed('/Settings'),
                   horizontalTitleGap: 10,
                   leading: CircleAvatar(
                       radius: 35,
@@ -69,6 +71,11 @@ class _DrawerMenuState extends State<DrawerMenu> {
                           : 'Searching...',
                       style:
                           const TextStyle(color: Colors.white, fontSize: 15)),
+                  trailing: const Icon(
+                    Icons.arrow_forward_ios,
+                    color: Colors.white,
+                    size: 15,
+                  ),
                 ))),
           ),
           MenuOption(
@@ -121,7 +128,7 @@ class _DrawerMenuState extends State<DrawerMenu> {
                             },
                             child: const Text('Legal',
                                 style: TextStyle(fontSize: 16))),
-                        trailing: const Text('v3.0.17',
+                        trailing: const Text('v3.3.0',
                             style: TextStyle(fontSize: 16, color: Colors.grey)),
                       ),
                     ))),

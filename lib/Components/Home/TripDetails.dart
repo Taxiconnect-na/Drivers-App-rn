@@ -21,7 +21,6 @@ class TripDetails extends StatefulWidget {
 }
 
 class _TripDetailsState extends State<TripDetails> {
-  Navigation navigationAssistant = Navigation();
   RequestCardHelper requestCardHelper = RequestCardHelper();
 
   @override
@@ -104,9 +103,8 @@ class _TripDetailsState extends State<TripDetails> {
                       textColor: Colors.white,
                       backgroundColor: Colors.black,
                       showTrailingArrow: false,
-                      actuatorFunctionl: () => navigationAssistant
-                          .startNavigation(
-                              origin: {
+                      actuatorFunctionl: () => Navigation().startNavigation(
+                          origin: {
                             'name': 'My location',
                             'latitude': context
                                 .read<HomeProvider>()
@@ -115,41 +113,40 @@ class _TripDetailsState extends State<TripDetails> {
                                 .read<HomeProvider>()
                                 .userLocationCoords['longitude']
                           },
-                              destination: tripData['ride_basic_infos']
-                                      ['inRideToDestination']
-                                  ? {
-                                      'name': requestCardHelper
-                                          .getRealisticPlacesNames(
-                                              locationData: tripData[
-                                                          'origin_destination_infos']
-                                                      ['destination_infos']
-                                                  [0])['location_name'],
-                                      'latitude':
-                                          tripData['origin_destination_infos']
-                                                  ['destination_infos'][0]
-                                              ['coordinates']['latitude'],
-                                      'longitude':
-                                          tripData['origin_destination_infos']
-                                                  ['pickup_infos']
-                                              ['coordinates']['longitude']
-                                    }
-                                  : {
-                                      'name': requestCardHelper
-                                              .getRealisticPlacesNames(
-                                                  locationData: tripData[
-                                                          'origin_destination_infos']
-                                                      ['pickup_infos'])[
-                                          'location_name'],
-                                      'latitude':
-                                          tripData['origin_destination_infos']
-                                                  ['pickup_infos']
-                                              ['coordinates']['latitude'],
-                                      'longitude':
-                                          tripData['origin_destination_infos']
-                                                  ['pickup_infos']
-                                              ['coordinates']['longitude']
-                                    },
-                              context: context),
+                          destination: tripData['ride_basic_infos']
+                                  ['inRideToDestination']
+                              ? {
+                                  'name':
+                                      requestCardHelper.getRealisticPlacesNames(
+                                          locationData: tripData[
+                                                      'origin_destination_infos']
+                                                  ['destination_infos']
+                                              [0])['location_name'],
+                                  'latitude':
+                                      tripData['origin_destination_infos']
+                                              ['destination_infos'][0]
+                                          ['coordinates']['latitude'],
+                                  'longitude':
+                                      tripData['origin_destination_infos']
+                                              ['pickup_infos']['coordinates']
+                                          ['longitude']
+                                }
+                              : {
+                                  'name':
+                                      requestCardHelper.getRealisticPlacesNames(
+                                          locationData: tripData[
+                                                  'origin_destination_infos'][
+                                              'pickup_infos'])['location_name'],
+                                  'latitude':
+                                      tripData['origin_destination_infos']
+                                              ['pickup_infos']['coordinates']
+                                          ['latitude'],
+                                  'longitude':
+                                      tripData['origin_destination_infos']
+                                              ['pickup_infos']['coordinates']
+                                          ['longitude']
+                                },
+                          context: context),
                     ),
                     const Padding(padding: EdgeInsets.symmetric(horizontal: 4)),
                     ButtonGeneralPurpose(
@@ -203,15 +200,17 @@ class _TripDetailsState extends State<TripDetails> {
                       child: const Padding(
                         padding: EdgeInsets.only(top: 8.0),
                         child: ListTile(
-                          horizontalTitleGap: 0,
-                          leading: Icon(Icons.not_interested,
-                              color: Color.fromRGBO(178, 34, 34, 1)),
-                          title: Text('Cancel the trip',
-                              style: TextStyle(
-                                  fontFamily: 'MoveTextRegular',
-                                  fontSize: 18,
-                                  color: Color.fromRGBO(178, 34, 34, 1))),
-                        ),
+                            horizontalTitleGap: 0,
+                            leading: Icon(Icons.not_interested,
+                                color: Color.fromRGBO(178, 34, 34, 1)),
+                            title: Text('Cancel the trip',
+                                style: TextStyle(
+                                    fontFamily: 'MoveTextRegular',
+                                    fontSize: 18,
+                                    color: Color.fromRGBO(178, 34, 34, 1))),
+                            trailing: Icon(Icons.arrow_forward_ios,
+                                color: Color.fromRGBO(178, 34, 34, 1),
+                                size: 12)),
                       ),
                     ),
                     const Divider(),

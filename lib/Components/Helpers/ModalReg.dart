@@ -572,22 +572,30 @@ class _ModalRegState extends State<ModalReg> {
       String description = '',
       required String natureData}) {
     XFile? pictureAsset;
+    String title = '';
     //Get the correct ressource
     if (natureData == 'profilePhoto') {
+      title = 'Profile picture';
       pictureAsset = context.read<RegistrationProvider>().driverPhoto;
     } else if (natureData == 'vehiclePhoto') {
+      title = 'Vehicle picture';
       pictureAsset = context.read<RegistrationProvider>().carPhoto;
     } else if (natureData == 'licensePhoto') {
+      title = 'License picture';
       pictureAsset = context.read<RegistrationProvider>().licensePhoto;
     } else if (natureData == 'idPhoto') {
+      title = 'ID picture';
       pictureAsset = context.read<RegistrationProvider>().idPhoto;
     }
     //! only for ride registration
     else if (natureData == 'bluepaperPhoto') {
+      title = 'Blue Paper picture';
       pictureAsset = context.read<RegistrationProvider>().bluepaperPhoto;
     } else if (natureData == 'whitepaperPhoto') {
+      title = 'White Paper picture';
       pictureAsset = context.read<RegistrationProvider>().whitepaperPhoto;
     } else if (natureData == 'permitPhoto') {
+      title = 'Permit picture';
       pictureAsset = context.read<RegistrationProvider>().permitPhoto;
     }
 
@@ -597,22 +605,32 @@ class _ModalRegState extends State<ModalReg> {
         children: [
           Padding(
             padding: const EdgeInsets.only(left: 7),
-            child: Row(
-              children: [
-                InkWell(
-                  onTap: () {
-                    setState(() {
-                      _imageSelected = null;
-                    });
-                    Navigator.of(context).pop();
-                  },
-                  child: const Icon(
+            child: InkWell(
+              onTap: () {
+                setState(() {
+                  _imageSelected = null;
+                });
+                Navigator.of(context).pop();
+              },
+              child: Row(
+                children: [
+                  const Icon(
                     Icons.close,
                     size: 26,
                     color: Color.fromRGBO(178, 34, 34, 1),
                   ),
-                ),
-              ],
+                  Padding(
+                    padding: const EdgeInsets.only(left: 8.0),
+                    child: Text(
+                      '$title',
+                      style: TextStyle(
+                          fontFamily: 'MoveTextMedium',
+                          fontSize: 18,
+                          color: Colors.grey.shade700),
+                    ),
+                  )
+                ],
+              ),
             ),
           ),
           const SizedBox(
@@ -754,7 +772,11 @@ class _ModalRegState extends State<ModalReg> {
           maxHeight: 700,
           imageQuality: 70,
           preferredCameraDevice: CameraDevice.front);
-      // final XFile? image = await _picker.pickImage(source: ImageSource.camera);
+      // final XFile? image = await _picker.pickImage(
+      //     maxWidth: 700,
+      //     maxHeight: 700,
+      //     imageQuality: 70,
+      //     source: ImageSource.camera);
       setState(() {
         print(image);
         _imageSelected = image;

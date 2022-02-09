@@ -77,10 +77,15 @@ class _OTPVerificationInputState extends State<OTPVerificationInput> {
 }
 
 //Counter and error notifiyer class
-class TimerAndErrorNotifiyer extends StatelessWidget {
-  TimerAndErrorNotifiyer({Key? key}) : super(key: key);
+class TimerAndErrorNotifiyer extends StatefulWidget {
+  const TimerAndErrorNotifiyer({Key? key}) : super(key: key);
 
-  final int endTime = DateTime.now().millisecondsSinceEpoch + 1000 * 60;
+  @override
+  _TimerAndErrorNotifiyerState createState() => _TimerAndErrorNotifiyerState();
+}
+
+class _TimerAndErrorNotifiyerState extends State<TimerAndErrorNotifiyer> {
+  int endTime = DateTime.now().millisecondsSinceEpoch + 1000 * 60;
 
   @override
   Widget build(BuildContext context) {
@@ -96,7 +101,14 @@ class TimerAndErrorNotifiyer extends StatelessWidget {
                     (BuildContext context, CurrentRemainingTime? time) {
                   if (time == null) {
                     return InkWell(
-                        onTap: () => print('Pressed on resend OTP'),
+                        onTap: () {
+                          SendOTPCodeNet sendOTPCodeNet = SendOTPCodeNet();
+                          sendOTPCodeNet.exec(context: context);
+                          setState(() {
+                            endTime = DateTime.now().millisecondsSinceEpoch +
+                                1000 * 60;
+                          });
+                        },
                         child: Text('Resend the code',
                             style: TextStyle(
                                 fontSize: 17,

@@ -3,14 +3,14 @@ import 'package:provider/src/provider.dart';
 import 'package:taxiconnectdrivers/Components/Providers/HomeProvider.dart';
 import 'package:taxiconnectdrivers/Components/Providers/RegistrationProvider.dart';
 
-class RegisterOptions extends StatefulWidget {
-  const RegisterOptions({Key? key}) : super(key: key);
+class RegisterOptionsDriver extends StatefulWidget {
+  const RegisterOptionsDriver({Key? key}) : super(key: key);
 
   @override
-  _RegisterOptionsState createState() => _RegisterOptionsState();
+  _RegisterOptionsDriverState createState() => _RegisterOptionsDriverState();
 }
 
-class _RegisterOptionsState extends State<RegisterOptions> {
+class _RegisterOptionsDriverState extends State<RegisterOptionsDriver> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -19,23 +19,32 @@ class _RegisterOptionsState extends State<RegisterOptions> {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          Padding(
+            padding: const EdgeInsets.only(left: 25, bottom: 5, top: 0),
+            child: InkWell(
+              onTap: () => Navigator.of(context).pop(),
+              child: const Icon(
+                Icons.arrow_back,
+                size: 30,
+              ),
+            ),
+          ),
           const Padding(
-            padding: EdgeInsets.only(left: 25, bottom: 45, top: 60),
-            child: Text('Register as',
+            padding: EdgeInsets.only(left: 25, bottom: 45, top: 30),
+            child: Text('Who are you?',
                 style: TextStyle(fontFamily: 'MoveBold', fontSize: 28)),
           ),
           Options(
-            title: 'Driver',
-            subTitle: 'To pickup and drop off people.',
-            icoRepr: Icons.person,
+            title: 'Taxi driver',
+            subTitle: 'For anyone who is legaly registered as a taxi driver',
+            icoRepr: Icons.stop,
             actuator: () {
-              //Update the driver nature
+              //Update the driver nature person
               context
                   .read<RegistrationProvider>()
-                  .updateSelectedDriverNature(data: 'RIDE');
-              // Navigator.of(context).pushNamed('/RegistrationRide');
-              //...
-              Navigator.of(context).pushNamed('/RegisterOptionsDriver');
+                  .updateSelectedDriverPerson(data: 'TAXI');
+              //..
+              Navigator.of(context).pushNamed('/RegistrationRide');
             },
           ),
           const Divider(
@@ -43,15 +52,17 @@ class _RegisterOptionsState extends State<RegisterOptions> {
             height: 30,
           ),
           Options(
-            title: 'Courier',
-            subTitle: 'To deliver packages anywhere in your city.',
-            icoRepr: Icons.widgets,
+            title: 'Individual',
+            subTitle:
+                'For anyone having a car but is not a registered taxi driver.',
+            icoRepr: Icons.stop,
             actuator: () {
-              //Update the driver nature
+              //Update the driver nature person
               context
                   .read<RegistrationProvider>()
-                  .updateSelectedDriverNature(data: 'COURIER');
-              Navigator.of(context).pushNamed('/RegistrationDelivery');
+                  .updateSelectedDriverPerson(data: 'INDIVIDUAL');
+              //..
+              Navigator.of(context).pushNamed('/RegistrationRideIndividual');
             },
           )
         ],

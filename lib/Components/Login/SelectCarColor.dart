@@ -124,10 +124,14 @@ class _SelectCarColorState extends State<SelectCarColor> {
             nature: 'color',
             data: context.read<RegistrationProvider>().selectedVehicleColor);
         //Go back to car selection
-        Navigator.of(context).pushReplacementNamed(
-            context.read<RegistrationProvider>().driverNature == 'COURIER'
-                ? '/SelectCar'
-                : '/SelectCarRide');
+        Navigator.of(context).pushReplacementNamed(context
+                    .read<RegistrationProvider>()
+                    .driverNature ==
+                'COURIER'
+            ? '/SelectCar'
+            : context.read<RegistrationProvider>().driverTypeProperty == 'TAXI'
+                ? '/SelectCarRide'
+                : '/RegistrationRideIndividual');
       },
       contentPadding: EdgeInsets.only(left: 20, right: 20),
       leading: Container(

@@ -363,12 +363,23 @@ class GlobalDataFetcher with ChangeNotifier {
           }
         } else //Most likely got some rides - 100%
         {
-          // log(response.body.toString());
           if (context.read<HomeProvider>().selectedOption ==
               json
                   .decode(response.body)[0]['request_type']
                   .toString()
                   .toLowerCase()) {
+            //! Remove all the accepted results
+            List results = json.decode(response.body);
+            results.removeWhere(
+                (element) => element['ride_basic_infos']['isAccepted'] == true);
+            //!--
+            log(response.body.toString());
+            context
+                .read<HomeProvider>()
+                .updateTripRequestsMetadata(newTripList: results);
+          } else if (context.read<HomeProvider>().selectedOption ==
+              'accepted') {
+            log(json.decode(response.body).toString());
             context.read<HomeProvider>().updateTripRequestsMetadata(
                 newTripList: json.decode(response.body));
           } else //Inconsistent selected options
@@ -1098,6 +1109,8 @@ class GetDailyEarningAndAuthChecks {
             'amount': 0,
             'currency': "NAD",
             'currency_symbol': "N\$",
+            'supported_requests_types':
+                json.decode(response.body)['supported_requests_types'],
             'response': "error",
           });
         }
@@ -1128,6 +1141,7 @@ class GetDailyEarningAndAuthChecks {
       context.read<HomeProvider>().updateAuthEarningData(data: data);
     } on Exception catch (e) {
       // TODO
+      log(context.toString());
       log(e.toString());
     }
   }
@@ -1419,45 +1433,80 @@ class SubmitRidesRegistrationNet {
 
     //Blue paper photo
     String bluepaperPhotoExtension =
-        context.read<RegistrationProvider>().idPhoto!.path.split('.')[context
+        context.read<RegistrationProvider>().bluepaperPhoto != null
+            ? context
                 .read<RegistrationProvider>()
                 .bluepaperPhoto!
                 .path
-                .split('.')
-                .length -
-            1];
-    List<int> bluepaperPhotoBytes =
-        await XFile(context.read<RegistrationProvider>().bluepaperPhoto!.path)
-            .readAsBytes();
-    String bluepaperPhotoBase64 = base64Encode(bluepaperPhotoBytes);
+                .split('.')[context
+                    .read<RegistrationProvider>()
+                    .bluepaperPhoto!
+                    .path
+                    .split('.')
+                    .length -
+                1]
+            : 'null';
+    List<int> bluepaperPhotoBytes = context
+                .read<RegistrationProvider>()
+                .bluepaperPhoto !=
+            null
+        ? await XFile(context.read<RegistrationProvider>().bluepaperPhoto!.path)
+            .readAsBytes()
+        : [];
+    String bluepaperPhotoBase64 =
+        context.read<RegistrationProvider>().bluepaperPhoto != null
+            ? base64Encode(bluepaperPhotoBytes)
+            : 'null';
 
     //White paper photo
     String whitepaperPhotoExtension =
-        context.read<RegistrationProvider>().idPhoto!.path.split('.')[context
+        context.read<RegistrationProvider>().whitepaperPhoto != null
+            ? context
                 .read<RegistrationProvider>()
                 .whitepaperPhoto!
                 .path
-                .split('.')
-                .length -
-            1];
+                .split('.')[context
+                    .read<RegistrationProvider>()
+                    .whitepaperPhoto!
+                    .path
+                    .split('.')
+                    .length -
+                1]
+            : 'null';
     List<int> whitepaperPhotoBytes =
-        await XFile(context.read<RegistrationProvider>().whitepaperPhoto!.path)
-            .readAsBytes();
-    String whitepaperPhotoBase64 = base64Encode(whitepaperPhotoBytes);
+        context.read<RegistrationProvider>().whitepaperPhoto != null
+            ? await XFile(
+                    context.read<RegistrationProvider>().whitepaperPhoto!.path)
+                .readAsBytes()
+            : [];
+    String whitepaperPhotoBase64 =
+        context.read<RegistrationProvider>().whitepaperPhoto != null
+            ? base64Encode(whitepaperPhotoBytes)
+            : 'null';
 
     //Permit photo
     String permitPhotoExtension =
-        context.read<RegistrationProvider>().idPhoto!.path.split('.')[context
+        context.read<RegistrationProvider>().permitPhoto != null
+            ? context.read<RegistrationProvider>().permitPhoto!.path.split('.')[
+                context
+                        .read<RegistrationProvider>()
+                        .permitPhoto!
+                        .path
+                        .split('.')
+                        .length -
+                    1]
+            : 'null';
+    List<int> permitPhotoBytes = context
                 .read<RegistrationProvider>()
-                .permitPhoto!
-                .path
-                .split('.')
-                .length -
-            1];
-    List<int> permitPhotoBytes =
-        await XFile(context.read<RegistrationProvider>().permitPhoto!.path)
-            .readAsBytes();
-    String permitPhotoBase64 = base64Encode(permitPhotoBytes);
+                .permitPhoto !=
+            null
+        ? await XFile(context.read<RegistrationProvider>().permitPhoto!.path)
+            .readAsBytes()
+        : [];
+    String permitPhotoBase64 =
+        context.read<RegistrationProvider>().permitPhoto != null
+            ? base64Encode(permitPhotoBytes)
+            : 'null';
 
     //Request data for files
     Map<String, String> bundleData = {
@@ -1738,7 +1787,9 @@ class CheckOTPCodeNet {
       {
         log(response.body.toString());
         Map responseGot = json.decode(response.body);
-        if (responseGot['response'] == false) //Wrong OTP Code
+        if (responseGot['response'] == false &&
+            context.read<HomeProvider>().userStatus ==
+                'known_user') //Wrong OTP Code
         {
           log('Wrong code');
           showWrongCodeEntered(context: context);

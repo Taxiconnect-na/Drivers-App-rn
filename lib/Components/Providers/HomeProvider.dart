@@ -16,6 +16,7 @@ import 'package:taxiconnectdrivers/Components/Providers/RegistrationProvider.dar
 
 class HomeProvider with ChangeNotifier {
   final String bridge = 'http://192.168.8.132:9999';
+  // final String bridge = 'https://taxiconnectnanetwork.com:9999';
 
   late AnimationController controllerSwicther; //The bottom switcher animator
 
@@ -48,7 +49,7 @@ class HomeProvider with ChangeNotifier {
       []; //Will hold the data for the temporarily selected ride history record.
 
   String userStatus =
-      'new_user'; //Tempo variable to hold the status of the user : new_user or registered_user
+      'known_user'; //Tempo variable to hold the status of the user : new_user or registered_user
 
   String otpValue = ''; //Will hold the OTP value
 
@@ -172,7 +173,14 @@ class HomeProvider with ChangeNotifier {
           if (context.read<RegistrationProvider>().driverNature ==
               'RIDE') //Ride registration
           {
-            Navigator.of(context).pushNamed('/RegistrationRide');
+            //CHeck the driver person
+            if (context.read<RegistrationProvider>().driverTypeProperty ==
+                'TAXI') {
+              Navigator.of(context).pushNamed('/RegistrationRide');
+            } else //INDIVIDUAL
+            {
+              Navigator.of(context).pushNamed('/RegistrationRideIndividual');
+            }
           } else if (context.read<RegistrationProvider>().driverNature ==
               'COURIER') //Courier registration
           {
@@ -407,6 +415,7 @@ class HomeProvider with ChangeNotifier {
 
   //? 18. Update Auth earning data
   void updateAuthEarningData({required Map data}) {
+    print(data);
     if (data.toString() != authAndDailyEarningsData.toString()) //New data
     {
       authAndDailyEarningsData = data;
