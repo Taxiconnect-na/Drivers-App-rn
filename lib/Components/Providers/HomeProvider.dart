@@ -252,6 +252,7 @@ class HomeProvider with ChangeNotifier {
     user_fingerprint = '';
     userAccountDetails = {};
     userStatus = 'new_user';
+    tripRequestsData = [];
     //...
     peristDataMap();
     //...
@@ -415,15 +416,18 @@ class HomeProvider with ChangeNotifier {
 
   //? 18. Update Auth earning data
   void updateAuthEarningData({required Map data}) {
-    print(data);
-    if (data.toString() != authAndDailyEarningsData.toString()) //New data
+    if (data.toString() != authAndDailyEarningsData.toString() ||
+        selectedOption !=
+            data['supported_requests_types']
+                .toString()
+                .toLowerCase()) //New data
     {
       authAndDailyEarningsData = data;
       //Auto selected ride/delivery based on the supported request type
       if (data['supported_requests_types'] == 'Ride' &&
-          selectedOption == 'ride') {
+          selectedOption == 'delivery') {
         selectedOption = 'ride';
-      } else if (data['supported_requests_types'] == 'Ride' &&
+      } else if (data['supported_requests_types'] == 'Delivery' &&
           selectedOption == 'ride') {
         selectedOption = 'delivery';
       }

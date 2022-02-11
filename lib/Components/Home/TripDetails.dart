@@ -33,7 +33,7 @@ class _TripDetailsState extends State<TripDetails> {
         height: MediaQuery.of(context).size.height,
         child: SafeArea(
             child: Stack(children: [
-          Column(
+          ListView(
             children: [
               Container(
                 decoration: BoxDecoration(color: Colors.white, boxShadow: [
@@ -177,8 +177,10 @@ class _TripDetailsState extends State<TripDetails> {
                 ),
               ),
               //Trip trajectory details
-              const TitleIntros(
-                title: 'Trip',
+              TitleIntros(
+                title: tripData['request_type'] == 'DELIVERY'
+                    ? 'Delivery'
+                    : 'Trip',
                 topPadding: 45,
               ),
               //Pickup/destination details
@@ -197,18 +199,21 @@ class _TripDetailsState extends State<TripDetails> {
                   children: [
                     InkWell(
                       onTap: () => CancelRequest(context: context),
-                      child: const Padding(
-                        padding: EdgeInsets.only(top: 8.0),
+                      child: Padding(
+                        padding: const EdgeInsets.only(top: 8.0),
                         child: ListTile(
                             horizontalTitleGap: 0,
-                            leading: Icon(Icons.not_interested,
+                            leading: const Icon(Icons.not_interested,
                                 color: Color.fromRGBO(178, 34, 34, 1)),
-                            title: Text('Cancel the trip',
-                                style: TextStyle(
+                            title: Text(
+                                tripData['request_type'] == 'DELIVERY'
+                                    ? 'Cancel the delivery'
+                                    : 'Cancel the trip',
+                                style: const TextStyle(
                                     fontFamily: 'MoveTextRegular',
                                     fontSize: 18,
                                     color: Color.fromRGBO(178, 34, 34, 1))),
-                            trailing: Icon(Icons.arrow_forward_ios,
+                            trailing: const Icon(Icons.arrow_forward_ios,
                                 color: Color.fromRGBO(178, 34, 34, 1),
                                 size: 12)),
                       ),
@@ -601,8 +606,7 @@ class PaymentPassengersStrip extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               //Payment method
-              SizedBox(
-                width: 80,
+              Flexible(
                 child: Row(
                   children: [
                     const Icon(Icons.credit_card, size: 20),
@@ -618,8 +622,7 @@ class PaymentPassengersStrip extends StatelessWidget {
                       fontSize: 25,
                       color: Color.fromRGBO(9, 134, 74, 1))),
               //Number of passengers
-              SizedBox(
-                width: 100,
+              Flexible(
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   crossAxisAlignment: CrossAxisAlignment.center,

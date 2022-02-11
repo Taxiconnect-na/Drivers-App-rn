@@ -357,7 +357,9 @@ class RequestCard extends StatelessWidget {
                       alignment: Alignment.centerRight,
                       // color: Colors.red,
                       child: Text(
-                          requestData['ride_basic_infos']['connect_type'],
+                          requestData['request_type'] == 'DELIVERY'
+                              ? 'Delivery'
+                              : requestData['ride_basic_infos']['connect_type'],
                           style: const TextStyle(
                               fontFamily: 'MoveTextBold', fontSize: 16))),
                 ),
