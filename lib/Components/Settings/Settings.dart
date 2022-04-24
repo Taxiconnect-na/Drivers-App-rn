@@ -47,11 +47,11 @@ class _SettingsState extends State<Settings> {
         body: RefreshIndicator(
           color: const Color.fromRGBO(9, 110, 212, 1),
           onRefresh: () async {
-            print('Get driver data');
+            // print('Get driver data');
             _getDriverGeneralNumbers.exec(context: context);
             //Reload the data
             return Future.delayed(Duration(seconds: 2), () {
-              print('Done');
+              // print('Done');
             });
           },
           child: ListView(
@@ -189,7 +189,7 @@ class _SettingsState extends State<Settings> {
                     context.read<HomeProvider>().clearEverything();
                     context.read<RegistrationProvider>().clearEverything();
                     //...
-                    Navigator.of(context).pushReplacementNamed('/');
+                    Navigator.of(context).pushNamed('/');
                   })
             ],
           ),

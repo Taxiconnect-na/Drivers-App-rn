@@ -6,6 +6,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:provider/src/provider.dart';
+import 'package:taxiconnectdrivers/Components/Helpers/Modal.dart';
 import 'package:taxiconnectdrivers/Components/Helpers/ModalReg.dart';
 import 'package:taxiconnectdrivers/Components/Helpers/Networking.dart';
 import 'package:taxiconnectdrivers/Components/Modules/GenericRectButton/GenericRectButton.dart';
@@ -53,6 +54,27 @@ class _RegistrationRideIndividualState
                     style:
                         TextStyle(fontFamily: 'MoveTextRegular', fontSize: 20)),
                 centerTitle: false,
+                actions: [
+                  IconButton(
+                      onPressed: () {
+                        showModalBottomSheet(
+                            context: context,
+                            builder: (context) {
+                              //...
+                              return Container(
+                                color: Colors.white,
+                                child: SafeArea(
+                                    child: Container(
+                                  width: MediaQuery.of(context).size.width,
+                                  color: Colors.white,
+                                  child: const Modal(
+                                      scenario: 'help_signup_details'),
+                                )),
+                              );
+                            });
+                      },
+                      icon: Icon(Icons.person))
+                ],
               ),
         body: Stack(
           children: [
@@ -263,6 +285,7 @@ class _RegistrationRideIndividualState
       );
     } on Exception catch (e) {
       // TODO
+      log('4');
       log(e.toString());
       return Text('');
     }

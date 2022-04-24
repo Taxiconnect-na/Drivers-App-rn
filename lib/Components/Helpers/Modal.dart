@@ -28,6 +28,39 @@ class Modal extends StatelessWidget {
   //Return the correct content based on the scenario
   Widget getContent({required BuildContext context, required String scenario}) {
     switch (scenario) {
+      case 'error_not_city_selected_signup':
+        return Container(
+          // color: Colors.red,
+          height: 350,
+          alignment: Alignment.topCenter,
+          child: Padding(
+            padding: const EdgeInsets.only(top: 40),
+            child:
+                Column(mainAxisAlignment: MainAxisAlignment.start, children: [
+              const Icon(Icons.location_city,
+                  size: 45, color: Color.fromRGBO(178, 34, 34, 1)),
+              const Padding(
+                padding: EdgeInsets.only(top: 25),
+                child: Text("No city selected",
+                    style: TextStyle(fontFamily: 'MoveTextBold', fontSize: 20)),
+              ),
+              const Padding(
+                padding: EdgeInsets.only(top: 10, left: 15, right: 15),
+                child: Text(
+                    "Please selected your city before continuing with the registration process.",
+                    textAlign: TextAlign.center,
+                    style:
+                        TextStyle(fontFamily: 'MoveTextRegular', fontSize: 17)),
+              ),
+              const Expanded(child: Text('')),
+              GenericRectButton(
+                  label: 'Alright',
+                  labelFontSize: 20,
+                  isArrowShow: false,
+                  actuatorFunctionl: () => Navigator.of(context).pop())
+            ]),
+          ),
+        );
       case 'error_going_online':
         return Container(
           // color: Colors.red,

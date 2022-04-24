@@ -76,7 +76,7 @@ class LocationOpsHandler with ChangeNotifier {
   void requestLocationPermission({bool isUserTriggered = false}) async {
     LocationPermission permission = await Geolocator.checkPermission();
 
-    log(permission.toString());
+    // log(permission.toString());
 
     if (permission.toString() ==
         'LocationPermission.deniedForever') //Denied forever - access settings
@@ -164,13 +164,16 @@ class LocationOpsHandler with ChangeNotifier {
       if (response.statusCode == 200 &&
           json.decode(response.body).runtimeType != bool) {
         // log(response.body);
-        context.read<HomeProvider>().updateUsersCurrentLocation(
-            newCurrentLocation: json.decode(response.body));
+        if (context.toString().contains('no widget') == false) {
+          context.read<HomeProvider>().updateUsersCurrentLocation(
+              newCurrentLocation: json.decode(response.body));
+        }
       } else //Some error
       {
-        print(response.statusCode);
+        // print(response.statusCode);
       }
     } catch (e) {
+      log('7');
       log(e.toString());
     }
   }

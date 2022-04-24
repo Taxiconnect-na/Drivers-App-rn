@@ -15,7 +15,7 @@ class Watcher with ChangeNotifier {
 
   void startWatcher(
       {required List<dynamic> actuatorFunctions,
-      Duration? timerInterval = const Duration(seconds: 3),
+      Duration? timerInterval = const Duration(seconds: 2),
       required BuildContext context}) {
     //Start the timer
     mainLoop = Timer.periodic(timerInterval!, (Timer t) {
@@ -57,6 +57,7 @@ class Watcher with ChangeNotifier {
             mainLoop.cancel();
           }
         } catch (e) {
+          log('1');
           log(e.toString());
         }
       }

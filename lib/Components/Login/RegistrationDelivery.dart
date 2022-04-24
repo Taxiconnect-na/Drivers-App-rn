@@ -286,6 +286,7 @@ class _RegistrationDeliveryState extends State<RegistrationDelivery> {
       );
     } on Exception catch (e) {
       // TODO
+      log('2');
       log(e.toString());
       return Text('');
     }

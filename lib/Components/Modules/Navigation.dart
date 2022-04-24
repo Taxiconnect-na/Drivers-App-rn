@@ -1,6 +1,7 @@
 // ignore_for_file: file_names
 
 import 'dart:developer';
+import 'dart:ffi';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_mapbox_navigation/library.dart';
@@ -9,6 +10,16 @@ import 'package:taxiconnectdrivers/Components/Providers/HomeProvider.dart';
 
 class Navigation {
   MapBoxNavigation directions = MapBoxNavigation();
+
+  Map blueMapFix(double latitude, double longitude) {
+    if (latitude > 0) //Swap
+    {
+      return {'latitude': longitude, 'longitude': latitude};
+    }
+
+    //...
+    return {'latitude': latitude, 'longitude': longitude};
+  }
 
   void startNavigation(
       {required Map origin,
@@ -25,7 +36,7 @@ class Navigation {
         tilt: 0.0,
         bearing: 0.0,
         enableRefresh: true,
-        alternatives: true,
+        // alternatives: true,
         // isOptimized: true,
         voiceInstructionsEnabled: true,
         bannerInstructionsEnabled: true,
@@ -33,19 +44,27 @@ class Navigation {
         mode: MapBoxNavigationMode.drivingWithTraffic,
         // mapStyleUrlDay: "https://url_to_day_style",
         // mapStyleUrlNight: "https://url_to_night_style",
-        units: VoiceUnits.imperial,
+        units: VoiceUnits.metric,
         simulateRoute: false,
         language: "en");
 
     //....
+    Map originCorrectData = blueMapFix(
+        double.parse(origin['latitude'].toString()),
+        double.parse(origin['longitude'].toString()));
+
+    Map destinationCorrectData = blueMapFix(
+        double.parse(destination['latitude'].toString()),
+        double.parse(destination['longitude'].toString()));
+
     final WayPoint point1 = WayPoint(
         name: origin['name'].toString(),
-        latitude: double.parse(origin['latitude'].toString()),
-        longitude: double.parse(origin['longitude'].toString()));
+        latitude: originCorrectData['latitude'],
+        longitude: originCorrectData['longitude']);
     final WayPoint point2 = WayPoint(
         name: destination['name'].toString(),
-        latitude: double.parse(destination['latitude'].toString()),
-        longitude: double.parse(destination['longitude'].toString()));
+        latitude: destinationCorrectData['latitude'],
+        longitude: destinationCorrectData['longitude']);
     //....
     List<WayPoint> wayPoints = [];
     wayPoints.add(point1);

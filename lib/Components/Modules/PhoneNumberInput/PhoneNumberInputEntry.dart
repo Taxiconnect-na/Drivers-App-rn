@@ -143,7 +143,7 @@ class TextEntryPhoneInput extends StatelessWidget {
                         : numberBody;
                     // print(regExpCleaner.hasMatch(numberBody));
                     // print(numberBody.replaceFirst('0', ''));
-                    print(numberBody);
+                    // print(numberBody);
 
                     context
                         .read<HomeProvider>()

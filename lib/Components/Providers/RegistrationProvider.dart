@@ -11,6 +11,11 @@ class RegistrationProvider with ChangeNotifier {
   //? Loader vars
   bool isLoadingRegistration = true;
 
+  String percentageUploadRegistration =
+      '0%'; //The registration's process percentage.
+
+  String? phoneNumberPicked; //The user phone number entered before
+
   //? I truly provided the right information
   bool iTrulyProvided = false;
 
@@ -72,7 +77,7 @@ class RegistrationProvider with ChangeNotifier {
 
   //! Restore data map
   void restoreStateData() {
-    print('Restore registration provider state');
+    // print('Restore registration provider state');
     Future<Map<String, dynamic>> restoredState = readStateFile();
     restoredState.then((state) {
       if (mapEquals({}, state['personalDetails']) ||
@@ -86,6 +91,13 @@ class RegistrationProvider with ChangeNotifier {
       } else //Found a saved state
       {
         // log(state['carPhoto']);
+        //! Phone number
+        phoneNumberPicked = state['phoneNumberPicked'] == null
+            ? null
+            : state['phoneNumberPicked'];
+
+        // log(phoneNumberPicked.toString());
+
         city = state['city'] == null ? null : state['city'];
         driverNature = state['driverNature'] == null
             ? null
@@ -169,6 +181,7 @@ class RegistrationProvider with ChangeNotifier {
 
       return json.decode(contents);
     } catch (e) {
+      log('6');
       log(e.toString());
       // If encountering an error, return 0
       return {};
@@ -178,6 +191,7 @@ class RegistrationProvider with ChangeNotifier {
   //! Convert class to Map
   Map<String, dynamic> toMap() {
     return {
+      'phoneNumberPicked': phoneNumberPicked,
       'city': city,
       'driverNature': driverNature,
       'driverTypeProperty': driverTypeProperty,
@@ -202,6 +216,11 @@ class RegistrationProvider with ChangeNotifier {
     carDetails = {'brand': '', 'plate_no': ''};
     carPhoto = null;
     licensePhoto = null;
+    idPhoto = null;
+    bluepaperPhoto = null;
+    whitepaperPhoto = null;
+    permitPhoto = null;
+    city = null;
     definitiveVehicleInfos = {
       'brand_name': '',
       'model_name': '',
@@ -411,5 +430,16 @@ class RegistrationProvider with ChangeNotifier {
     peristDataMap();
     //...
     notifyListeners();
+  }
+
+  //?15. Update the percentage process for the registration
+  void updateRegistrationPercentage({required String data}) {
+    percentageUploadRegistration = data;
+    notifyListeners();
+  }
+
+  //?16. Update the user phone number entered before
+  void updateUserPhoneNumberPicked({required String data}) {
+    phoneNumberPicked = data;
   }
 }

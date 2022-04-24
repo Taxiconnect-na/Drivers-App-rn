@@ -49,7 +49,7 @@ class _YourRidesState extends State<YourRides> {
           onRefresh: () async {
             _getRideHistoryBatch.exec(context: context);
             return Future.delayed(Duration(seconds: 2), () {
-              print('Done refreshing.');
+              // print('Done refreshing.');
             });
           },
           child: context.watch<HomeProvider>().rideHistory.isEmpty &&

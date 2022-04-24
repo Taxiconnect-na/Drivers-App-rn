@@ -181,7 +181,7 @@ class _DetailedTripShowState extends State<DetailedTripShow> {
                                   width: 5,
                                 ),
                                 Text(
-                                    '${context.watch<HomeProvider>().rideHistorySelectedData[0]['ride_rating']}',
+                                    '${context.watch<HomeProvider>().rideHistorySelectedData[0]['ride_rating']=='notYet' ? 'Not rated' : context.watch<HomeProvider>().rideHistorySelectedData[0]['ride_rating']}',
                                     style: const TextStyle(
                                       fontSize: 20,
                                     ))

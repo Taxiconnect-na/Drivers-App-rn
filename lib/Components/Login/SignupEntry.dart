@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:provider/src/provider.dart';
+import 'package:taxiconnectdrivers/Components/Helpers/Modal.dart';
 import 'package:taxiconnectdrivers/Components/Home/TripDetails.dart';
 import 'package:taxiconnectdrivers/Components/Modules/GenericRectButton/GenericRectButton.dart';
 import 'package:taxiconnectdrivers/Components/Providers/HomeProvider.dart';
@@ -17,6 +18,9 @@ class SignupEntry extends StatefulWidget {
 class _SignupEntryState extends State<SignupEntry> {
   @override
   Widget build(BuildContext context) {
+    //! Update the user phone number entered
+    context.read<RegistrationProvider>().updateUserPhoneNumberPicked(data: '${context.read<HomeProvider>().selectedCountryCodeData['dial_code']}${context.read<HomeProvider>().enteredPhoneNumber}');
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.black,
@@ -73,18 +77,48 @@ class _SignupEntryState extends State<SignupEntry> {
                   style: TextStyle(fontFamily: 'MoveTextMedium', fontSize: 17)),
               const SizedBox(height: 15),
               const CitySelect(),
-              Expanded(child: Text('')),
+              const Expanded(child: Text('')),
               RichText(
-                  text: TextSpan(children: [
-                TextSpan(text: 'Our terms and conditions are available at '),
-                TextSpan(text: 'taxiconnectna.com/terms')
-              ])),
+                  text: const TextSpan(
+                      style: TextStyle(
+                          color: Colors.black,
+                          fontFamily: 'MoveTextLight',
+                          fontSize: 15),
+                      children: [
+                    TextSpan(
+                        text: 'Our terms and conditions are available at '),
+                    TextSpan(
+                        text: 'taxiconnectna.com/terms',
+                        style: TextStyle(fontFamily: 'MoveTextMedium'))
+                  ])),
               GenericRectButton(
                   label: 'Next',
                   horizontalPadding: 0,
                   labelFontSize: 20,
-                  actuatorFunctionl: () =>
-                      Navigator.of(context).pushNamed('/RegisterOptions'))
+                  actuatorFunctionl: () {
+                    //! Check if a city was selected
+                    if (context.read<RegistrationProvider>().city ==
+                        null) //No city selected
+                    {
+                      showModalBottomSheet(
+                          context: context,
+                          builder: (context) {
+                            return Container(
+                                color: Colors.white,
+                                child: SafeArea(
+                                    child: Container(
+                                        width:
+                                            MediaQuery.of(context).size.width,
+                                        color: Colors.white,
+                                        child: Modal(
+                                            scenario:
+                                                'error_not_city_selected_signup'))));
+                          });
+                    } else //A city was selected
+                    {
+                      Navigator.of(context).pushNamed('/RegisterOptions');
+                    }
+                  })
             ],
           ),
         ),

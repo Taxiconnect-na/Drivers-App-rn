@@ -111,7 +111,13 @@ class _ModalRegState extends State<ModalReg> {
                     labelFontSize: 22,
                     isArrowShow: false,
                     actuatorFunctionl: () {
-                      Navigator.of(context).pop();
+                       //! Clear everything
+                      //! 1. Registration
+                      context.read<RegistrationProvider>().clearEverything();
+                      //! 2. Home
+                      context.read<HomeProvider>().clearEverything();
+                      //...
+                      Navigator.of(context).pushNamed('/Entry');
                     }),
               )
             ]),
@@ -207,7 +213,14 @@ class _ModalRegState extends State<ModalReg> {
                       Text('Please do not close the app during this process.',
                           textAlign: TextAlign.center,
                           style: TextStyle(
-                              fontSize: 16, color: Colors.grey.shade700))
+                              fontSize: 16, color: Colors.grey.shade700)),
+                                Padding(
+                          padding: const EdgeInsets.only(top: 15,),
+                          child: Text(context.watch<RegistrationProvider>().percentageUploadRegistration,
+                              style: const TextStyle(
+                                  fontFamily: 'MoveBold',
+                                  fontSize: 19,
+                                  color: Color.fromRGBO(9, 110, 212, 1)))),
                     ]),
               ),
             ),
@@ -763,22 +776,21 @@ class _ModalRegState extends State<ModalReg> {
       required String natureData}) async {
     if (shouldOpenCam) //Open the camera
     {
-      final XFile? photo = await _picker.pickImage(source: ImageSource.camera);
+      final XFile? photo = await _picker.pickImage(source: ImageSource.gallery);
     } else //Open the gallery
     {
-      final XFile? image = await _picker.pickImage(
-          source: ImageSource.gallery,
-          maxWidth: 700,
-          maxHeight: 700,
-          imageQuality: 70,
-          preferredCameraDevice: CameraDevice.front);
       // final XFile? image = await _picker.pickImage(
+      //     source: ImageSource.gallery,
       //     maxWidth: 700,
       //     maxHeight: 700,
       //     imageQuality: 70,
-      //     source: ImageSource.camera);
+      //     preferredCameraDevice: CameraDevice.front);
+      final XFile? image = await _picker.pickImage(
+          maxWidth: 700,
+          maxHeight: 700,
+          imageQuality: 70,
+          source: ImageSource.gallery);
       setState(() {
-        print(image);
         _imageSelected = image;
         //! Update globals
         switch (natureData) {
@@ -854,7 +866,7 @@ class _BasicInputTextState extends State<BasicInputText> {
         onChanged: (value) {
           switch (nature) {
             case 'personal_details_name':
-              print(value);
+              // print(value);
               context
                   .read<RegistrationProvider>()
                   .updatePersonalDetails(nature: 'name', data: value);

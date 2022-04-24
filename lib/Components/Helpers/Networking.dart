@@ -35,7 +35,7 @@ class getRideHistoryTargeted {
 
       if (response.statusCode == 200) //Got some results
       {
-        log(response.body.toString());
+        // log(response.body.toString());
         Map responseGet = json.decode(response.body);
         if (responseGet['response'] == 'success') //Go the data
         {
@@ -57,10 +57,11 @@ class getRideHistoryTargeted {
       } else //Has some errors
       {
         //Mark as offline
-        log(response.statusCode.toString());
+        // log(response.statusCode.toString());
         resetRideHistoryList(context: context);
       }
     } catch (e) {
+      log('8');
       log(e.toString());
       resetRideHistoryList(context: context);
     }
@@ -116,10 +117,11 @@ class getRideHistoryBatch {
       } else //Has some errors
       {
         //Mark as offline
-        log(response.statusCode.toString());
+        // log(response.statusCode.toString());
         resetRideHistoryList(context: context);
       }
     } catch (e) {
+      log('9');
       log(e.toString());
       resetRideHistoryList(context: context);
     }
@@ -148,7 +150,7 @@ class GetDriverGeneralNumbers {
 
       if (response.statusCode == 200) //Got some results
       {
-        log(response.body.toString());
+        // log(response.body.toString());
         Map responseGet = json.decode(response.body);
         if (responseGet['rides'] != null) //Got something
         {
@@ -161,10 +163,11 @@ class GetDriverGeneralNumbers {
         }
       } else //Has some errors
       {
-        log(response.statusCode.toString());
+        // log(response.statusCode.toString());
         context.read<HomeProvider>().updateDriverGeneralNumbers(data: {});
       }
     } catch (e) {
+      log('10');
       log(e.toString());
       context.read<HomeProvider>().updateDriverGeneralNumbers(data: {});
     }
@@ -189,24 +192,33 @@ class GetOnlineOfflineStatus {
       {
         // log(response.body.toString());
         Map responseGet = json.decode(response.body);
-        context.read<HomeProvider>().updateOnlineOfflineData(data: responseGet);
+        if (context.toString().contains('no widget') == false) {
+          context
+              .read<HomeProvider>()
+              .updateOnlineOfflineData(data: responseGet);
+        }
       } else //Has some errors
       {
         //Mark as offline
-        log(response.statusCode.toString());
+        // log(response.statusCode.toString());
+        if (context.toString().contains('no widget') == false) {
+          context.read<HomeProvider>().updateOnlineOfflineData(data: {
+            "response": "successfully_got",
+            "flag": "offline",
+            "suspension_infos": {"is_suspended": false, "message": false}
+          });
+        }
+      }
+    } catch (e) {
+      log('11');
+      log(e.toString());
+      if (context.toString().contains('no widget') == false) {
         context.read<HomeProvider>().updateOnlineOfflineData(data: {
           "response": "successfully_got",
           "flag": "offline",
           "suspension_infos": {"is_suspended": false, "message": false}
         });
       }
-    } catch (e) {
-      log(e.toString());
-      context.read<HomeProvider>().updateOnlineOfflineData(data: {
-        "response": "successfully_got",
-        "flag": "offline",
-        "suspension_infos": {"is_suspended": false, "message": false}
-      });
     }
   }
 }
@@ -225,6 +237,8 @@ class SetOnlineOfflineStatus {
       'action': 'make',
     };
 
+    // print(bundleData);
+
     try {
       http.Response response = await http.post(mainUrl, body: bundleData);
 
@@ -235,11 +249,12 @@ class SetOnlineOfflineStatus {
       } else //Has some errors
       {
         //Mark as offline
-        log(response.statusCode.toString());
+        // log(response.statusCode.toString());
         resetLoadingStates(context: context, state: state);
         showErrorGoingOnline(context: context);
       }
     } catch (e) {
+      log('12');
       log(e.toString());
       resetLoadingStates(context: context, state: state);
       showErrorGoingOnline(context: context);
@@ -269,7 +284,7 @@ class SetOnlineOfflineStatus {
   //Reset the loading states
   void resetLoadingStates(
       {required BuildContext context, required String state}) {
-    Timer(const Duration(seconds: 4), () {
+    Timer(const Duration(milliseconds: 500), () {
       try {
         if (RegExp(r"no widget").hasMatch(context.toString())) //! Dirty state
         {
@@ -294,6 +309,7 @@ class SetOnlineOfflineStatus {
         }
       } on Exception catch (e) {
         // TODO
+        log('13');
         log(e.toString());
       }
     });
@@ -306,7 +322,7 @@ class GlobalDataFetcher with ChangeNotifier {
         '${context.read<HomeProvider>().bridge}/update_passenger_location'));
 
     // print('get code data called');
-    Map<String, dynamic> bundleData = {
+    Map<String, String> bundleData = {
       'latitude': context
           .read<HomeProvider>()
           .userLocationCoords['latitude']
@@ -319,87 +335,108 @@ class GlobalDataFetcher with ChangeNotifier {
       'pushnotif_token': 'abc',
       'user_nature': 'driver',
       'requestType': context.read<HomeProvider>().selectedOption,
-      'app_version': '3.0.02'
+      'app_version': '3.4.0'
     };
+
+    // print(bundleData);
 
     ///....
     try {
       http.Response response = await http.post(globalTrips, body: bundleData);
 
-      if (response.statusCode == 200) //well received
-      {
-        // log(response.body.toString());
-        //Close the main loader
-        context.read<HomeProvider>().updateMainLoaderVisibility(option: false);
-        // log(response.body.toString());
-        if (response.body.toString() == '{"response":"no_requests"}' ||
-            response.body.toString() == '{"response":"no_rides"}' ||
-            response.body.toString() == '{"request_status":"no_rides"}' ||
-            response.body.toString() == '{"response":"error"}') //No trips found
+      if (context.toString().contains('no widget') == false) {
+        if (response.statusCode == 200) //well received
         {
-          String responseGot = json.decode(response.body)['response'];
-          switch (responseGot) {
-            case 'no_requests':
-              // No rides fetched
-              log('No rides got');
-              // Empty the ride array
-              context
-                  .read<HomeProvider>()
-                  .updateTripRequestsMetadata(newTripList: []);
-              break;
-            case 'error':
-              //Some error
-              log('Unexpected errors');
-              // Empty the ride array
-              context
-                  .read<HomeProvider>()
-                  .updateTripRequestsMetadata(newTripList: []);
-              break;
-            default:
-              // Empty the ride array
-              context
-                  .read<HomeProvider>()
-                  .updateTripRequestsMetadata(newTripList: []);
-          }
-        } else //Most likely got some rides - 100%
-        {
-          if (context.read<HomeProvider>().selectedOption ==
-              json
-                  .decode(response.body)[0]['request_type']
-                  .toString()
-                  .toLowerCase()) {
-            //! Remove all the accepted results
-            List results = json.decode(response.body);
-            results.removeWhere(
-                (element) => element['ride_basic_infos']['isAccepted'] == true);
-            //!--
-            log(response.body.toString());
-            context
-                .read<HomeProvider>()
-                .updateTripRequestsMetadata(newTripList: results);
-          } else if (context.read<HomeProvider>().selectedOption ==
-              'accepted') {
-            log(json.decode(response.body).toString());
-            context.read<HomeProvider>().updateTripRequestsMetadata(
-                newTripList: json.decode(response.body));
-          } else //Inconsistent selected options
+          // log(response.body.toString());
+          //Close the main loader
+          context
+              .read<HomeProvider>()
+              .updateMainLoaderVisibility(option: false);
+          // log(response.body.toString());
+          if (response.body.toString() == '{"response":"no_requests"}' ||
+              response.body.toString() == '{"response":"no_rides"}' ||
+              response.body.toString() == '{"request_status":"no_rides"}' ||
+              response.body.toString() ==
+                  '{"response":"error"}') //No trips found
           {
-            context
-                .read<HomeProvider>()
-                .updateTripRequestsMetadata(newTripList: []);
+            String responseGot = response.body.toString().contains('response')
+                ? json.decode(response.body)['response']
+                : json.decode(response.body)['request_status'];
+            switch (responseGot) {
+              case 'no_requests':
+                // No rides fetched
+                // log('No rides got');
+                // Empty the ride array
+                context
+                    .read<HomeProvider>()
+                    .updateTripRequestsMetadata(newTripList: []);
+                break;
+              case 'error':
+                //Some error
+                // log('Unexpected errors');
+                // Empty the ride array
+                context
+                    .read<HomeProvider>()
+                    .updateTripRequestsMetadata(newTripList: []);
+                break;
+              default:
+                // Empty the ride array
+                context
+                    .read<HomeProvider>()
+                    .updateTripRequestsMetadata(newTripList: []);
+            }
+          } else //Most likely got some rides - 100%
+          {
+            if (json.decode(response.body) != false) {
+              if (context.read<HomeProvider>().selectedOption ==
+                  json
+                      .decode(response.body)[0]['request_type']
+                      .toString()
+                      .toLowerCase()) {
+                //! Remove all the accepted results
+                List results = json.decode(response.body);
+                results.removeWhere((element) =>
+                    element['ride_basic_infos']['isAccepted'] == true);
+                //!--
+                // log(response.body.toString());
+                context
+                    .read<HomeProvider>()
+                    .updateTripRequestsMetadata(newTripList: results);
+              } else if (context.read<HomeProvider>().selectedOption ==
+                  'accepted') {
+                // log(json.decode(response.body).toString());
+                context.read<HomeProvider>().updateTripRequestsMetadata(
+                    newTripList: json.decode(response.body));
+              } else {
+                context
+                    .read<HomeProvider>()
+                    .updateTripRequestsMetadata(newTripList: []);
+              }
+            } else //Inconsistent selected options
+            {
+              context
+                  .read<HomeProvider>()
+                  .updateTripRequestsMetadata(newTripList: []);
+            }
           }
+        } else //No proper result received
+        {
+          // log(response.body.toString());
+          // Empty the ride array
+          context
+              .read<HomeProvider>()
+              .updateTripRequestsMetadata(newTripList: []);
         }
-      } else //No proper result received
-      {
-        log(response.body.toString());
-        // Empty the ride array
+      }
+    } catch (e) {
+      log('14');
+      log(e.toString());
+      print(context);
+      if (context.toString().contains('no widget') == false) {
         context
             .read<HomeProvider>()
             .updateTripRequestsMetadata(newTripList: []);
       }
-    } catch (e) {
-      log(e.toString());
-      context.read<HomeProvider>().updateTripRequestsMetadata(newTripList: []);
     }
   }
 }
@@ -424,6 +461,7 @@ class GetRequestsGraphNet {
         updateGraphData(context: context, graph: json.decode(response.body));
       } else //Has some errors
       {
+        print('HAS SOME ERRORS');
         updateGraphData(context: context, graph: {
           'rides': 0,
           'deliveries': 0,
@@ -432,6 +470,7 @@ class GetRequestsGraphNet {
         });
       }
     } catch (e) {
+      log('15');
       log(e.toString());
       updateGraphData(
           context: context,
@@ -441,7 +480,9 @@ class GetRequestsGraphNet {
 
   //Update graph data
   void updateGraphData({required BuildContext context, required Map graph}) {
-    context.read<HomeProvider>().updateRequestsGraphData(data: graph);
+    if (context.toString().contains('no widget') == false) {
+      context.read<HomeProvider>().updateRequestsGraphData(data: graph);
+    }
   }
 }
 
@@ -471,7 +512,7 @@ class AcceptRequestNet {
         {
           //Close the processor loader
           CloseLoader(context, request_fp);
-          log('Accepted');
+          // log('Accepted');
           context.read<HomeProvider>().updateBlurredBackgroundState(
               shouldShow: true); //Show blurred background
 
@@ -500,19 +541,19 @@ class AcceptRequestNet {
         {
           //Close the processor loader
           CloseLoader(context, request_fp, ShouldPop: false);
-          log('Unable to accept');
+          // log('Unable to accept');
           UnableToAccept(context);
         }
       } else //Has some errors
       {
         //Close the processor loader
         CloseLoader(context, request_fp, ShouldPop: false);
-        log('Unable to accept');
+        // log('Unable to accept');
         UnableToAccept(context);
       }
     } catch (e) {
       CloseLoader(context, request_fp, ShouldPop: false);
-
+      log('17');
       log(e.toString());
       UnableToAccept(context);
     }
@@ -522,7 +563,7 @@ class AcceptRequestNet {
       {bool ShouldPop = true}) {
     //Close the processor loader
     if (ShouldPop) {
-      Timer(const Duration(seconds: 4), () {
+      Timer(const Duration(milliseconds: 500), () {
         context
             .read<HomeProvider>()
             .updateTargetedRequestPro(isBeingProcessed: false, request_fp: '');
@@ -591,8 +632,8 @@ class CancelRequestNet {
           //Close the processor loader
           // CloseLoader(context, request_fp);
           //! Remove the tmp selected data
-          Timer(const Duration(seconds: 4), () {
-            Navigator.of(context).pop();
+          Timer(const Duration(milliseconds: 500), () {
+            // Navigator.of(context).pop();
             Navigator.of(context).pop(() {
               //...
               context.read<HomeProvider>().updateTmpSelectedTripsData(data: {});
@@ -603,10 +644,10 @@ class CancelRequestNet {
                 isBeingProcessed: false, request_fp: '');
           });
 
-          log('Cancelled');
+          // log('Cancelled');
         } else //Unable to cancel for some reasons
         {
-          log(response.body.toString());
+          // log(response.body.toString());
           if (json.decode(response.body)['response'] ==
               'unable_to_cancel_request_error_daily_cancellation_limit_exceeded') {
             context
@@ -641,15 +682,15 @@ class CancelRequestNet {
         }
       } else //Has some errors
       {
-        log(response.body.toString());
+        // log(response.body.toString());
         //Close the processor loader
         CloseLoader(context, request_fp, ShouldPop: false);
-        log('Unable to cancel');
+        // log('Unable to cancel');
         UnableToDo(context);
       }
     } catch (e) {
       CloseLoader(context, request_fp, ShouldPop: false);
-
+      log('16');
       log(e.toString());
       UnableToDo(context);
     }
@@ -659,7 +700,7 @@ class CancelRequestNet {
       {bool ShouldPop = true}) {
     //Close the processor loader
     if (ShouldPop) {
-      Timer(const Duration(seconds: 4), () {
+      Timer(const Duration(milliseconds: 500), () {
         //! Remove the tmp selected data
         context.read<HomeProvider>().updateTmpSelectedTripsData(data: {});
         context
@@ -747,7 +788,7 @@ class ConfirmPickupRequestNet {
       }
     } catch (e) {
       CloseLoader(context, request_fp, ShouldPop: false);
-
+      log('18');
       log(e.toString());
       UnableToDo(context);
     }
@@ -757,7 +798,7 @@ class ConfirmPickupRequestNet {
       {bool ShouldPop = true}) {
     //Close the processor loader
     if (ShouldPop) {
-      Timer(const Duration(seconds: 4), () {
+      Timer(const Duration(milliseconds: 500), () {
         context
             .read<HomeProvider>()
             .updateTargetedRequestPro(isBeingProcessed: false, request_fp: '');
@@ -843,7 +884,7 @@ class DeclineRequestNet {
       }
     } catch (e) {
       CloseLoader(context, request_fp, ShouldPop: false);
-
+      log('19');
       log(e.toString());
       UnableToDo(context);
     }
@@ -853,7 +894,7 @@ class DeclineRequestNet {
       {bool ShouldPop = true}) {
     //Close the processor loader
     if (ShouldPop) {
-      Timer(const Duration(seconds: 4), () {
+      Timer(const Duration(milliseconds: 500), () {
         context.read<HomeProvider>().updateTargetedDeclinedRequestPro(
             isBeingProcessed: false, request_fp: '');
         context.read<HomeProvider>().updateBlurredBackgroundState(
@@ -897,7 +938,7 @@ class ConfirmDropoffRequestNet {
   Future exec(
       {required BuildContext context, required String request_fp}) async {
     //Init the sound
-    Sound sound = Sound();
+    // Sound sound = Sound();
 
     Uri mainUrl = Uri.parse(Uri.encodeFull(
         '${context.read<HomeProvider>().bridge}/confirm_dropoff_request_driver_io'));
@@ -918,7 +959,7 @@ class ConfirmDropoffRequestNet {
         {
           //Close the processor loader
           //! Remove the tmp selected data
-          Timer(const Duration(seconds: 4), () {
+          Timer(const Duration(milliseconds: 500), () {
             Navigator.of(context).pop();
             Navigator.of(context).pop(() {
               //...
@@ -929,25 +970,25 @@ class ConfirmDropoffRequestNet {
             context.read<HomeProvider>().updateTargetedRequestPro(
                 isBeingProcessed: false, request_fp: '');
           });
-          log('confirmed drop off');
+          // log('confirmed drop off');
         } else //Unable to cancel for some reasons
         {
           //Close the processor loader
           CloseLoader(context, request_fp, ShouldPop: false);
-          log('Unable to confirm dropoff');
+          // log('Unable to confirm dropoff');
           UnableToDo(context);
         }
       } else //Has some errors
       {
-        log(response.statusCode.toString());
+        // log(response.statusCode.toString());
         //Close the processor loader
         CloseLoader(context, request_fp, ShouldPop: false);
-        log('Unable to confirm dropoff');
+        // log('Unable to confirm dropoff');
         UnableToDo(context);
       }
     } catch (e) {
       CloseLoader(context, request_fp, ShouldPop: false);
-
+      log('20');
       log(e.toString());
       UnableToDo(context);
     }
@@ -957,7 +998,7 @@ class ConfirmDropoffRequestNet {
       {bool ShouldPop = true}) {
     //Close the processor loader
     if (ShouldPop) {
-      Timer(const Duration(seconds: 4), () {
+      Timer(const Duration(milliseconds: 500), () {
         context
             .read<HomeProvider>()
             .updateTargetedRequestPro(isBeingProcessed: false, request_fp: '');
@@ -1014,26 +1055,34 @@ class GetWalletDataNet {
     try {
       http.Response response = await http.post(mainUrl, body: bundleData);
 
-      if (response.statusCode == 200) //Got some results
-      {
-        // log(response.body.toString());
-        updateWalletData(context: context, data: json.decode(response.body));
-      } else //Has some errors
-      {
-        updateWalletData(context: context, data: {});
+      if (context.toString().contains('no widget') == false) {
+        if (response.statusCode == 200) //Got some results
+        {
+          // log(response.body.toString());
+          updateWalletData(context: context, data: json.decode(response.body));
+        } else //Has some errors
+        {
+          updateWalletData(context: context, data: {});
+        }
       }
     } catch (e) {
+      log('22');
       log(e.toString());
-      updateWalletData(context: context, data: {});
+      if (context.toString().contains('no widget') == false) {
+        updateWalletData(context: context, data: {});
+      }
     }
   }
 
   //Update wallet data
   void updateWalletData({required BuildContext context, required Map data}) {
     try {
-      context.read<HomeProvider>().updateWalletData(data: data);
+      if (context.toString().contains('no widget') == false) {
+        context.read<HomeProvider>().updateWalletData(data: data);
+      }
     } on Exception catch (e) {
       // TODO
+      log('23');
       log(e.toString());
     }
   }
@@ -1064,6 +1113,7 @@ class GetWalletTransactionalDataNet {
         updateWalletData(context: context, data: {});
       }
     } catch (e) {
+      log('24');
       log(e.toString());
       updateWalletData(context: context, data: {});
     }
@@ -1072,9 +1122,12 @@ class GetWalletTransactionalDataNet {
   //Update wallet data
   void updateWalletData({required BuildContext context, required Map data}) {
     try {
-      context.read<HomeProvider>().updateWalletTransactionalData(data: data);
+      if (context.toString().contains('no widget') == false) {
+        context.read<HomeProvider>().updateWalletTransactionalData(data: data);
+      }
     } on Exception catch (e) {
       // TODO
+      log('25');
       log(e.toString());
     }
   }
@@ -1090,7 +1143,7 @@ class GetDailyEarningAndAuthChecks {
     Map<String, String> bundleData = {
       'driver_fingerprint': context.read<HomeProvider>().user_fingerprint,
     };
-    print(bundleData);
+    // print(bundleData);
 
     try {
       http.Response response = await http.post(mainUrl, body: bundleData);
@@ -1124,6 +1177,7 @@ class GetDailyEarningAndAuthChecks {
         });
       }
     } catch (e) {
+      log('26');
       log(e.toString());
       updateAuthEarningData(context: context, data: {
         'amount': 0,
@@ -1138,10 +1192,13 @@ class GetDailyEarningAndAuthChecks {
   void updateAuthEarningData(
       {required BuildContext context, required Map data}) {
     try {
-      context.read<HomeProvider>().updateAuthEarningData(data: data);
+      if (context.toString().contains('no widget') == false) {
+        context.read<HomeProvider>().updateAuthEarningData(data: data);
+      }
     } on Exception catch (e) {
       // TODO
-      log(context.toString());
+      // log(context.toString());
+      log('27');
       log(e.toString());
     }
   }
@@ -1217,8 +1274,7 @@ class SubmitCourierRegistrationNet {
     //Request data for files
     Map<String, String> bundleData = {
       'city': context.read<RegistrationProvider>().city as String,
-      'phone':
-          '${context.read<HomeProvider>().selectedCountryCodeData['dial_code']}${context.read<HomeProvider>().enteredPhoneNumber}',
+      'phone': '${context.read<RegistrationProvider>().phoneNumberPicked}',
       'nature_driver': 'COURIER',
       "personal_details": json
           .encode(context.read<RegistrationProvider>().personalDetails)
@@ -1240,7 +1296,7 @@ class SubmitCourierRegistrationNet {
       }).toString()
     };
 
-    print(bundleData);
+    // print(bundleData);
 
     try {
       var response = await Dio().post(
@@ -1248,11 +1304,15 @@ class SubmitCourierRegistrationNet {
         data: bundleData,
         onSendProgress: (received, total) {
           if (total != -1) {
+            context.read<RegistrationProvider>().updateRegistrationPercentage(
+                data: (received / total * 100).toStringAsFixed(0) + '%');
             // print((received / total * 100).toStringAsFixed(0) + '%');
           }
         },
         onReceiveProgress: (received, total) {
           if (total != -1) {
+            context.read<RegistrationProvider>().updateRegistrationPercentage(
+                data: (received / total * 100).toStringAsFixed(0) + '%');
             // log((received / total * 100).toStringAsFixed(0) + '%'.toString());
           }
         },
@@ -1320,6 +1380,7 @@ class SubmitCourierRegistrationNet {
         showErrorsApplying(context: context);
       }
     } catch (e) {
+      log('28');
       log(e.toString());
       showErrorsApplying(context: context);
     }
@@ -1357,6 +1418,7 @@ class SubmitCourierRegistrationNet {
       context.read<HomeProvider>().updateAuthEarningData(data: data);
     } on Exception catch (e) {
       // TODO
+      log('29');
       log(e.toString());
     }
   }
@@ -1511,8 +1573,7 @@ class SubmitRidesRegistrationNet {
     //Request data for files
     Map<String, String> bundleData = {
       'city': context.read<RegistrationProvider>().city as String,
-      'phone':
-          '${context.read<HomeProvider>().selectedCountryCodeData['dial_code']}${context.read<HomeProvider>().enteredPhoneNumber}',
+      'phone': '${context.read<RegistrationProvider>().phoneNumberPicked}',
       'nature_driver':
           context.read<RegistrationProvider>().driverNature as String,
       "personal_details": json
@@ -1541,7 +1602,7 @@ class SubmitRidesRegistrationNet {
       }).toString()
     };
 
-    print(bundleData);
+    // print(bundleData);
 
     try {
       var response = await Dio().post(
@@ -1621,6 +1682,7 @@ class SubmitRidesRegistrationNet {
         showErrorsApplying(context: context);
       }
     } catch (e) {
+      log('30');
       log(e.toString());
       showErrorsApplying(context: context);
     }
@@ -1658,6 +1720,7 @@ class SubmitRidesRegistrationNet {
       context.read<HomeProvider>().updateAuthEarningData(data: data);
     } on Exception catch (e) {
       // TODO
+      log('31');
       log(e.toString());
     }
   }
@@ -1677,7 +1740,7 @@ class SendOTPCodeNet {
       'smsHashLinker': 'absdEjdjs'
     };
 
-    print(bundleData);
+    // print(bundleData);
 
     try {
       http.Response response = await http.post(mainUrl, body: bundleData);
@@ -1686,7 +1749,7 @@ class SendOTPCodeNet {
 
       if (response.statusCode == 200) //Got some results
       {
-        log(response.body.toString());
+        // log(response.body.toString());
         Map responseGot = json.decode(response.body);
         if (RegExp(r"error").hasMatch(responseGot['response']) ==
             false) //No error found
@@ -1694,7 +1757,7 @@ class SendOTPCodeNet {
           if (RegExp(r"not_yet_registered")
               .hasMatch(responseGot['response'])) //Not yet registered
           {
-            log('driver not yet registered, move to registration');
+            // log('driver not yet registered, move to registration');
             //! Update the user's status: new_user
             context
                 .read<HomeProvider>()
@@ -1702,7 +1765,7 @@ class SendOTPCodeNet {
           } else if (RegExp(r"registered")
               .hasMatch(responseGot['response'])) //registered driver
           {
-            log('registered, move forward');
+            // log('registered, move forward');
             //Update the account details, user fp and move forward
             context
                 .read<HomeProvider>()
@@ -1717,20 +1780,21 @@ class SendOTPCodeNet {
                 .updateRegistrationStatus(data: 'registered_user');
           } else //Encountered some errors
           {
-            log('Encountered some errors.');
+            // log('Encountered some errors.');
             showErrorsSendingCode(context: context);
           }
         } else //Found some errors
         {
-          log('Found some errors');
+          // log('Found some errors');
           showErrorsSendingCode(context: context);
         }
       } else //Has some errors
       {
-        log(response.statusCode.toString());
+        // log(response.statusCode.toString());
         showErrorsSendingCode(context: context);
       }
     } catch (e) {
+      log('32');
       log(e.toString());
       showErrorsSendingCode(context: context);
     }
@@ -1776,8 +1840,6 @@ class CheckOTPCodeNet {
       'otp': context.read<HomeProvider>().otpValue
     };
 
-    print(bundleData);
-
     try {
       http.Response response = await http.post(mainUrl, body: bundleData);
 
@@ -1785,7 +1847,7 @@ class CheckOTPCodeNet {
 
       if (response.statusCode == 200) //Got some results
       {
-        log(response.body.toString());
+        // log(response.body.toString());
         Map responseGot = json.decode(response.body);
         if (responseGot['response'] == false &&
             context.read<HomeProvider>().userStatus ==
@@ -1829,10 +1891,11 @@ class CheckOTPCodeNet {
         }
       } else //Has some errors
       {
-        log(response.statusCode.toString());
+        // log(response.statusCode.toString());
         showErrorsCheckingCode(context: context);
       }
     } catch (e) {
+      log('33');
       log(e.toString());
       showErrorsCheckingCode(context: context);
     }

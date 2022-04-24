@@ -52,7 +52,7 @@ class _OTPVerificationInputState extends State<OTPVerificationInput> {
           animationDuration: Duration(milliseconds: 300),
           backgroundColor: Colors.white,
           onCompleted: (v) {
-            print("Completed");
+            // print("Completed");
             log(v.toString());
             context.read<HomeProvider>().updateOTPValueData(data: v);
             //Check the otp
@@ -61,10 +61,10 @@ class _OTPVerificationInputState extends State<OTPVerificationInput> {
             checkOTPCodeNet.exec(context: context);
           },
           onChanged: (value) {
-            print(value);
+            // print(value);
           },
           beforeTextPaste: (text) {
-            print("Allowing to paste $text");
+            // print("Allowing to paste $text");
             //if you return true then it will show the paste confirmation dialog. Otherwise if false, then nothing will happen.
             //but you can show anything you want here, like your pop up saying wrong paste format or etc
             return false;
@@ -96,7 +96,7 @@ class _TimerAndErrorNotifiyerState extends State<TimerAndErrorNotifiyer> {
             children: [
               CountdownTimer(
                 endTime: endTime,
-                onEnd: () => print('TIMER DONE'),
+                onEnd: () => {},
                 widgetBuilder:
                     (BuildContext context, CurrentRemainingTime? time) {
                   if (time == null) {

@@ -36,7 +36,8 @@ class _RegisterOptionsDriverState extends State<RegisterOptionsDriver> {
           ),
           Options(
             title: 'Taxi driver',
-            subTitle: 'For anyone who is legaly registered as a taxi driver',
+            // subTitle: 'For anyone who is legaly registered as a taxi driver',
+            subTitle: '',
             icoRepr: Icons.stop,
             actuator: () {
               //Update the driver nature person
@@ -53,8 +54,9 @@ class _RegisterOptionsDriverState extends State<RegisterOptionsDriver> {
           ),
           Options(
             title: 'Individual',
-            subTitle:
-                'For anyone having a car but is not a registered taxi driver.',
+            // subTitle:
+            //     'For anyone having a car but is not a registered taxi driver.',
+            subTitle: '',
             icoRepr: Icons.stop,
             actuator: () {
               //Update the driver nature person
@@ -97,9 +99,12 @@ class Options extends StatelessWidget {
             decoration: BoxDecoration(
                 // border: Border.all(width: 1),
                 borderRadius: BorderRadius.circular(200)),
-            child: Icon(icoRepr, color: Colors.black)),
-        title: Text(title,
-            style: const TextStyle(fontFamily: 'MoveTextBold', fontSize: 18)),
+            child: Icon(icoRepr, color: Colors.black, size: 15,)),
+        title: Padding(
+          padding: const EdgeInsets.only(top:15),
+          child: Text(title,
+              style: const TextStyle(fontFamily: 'MoveTextMedium', fontSize: 20)),
+        ),
         subtitle: Text(subTitle),
         trailing: const Icon(Icons.arrow_forward_ios,
             size: 17, color: Color.fromRGBO(9, 110, 212, 1)));

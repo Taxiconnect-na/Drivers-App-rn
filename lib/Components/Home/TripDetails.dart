@@ -1,5 +1,6 @@
 // ignore_for_file: file_names
 
+import 'dart:async';
 import 'dart:developer';
 import 'dart:ui';
 
@@ -22,6 +23,8 @@ class TripDetails extends StatefulWidget {
 
 class _TripDetailsState extends State<TripDetails> {
   RequestCardHelper requestCardHelper = RequestCardHelper();
+  final Navigation _navigation = Navigation();
+  bool showFindPlaceloader = false;
 
   @override
   Widget build(BuildContext context) {
@@ -94,60 +97,79 @@ class _TripDetailsState extends State<TripDetails> {
                 child: Row(
                   children: [
                     ButtonGeneralPurpose(
-                      title: tripData['ride_basic_infos']['inRideToDestination']
-                          ? 'Destination'
-                          : 'Find client',
-                      showIcon: true,
-                      flex: 1,
-                      alignment: Alignment.centerLeft,
-                      textColor: Colors.white,
-                      backgroundColor: Colors.black,
-                      showTrailingArrow: false,
-                      actuatorFunctionl: () => Navigation().startNavigation(
-                          origin: {
-                            'name': 'My location',
-                            'latitude': context
-                                .read<HomeProvider>()
-                                .userLocationCoords['latitude'],
-                            'longitude': context
-                                .read<HomeProvider>()
-                                .userLocationCoords['longitude']
-                          },
-                          destination: tripData['ride_basic_infos']
-                                  ['inRideToDestination']
-                              ? {
-                                  'name':
-                                      requestCardHelper.getRealisticPlacesNames(
-                                          locationData: tripData[
-                                                      'origin_destination_infos']
-                                                  ['destination_infos']
-                                              [0])['location_name'],
-                                  'latitude':
-                                      tripData['origin_destination_infos']
-                                              ['destination_infos'][0]
-                                          ['coordinates']['latitude'],
-                                  'longitude':
-                                      tripData['origin_destination_infos']
-                                              ['pickup_infos']['coordinates']
-                                          ['longitude']
-                                }
-                              : {
-                                  'name':
-                                      requestCardHelper.getRealisticPlacesNames(
-                                          locationData: tripData[
-                                                  'origin_destination_infos'][
-                                              'pickup_infos'])['location_name'],
-                                  'latitude':
-                                      tripData['origin_destination_infos']
-                                              ['pickup_infos']['coordinates']
-                                          ['latitude'],
-                                  'longitude':
-                                      tripData['origin_destination_infos']
-                                              ['pickup_infos']['coordinates']
-                                          ['longitude']
-                                },
-                          context: context),
-                    ),
+                        title: tripData['ride_basic_infos']
+                                ['inRideToDestination']
+                            ? 'Destination'
+                            : 'Find client',
+                        showIcon: true,
+                        showLoader: showFindPlaceloader,
+                        flex: 1,
+                        alignment: Alignment.centerLeft,
+                        textColor: Colors.white,
+                        backgroundColor: Colors.black,
+                        showTrailingArrow: false,
+                        actuatorFunctionl: showFindPlaceloader
+                            ? () {
+                                log('Already loading the map');
+                              }
+                            : () {
+                                //Start the loader for 4 seconds
+                                setState(() {
+                                  showFindPlaceloader = true;
+                                });
+                                Timer(const Duration(seconds: 3), () {
+                                  setState(() {
+                                    showFindPlaceloader = false;
+                                  });
+                                });
+
+                                _navigation.startNavigation(
+                                    origin: {
+                                      'name': 'My location',
+                                      'latitude': context
+                                          .read<HomeProvider>()
+                                          .userLocationCoords['latitude'],
+                                      'longitude': context
+                                          .read<HomeProvider>()
+                                          .userLocationCoords['longitude']
+                                    },
+                                    destination: tripData['ride_basic_infos']
+                                            ['inRideToDestination']
+                                        ? {
+                                            'name': requestCardHelper
+                                                .getRealisticPlacesNames(
+                                                    locationData: tripData[
+                                                                'origin_destination_infos']
+                                                            [
+                                                            'destination_infos']
+                                                        [0])['location_name'],
+                                            'latitude': tripData[
+                                                        'origin_destination_infos']
+                                                    ['destination_infos'][0]
+                                                ['coordinates']['latitude'],
+                                            'longitude': tripData[
+                                                        'origin_destination_infos']
+                                                    ['destination_infos'][0]
+                                                ['coordinates']['longitude']
+                                          }
+                                        : {
+                                            'name': requestCardHelper
+                                                    .getRealisticPlacesNames(
+                                                        locationData: tripData[
+                                                                'origin_destination_infos']
+                                                            ['pickup_infos'])[
+                                                'location_name'],
+                                            'latitude': tripData[
+                                                        'origin_destination_infos']
+                                                    ['pickup_infos']
+                                                ['coordinates']['latitude'],
+                                            'longitude': tripData[
+                                                        'origin_destination_infos']
+                                                    ['pickup_infos']
+                                                ['coordinates']['longitude']
+                                          },
+                                    context: context);
+                              }),
                     const Padding(padding: EdgeInsets.symmetric(horizontal: 4)),
                     ButtonGeneralPurpose(
                       title: tripData['ride_basic_infos']
@@ -156,6 +178,7 @@ class _TripDetailsState extends State<TripDetails> {
                           ? 'Confirm pickup'
                           : 'Confirm dropoff',
                       showIcon: false,
+                      showLoader: false,
                       showTrailingArrow: true,
                       flex: 2,
                       fontFamily: 'MoveTextMedium',
@@ -369,6 +392,7 @@ class ButtonGeneralPurpose extends StatelessWidget {
   final bool showIcon;
   final int flex;
   final bool showTrailingArrow;
+  bool showLoader = false;
   double? fontSize = 15;
   String? fontFamily = 'MoveTextRegular';
   Color? textColor = Colors.white;
@@ -383,6 +407,7 @@ class ButtonGeneralPurpose extends StatelessWidget {
     required this.showIcon,
     required this.flex,
     required this.showTrailingArrow,
+    required this.showLoader,
     this.fontSize,
     this.fontFamily,
     this.textColor,
@@ -401,28 +426,47 @@ class ButtonGeneralPurpose extends StatelessWidget {
           ),
           onPressed: actuatorFunctionl,
           child: ListTile(
-            contentPadding: EdgeInsets.only(left: 5, right: 5),
+            contentPadding: const EdgeInsets.only(left: 5, right: 5),
             minVerticalPadding: 0,
             horizontalTitleGap: 0,
             minLeadingWidth: 0,
             leading: showIcon
-                ? Container(
-                    // color: Colors.amber,
-                    height: 30,
-                    child: Icon(Icons.navigation_sharp,
-                        size: 18, color: textColor))
+                ? Visibility(
+                    visible: showLoader == false,
+                    child: Container(
+                        // color: Colors.amber,
+                        height: 30,
+                        child: Icon(Icons.navigation_sharp,
+                            size: 18, color: textColor)),
+                  )
                 : null,
-            title: Container(
-                height: 30,
-                alignment: alignment,
-                // color: Colors.red,
-                child: Text(
-                  title,
-                  style: TextStyle(
-                      fontSize: fontSize,
-                      fontFamily: fontFamily,
-                      color: textColor),
-                )),
+            title: showLoader
+                ? Center(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: const [
+                        SizedBox(
+                          child: CircularProgressIndicator(
+                            color: Colors.white,
+                            strokeWidth: 2,
+                          ),
+                          height: 20.0,
+                          width: 20.0,
+                        )
+                      ],
+                    ),
+                  )
+                : Container(
+                    height: 30,
+                    alignment: alignment,
+                    // color: Colors.red,
+                    child: Text(
+                      title,
+                      style: TextStyle(
+                          fontSize: fontSize,
+                          fontFamily: fontFamily,
+                          color: textColor),
+                    )),
             trailing: showTrailingArrow
                 ? Icon(
                     Icons.arrow_forward,

@@ -15,8 +15,8 @@ import 'package:taxiconnectdrivers/Components/Providers/RegistrationProvider.dar
 // Will hold all the home related globals - only!
 
 class HomeProvider with ChangeNotifier {
-  final String bridge = 'http://192.168.8.132:9999';
-  // final String bridge = 'https://taxiconnectnanetwork.com:9999';
+  // final String bridge = 'http://localhost:9999';
+  final String bridge = 'https://taxiconnectnanetwork.com:9999';
 
   late AnimationController controllerSwicther; //The bottom switcher animator
 
@@ -136,7 +136,7 @@ class HomeProvider with ChangeNotifier {
     Map<String, dynamic> globalStateData = toMap();
     String stateString = json.encode(globalStateData).toString();
 
-    log(globalStateData.toString());
+    // log(globalStateData.toString());
 
     //Write
     writeStateToFile(stateString);
@@ -144,10 +144,10 @@ class HomeProvider with ChangeNotifier {
 
   //! Restore data map
   void restoreStateData({required BuildContext context}) {
-    print('Restore registration provider state - Home');
+    // print('Restore registration provider state - Home');
     Future<Map<String, dynamic>> restoredState = readStateFile();
     restoredState.then((state) {
-      print(state);
+      // print(state);
       if (state['logginStatus'] == 'out' ||
           state['logginStatus'] == null) //?No state saved yet
       {
@@ -230,6 +230,7 @@ class HomeProvider with ChangeNotifier {
 
       return json.decode(contents);
     } catch (e) {
+      log('5');
       log(e.toString());
       // If encountering an error, return 0
       return {};
@@ -279,7 +280,7 @@ class HomeProvider with ChangeNotifier {
           locationPermission;
       locationServicesStatus['isLocationDeniedForever'] = isDeniedForever;
       //...Update
-      print('UPDATED GLOBAL STATE FOR LOCATION SERVICE STATUS');
+      // print('UPDATED GLOBAL STATE FOR LOCATION SERVICE STATUS');
       notifyListeners();
     }
   }
@@ -292,7 +293,7 @@ class HomeProvider with ChangeNotifier {
     {
       userLocationCoords['latitude'] = latitude;
       userLocationCoords['longitude'] = longitude;
-      print('Updated location with new ones');
+      // print('Updated location with new ones');
       //..
       notifyListeners();
     }
@@ -302,7 +303,7 @@ class HomeProvider with ChangeNotifier {
   void updateAutoAskGprsCoords({required bool didAsk}) {
     if (didAutomaticallyAskedForGprsPerm != didAsk) //New data
     {
-      print('UPDATING AUTO ASK FOR GPRS COORDS.');
+      // print('UPDATING AUTO ASK FOR GPRS COORDS.');
       didAutomaticallyAskedForGprsPerm = didAsk;
     }
   }
@@ -439,7 +440,7 @@ class HomeProvider with ChangeNotifier {
   //? 19. Update selected country code
   void updateSelectedCountryCode({required Map dialData}) {
     selectedCountryCodeData = dialData;
-    log(dialData.toString());
+    // log(dialData.toString());
     notifyListeners();
   }
 

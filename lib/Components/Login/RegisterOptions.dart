@@ -19,8 +19,18 @@ class _RegisterOptionsState extends State<RegisterOptions> {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          Padding(
+            padding: const EdgeInsets.only(left: 25, bottom: 5, top: 0),
+            child: InkWell(
+              onTap: () => Navigator.of(context).pop(),
+              child: const Icon(
+                Icons.arrow_back,
+                size: 30,
+              ),
+            ),
+          ),
           const Padding(
-            padding: EdgeInsets.only(left: 25, bottom: 45, top: 60),
+            padding: EdgeInsets.only(left: 25, bottom: 45, top: 30),
             child: Text('Register as',
                 style: TextStyle(fontFamily: 'MoveBold', fontSize: 28)),
           ),

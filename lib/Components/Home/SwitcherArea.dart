@@ -19,6 +19,14 @@ class _SwictherAreaState extends State<SwictherArea> {
   @override
   Widget build(BuildContext context) {
     Map graphData = context.watch<HomeProvider>().requestsGraphData;
+    //! Handle the null
+    graphData['rides'] = graphData['rides'] == null ? 0 : graphData['rides'];
+    graphData['deliveries'] =
+        graphData['deliveries'] == null ? 0 : graphData['deliveries'];
+    graphData['scheduled'] =
+        graphData['scheduled'] == null ? 0 : graphData['scheduled'];
+    graphData['accepted'] =
+        graphData['accepted'] == null ? 0 : graphData['accepted'];
 
     return SizedBox(
         height: 110,
@@ -152,7 +160,7 @@ class _OfflineStripState extends State<OfflineStrip>
   void dispose() {
     // TODO: implement dispose
     super.dispose();
-    context.read<HomeProvider>().controllerSwicther.dispose();
+    // context.read<HomeProvider>().controllerSwicther.dispose();
   }
 
   @override
@@ -231,7 +239,7 @@ class _OfflineStripState extends State<OfflineStrip>
                               .controllerSwicther
                               .forward()
                               .whenComplete(() {
-                            print('Going online set...');
+                            // print('Going online set...');
                             SetOnlineOfflineStatus setOnlineOfflineStatus =
                                 SetOnlineOfflineStatus();
                             setOnlineOfflineStatus.execGet(
@@ -462,7 +470,7 @@ class OnlineOfflineBtns extends StatelessWidget {
       children: [
         ListTile(
           onTap: () {
-            print('Going offline.');
+            // print('Going offline.');
             //Set going offline to true
             context
                 .read<HomeProvider>()
