@@ -322,7 +322,7 @@ class GlobalDataFetcher with ChangeNotifier {
         '${context.read<HomeProvider>().bridge}/update_passenger_location'));
 
     // print('get code data called');
-    Map<String, String> bundleData = {
+    Map<String, dynamic> bundleData = {
       'latitude': context
           .read<HomeProvider>()
           .userLocationCoords['latitude']
@@ -332,11 +332,15 @@ class GlobalDataFetcher with ChangeNotifier {
           .userLocationCoords['longitude']
           .toString(),
       'user_fingerprint': context.read<HomeProvider>().user_fingerprint,
-      'pushnotif_token': 'abc',
+      'pushnotif_token': context.read<HomeProvider>().pushnotif_token == null
+          ? false
+          : context.read<HomeProvider>().pushnotif_token,
       'user_nature': 'driver',
       'requestType': context.read<HomeProvider>().selectedOption,
       'app_version': '3.4.0'
     };
+
+    // print(context.read<HomeProvider>().pushnotif_token);
 
     // print(bundleData);
 
@@ -388,6 +392,11 @@ class GlobalDataFetcher with ChangeNotifier {
           } else //Most likely got some rides - 100%
           {
             if (json.decode(response.body) != false) {
+              // print(context.read<HomeProvider>().selectedOption);
+              // log(json
+              //     .decode(response.body)[0]['request_type']
+              //     .toString()
+              //     .toLowerCase());
               if (context.read<HomeProvider>().selectedOption ==
                   json
                       .decode(response.body)[0]['request_type']
@@ -405,8 +414,13 @@ class GlobalDataFetcher with ChangeNotifier {
               } else if (context.read<HomeProvider>().selectedOption ==
                   'accepted') {
                 // log(json.decode(response.body).toString());
+                 //! Remove all the accepted results
+                List results = json.decode(response.body);
+                results.removeWhere((element) =>
+                    element['ride_basic_infos']['isAccepted'] == false);
+                //!--
                 context.read<HomeProvider>().updateTripRequestsMetadata(
-                    newTripList: json.decode(response.body));
+                    newTripList: results);
               } else {
                 context
                     .read<HomeProvider>()
@@ -457,7 +471,7 @@ class GetRequestsGraphNet {
 
       if (response.statusCode == 200) //Got some results
       {
-        log(response.body.toString());
+        // log(response.body.toString());
         updateGraphData(context: context, graph: json.decode(response.body));
       } else //Has some errors
       {

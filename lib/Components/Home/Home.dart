@@ -3,6 +3,7 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:taxiconnectdrivers/Components/Helpers/LocationOpsHandler.dart';
 import 'package:taxiconnectdrivers/Components/Helpers/Networking.dart';
@@ -64,6 +65,26 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
+    OneSignal.shared.setAppId("a7e445ea-0852-4bdc-afd0-345c9cd30095");
+
+    // The promptForPushNotificationsWithUserResponse function will show the iOS push notification prompt. We recommend removing the following code and instead using an In-App Message to prompt for notification permission
+    OneSignal.shared.promptUserForPushNotificationPermission().then((accepted) {
+      // print("Accepted permission: $accepted");
+    });
+
+    OneSignal.shared
+        .setSubscriptionObserver((OSSubscriptionStateChanges changes) {
+      // Will be called whenever the subscription changes
+      // (ie. user gets registered with OneSignal and gets a user ID)
+      print(changes);
+    });
+    OneSignal.shared.getDeviceState().then((deviceState) {
+      context
+          .read<HomeProvider>()
+          .updatePushnotification_token(data: deviceState?.jsonRepresentation());
+      // print("DeviceState: ${deviceState?.jsonRepresentation()}");
+    });
+
     return WillPopScope(
       onWillPop: () async {
         return Future.value(false);

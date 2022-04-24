@@ -7,6 +7,7 @@ import 'package:onesignal_flutter/onesignal_flutter.dart';
 
 void main() {
   debugPrint = (String? message, {int? wrapWidth}) => null;
+
   runApp(MultiProvider(
     providers: [
       ChangeNotifierProvider(create: (_) => HomeProvider()),

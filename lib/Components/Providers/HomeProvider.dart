@@ -20,6 +20,8 @@ class HomeProvider with ChangeNotifier {
 
   late AnimationController controllerSwicther; //The bottom switcher animator
 
+  String? pushnotif_token = ''; //Notification token
+
   Map<dynamic, dynamic> onlineOfflineData = {
     'flag': 'offline'
   }; //! Will hold the online/offline and suspension status of the driver
@@ -550,5 +552,10 @@ class HomeProvider with ChangeNotifier {
       {required AnimationController controller}) {
     controllerSwicther = controller;
     // notifyListeners();
+  }
+
+  //? 34. Update the pushnotif_token
+  void updatePushnotification_token({required var data}) {
+    pushnotif_token = data;
   }
 }
