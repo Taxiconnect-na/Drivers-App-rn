@@ -19,7 +19,9 @@ class _SignupEntryState extends State<SignupEntry> {
   @override
   Widget build(BuildContext context) {
     //! Update the user phone number entered
-    context.read<RegistrationProvider>().updateUserPhoneNumberPicked(data: '${context.read<HomeProvider>().selectedCountryCodeData['dial_code']}${context.read<HomeProvider>().enteredPhoneNumber}');
+    context.read<RegistrationProvider>().updateUserPhoneNumberPicked(
+        data:
+            '${context.read<HomeProvider>().selectedCountryCodeData['dial_code']}${context.read<HomeProvider>().enteredPhoneNumber}');
 
     return Scaffold(
       appBar: AppBar(
@@ -68,7 +70,7 @@ class _SignupEntryState extends State<SignupEntry> {
                 title: 'Pickup people in your city.',
               ),
               const DotPoints(title: 'Delivery packages.'),
-              const DotPoints(title: 'Make extra cash, any time.'),
+              const DotPoints(title: 'Accept rides in your city.'),
               const DotPoints(title: 'Get paid very fast.'),
               const SizedBox(
                 height: 35,

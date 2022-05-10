@@ -42,8 +42,14 @@ android {
     }
 
     defaultConfig {
+        //  applicationId "com.taxiconnectdrivers"
+        // minSdkVersion rootProject.ext.minSdkVersion
+        // targetSdkVersion rootProject.ext.targetSdkVersion
+        // versionCode 41459999
+        // versionName "2.0.289"
+        // multiDexEnabled true
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
-        applicationId "com.example.taxiconnectdrivers"
+        applicationId "com.taxiconnectdrivers"
         minSdkVersion 16
         targetSdkVersion 30
         versionCode flutterVersionCode.toInteger()
@@ -66,3 +72,5 @@ flutter {
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 }
+
+apply plugin: 'com.onesignal.androidsdk.onesignal-gradle-plugin'

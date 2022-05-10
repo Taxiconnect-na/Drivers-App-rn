@@ -111,7 +111,7 @@ class _ModalRegState extends State<ModalReg> {
                     labelFontSize: 22,
                     isArrowShow: false,
                     actuatorFunctionl: () {
-                       //! Clear everything
+                      //! Clear everything
                       //! 1. Registration
                       context.read<RegistrationProvider>().clearEverything();
                       //! 2. Home
@@ -214,9 +214,14 @@ class _ModalRegState extends State<ModalReg> {
                           textAlign: TextAlign.center,
                           style: TextStyle(
                               fontSize: 16, color: Colors.grey.shade700)),
-                                Padding(
-                          padding: const EdgeInsets.only(top: 15,),
-                          child: Text(context.watch<RegistrationProvider>().percentageUploadRegistration,
+                      Padding(
+                          padding: const EdgeInsets.only(
+                            top: 15,
+                          ),
+                          child: Text(
+                              context
+                                  .watch<RegistrationProvider>()
+                                  .percentageUploadRegistration,
                               style: const TextStyle(
                                   fontFamily: 'MoveBold',
                                   fontSize: 19,
@@ -776,20 +781,20 @@ class _ModalRegState extends State<ModalReg> {
       required String natureData}) async {
     if (shouldOpenCam) //Open the camera
     {
-      final XFile? photo = await _picker.pickImage(source: ImageSource.gallery);
+      final XFile? photo = await _picker.pickImage(source: ImageSource.camera);
     } else //Open the gallery
     {
-      // final XFile? image = await _picker.pickImage(
-      //     source: ImageSource.gallery,
-      //     maxWidth: 700,
-      //     maxHeight: 700,
-      //     imageQuality: 70,
-      //     preferredCameraDevice: CameraDevice.front);
       final XFile? image = await _picker.pickImage(
+          source: ImageSource.gallery,
           maxWidth: 700,
           maxHeight: 700,
           imageQuality: 70,
-          source: ImageSource.gallery);
+          preferredCameraDevice: CameraDevice.front);
+      // final XFile? image = await _picker.pickImage(
+      //     maxWidth: 700,
+      //     maxHeight: 700,
+      //     imageQuality: 70,
+      //     source: ImageSource.gallery);
       setState(() {
         _imageSelected = image;
         //! Update globals

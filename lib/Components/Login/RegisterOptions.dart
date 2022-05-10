@@ -54,7 +54,7 @@ class _RegisterOptionsState extends State<RegisterOptions> {
           ),
           Options(
             title: 'Courier',
-            subTitle: 'To deliver packages anywhere in your city.',
+            subTitle: 'Get paid very fast.',
             icoRepr: Icons.widgets,
             actuator: () {
               //Update the driver nature
